@@ -19,16 +19,19 @@
             --header-bg: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             --code-bg: #f8f9fa;
             --preview-bg: white;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .dark-mode {
-            --bg-color: #121212;
-            --text-color: #e9ecef;
-            --card-bg: #1e1e1e;
-            --border-color: #444;
-            --header-bg: linear-gradient(135deg, #4a0d8c 0%, #1a5fd8 100%);
-            --code-bg: #2d2d2d;
-            --preview-bg: #2d2d2d;
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-bg: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            --code-bg: #1e293b;
+            --preview-bg: #1e293b;
+            --shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         body {
@@ -36,29 +39,35 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             padding-top: 20px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            min-height: 100vh;
         }
         .header {
             background: var(--header-bg);
             color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
         .code-area, .preview-area {
-            height: 400px;
+            height: 450px;
             border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 20px;
             background-color: var(--card-bg);
             overflow: auto;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         .code-area {
-            font-family: 'Courier New', monospace;
+            font-family: 'Cairo', 'Courier New', monospace;
             direction: ltr;
             background-color: var(--code-bg);
             color: var(--text-color);
+            font-size: 14px;
+            line-height: 1.5;
         }
         .preview-area {
             direction: rtl;
@@ -68,128 +77,221 @@
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             border: none;
             color: white;
-            padding: 12px 30px;
+            padding: 14px 35px;
             font-size: 18px;
             border-radius: 50px;
-            margin: 20px 5px;
-            transition: all 0.3s;
+            margin: 20px 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
         }
         .btn-convert:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
         }
         .btn-clear {
-            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             border: none;
             color: white;
-            padding: 12px 30px;
+            padding: 14px 35px;
             font-size: 18px;
             border-radius: 50px;
-            margin: 20px 5px;
-            transition: all 0.3s;
+            margin: 20px 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
         }
         .btn-clear:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(255, 65, 108, 0.2), 0 3px 6px rgba(255, 75, 43, 0.2);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
         }
         .file-upload-area {
             border: 2px dashed #6a11cb;
-            border-radius: 10px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 35px;
             text-align: center;
-            margin-bottom: 20px;
-            background-color: rgba(106, 17, 203, 0.05);
+            margin-bottom: 25px;
+            background-color: rgba(106, 17, 203, 0.03);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .file-upload-area:hover {
-            background-color: rgba(106, 17, 203, 0.1);
+            background-color: rgba(106, 17, 203, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(106, 17, 203, 0.1);
         }
         .file-upload-area i {
-            font-size: 48px;
+            font-size: 52px;
             color: #6a11cb;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            transition: var(--transition);
         }
         .footer {
-            margin-top: 30px;
-            padding: 20px;
+            margin-top: 40px;
+            padding: 25px;
             text-align: center;
             color: var(--text-color);
             border-top: 1px solid var(--border-color);
+            transition: var(--transition);
         }
         .tab-content {
             border: 1px solid var(--border-color);
             border-top: none;
-            padding: 20px;
-            border-radius: 0 0 5px 5px;
+            padding: 25px;
+            border-radius: 0 0 12px 12px;
             background-color: var(--card-bg);
+            transition: var(--transition);
         }
         .nav-tabs {
             border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
         }
         .nav-tabs .nav-link {
             color: var(--text-color);
             background-color: var(--card-bg);
+            border: none;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: var(--transition);
         }
         .nav-tabs .nav-link.active {
             background-color: var(--card-bg);
-            border-bottom: 1px solid var(--card-bg);
+            border-bottom: 3px solid #6a11cb;
             color: #6a11cb;
-            font-weight: bold;
+            font-weight: 700;
+        }
+        .nav-tabs .nav-link:hover {
+            color: #6a11cb;
+            background-color: rgba(106, 17, 203, 0.05);
         }
         #preview-frame {
             width: 100%;
             height: 100%;
             border: none;
             background: var(--preview-bg);
+            border-radius: 8px;
         }
         .pdf-settings {
             background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
             border: 1px solid var(--border-color);
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .settings-title {
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: var(--text-color);
+            font-size: 1.2rem;
+            transition: var(--transition);
         }
         .dark-mode-toggle {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 25px;
+            left: 25px;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             z-index: 1000;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .dark-mode-toggle:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(15deg);
+            border-color: #6a11cb;
         }
         .developer-info {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 0.9em;
             color: #6c757d;
+            transition: var(--transition);
         }
         .form-control, .form-select {
             background-color: var(--card-bg);
             color: var(--text-color);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: var(--transition);
         }
         .form-control:focus, .form-select:focus {
             background-color: var(--card-bg);
             color: var(--text-color);
             border-color: #6a11cb;
-            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.15);
+        }
+        .error-message {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        .dark-mode .error-message {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+        }
+        .success-message {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 1px solid #6ee7b7;
+            color: #059669;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        .dark-mode .success-message {
+            background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            border: 1px solid #10b981;
+            color: #a7f3d0;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .code-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .char-count {
+            font-size: 0.85rem;
+            color: #6c757d;
+            transition: var(--transition);
+        }
+        .auto-margin-note {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+            transition: var(--transition);
+        }
+        .preview-container {
+            position: relative;
+        }
+        .a4-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(106, 17, 203, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            z-index: 10;
         }
     </style>
 </head>
@@ -201,35 +303,47 @@
 
     <div class="container">
         <div class="header text-center">
-            <h1>محول HTML إلى PDF</h1>
-            <p class="lead">أدخل كود HTML أو ارفع ملف HTML لتحويله إلى PDF</p>
+            <h1 class="display-5 fw-bold">محول HTML إلى PDF</h1>
+            <p class="lead fs-5">أدخل كود HTML أو ارفع ملف HTML لتحويله إلى PDF</p>
         </div>
 
         <!-- إعدادات PDF -->
         <div class="pdf-settings">
-            <div class="settings-title">إعدادات PDF:</div>
+            <div class="settings-title">⚙️ إعدادات PDF</div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                     <label for="pageSize" class="form-label">حجم الصفحة</label>
                     <select class="form-select" id="pageSize">
-                        <option value="a4" selected>A4</option>
-                        <option value="a3">A3</option>
-                        <option value="letter">Letter</option>
-                        <option value="legal">Legal</option>
+                        <option value="a4" selected>A4 - 210×297 ملم</option>
+                        <option value="a3">A3 - 297×420 ملم</option>
+                        <option value="letter">Letter - 216×279 ملم</option>
+                        <option value="legal">Legal - 216×356 ملم</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                     <label for="pageOrientation" class="form-label">اتجاه الصفحة</label>
                     <select class="form-select" id="pageOrientation">
                         <option value="portrait" selected>عمودي</option>
                         <option value="landscape">أفقي</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label for="pageMargins" class="form-label">الهوامش (مم)</label>
-                    <input type="number" class="form-control" id="pageMargins" value="15" min="5" max="50">
+                <div class="col-md-4 mb-3">
+                    <label for="pageMargins" class="form-label">الهوامش (ملم)</label>
+                    <input type="number" class="form-control" id="pageMargins" value="15" min="5" max="30">
+                    <div class="auto-margin-note">✅ الهوامش مضبوطة تلقائياً لورق A4</div>
                 </div>
             </div>
+        </div>
+
+        <!-- رسائل الخطأ والنجاح -->
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span id="errorText"></span>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle me-2"></i>
+            <span id="successText"></span>
         </div>
 
         <!-- منطقة رفع الملفات -->
@@ -238,35 +352,48 @@
             <h4>اسحب وأفلت ملف HTML هنا</h4>
             <p>أو انقر لاختيار ملف</p>
             <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display: none;">
-            <button class="btn btn-outline-primary mt-2" id="selectFileBtn">اختر ملف</button>
+            <button class="btn btn-outline-primary mt-2" id="selectFileBtn">
+                <i class="fas fa-folder-open me-2"></i>اختر ملف
+            </button>
         </div>
 
         <!-- تبويبات الإدخال -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="code-tab" data-bs-toggle="tab" data-bs-target="#code" type="button" role="tab" aria-controls="code" aria-selected="true">كتابة الكود</button>
+                <button class="nav-link active" id="code-tab" data-bs-toggle="tab" data-bs-target="#code" type="button" role="tab" aria-controls="code" aria-selected="true">
+                    <i class="fas fa-code me-2"></i>كتابة الكود
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-tab-content" type="button" role="tab" aria-controls="preview" aria-selected="false">معاينة</button>
+                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-tab-content" type="button" role="tab" aria-controls="preview" aria-selected="false">
+                    <i class="fas fa-eye me-2"></i>معاينة
+                </button>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="code" role="tabpanel" aria-labelledby="code-tab">
+                <div class="code-status">
+                    <span>اكتب كود HTML هنا:</span>
+                    <span class="char-count" id="charCount">0 حرف</span>
+                </div>
                 <textarea id="htmlCode" class="form-control code-area" placeholder="أدخل كود HTML هنا..."></textarea>
             </div>
             <div class="tab-pane fade" id="preview-tab-content" role="tabpanel" aria-labelledby="preview-tab">
-                <div class="preview-area">
-                    <iframe id="preview-frame" class="preview-area"></iframe>
+                <div class="preview-container">
+                    <div class="a4-indicator">A4 Preview</div>
+                    <div class="preview-area">
+                        <iframe id="preview-frame" class="preview-area"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-4">
             <button id="convertBtn" class="btn btn-convert">
-                <i class="fas fa-file-pdf"></i> تحويل إلى PDF
+                <i class="fas fa-file-pdf me-2"></i> تحويل إلى PDF
             </button>
             <button id="clearBtn" class="btn btn-clear">
-                <i class="fas fa-trash"></i> مسح الكل
+                <i class="fas fa-trash me-2"></i> مسح الكل
             </button>
         </div>
 
@@ -295,7 +422,84 @@
         const pageMarginsInput = document.getElementById('pageMargins');
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeIcon = document.getElementById('darkModeIcon');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const charCount = document.getElementById('charCount');
         const body = document.body;
+
+        // إعدادات الهوامش التلقائية لـ A4
+        const autoMargins = {
+            'a4': 15,
+            'a3': 20,
+            'letter': 12,
+            'legal': 12
+        };
+
+        // كاشف أخطاء HTML
+        function validateHTML(html) {
+            const errors = [];
+            
+            // تحقق من وجود علامات HTML أساسية
+            if (!html.includes('<html') && !html.includes('<body')) {
+                errors.push('يفتقر الكود إلى الهيكل الأساسي لـ HTML. يوصى بإضافة &lt;html&gt; و &lt;body&gt;');
+            }
+            
+            // تحقق من العلامات غير المغلقة
+            const tagRegex = /<([a-zA-Z][a-zA-Z0-9]*)(?:\s[^>]*)?>/g;
+            const closeTagRegex = /<\/([a-zA-Z][a-zA-Z0-9]*)>/g;
+            
+            const openTags = [];
+            let match;
+            
+            while ((match = tagRegex.exec(html)) !== null) {
+                const tag = match[1].toLowerCase();
+                if (!['br', 'hr', 'img', 'input', 'meta', 'link'].includes(tag)) {
+                    openTags.push(tag);
+                }
+            }
+            
+            while ((match = closeTagRegex.exec(html)) !== null) {
+                const tag = match[1].toLowerCase();
+                const lastOpen = openTags.pop();
+                if (lastOpen !== tag) {
+                    errors.push(`علامة &lt;${tag}&gt; غير متطابقة مع العلامات المفتوحة`);
+                }
+            }
+            
+            if (openTags.length > 0) {
+                errors.push(`هناك علامات غير مغلقة: ${openTags.join(', ')}`);
+            }
+            
+            return errors;
+        }
+
+        // عرض رسائل الخطأ
+        function showError(message) {
+            errorText.innerHTML = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        // عرض رسائل النجاح
+        function showSuccess(message) {
+            successText.innerHTML = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        // إخفاء جميع الرسائل
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        // تحديث عدد الأحرف
+        function updateCharCount() {
+            const count = htmlCodeTextarea.value.length;
+            charCount.textContent = `${count} حرف`;
+        }
 
         // التحقق من الوضع الداكن في localStorage
         if (localStorage.getItem('darkMode') === 'enabled') {
@@ -312,32 +516,46 @@
                 localStorage.setItem('darkMode', 'enabled');
                 darkModeIcon.classList.remove('fa-moon');
                 darkModeIcon.classList.add('fa-sun');
+                showSuccess('تم تفعيل الوضع الداكن');
             } else {
                 localStorage.setItem('darkMode', 'disabled');
                 darkModeIcon.classList.remove('fa-sun');
                 darkModeIcon.classList.add('fa-moon');
+                showSuccess('تم تفعيل الوضع الفاتح');
             }
+            
+            setTimeout(hideMessages, 3000);
+        });
+
+        // تحديث الهوامش تلقائياً عند تغيير حجم الصفحة
+        pageSizeSelect.addEventListener('change', function() {
+            const selectedSize = this.value;
+            pageMarginsInput.value = autoMargins[selectedSize];
+            updatePreview();
+            showSuccess(`تم ضبط الهوامش تلقائياً لـ ${this.options[this.selectedIndex].text}`);
+            setTimeout(hideMessages, 2000);
         });
 
         // تحديث المعاينة عند تغيير النص
         htmlCodeTextarea.addEventListener('input', function() {
+            updateCharCount();
+            const errors = validateHTML(this.value);
+            if (errors.length > 0 && this.value.length > 50) {
+                showError(errors[0]);
+            } else if (this.value.length > 10) {
+                hideMessages();
+            }
             updatePreview();
         });
 
         // تحديث المعاينة باستخدام iframe
         function updatePreview() {
-            const htmlContent = htmlCodeTextarea.value || '<div style="text-align: center; padding: 50px; color: #666;">المعاينة ستظهر هنا...</div>';
+            const htmlContent = htmlCodeTextarea.value || '<div style="text-align: center; padding: 50px; color: #666; font-family: Cairo, sans-serif;">المعاينة ستظهر هنا... ابدأ بكتابة كود HTML</div>';
             const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             
-            // حساب الأبعاد بناءً على حجم الصفحة
+            // الحصول على الإعدادات من الواجهة
             const margin = parseInt(pageMarginsInput.value) || 15;
-            const pageWidth = pageSizeSelect.value === 'a4' ? '210mm' : 
-                             pageSizeSelect.value === 'a3' ? '297mm' :
-                             pageSizeSelect.value === 'letter' ? '216mm' : '216mm';
-            
-            const pageHeight = pageSizeSelect.value === 'a4' ? '297mm' : 
-                              pageSizeSelect.value === 'a3' ? '420mm' :
-                              pageSizeSelect.value === 'letter' ? '279mm' : '356mm';
+            const pageSize = pageSizeSelect.value;
             
             previewDoc.open();
             previewDoc.write(`
@@ -349,7 +567,7 @@
                     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
                     <style>
                         @page {
-                            size: ${pageSizeSelect.value};
+                            size: ${pageSize};
                             margin: ${margin}mm;
                         }
                         body { 
@@ -359,10 +577,8 @@
                             direction: rtl;
                             line-height: 1.6;
                             background: white;
-                            width: ${pageWidth};
-                            min-height: ${pageHeight};
+                            min-height: 100vh;
                             box-sizing: border-box;
-                            position: relative;
                         }
                         * {
                             font-family: 'Cairo', sans-serif !important;
@@ -425,12 +641,12 @@
         }
 
         // تحديث المعاينة عند تغيير الإعدادات
-        pageSizeSelect.addEventListener('change', updatePreview);
         pageOrientationSelect.addEventListener('change', updatePreview);
         pageMarginsInput.addEventListener('change', updatePreview);
 
         // تهيئة المعاينة عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
+            updateCharCount();
             updatePreview();
             
             // إعادة إرفاق الأحداث بعد تحميل الصفحة
@@ -441,6 +657,17 @@
 
         // تحويل إلى PDF
         convertBtn.addEventListener('click', function() {
+            const errors = validateHTML(htmlCodeTextarea.value);
+            if (errors.length > 0) {
+                showError(`يوجد أخطاء في الكود: ${errors[0]}`);
+                return;
+            }
+
+            if (!htmlCodeTextarea.value.trim()) {
+                showError('يرجى إدخال كود HTML أولاً');
+                return;
+            }
+
             const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             const element = previewDoc.documentElement;
             
@@ -451,7 +678,7 @@
             
             const options = {
                 margin: margin,
-                filename: 'document.pdf',
+                filename: `document-${new Date().getTime()}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { 
                     scale: 2,
@@ -461,9 +688,7 @@
                     scrollX: 0,
                     scrollY: 0,
                     width: previewDoc.documentElement.scrollWidth,
-                    height: previewDoc.documentElement.scrollHeight,
-                    windowWidth: previewDoc.documentElement.scrollWidth,
-                    windowHeight: previewDoc.documentElement.scrollHeight
+                    height: previewDoc.documentElement.scrollHeight
                 },
                 jsPDF: { 
                     unit: 'mm', 
@@ -471,13 +696,12 @@
                     orientation: orientation,
                     compress: true,
                     hotfixes: ["px_scaling"]
-                },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                }
             };
 
             // إظهار رسالة تحميل
             const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحويل...';
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> جارٍ التحويل...';
             this.disabled = true;
 
             // التحويل إلى PDF
@@ -485,11 +709,14 @@
                 // إعادة تعيين الزر بعد الانتهاء
                 this.innerHTML = originalText;
                 this.disabled = false;
+                showSuccess('تم تحويل المستند إلى PDF بنجاح!');
+                setTimeout(hideMessages, 3000);
             }).catch(error => {
                 console.error('خطأ في التحويل:', error);
-                alert('حدث خطأ أثناء التحويل. يرجى المحاولة مرة أخرى.');
+                showError('حدث خطأ أثناء التحويل. يرجى المحاولة مرة أخرى.');
                 this.innerHTML = originalText;
                 this.disabled = false;
+                setTimeout(hideMessages, 3000);
             });
         });
 
@@ -499,6 +726,10 @@
                 htmlCodeTextarea.value = '';
                 resetFileUpload();
                 updatePreview();
+                updateCharCount();
+                hideMessages();
+                showSuccess('تم مسح جميع المحتويات بنجاح');
+                setTimeout(hideMessages, 2000);
             }
         });
 
@@ -520,13 +751,13 @@
 
         fileUploadArea.addEventListener('dragleave', function() {
             this.style.borderColor = '#6a11cb';
-            this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+            this.style.backgroundColor = 'rgba(106, 17, 203, 0.03)';
         });
 
         fileUploadArea.addEventListener('drop', function(e) {
             e.preventDefault();
             this.style.borderColor = '#6a11cb';
-            this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+            this.style.backgroundColor = 'rgba(106, 17, 203, 0.03)';
             
             if (e.dataTransfer.files.length) {
                 handleFile(e.dataTransfer.files[0]);
@@ -546,7 +777,7 @@
             const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
             
             if (!validTypes.includes(fileExtension)) {
-                alert('يرجى اختيار ملف HTML أو ملف نصي فقط');
+                showError('يرجى اختيار ملف HTML أو ملف نصي فقط');
                 return;
             }
 
@@ -555,6 +786,7 @@
             reader.onload = function(e) {
                 htmlCodeTextarea.value = e.target.result;
                 updatePreview();
+                updateCharCount();
                 
                 // الانتقال إلى تبويب المعاينة
                 const previewTab = new bootstrap.Tab(document.getElementById('preview-tab'));
@@ -565,17 +797,22 @@
                     <i class="fas fa-file-code"></i>
                     <h4>${file.name}</h4>
                     <p class="text-success">تم تحميل الملف بنجاح</p>
-                    <button class="btn btn-outline-secondary mt-2" id="changeFileBtn">تغيير الملف</button>
+                    <button class="btn btn-outline-secondary mt-2" id="changeFileBtn">
+                        <i class="fas fa-sync me-2"></i>تغيير الملف
+                    </button>
                 `;
                 
                 document.getElementById('changeFileBtn').addEventListener('click', function(e) {
                     e.stopPropagation();
                     resetFileUpload();
                 });
+
+                showSuccess(`تم تحميل الملف "${file.name}" بنجاح`);
+                setTimeout(hideMessages, 2000);
             };
             
             reader.onerror = function() {
-                alert('حدث خطأ أثناء قراءة الملف');
+                showError('حدث خطأ أثناء قراءة الملف');
             };
             
             reader.readAsText(file);
@@ -588,7 +825,9 @@
                 <h4>اسحب وأفلت ملف HTML هنا</h4>
                 <p>أو انقر لاختيار ملف</p>
                 <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display: none;">
-                <button class="btn btn-outline-primary mt-2" id="selectFileBtn">اختر ملف</button>
+                <button class="btn btn-outline-primary mt-2" id="selectFileBtn">
+                    <i class="fas fa-folder-open me-2"></i>اختر ملف
+                </button>
             `;
             
             fileInput.value = '';
@@ -614,13 +853,13 @@
 
             fileUploadArea.addEventListener('dragleave', function() {
                 this.style.borderColor = '#6a11cb';
-                this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+                this.style.backgroundColor = 'rgba(106, 17, 203, 0.03)';
             });
 
             fileUploadArea.addEventListener('drop', function(e) {
                 e.preventDefault();
                 this.style.borderColor = '#6a11cb';
-                this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+                this.style.backgroundColor = 'rgba(106, 17, 203, 0.03)';
                 
                 if (e.dataTransfer.files.length) {
                     handleFile(e.dataTransfer.files[0]);
