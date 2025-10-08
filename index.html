@@ -2,9 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محول HTML إلى PDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Tahoma', 'Arial', sans-serif;
@@ -44,6 +45,17 @@
         /* Dark mode support */
         .dark .preview-frame {
             border-color: #374151;
+        }
+        
+        /* iOS specific fixes */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        input, textarea, select {
+            -webkit-appearance: none;
+            border-radius: 6px;
         }
     </style>
 </head>
@@ -86,14 +98,51 @@
     </header>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 no-print">
+        <!-- Settings Panel -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">⚙️ إعدادات PDF</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اسم الملف</label>
+                    <input type="text" id="filename" value="document" placeholder="اسم الملف" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">حجم الصفحة</label>
+                    <select id="pageSize" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="a4">A4 (210×297mm)</option>
+                        <option value="a3">A3 (297×420mm)</option>
+                        <option value="letter">Letter (216×279mm)</option>
+                        <option value="legal">Legal (216×356mm)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اتجاه الصفحة</label>
+                    <select id="orientation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="portrait">عمودي (Portrait)</option>
+                        <option value="landscape">أفقي (Landscape)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الهوامش</label>
+                    <select id="margins" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="0.5">ضيقة (0.5cm)</option>
+                        <option value="1" selected>عادية (1cm)</option>
+                        <option value="1.5">واسعة (1.5cm)</option>
+                        <option value="2">كبيرة (2cm)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <!-- Instructions -->
         <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
             <h2 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">📝 طريقة الاستخدام:</h2>
             <ol class="list-decimal list-inside text-blue-700 dark:text-blue-300 space-y-1 text-sm">
+                <li>اضبط إعدادات PDF (اسم الملف، الحجم، الاتجاه)</li>
                 <li>الصق كود HTML في المربع</li>
                 <li>شاهد المعاينة المباشرة</li>
-                <li>اضغط "تحويل إلى PDF" لفتح نافذة جديدة</li>
-                <li>اضغط Ctrl+P واختر "Save as PDF"</li>
+                <li>اضغط "تحويل إلى PDF" لتحميل الملف مباشرة</li>
             </ol>
         </div>
 
@@ -122,17 +171,17 @@
                 <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">معاينة مباشرة</h2>
                     <button onclick="convertToPDF()" 
-                            class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" 
+                            class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" 
                             id="convertBtn">
-                        <span>تحويل إلى PDF</span>
+                        <span id="convertText">تحويل إلى PDF</span>
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m5-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </button>
                 </div>
                 <div class="p-4">
-                    <div class="preview-frame h-96 overflow-auto">
-                        <iframe id="preview" class="w-full h-full border-0" sandbox="allow-same-origin"></iframe>
+                    <div id="preview" class="preview-frame h-96 overflow-auto bg-white dark:bg-gray-800 p-4">
+                        <p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>
                     </div>
                 </div>
             </div>
@@ -152,8 +201,8 @@
             </div>
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
                 <div class="text-4xl mb-4">📱</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">متجاوب</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">يعمل على جميع الأجهزة والشاشات</p>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">متوافق مع الجوال</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">يعمل بسلاسة على iPhone و iPad</p>
             </div>
         </div>
     </div>
@@ -168,8 +217,8 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
             <div class="text-center">
                 <div class="text-6xl mb-4">✅</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">نافذة PDF مفتوحة!</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4">استخدم Ctrl+P لحفظ الملف كـ PDF</p>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تم التحويل بنجاح!</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">تم تحميل ملف PDF بنجاح</p>
                 <button onclick="closeSuccessModal()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                     حسناً
                 </button>
@@ -199,15 +248,11 @@
             document.getElementById('charCount').textContent = `${count.toLocaleString()} حرف`;
         }
 
-        // Update preview
+        // Update preview - استبدال iframe بـ div
         function updatePreview() {
             const htmlContent = document.getElementById('htmlInput').value;
             const preview = document.getElementById('preview');
-            
-            const doc = preview.contentDocument || preview.contentWindow.document;
-            doc.open();
-            doc.write(htmlContent || '<p style="text-align: center; color: #666; padding: 50px;">ستظهر المعاينة هنا...</p>');
-            doc.close();
+            preview.innerHTML = htmlContent || '<p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>';
         }
 
         // Load sample HTML
@@ -268,19 +313,19 @@
             <li>تصميم احترافي وأنيق</li>
             <li>جودة عالية للطباعة</li>
             <li>سهولة في الاستخدام</li>
-            <li>مجاني تماماً</li>
+            <li>متوافق مع iPhone و iPad</li>
         </ul>
         
         <h3>📋 طريقة الاستخدام:</h3>
         <p>1. ضع كود HTML في المربع الأيسر</p>
         <p>2. شاهد المعاينة في المربع الأيمن</p>
         <p>3. اضغط زر "تحويل إلى PDF"</p>
-        <p>4. احفظ الملف من متصفحك</p>
+        <p>4. سيتم تحميل الملف تلقائياً</p>
     </div>
     
     <div class="footer">
         <p><strong>تم إنشاؤه بواسطة محول HTML إلى PDF</strong></p>
-        <p>أداة مجانية - 2024</p>
+        <p>متوافق مع جميع الأجهزة - 2024</p>
     </div>
 </body>
 </html>`;
@@ -297,7 +342,7 @@
             updateCharCount();
         }
 
-        // Convert to PDF - Simple method
+        // Convert to PDF - استخدام html2pdf.js
         function convertToPDF() {
             const htmlContent = document.getElementById('htmlInput').value.trim();
             
@@ -307,71 +352,72 @@
             }
 
             try {
-                // Create a new window for PDF conversion
-                const printWindow = window.open('', '_blank');
+                // Get user settings
+                const filename = document.getElementById('filename').value || 'document';
+                const pageSize = document.getElementById('pageSize').value;
+                const orientation = document.getElementById('orientation').value;
+                const margins = parseFloat(document.getElementById('margins').value);
                 
-                // Add print-optimized styles
-                const printHTML = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Document PDF</title>
-                    <style>
-                        @page {
-                            size: A4;
-                            margin: 1cm;
-                        }
-                        body {
-                            font-family: Arial, 'Tahoma', sans-serif;
-                            line-height: 1.6;
-                            color: #333;
-                            max-width: 100%;
-                            margin: 0;
-                            padding: 0;
-                        }
-                        * {
-                            box-sizing: border-box;
-                        }
-                        img {
-                            max-width: 100%;
-                            height: auto;
-                        }
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        @media print {
-                            body { margin: 0; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${htmlContent}
-                </body>
-                </html>
-                `;
+                // Create element for PDF conversion
+                const element = document.createElement('div');
+                element.innerHTML = htmlContent;
                 
-                printWindow.document.open();
-                printWindow.document.write(printHTML);
-                printWindow.document.close();
+                // Configure html2pdf options
+                const opt = {
+                    margin: margins,
+                    filename: `${filename}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2, 
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: { 
+                        unit: 'cm', 
+                        format: pageSize, 
+                        orientation: orientation 
+                    }
+                };
+
+                // Update button state
+                const btn = document.getElementById('convertBtn');
+                const btnText = document.getElementById('convertText');
                 
-                // Wait for content to load then focus for printing
-                setTimeout(() => {
-                    printWindow.focus();
+                btn.disabled = true;
+                btnText.textContent = 'جارٍ التحويل...';
+                
+                // Start conversion
+                html2pdf().from(element).set(opt).save().then(() => {
+                    // Reset button
+                    btn.disabled = false;
+                    btnText.textContent = 'تحويل إلى PDF';
+                    
+                    // Show success message
                     showSuccess();
-                }, 500);
-                
+                }).catch((error) => {
+                    console.error('PDF conversion error:', error);
+                    btn.disabled = false;
+                    btnText.textContent = 'تحويل إلى PDF';
+                    showError('حدث خطأ أثناء تحويل الملف إلى PDF');
+                });
+
             } catch (error) {
                 console.error('Error:', error);
-                showError('حدث خطأ أثناء فتح نافذة التحويل');
+                const btn = document.getElementById('convertBtn');
+                const btnText = document.getElementById('convertText');
+                btn.disabled = false;
+                btnText.textContent = 'تحويل إلى PDF';
+                showError('حدث خطأ أثناء تحويل الملف');
             }
         }
 
         // Show success modal
         function showSuccess() {
-            document.getElementById('successModal').classList.remove('hidden');
-            document.getElementById('successModal').classList.add('flex');
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         // Close success modal
