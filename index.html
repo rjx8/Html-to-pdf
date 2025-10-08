@@ -2,611 +2,634 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محول HTML إلى PDF</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- خط عربي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- أيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #fff;
+            --border-color: #dee2e6;
+            --header-bg: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --code-bg: #f8f9fa;
+            --preview-bg: white;
         }
-        
-        .code-editor {
+
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #e9ecef;
+            --card-bg: #1e1e1e;
+            --border-color: #444;
+            --header-bg: linear-gradient(135deg, #4a0d8c 0%, #1a5fd8 100%);
+            --code-bg: #2d2d2d;
+            --preview-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .code-area, .preview-area {
+            height: 400px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 15px;
+            background-color: var(--card-bg);
+            overflow: auto;
+        }
+        .code-area {
             font-family: 'Courier New', monospace;
             direction: ltr;
+            background-color: var(--code-bg);
+            color: var(--text-color);
         }
-        
-        .preview-frame {
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            background: white;
+        .preview-area {
+            direction: rtl;
+            background-color: var(--preview-bg);
         }
-        
-        .print-content {
-            display: none;
+        .btn-convert {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            margin: 20px 5px;
+            transition: all 0.3s;
         }
-        
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .print-content, .print-content * {
-                visibility: visible;
-            }
-            .print-content {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                display: block !important;
-            }
+        .btn-convert:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
         }
-        
-        /* Dark mode support */
-        .dark .preview-frame {
-            border-color: #374151;
+        .btn-clear {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            margin: 20px 5px;
+            transition: all 0.3s;
         }
-        
-        /* iOS specific fixes */
-        * {
-            -webkit-touch-callout: none;
-            -webkit-tap-highlight-color: transparent;
+        .btn-clear:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(255, 65, 108, 0.2), 0 3px 6px rgba(255, 75, 43, 0.2);
         }
-        
-        input, textarea, select {
-            -webkit-appearance: none;
-            border-radius: 6px;
-        }
-        
-        /* Smooth modal transitions */
-        #successModal, #errorModal, #confirmModal {
-            transition: opacity 0.3s ease-in-out;
-            opacity: 0;
-        }
-        #successModal.flex, #errorModal.flex, #confirmModal.flex {
-            opacity: 1;
-        }
-    </style>
-</head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Dark mode detection -->
-    <script>
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-    </script>
-
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-sm border-b no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
-                <div class="flex items-center">
-                    <div class="text-3xl ml-3">📄</div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">محول HTML إلى PDF</h1>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">حول أي كود HTML إلى ملف PDF احترافي</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-reverse space-x-4">
-                    <button onclick="loadSample()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                        مثال تجريبي
-                    </button>
-                    <button onclick="clearAll()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                        مسح الكل
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 no-print">
-        <!-- Settings Panel -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">⚙️ إعدادات PDF</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اسم الملف</label>
-                    <input type="text" id="filename" value="document" placeholder="اسم الملف" 
-                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">حجم الصفحة</label>
-                    <select id="pageSize" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
-                        <option value="a4">A4 (210×297mm)</option>
-                        <option value="a3">A3 (297×420mm)</option>
-                        <option value="letter">Letter (216×279mm)</option>
-                        <option value="legal">Legal (216×356mm)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اتجاه الصفحة</label>
-                    <select id="orientation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
-                        <option value="portrait">عمودي (Portrait)</option>
-                        <option value="landscape">أفقي (Landscape)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الهوامش</label>
-                    <select id="margins" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
-                        <option value="0.5">ضيقة (0.5cm)</option>
-                        <option value="1.2" selected>عادية (1.2cm)</option>
-                        <option value="1.5">واسعة (1.5cm)</option>
-                        <option value="2">كبيرة (2cm)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instructions -->
-        <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
-            <h2 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">📝 طريقة الاستخدام:</h2>
-            <ol class="list-decimal list-inside text-blue-700 dark:text-blue-300 space-y-1 text-sm">
-                <li>اضبط إعدادات PDF (اسم الملف، الحجم، الاتجاه)</li>
-                <li>الصق كود HTML في المربع</li>
-                <li>شاهد المعاينة المباشرة</li>
-                <li>اضغط "تحويل إلى PDF" لتحميل الملف مباشرة</li>
-            </ol>
-        </div>
-
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- HTML Editor -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">كود HTML</h2>
-                    <div class="flex items-center space-x-reverse space-x-2">
-                        <span class="text-sm text-gray-500 dark:text-gray-400" id="charCount">0 حرف</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <textarea 
-                        id="htmlInput" 
-                        class="w-full h-96 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white code-editor resize-none text-base"
-                        placeholder="الصق كود HTML هنا..."
-                        oninput="updatePreview(); updateCharCount();"
-                    ></textarea>
-                </div>
-            </div>
-
-            <!-- Preview -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">معاينة مباشرة</h2>
-                    <button onclick="convertToPDF()" 
-                            class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" 
-                            id="convertBtn">
-                        <span id="convertText">تحويل إلى PDF</span>
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m5-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="p-4">
-                    <div id="preview" class="preview-frame h-96 overflow-auto bg-white dark:bg-gray-800 p-4">
-                        <p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features -->
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
-                <div class="text-4xl mb-4">⚡</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تحويل سريع</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">تحويل فوري من HTML إلى PDF بجودة عالية</p>
-            </div>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
-                <div class="text-4xl mb-4">🎨</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">دعم كامل للتصميم</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">يحافظ على جميع الألوان والخطوط والتنسيقات</p>
-            </div>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
-                <div class="text-4xl mb-4">📱</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">متوافق مع الجوال</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">يعمل بسلاسة على iPhone و iPad</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hidden content for PDF conversion -->
-    <div id="pdfContent" class="print-content">
-        <!-- Content will be inserted here -->
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-            <div class="text-center">
-                <div class="text-6xl mb-4">✅</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تم التحويل بنجاح!</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4">تم تحميل ملف PDF بنجاح</p>
-                <button onclick="closeSuccessModal()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                    حسناً
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Error Modal -->
-    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-            <div class="text-center">
-                <div class="text-6xl mb-4">❌</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">خطأ في التحويل</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4" id="errorMessage">حدث خطأ أثناء تحويل الملف</p>
-                <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    إغلاق
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirm Modal -->
-    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-            <div class="text-center">
-                <div class="text-6xl mb-4">⚠️</div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تأكيد العملية</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4" id="confirmMessage">هل أنت متأكد من مسح الكود بالكامل؟</p>
-                <div class="flex justify-center space-x-reverse space-x-3">
-                    <button onclick="closeConfirmModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                        إلغاء
-                    </button>
-                    <button onclick="confirmClear()" class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-colors">
-                        تأكيد المسح
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Update character count
-        function updateCharCount() {
-            const input = document.getElementById('htmlInput');
-            const count = input.value.length;
-            document.getElementById('charCount').textContent = `${count.toLocaleString()} حرف`;
-        }
-
-        // Update preview - حماية من الأكواد الخبيثة
-        function updatePreview() {
-            const htmlContent = document.getElementById('htmlInput').value;
-            const sanitizedHTML = htmlContent.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
-            const preview = document.getElementById('preview');
-            preview.innerHTML = sanitizedHTML || '<p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>';
-        }
-
-        // Load sample HTML
-        function loadSample() {
-            const sampleHTML = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>مثال تجريبي</title>
-    <style>
-        body { 
-            font-family: 'Tahoma', Arial; 
-            padding: 20px; 
-            max-width: 800px; 
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        .header { 
-            background: #5D5CDE; 
-            color: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            text-align: center; 
+        .file-upload-area {
+            border: 2px dashed #6a11cb;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
             margin-bottom: 20px;
+            background-color: rgba(106, 17, 203, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .content { 
-            margin: 20px 0; 
-            padding: 20px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            background: #f9f9f9;
+        .file-upload-area:hover {
+            background-color: rgba(106, 17, 203, 0.1);
         }
-        .footer { 
-            text-align: center; 
-            color: #666; 
-            margin-top: 20px; 
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
+        .file-upload-area i {
+            font-size: 48px;
+            color: #6a11cb;
+            margin-bottom: 15px;
         }
-        ul { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 5px;
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-color);
+            border-top: 1px solid var(--border-color);
+        }
+        .tab-content {
+            border: 1px solid var(--border-color);
+            border-top: none;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            background-color: var(--card-bg);
+        }
+        .nav-tabs {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+            background-color: var(--card-bg);
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--card-bg);
+            color: #6a11cb;
+            font-weight: bold;
+        }
+        #preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: var(--preview-bg);
+        }
+        .pdf-settings {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .settings-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+        .developer-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .form-control, .form-select {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>مرحباً بك في محول HTML إلى PDF</h1>
-        <p>أداة مجانية وسهلة الاستخدام</p>
+    <!-- زر الوضع الداكن -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
     </div>
-    
-    <div class="content">
-        <h2>🌟 مميزات المحول</h2>
-        <p>يمكنك تعديل هذا الكود أو استبداله بكودك الخاص. هذا المحول يدعم:</p>
-        <ul>
-            <li>دعم كامل للنصوص العربية</li>
-            <li>تصميم احترافي وأنيق</li>
-            <li>جودة عالية للطباعة</li>
-            <li>سهولة في الاستخدام</li>
-            <li>متوافق مع iPhone و iPad</li>
+
+    <div class="container">
+        <div class="header text-center">
+            <h1>محول HTML إلى PDF</h1>
+            <p class="lead">أدخل كود HTML أو ارفع ملف HTML لتحويله إلى PDF</p>
+        </div>
+
+        <!-- إعدادات PDF -->
+        <div class="pdf-settings">
+            <div class="settings-title">إعدادات PDF:</div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pageSize" class="form-label">حجم الصفحة</label>
+                    <select class="form-select" id="pageSize">
+                        <option value="a4" selected>A4</option>
+                        <option value="a3">A3</option>
+                        <option value="letter">Letter</option>
+                        <option value="legal">Legal</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="pageOrientation" class="form-label">اتجاه الصفحة</label>
+                    <select class="form-select" id="pageOrientation">
+                        <option value="portrait" selected>عمودي</option>
+                        <option value="landscape">أفقي</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="pageMargins" class="form-label">الهوامش (مم)</label>
+                    <input type="number" class="form-control" id="pageMargins" value="15" min="5" max="50">
+                </div>
+            </div>
+        </div>
+
+        <!-- منطقة رفع الملفات -->
+        <div class="file-upload-area" id="fileUploadArea">
+            <i class="fas fa-file-upload"></i>
+            <h4>اسحب وأفلت ملف HTML هنا</h4>
+            <p>أو انقر لاختيار ملف</p>
+            <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display: none;">
+            <button class="btn btn-outline-primary mt-2" id="selectFileBtn">اختر ملف</button>
+        </div>
+
+        <!-- تبويبات الإدخال -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="code-tab" data-bs-toggle="tab" data-bs-target="#code" type="button" role="tab" aria-controls="code" aria-selected="true">كتابة الكود</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-tab-content" type="button" role="tab" aria-controls="preview" aria-selected="false">معاينة</button>
+            </li>
         </ul>
-        
-        <h3>📋 طريقة الاستخدام:</h3>
-        <p>1. ضع كود HTML في المربع الأيسر</p>
-        <p>2. شاهد المعاينة في المربع الأيمن</p>
-        <p>3. اضغط زر "تحويل إلى PDF"</p>
-        <p>4. سيتم تحميل الملف تلقائياً</p>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="code" role="tabpanel" aria-labelledby="code-tab">
+                <textarea id="htmlCode" class="form-control code-area" placeholder="أدخل كود HTML هنا..."></textarea>
+            </div>
+            <div class="tab-pane fade" id="preview-tab-content" role="tabpanel" aria-labelledby="preview-tab">
+                <div class="preview-area">
+                    <iframe id="preview-frame" class="preview-area"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button id="convertBtn" class="btn btn-convert">
+                <i class="fas fa-file-pdf"></i> تحويل إلى PDF
+            </button>
+            <button id="clearBtn" class="btn btn-clear">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 محول HTML إلى PDF - يدعم اللغة العربية والجوال ورفع الملفات</p>
+            <p class="developer-info">تم التطوير بواسطة: سلطان اليافعي</p>
+        </div>
     </div>
-    
-    <div class="footer">
-        <p><strong>تم إنشاؤه بواسطة محول HTML إلى PDF</strong></p>
-        <p>متوافق مع جميع الأجهزة - 2024</p>
-    </div>
-</body>
-</html>`;
+
+    <!-- مكتبات JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- مكتبة html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        // عناصر DOM
+        const htmlCodeTextarea = document.getElementById('htmlCode');
+        const previewFrame = document.getElementById('preview-frame');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const fileInput = document.getElementById('fileInput');
+        const selectFileBtn = document.getElementById('selectFileBtn');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const pageSizeSelect = document.getElementById('pageSize');
+        const pageOrientationSelect = document.getElementById('pageOrientation');
+        const pageMarginsInput = document.getElementById('pageMargins');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+        const body = document.body;
+
+        // التحقق من الوضع الداكن في localStorage
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            darkModeIcon.classList.remove('fa-moon');
+            darkModeIcon.classList.add('fa-sun');
+        }
+
+        // تبديل الوضع الداكن
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
             
-            document.getElementById('htmlInput').value = sampleHTML;
-            updatePreview();
-            updateCharCount();
-        }
-
-        // Clear all content with confirmation
-        function clearAll() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Confirm clear action
-        function confirmClear() {
-            document.getElementById('htmlInput').value = '';
-            updatePreview();
-            updateCharCount();
-            closeConfirmModal();
-        }
-
-        // Close confirm modal
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.add('hidden');
-            document.getElementById('confirmModal').classList.remove('flex');
-        }
-
-        // Convert to PDF - نسخة 10/10 مع جميع التحسينات
-        async function convertToPDF() {
-            const htmlContent = document.getElementById('htmlInput').value.trim();
-            
-            if (!htmlContent) {
-                showError('الرجاء إدخال كود HTML أولاً');
-                return;
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
             }
+        });
 
-            try {
-                // Get user settings with auto filename generation
-                const userFilename = document.getElementById('filename').value;
-                const filename = userFilename || `PDF_${new Date().toISOString().slice(0,19).replace(/[:T]/g, '-')}`;
-                const pageSize = document.getElementById('pageSize').value;
-                const orientation = document.getElementById('orientation').value;
-                const margins = parseFloat(document.getElementById('margins').value);
-                
-                // Update button state
-                const btn = document.getElementById('convertBtn');
-                const btnText = document.getElementById('convertText');
-                
-                btn.disabled = true;
-                btnText.textContent = 'جارٍ التحويل...';
-                
-                // Create a temporary container for proper rendering
-                const tempContainer = document.createElement('div');
-                tempContainer.style.cssText = `
-                    opacity: 0;
-                    position: absolute;
-                    left: -9999px;
-                    top: 0;
-                    width: 210mm;
-                    min-height: 297mm;
-                    background: white;
-                    font-family: Arial, 'Tahoma', sans-serif;
-                    direction: rtl;
-                    padding: 20px;
-                    box-sizing: border-box;
-                    z-index: -1;
-                `;
-                
-                // Add enhanced CSS for better PDF rendering
-                const styledContent = `
+        // تحديث المعاينة عند تغيير النص
+        htmlCodeTextarea.addEventListener('input', function() {
+            updatePreview();
+        });
+
+        // تحديث المعاينة باستخدام iframe
+        function updatePreview() {
+            const htmlContent = htmlCodeTextarea.value || '<div style="text-align: center; padding: 50px; color: #666;">المعاينة ستظهر هنا...</div>';
+            const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            
+            // حساب الأبعاد بناءً على حجم الصفحة
+            const margin = parseInt(pageMarginsInput.value) || 15;
+            const pageWidth = pageSizeSelect.value === 'a4' ? '210mm' : 
+                             pageSizeSelect.value === 'a3' ? '297mm' :
+                             pageSizeSelect.value === 'letter' ? '216mm' : '216mm';
+            
+            const pageHeight = pageSizeSelect.value === 'a4' ? '297mm' : 
+                              pageSizeSelect.value === 'a3' ? '420mm' :
+                              pageSizeSelect.value === 'letter' ? '279mm' : '356mm';
+            
+            previewDoc.open();
+            previewDoc.write(`
+                <!DOCTYPE html>
+                <html dir="rtl" lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
                     <style>
+                        @page {
+                            size: ${pageSizeSelect.value};
+                            margin: ${margin}mm;
+                        }
+                        body { 
+                            font-family: 'Cairo', sans-serif; 
+                            margin: 0;
+                            padding: ${margin}mm;
+                            direction: rtl;
+                            line-height: 1.6;
+                            background: white;
+                            width: ${pageWidth};
+                            min-height: ${pageHeight};
+                            box-sizing: border-box;
+                            position: relative;
+                        }
                         * {
+                            font-family: 'Cairo', sans-serif !important;
                             box-sizing: border-box;
                         }
-                        body {
-                            font-family: Arial, 'Tahoma', sans-serif !important;
-                            line-height: 1.6;
-                            color: #333;
-                            direction: rtl;
-                            background: white !important;
-                            margin: 0;
-                            padding: 0;
-                            width: 100%;
+                        h1, h2, h3, h4, h5, h6 {
+                            margin-top: 1.5em;
+                            margin-bottom: 0.5em;
+                            color: #2c3e50;
                         }
-                        img {
-                            max-width: 100% !important;
-                            height: auto !important;
-                            display: block;
-                            page-break-inside: avoid;
+                        h1 { font-size: 24pt; }
+                        h2 { font-size: 18pt; }
+                        h3 { font-size: 14pt; }
+                        p {
+                            margin-bottom: 1em;
+                            font-size: 11pt;
+                            line-height: 1.8;
+                            text-align: justify;
                         }
                         table {
                             width: 100%;
                             border-collapse: collapse;
-                            page-break-inside: avoid;
+                            margin: 1em 0;
+                            font-size: 10pt;
                         }
-                        h1, h2, h3, h4, h5, h6 {
-                            page-break-after: avoid;
-                            page-break-inside: avoid;
-                            margin-bottom: 10px;
+                        table, th, td {
+                            border: 1px solid #ddd;
                         }
-                        p {
-                            margin-bottom: 10px;
-                            page-break-inside: avoid;
+                        th, td {
+                            padding: 8px 12px;
+                            text-align: right;
                         }
-                        div {
-                            page-break-inside: avoid;
+                        th {
+                            background-color: #f8f9fa;
+                        }
+                        img {
+                            max-width: 100%;
+                            height: auto;
                         }
                         .page-break {
-                            page-break-before: always;
+                            page-break-after: always;
                         }
-                        /* تجنب الكسر في العناصر المهمة */
                         .no-break {
                             page-break-inside: avoid;
                         }
+                        @media print {
+                            body {
+                                margin: 0;
+                                padding: ${margin}mm;
+                            }
+                        }
                     </style>
+                </head>
+                <body>
                     ${htmlContent}
+                </body>
+                </html>
+            `);
+            previewDoc.close();
+        }
+
+        // تحديث المعاينة عند تغيير الإعدادات
+        pageSizeSelect.addEventListener('change', updatePreview);
+        pageOrientationSelect.addEventListener('change', updatePreview);
+        pageMarginsInput.addEventListener('change', updatePreview);
+
+        // تهيئة المعاينة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview();
+            
+            // إعادة إرفاق الأحداث بعد تحميل الصفحة
+            document.getElementById('selectFileBtn').addEventListener('click', function() {
+                fileInput.click();
+            });
+        });
+
+        // تحويل إلى PDF
+        convertBtn.addEventListener('click', function() {
+            const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            const element = previewDoc.documentElement;
+            
+            // الحصول على الإعدادات من الواجهة
+            const pageSize = pageSizeSelect.value;
+            const orientation = pageOrientationSelect.value;
+            const margin = parseInt(pageMarginsInput.value);
+            
+            const options = {
+                margin: margin,
+                filename: 'document.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: previewDoc.documentElement.scrollWidth,
+                    height: previewDoc.documentElement.scrollHeight,
+                    windowWidth: previewDoc.documentElement.scrollWidth,
+                    windowHeight: previewDoc.documentElement.scrollHeight
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: pageSize, 
+                    orientation: orientation,
+                    compress: true,
+                    hotfixes: ["px_scaling"]
+                },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            // إظهار رسالة تحميل
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحويل...';
+            this.disabled = true;
+
+            // التحويل إلى PDF
+            html2pdf().set(options).from(element).save().then(() => {
+                // إعادة تعيين الزر بعد الانتهاء
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }).catch(error => {
+                console.error('خطأ في التحويل:', error);
+                alert('حدث خطأ أثناء التحويل. يرجى المحاولة مرة أخرى.');
+                this.innerHTML = originalText;
+                this.disabled = false;
+            });
+        });
+
+        // مسح الكل
+        clearBtn.addEventListener('click', function() {
+            if (confirm('هل أنت متأكد من أنك تريد مسح كل المحتوى؟')) {
+                htmlCodeTextarea.value = '';
+                resetFileUpload();
+                updatePreview();
+            }
+        });
+
+        // رفع الملفات
+        selectFileBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#2575fc';
+            this.style.backgroundColor = 'rgba(37, 117, 252, 0.1)';
+        });
+
+        fileUploadArea.addEventListener('dragleave', function() {
+            this.style.borderColor = '#6a11cb';
+            this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#6a11cb';
+            this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+            
+            if (e.dataTransfer.files.length) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length) {
+                handleFile(this.files[0]);
+            }
+        });
+
+        // معالجة الملف المرفوع
+        function handleFile(file) {
+            // التحقق من نوع الملف
+            const validTypes = ['.html', '.htm', '.txt'];
+            const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+            
+            if (!validTypes.includes(fileExtension)) {
+                alert('يرجى اختيار ملف HTML أو ملف نصي فقط');
+                return;
+            }
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                htmlCodeTextarea.value = e.target.result;
+                updatePreview();
+                
+                // الانتقال إلى تبويب المعاينة
+                const previewTab = new bootstrap.Tab(document.getElementById('preview-tab'));
+                previewTab.show();
+                
+                // عرض اسم الملف
+                fileUploadArea.innerHTML = `
+                    <i class="fas fa-file-code"></i>
+                    <h4>${file.name}</h4>
+                    <p class="text-success">تم تحميل الملف بنجاح</p>
+                    <button class="btn btn-outline-secondary mt-2" id="changeFileBtn">تغيير الملف</button>
                 `;
                 
-                tempContainer.innerHTML = styledContent;
-                document.body.appendChild(tempContainer);
-                
-                // Wait for fonts and images to load properly
-                await document.fonts.ready;
-                await Promise.all(Array.from(tempContainer.querySelectorAll('img')).map(img => {
-                    if (!img.complete) {
-                        return new Promise(resolve => { 
-                            img.onload = img.onerror = resolve; 
-                        });
-                    }
-                    return Promise.resolve();
-                }));
-
-                // Additional wait for proper rendering
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Configure html2pdf options with enhanced settings
-                const opt = {
-                    margin: [margins, margins, margins, margins],
-                    filename: `${filename}.pdf`,
-                    image: { 
-                        type: 'jpeg', 
-                        quality: 1.0 
-                    },
-                    html2canvas: { 
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: false,
-                        scrollX: 0,
-                        scrollY: 0,
-                        backgroundColor: '#ffffff',
-                        width: tempContainer.scrollWidth || 794, // A4 width in pixels at 96 DPI
-                        height: tempContainer.scrollHeight || 1123, // A4 height in pixels at 96 DPI
-                        windowWidth: 794,
-                        windowHeight: 1123,
-                        dpi: 300,
-                        letterRendering: true
-                    },
-                    jsPDF: { 
-                        unit: 'cm', 
-                        format: pageSize, 
-                        orientation: orientation,
-                        compress: true,
-                        putOnlyUsedFonts: true
-                    },
-                    pagebreak: { 
-                        mode: ['avoid-all', 'css', 'legacy'] 
-                    }
-                };
-
-                // Try primary conversion method
-                try {
-                    await html2pdf().from(tempContainer).set(opt).save();
-                    
-                    // Success - clean up and show message
-                    document.body.removeChild(tempContainer);
-                    btn.disabled = false;
-                    btnText.textContent = 'تحويل إلى PDF';
-                    showSuccess();
-                    
-                } catch (saveError) {
-                    console.warn('Primary save method failed, trying fallback...', saveError);
-                    
-                    // Fallback method for Safari/iOS
-                    const pdf = await html2pdf().from(tempContainer).set(opt).outputPdf('blob');
-                    const blobUrl = URL.createObjectURL(pdf);
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = `${filename}.pdf`;
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(blobUrl);
-                    
-                    // Clean up and show success
-                    document.body.removeChild(tempContainer);
-                    btn.disabled = false;
-                    btnText.textContent = 'تحويل إلى PDF';
-                    showSuccess();
-                }
-
-            } catch (error) {
-                console.error('PDF conversion error:', error);
-                
-                // Clean up on error
-                const tempContainer = document.querySelector('div[style*="position: fixed"][style*="top: -10000px"]');
-                if (tempContainer && document.body.contains(tempContainer)) {
-                    document.body.removeChild(tempContainer);
-                }
-                
-                const btn = document.getElementById('convertBtn');
-                const btnText = document.getElementById('convertText');
-                btn.disabled = false;
-                btnText.textContent = 'تحويل إلى PDF';
-                showError('حدث خطأ أثناء تحويل الملف إلى PDF. تأكد من صحة كود HTML.');
-            }
+                document.getElementById('changeFileBtn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    resetFileUpload();
+                });
+            };
+            
+            reader.onerror = function() {
+                alert('حدث خطأ أثناء قراءة الملف');
+            };
+            
+            reader.readAsText(file);
         }
 
-        // Show success modal
-        function showSuccess() {
-            const modal = document.getElementById('successModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Close success modal
-        function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
-            document.getElementById('successModal').classList.remove('flex');
-        }
-
-        // Show error modal
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('errorModal').classList.remove('hidden');
-            document.getElementById('errorModal').classList.add('flex');
-        }
-
-        // Close error modal
-        function closeErrorModal() {
-            document.getElementById('errorModal').classList.add('hidden');
-            document.getElementById('errorModal').classList.remove('flex');
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCharCount();
+        // إعادة تعيين منطقة رفع الملفات
+        function resetFileUpload() {
+            fileUploadArea.innerHTML = `
+                <i class="fas fa-file-upload"></i>
+                <h4>اسحب وأفلت ملف HTML هنا</h4>
+                <p>أو انقر لاختيار ملف</p>
+                <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display: none;">
+                <button class="btn btn-outline-primary mt-2" id="selectFileBtn">اختر ملف</button>
+            `;
+            
+            fileInput.value = '';
             updatePreview();
-        });
+            
+            // إعادة إرفاق الأحداث
+            document.getElementById('selectFileBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                fileInput.click();
+            });
+            
+            // إعادة إرفاق أحداث السحب والإفلات
+            reattachDragEvents();
+        }
+
+        // إعادة إرفاق أحداث السحب والإفلات
+        function reattachDragEvents() {
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#2575fc';
+                this.style.backgroundColor = 'rgba(37, 117, 252, 0.1)';
+            });
+
+            fileUploadArea.addEventListener('dragleave', function() {
+                this.style.borderColor = '#6a11cb';
+                this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+            });
+
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#6a11cb';
+                this.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        // تهيئة أولية للأحداث
+        reattachDragEvents();
     </script>
 </body>
 </html>
