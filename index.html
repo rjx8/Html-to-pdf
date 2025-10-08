@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول HTML إلى PDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="محول HTML إلى PDF مجاني - حول أي كود HTML إلى ملف PDF بجودة عالية وقابل للطباعة">
+    <meta name="keywords" content="HTML to PDF, محول HTML, PDF converter, Arabic PDF, تحويل HTML">
+    <meta name="author" content="محول HTML إلى PDF">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="محول HTML إلى PDF">
+    <meta property="og:description" content="أداة مجانية لتحويل أي كود HTML إلى ملف PDF بجودة احترافية">
+    <meta property="og:type" content="website">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2K3ZiNmEIEhUTUwg2KXZhNmJIFBERiIsCiAgInNob3J0X25hbWUiOiAiSFRNTDJQREYiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgInRoZW1lX2NvbG9yIjogIiM1RDVDREUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIyYVdWM1FtOTRQU0l3SURBZ01qQXdJREk0TUNJZ2RtbGxkMUJ2Y25ROU1qQXdJREk0TUNCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zUnZjbWN2TWpBd01DOXpkbWNpUGp4eVpXTjBJSGcxTFhGMWFXTnJRVzUwYVc1MklXbGhjbWt1QUQiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload" href="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js" as="script">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'arabic': ['Tahoma', 'Arial', 'sans-serif']
+                    },
+                    colors: {
+                        'primary': '#5D5CDE',
+                        'secondary': '#4F46E5'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+        }
+        
+        .code-editor {
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+        }
+        
+        .preview-frame {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #5D5CDE;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Dark mode support */
+        .dark .preview-frame {
+            border-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Dark mode detection -->
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <div class="text-3xl ml-3">📄</div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">محول HTML إلى PDF</h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">حول أي كود HTML إلى ملف PDF احترافي</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-reverse space-x-4">
+                    <button onclick="loadSample()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        مثال تجريبي
+                    </button>
+                    <button onclick="clearAll()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                        مسح الكل
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Control Panel -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">إعدادات التحويل</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">حجم الصفحة</label>
+                    <select id="pageSize" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="a4">A4</option>
+                        <option value="a3">A3</option>
+                        <option value="letter">Letter</option>
+                        <option value="legal">Legal</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اتجاه الصفحة</label>
+                    <select id="orientation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="portrait">عمودي (Portrait)</option>
+                        <option value="landscape">أفقي (Landscape)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">جودة الصورة</label>
+                    <select id="quality" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                        <option value="2">عالية</option>
+                        <option value="1">متوسطة</option>
+                        <option value="0.8">منخفضة</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الهوامش (ميليمتر)</label>
+                    <input type="number" id="margin" value="10" min="0" max="50" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اسم الملف</label>
+                    <input type="text" id="filename" value="document" placeholder="اسم الملف" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- HTML Editor -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">كود HTML</h2>
+                    <div class="flex items-center space-x-reverse space-x-2">
+                        <span class="text-sm text-gray-500 dark:text-gray-400" id="charCount">0 حرف</span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <textarea 
+                        id="htmlInput" 
+                        class="w-full h-96 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white code-editor resize-none text-base"
+                        placeholder="الصق كود HTML هنا..."
+                        oninput="updatePreview(); updateCharCount();"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">معاينة مباشرة</h2>
+                    <button onclick="generatePDF()" 
+                            class="flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+                            id="downloadBtn">
+                        <span id="downloadText">تحميل PDF</span>
+                        <div id="loadingSpinner" class="loading-spinner mr-2 hidden"></div>
+                        <svg class="w-4 h-4 mr-2" id="downloadIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m5-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="preview-frame h-96 overflow-auto">
+                        <iframe id="preview" class="w-full h-full border-0" sandbox="allow-same-origin"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+                <div class="text-4xl mb-4">⚡</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تحويل سريع</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">تحويل فوري من HTML إلى PDF بجودة عالية</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+                <div class="text-4xl mb-4">🎨</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">دعم كامل للتصميم</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">يحافظ على جميع الألوان والخطوط والتنسيقات</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+                <div class="text-4xl mb-4">📱</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">متجاوب</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">يعمل على جميع الأجهزة والشاشات</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+            <div class="text-center">
+                <div class="text-6xl mb-4">✅</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تم التحويل بنجاح!</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">تم تحميل ملف PDF بنجاح</p>
+                <button onclick="closeSuccessModal()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">
+                    حسناً
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+            <div class="text-center">
+                <div class="text-6xl mb-4">❌</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">خطأ في التحويل</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4" id="errorMessage">حدث خطأ أثناء تحويل الملف</p>
+                <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update character count
+        function updateCharCount() {
+            const input = document.getElementById('htmlInput');
+            const count = input.value.length;
+            document.getElementById('charCount').textContent = `${count.toLocaleString()} حرف`;
+        }
+
+        // Update preview
+        function updatePreview() {
+            const htmlContent = document.getElementById('htmlInput').value;
+            const preview = document.getElementById('preview');
+            
+            const doc = preview.contentDocument || preview.contentWindow.document;
+            doc.open();
+            doc.write(htmlContent || '<p style="text-align: center; color: #666; padding: 50px;">ستظهر المعاينة هنا...</p>');
+            doc.close();
+        }
+
+        // Load sample HTML
+        function loadSample() {
+            const sampleHTML = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مثال تجريبي</title>
+    <style>
+        body { font-family: 'Tahoma', Arial; padding: 20px; }
+        .header { background: #5D5CDE; color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .content { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .footer { text-align: center; color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>مرحباً بك في محول HTML إلى PDF</h1>
+    </div>
+    <div class="content">
+        <h2>هذا مثال تجريبي</h2>
+        <p>يمكنك تعديل هذا الكود أو استبداله بكودك الخاص.</p>
+        <ul>
+            <li>دعم كامل للعربية</li>
+            <li>تصميم احترافي</li>
+            <li>جودة عالية</li>
+        </ul>
+    </div>
+    <div class="footer">
+        <p>تم إنشاؤه بواسطة محول HTML إلى PDF</p>
+    </div>
+</body>
+</html>`;
+            
+            document.getElementById('htmlInput').value = sampleHTML;
+            updatePreview();
+            updateCharCount();
+        }
+
+        // Clear all content
+        function clearAll() {
+            document.getElementById('htmlInput').value = '';
+            updatePreview();
+            updateCharCount();
+        }
+
+        // Generate PDF
+        async function generatePDF() {
+            const htmlContent = document.getElementById('htmlInput').value.trim();
+            
+            if (!htmlContent) {
+                showError('الرجاء إدخال كود HTML أولاً');
+                return;
+            }
+
+            // Show loading state
+            const btn = document.getElementById('downloadBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            const icon = document.getElementById('downloadIcon');
+            const text = document.getElementById('downloadText');
+            
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            icon.classList.add('hidden');
+            text.textContent = 'جاري التحويل...';
+
+            try {
+                // Get settings
+                const pageSize = document.getElementById('pageSize').value;
+                const orientation = document.getElementById('orientation').value;
+                const quality = parseFloat(document.getElementById('quality').value);
+                const margin = parseInt(document.getElementById('margin').value);
+                const filename = document.getElementById('filename').value || 'document';
+
+                // Create temporary element
+                const element = document.createElement('div');
+                element.innerHTML = htmlContent;
+                element.style.width = '210mm';
+                element.style.minHeight = '297mm';
+                element.style.padding = '0';
+                element.style.margin = '0';
+                element.style.background = 'white';
+                document.body.appendChild(element);
+
+                // PDF options - optimized for text quality and copying
+                const options = {
+                    margin: margin,
+                    filename: `${filename}.pdf`,
+                    image: { 
+                        type: 'jpeg', 
+                        quality: 0.98,  // Higher quality for better text
+                        format: 'jpeg'
+                    },
+                    html2canvas: { 
+                        scale: 3,  // Higher scale for crisp text
+                        useCORS: true,
+                        allowTaint: true,
+                        letterRendering: true,
+                        dpi: 300,  // High DPI for print quality
+                        foreignObjectRendering: true,  // Better text rendering
+                        logging: false,
+                        backgroundColor: '#ffffff',
+                        removeContainer: true,
+                        imageTimeout: 15000,
+                        onclone: function(clonedDoc) {
+                            // Ensure fonts are loaded
+                            clonedDoc.body.style.fontFamily = 'Arial, Tahoma, sans-serif';
+                        }
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: pageSize, 
+                        orientation: orientation,
+                        compressPDF: false,  // Don't compress for better quality
+                        precision: 16,  // Higher precision
+                        userUnit: 1.0,
+                        hotfixes: ['px_scaling']  // Fix pixel scaling issues
+                    },
+                    pagebreak: { 
+                        mode: ['avoid-all', 'css', 'legacy'],
+                        before: '.page-break-before',
+                        after: '.page-break-after',
+                        avoid: '.no-break'
+                    }
+                };
+
+                // Generate PDF
+                await html2pdf().set(options).from(element).save();
+                
+                // Clean up
+                document.body.removeChild(element);
+                
+                // Show success
+                showSuccess();
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                showError('حدث خطأ أثناء تحويل الملف. تأكد من صحة كود HTML.');
+            } finally {
+                // Reset button state
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+                icon.classList.remove('hidden');
+                text.textContent = 'تحميل PDF';
+            }
+        }
+
+        // Show success modal
+        function showSuccess() {
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+        }
+
+        // Close success modal
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('flex');
+        }
+
+        // Show error modal
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorModal').classList.remove('hidden');
+            document.getElementById('errorModal').classList.add('flex');
+        }
+
+        // Close error modal
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.add('hidden');
+            document.getElementById('errorModal').classList.remove('flex');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCharCount();
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
