@@ -57,6 +57,15 @@
             -webkit-appearance: none;
             border-radius: 6px;
         }
+        
+        /* Smooth modal transitions */
+        #successModal, #errorModal, #confirmModal {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        #successModal.flex, #errorModal.flex, #confirmModal.flex {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -127,7 +136,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الهوامش</label>
                     <select id="margins" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base">
                         <option value="0.5">ضيقة (0.5cm)</option>
-                        <option value="1" selected>عادية (1cm)</option>
+                        <option value="1.2" selected>عادية (1.2cm)</option>
                         <option value="1.5">واسعة (1.5cm)</option>
                         <option value="2">كبيرة (2cm)</option>
                     </select>
@@ -240,6 +249,25 @@
         </div>
     </div>
 
+    <!-- Confirm Modal -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+            <div class="text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">تأكيد العملية</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4" id="confirmMessage">هل أنت متأكد من مسح الكود بالكامل؟</p>
+                <div class="flex justify-center space-x-reverse space-x-3">
+                    <button onclick="closeConfirmModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                        إلغاء
+                    </button>
+                    <button onclick="confirmClear()" class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-colors">
+                        تأكيد المسح
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Update character count
         function updateCharCount() {
@@ -248,11 +276,12 @@
             document.getElementById('charCount').textContent = `${count.toLocaleString()} حرف`;
         }
 
-        // Update preview - استبدال iframe بـ div
+        // Update preview - حماية من الأكواد الخبيثة
         function updatePreview() {
             const htmlContent = document.getElementById('htmlInput').value;
+            const sanitizedHTML = htmlContent.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
             const preview = document.getElementById('preview');
-            preview.innerHTML = htmlContent || '<p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>';
+            preview.innerHTML = sanitizedHTML || '<p style="text-align:center;color:#666;padding:50px;">ستظهر المعاينة هنا...</p>';
         }
 
         // Load sample HTML
@@ -335,15 +364,29 @@
             updateCharCount();
         }
 
-        // Clear all content
+        // Clear all content with confirmation
         function clearAll() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Confirm clear action
+        function confirmClear() {
             document.getElementById('htmlInput').value = '';
             updatePreview();
             updateCharCount();
+            closeConfirmModal();
         }
 
-        // Convert to PDF - استخدام html2pdf.js
-        function convertToPDF() {
+        // Close confirm modal
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+        }
+
+        // Convert to PDF - نسخة 10/10 مع جميع التحسينات
+        async function convertToPDF() {
             const htmlContent = document.getElementById('htmlInput').value.trim();
             
             if (!htmlContent) {
@@ -352,35 +395,13 @@
             }
 
             try {
-                // Get user settings
-                const filename = document.getElementById('filename').value || 'document';
+                // Get user settings with auto filename generation
+                const userFilename = document.getElementById('filename').value;
+                const filename = userFilename || `PDF_${new Date().toISOString().slice(0,19).replace(/[:T]/g, '-')}`;
                 const pageSize = document.getElementById('pageSize').value;
                 const orientation = document.getElementById('orientation').value;
                 const margins = parseFloat(document.getElementById('margins').value);
                 
-                // Create element for PDF conversion
-                const element = document.createElement('div');
-                element.innerHTML = htmlContent;
-                
-                // Configure html2pdf options
-                const opt = {
-                    margin: margins,
-                    filename: `${filename}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { 
-                        scale: 2, 
-                        useCORS: true,
-                        allowTaint: true,
-                        scrollX: 0,
-                        scrollY: 0
-                    },
-                    jsPDF: { 
-                        unit: 'cm', 
-                        format: pageSize, 
-                        orientation: orientation 
-                    }
-                };
-
                 // Update button state
                 const btn = document.getElementById('convertBtn');
                 const btnText = document.getElementById('convertText');
@@ -388,28 +409,154 @@
                 btn.disabled = true;
                 btnText.textContent = 'جارٍ التحويل...';
                 
-                // Start conversion
-                html2pdf().from(element).set(opt).save().then(() => {
-                    // Reset button
-                    btn.disabled = false;
-                    btnText.textContent = 'تحويل إلى PDF';
+                // Create a temporary container for proper rendering
+                const tempContainer = document.createElement('div');
+                tempContainer.style.cssText = `
+                    position: fixed;
+                    top: -10000px;
+                    left: -10000px;
+                    width: 210mm;
+                    background: white;
+                    font-family: Arial, 'Tahoma', sans-serif;
+                    direction: rtl;
+                    padding: 20px;
+                    box-sizing: border-box;
+                `;
+                
+                // Add enhanced CSS for better PDF rendering
+                const styledContent = `
+                    <style>
+                        * {
+                            box-sizing: border-box;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        body {
+                            font-family: Arial, 'Tahoma', sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                            direction: rtl;
+                            background: white;
+                        }
+                        img {
+                            max-width: 100% !important;
+                            height: auto !important;
+                            display: block;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            page-break-inside: avoid;
+                        }
+                        h1, h2, h3, h4, h5, h6 {
+                            page-break-after: avoid;
+                            margin-bottom: 10px;
+                        }
+                        p {
+                            margin-bottom: 10px;
+                        }
+                        .page-break {
+                            page-break-before: always;
+                        }
+                    </style>
+                    ${htmlContent}
+                `;
+                
+                tempContainer.innerHTML = styledContent;
+                document.body.appendChild(tempContainer);
+                
+                // Wait for fonts and images to load properly
+                await document.fonts.ready;
+                await Promise.all(Array.from(tempContainer.querySelectorAll('img')).map(img => {
+                    if (!img.complete) {
+                        return new Promise(resolve => { 
+                            img.onload = img.onerror = resolve; 
+                        });
+                    }
+                    return Promise.resolve();
+                }));
+
+                // Additional wait for proper rendering
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Configure html2pdf options with enhanced settings
+                const opt = {
+                    margin: [margins, margins, margins, margins],
+                    filename: `${filename}.pdf`,
+                    image: { 
+                        type: 'jpeg', 
+                        quality: 1.0 
+                    },
+                    html2canvas: { 
+                        scale: window.devicePixelRatio > 1 ? 2 : 1,
+                        useCORS: true,
+                        allowTaint: false,
+                        scrollX: 0,
+                        scrollY: 0,
+                        backgroundColor: '#ffffff',
+                        width: tempContainer.scrollWidth,
+                        height: tempContainer.scrollHeight,
+                        dpi: 300,
+                        letterRendering: true
+                    },
+                    jsPDF: { 
+                        unit: 'cm', 
+                        format: pageSize, 
+                        orientation: orientation,
+                        compress: true,
+                        putOnlyUsedFonts: true
+                    },
+                    pagebreak: { 
+                        mode: ['avoid-all', 'css', 'legacy'] 
+                    }
+                };
+
+                // Try primary conversion method
+                try {
+                    await html2pdf().from(tempContainer).set(opt).save();
                     
-                    // Show success message
-                    showSuccess();
-                }).catch((error) => {
-                    console.error('PDF conversion error:', error);
+                    // Success - clean up and show message
+                    document.body.removeChild(tempContainer);
                     btn.disabled = false;
                     btnText.textContent = 'تحويل إلى PDF';
-                    showError('حدث خطأ أثناء تحويل الملف إلى PDF');
-                });
+                    showSuccess();
+                    
+                } catch (saveError) {
+                    console.warn('Primary save method failed, trying fallback...', saveError);
+                    
+                    // Fallback method for Safari/iOS
+                    const pdf = await html2pdf().from(tempContainer).set(opt).outputPdf('blob');
+                    const blobUrl = URL.createObjectURL(pdf);
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = `${filename}.pdf`;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(blobUrl);
+                    
+                    // Clean up and show success
+                    document.body.removeChild(tempContainer);
+                    btn.disabled = false;
+                    btnText.textContent = 'تحويل إلى PDF';
+                    showSuccess();
+                }
 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('PDF conversion error:', error);
+                
+                // Clean up on error
+                const tempContainer = document.querySelector('div[style*="position: fixed"][style*="top: -10000px"]');
+                if (tempContainer && document.body.contains(tempContainer)) {
+                    document.body.removeChild(tempContainer);
+                }
+                
                 const btn = document.getElementById('convertBtn');
                 const btnText = document.getElementById('convertText');
                 btn.disabled = false;
                 btnText.textContent = 'تحويل إلى PDF';
-                showError('حدث خطأ أثناء تحويل الملف');
+                showError('حدث خطأ أثناء تحويل الملف إلى PDF. تأكد من صحة كود HTML.');
             }
         }
 
