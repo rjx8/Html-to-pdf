@@ -1,198 +1,314 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nikola Tesla Timeline - PDF Preview</title>
-
-  <style>
-    @page { size: A4; margin: 1.5cm; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #e9ecf1;
-      font-family: "Arial", Tahoma, sans-serif;
-      color: #222;
-    }
-
-    .toolbar {
-      background: #0B3D91;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .toolbar button {
-      background: white;
-      color: #0B3D91;
-      border: none;
-      padding: 8px 16px;
-      font-size: 14px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: all 0.2s ease;
-    }
-
-    .toolbar button:hover {
-      background: #e6e9ff;
-    }
-
-    .pdf-page {
-      width: 21cm;
-      height: 29.7cm;
-      margin: 20px auto;
-      padding: 1cm;
-      background: white;
-      box-shadow: 0 0 8px rgba(0,0,0,0.2);
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 22px;
-      margin: 0;
-      color: #0B3D91;
-      letter-spacing: .6px;
-    }
-
-    p.lead {
-      margin: 6px 0 12px 0;
-      font-size: 12.5px;
-      color: #333;
-    }
-
-    .timeline {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      font-size: 12px;
-      line-height: 1.25;
-    }
-
-    .event {
-      padding: 8px;
-      border-radius: 6px;
-      background: linear-gradient(180deg,#fbfbff,#f4f8ff);
-      border: 1px solid #e1e7fb;
-    }
-
-    .event h3 {
-      margin: 0 0 6px 0;
-      font-size: 13px;
-      color: #0B3D91;
-      font-weight: 700;
-    }
-
-    .event .meta { font-size: 11px; color: #666; margin-bottom:6px; }
-
-    .thumb {
-      width: 100%;
-      max-height: 8.5cm;
-      object-fit: contain;
-      display: block;
-      margin: 6px 0 0 0;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-
-    footer {
-      margin-top: 8px;
-      border-top: 1px dashed #ddd;
-      padding-top: 8px;
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-
-    .right { text-align: right; }
-    .left { text-align: left; }
-
-    /* Hide toolbar when printing */
-    @media print {
-      body { background: white; }
-      .toolbar { display: none; }
-      .pdf-page { margin: 0; box-shadow: none; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Timeline of Nikola Tesla's life and revolutionary inventions">
+    <meta name="keywords" content="Nikola Tesla, inventions, timeline, electricity, AC motor, wireless technology">
+    <meta name="author" content="Sultan Marwan Al-Yafei">
+    <title>Nikola Tesla: Timeline of Genius and Innovation</title>
+    
+    <style>
+        /* CSS optimized for A4 print format */
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.4;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        .tesla-portrait {
+            float: right;
+            width: 120px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid #34495e;
+            border-radius: 8px;
+            margin: 0 0 15px 15px;
+        }
+        
+        .lab-image {
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin: 15px auto;
+            display: block;
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .timeline-item {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            width: 8px;
+            height: 8px;
+            background: #3498db;
+            border-radius: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 13px;
+            width: 2px;
+            height: calc(100% + 5px);
+            background: #bdc3c7;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .year {
+            font-weight: bold;
+            color: #2980b9;
+            font-size: 14px;
+        }
+        
+        .event {
+            font-size: 12px;
+            margin-top: 3px;
+            line-height: 1.3;
+        }
+        
+        .invention {
+            background: #ecf0f1;
+            padding: 8px;
+            border-left: 4px solid #e74c3c;
+            margin: 5px 0;
+            font-size: 11px;
+        }
+        
+        .print-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 15px auto;
+            display: block;
+            transition: background 0.3s;
+        }
+        
+        .print-btn:hover {
+            background: #229954;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #bdc3c7;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .student-info {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: none;
+                margin: 0;
+                padding: 10px;
+            }
+            .print-btn {
+                display: none;
+            }
+            .timeline-item {
+                margin-bottom: 10px;
+            }
+            .event {
+                font-size: 11px;
+            }
+            .invention {
+                font-size: 10px;
+                padding: 5px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container">
+        <header>
+            <h1>Nikola Tesla</h1>
+            <p class="subtitle">Timeline of Genius and Innovation (1856-1943)</p>
+        </header>
 
-  <div class="toolbar">
-    PDF Preview — Nikola Tesla Timeline
-    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
-  </div>
+        <main>
+            <article>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG" 
+                     alt="Portrait of Nikola Tesla" 
+                     class="tesla-portrait"
+                     loading="lazy">
 
-  <div class="pdf-page" id="pdfContent">
-    <header>
-      <h1>Timeline of Nikola Tesla and One of His Greatest Inventions</h1>
-      <p class="lead">A concise one-page A4 timeline, clean design for printing — images from Wikimedia Commons archives.</p>
-    </header>
+                <section class="timeline">
+                    <div class="timeline-item">
+                        <div class="year">1856</div>
+                        <div class="event">Born in Smiljan, Austrian Empire (modern-day Croatia) during a lightning storm</div>
+                    </div>
 
-    <main class="timeline">
-      <div class="event">
-        <h3>1856 — Birth</h3>
-        <div class="meta">Born in the Austrian Empire (modern-day Croatia)</div>
-        <p>Tesla showed interest in electricity and physics from an early age, setting the stage for his scientific curiosity and innovation.</p>
-      </div>
+                    <div class="timeline-item">
+                        <div class="year">1875-1878</div>
+                        <div class="event">Studied at Austrian Polytechnic in Graz</div>
+                    </div>
 
-      <div class="event">
-        <h3>1880s — Early Work and Experiments</h3>
-        <div class="meta">Migration and AC experiments</div>
-        <p>Tesla developed his ideas for alternating current (AC) and collaborated with engineers and investors to bring them into practical use.</p>
-      </div>
+                    <div class="timeline-item">
+                        <div class="year">1881</div>
+                        <div class="event">Worked as chief electrician in Budapest</div>
+                        <div class="invention">💡 Conceived the rotating magnetic field principle</div>
+                    </div>
 
-      <div class="event">
-        <h3>1891 — Tesla Coil Patents</h3>
-        <div class="meta">Recognition and awards</div>
-        <p>He registered several patents and became widely known for his revolutionary electrical innovations.</p>
-      </div>
+                    <div class="timeline-item">
+                        <div class="year">1884</div>
+                        <div class="event">Immigrated to the United States, briefly worked with Thomas Edison</div>
+                    </div>
 
-      <div class="event">
-        <h3>1899 — Colorado Springs Experiments</h3>
-        <div class="meta">High-voltage resonance and the Tesla Coil</div>
-        <p>At his Colorado Springs lab, Tesla conducted high-frequency experiments using his resonant transformer — the Tesla Coil — producing massive electrical discharges.</p>
-        <img class="thumb" alt="Tesla in Colorado Springs experiment" src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Experiment_in_wireless_power_transmission_by_Nikola_Tesla_at_his_laboratory_in_Colorado_Springs_in_1899.png" />
-      </div>
+                    <div class="timeline-item">
+                        <div class="year">1885</div>
+                        <div class="event">Left Edison's company and founded Tesla Electric Light Company</div>
+                    </div>
 
-      <div class="event">
-        <h3>Importance of the Tesla Coil</h3>
-        <div class="meta">High-frequency and high-voltage system</div>
-        <p>The Tesla Coil enabled the generation of high-voltage, high-frequency electricity, influencing modern radio, lighting, and wireless power research.</p>
-        <img class="thumb" alt="Tesla coil sparks" src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Tesla_Colorado_Springs_lab-12_million_volts.jpg" />
-      </div>
+                    <div class="timeline-item">
+                        <div class="year">1887-1888</div>
+                        <div class="event">Developed the AC induction motor system</div>
+                        <div class="invention">⚡ AC Induction Motor - Revolutionary design that enabled modern electrical power distribution</div>
+                    </div>
 
-      <div class="event">
-        <h3>Iconic Portrait</h3>
-        <div class="meta">Tesla and his invention</div>
-        <p>One of the most famous historical photographs shows Tesla sitting beside his coil surrounded by arcs of electricity — a powerful symbol of his genius.</p>
-        <img class="thumb" alt="Portrait of Nikola Tesla" src="https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG" />
-      </div>
-    </main>
+                    <div class="timeline-item">
+                        <div class="year">1891</div>
+                        <div class="event">Invented the Tesla coil</div>
+                        <div class="invention">🔌 Tesla Coil - High-frequency transformer for wireless power transmission experiments</div>
+                    </div>
 
-    <footer>
-      <div class="right">
-        <strong>Class:</strong> 304
-      </div>
-      <div class="left">
-        <div><strong>Prepared by:</strong></div>
-        <div>Sultan Marwan Al-Yafai</div>
-      </div>
-    </footer>
-  </div>
+                    <div class="timeline-item">
+                        <div class="year">1893</div>
+                        <div class="event">Demonstrated wireless communication and AC power at World's Fair</div>
+                    </div>
 
+                    <div class="timeline-item">
+                        <div class="year">1895</div>
+                        <div class="event">Designed first hydroelectric power plant at Niagara Falls</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="year">1898</div>
+                        <div class="event">Demonstrated first remote-controlled device</div>
+                        <div class="invention">📡 Radio-Controlled Boat - Precursor to modern remote control technology</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="year">1899-1900</div>
+                        <div class="event">Colorado Springs laboratory experiments</div>
+                        <div class="invention">⚡ Wireless Power Transmission - Conducted groundbreaking experiments in wireless electricity</div>
+                    </div>
+                </section>
+
+                <img src="https://ichef.bbci.co.uk/ace/ws/549/cpsprodpb/11B97/production/_128199527_22d77f37-7ee1-499d-9fd1-acfd6ba7ea13.jpg.webp" 
+                     alt="Tesla in his Colorado Springs laboratory with his magnifying transmitter" 
+                     class="lab-image"
+                     loading="lazy">
+
+                <section class="timeline">
+                    <div class="timeline-item">
+                        <div class="year">1901-1917</div>
+                        <div class="event">Wardenclyffe Tower project for worldwide wireless communication</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="year">1917</div>
+                        <div class="event">Proposed principles of radar technology</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="year">1928</div>
+                        <div class="event">Patented flying machine design (early helicopter concept)</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="year">1943</div>
+                        <div class="event">Died in New York City, leaving behind over 300 patents</div>
+                    </div>
+                </section>
+
+                <button class="print-btn" onclick="window.print()" aria-label="Print this timeline as PDF">
+                    🖨️ Print Timeline as PDF
+                </button>
+            </article>
+        </main>
+
+        <footer>
+            <p><strong>Legacy:</strong> Tesla's inventions laid the foundation for modern electrical engineering, wireless technology, and renewable energy systems.</p>
+            <div class="student-info">
+                <p>Prepared by: Sultan Marwan Al-Yafei</p>
+                <p>Class: 304</p>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
