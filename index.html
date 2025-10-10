@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Timeline of Nikola Tesla's life and revolutionary inventions">
+    <meta name="description" content="Modern timeline of Nikola Tesla's life and revolutionary inventions">
     <meta name="keywords" content="Nikola Tesla, inventions, timeline, electricity, AC motor, wireless technology">
     <meta name="author" content="Sultan Marwan Al-Yafei">
     <title>Nikola Tesla: Timeline of Genius and Innovation</title>
     
     <style>
-        /* CSS optimized for A4 print format */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
         @page {
             size: A4;
-            margin: 15mm;
+            margin: 12mm;
         }
         
         * {
@@ -22,9 +23,9 @@
         }
         
         body {
-            font-family: 'Times New Roman', serif;
-            line-height: 1.4;
-            color: #2c3e50;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            color: #1a202c;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
@@ -32,61 +33,94 @@
         .container {
             max-width: 210mm;
             margin: 0 auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background: #ffffff;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
         }
         
         header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 15px;
+            position: relative;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
         }
         
         h1 {
-            font-size: 28px;
-            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 700;
             margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
         }
         
         .subtitle {
             font-size: 16px;
-            color: #7f8c8d;
-            font-style: italic;
+            font-weight: 300;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content-wrapper {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 25px;
+            align-items: start;
         }
         
         .tesla-portrait {
-            float: right;
-            width: 120px;
-            height: 150px;
+            width: 100%;
+            height: 240px;
             object-fit: cover;
-            border: 3px solid #34495e;
-            border-radius: 8px;
-            margin: 0 0 15px 15px;
+            object-position: center top;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 3px solid #e2e8f0;
         }
         
         .lab-image {
             width: 100%;
-            max-width: 400px;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
-            margin: 15px auto;
-            display: block;
+            object-position: center;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border: 2px solid #e2e8f0;
         }
         
         .timeline {
             position: relative;
-            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
         }
         
         .timeline-item {
-            margin-bottom: 15px;
-            padding-left: 25px;
+            margin-bottom: 18px;
+            padding-left: 45px;
             position: relative;
         }
         
@@ -94,76 +128,103 @@
             content: '';
             position: absolute;
             left: 8px;
-            top: 5px;
-            width: 8px;
-            height: 8px;
-            background: #3498db;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 50%;
-        }
-        
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            left: 11px;
-            top: 13px;
-            width: 2px;
-            height: calc(100% + 5px);
-            background: #bdc3c7;
-        }
-        
-        .timeline-item:last-child::after {
-            display: none;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            z-index: 2;
         }
         
         .year {
-            font-weight: bold;
-            color: #2980b9;
-            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            font-size: 15px;
+            margin-bottom: 4px;
         }
         
         .event {
-            font-size: 12px;
-            margin-top: 3px;
-            line-height: 1.3;
+            font-size: 13px;
+            color: #4a5568;
+            margin-bottom: 6px;
+            line-height: 1.4;
         }
         
         .invention {
-            background: #ecf0f1;
-            padding: 8px;
-            border-left: 4px solid #e74c3c;
-            margin: 5px 0;
-            font-size: 11px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 10px 12px;
+            border-radius: 8px;
+            border-left: 4px solid #e53e3e;
+            margin: 8px 0;
+            font-size: 12px;
+            color: #2d3748;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .invention::before {
+            content: '⚡';
+            margin-right: 6px;
+            font-size: 14px;
         }
         
         .print-btn {
-            background: #27ae60;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 14px 28px;
             font-size: 14px;
-            border-radius: 5px;
+            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 15px auto;
+            margin: 20px auto;
             display: block;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
         }
         
         .print-btn:hover {
-            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.4);
         }
         
         footer {
+            background: #f7fafc;
+            padding: 20px 25px;
             text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px solid #bdc3c7;
-            font-size: 12px;
-            color: #7f8c8d;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .legacy {
+            font-size: 13px;
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-style: italic;
         }
         
         .student-info {
-            font-weight: bold;
-            color: #2c3e50;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: inline-block;
+        }
+        
+        .student-info p {
+            font-size: 12px;
+            color: #2d3748;
+            margin: 2px 0;
+        }
+        
+        .student-name {
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .class-info {
+            font-weight: 600;
+            color: #764ba2;
         }
         
         @media print {
@@ -172,22 +233,39 @@
             }
             .container {
                 box-shadow: none;
+                border-radius: 0;
                 max-width: none;
                 margin: 0;
-                padding: 10px;
+            }
+            .content-wrapper {
+                padding: 15px;
+                gap: 15px;
             }
             .print-btn {
                 display: none;
             }
             .timeline-item {
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
             .event {
                 font-size: 11px;
             }
             .invention {
                 font-size: 10px;
-                padding: 5px;
+                padding: 6px 8px;
+            }
+            header {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .tesla-portrait {
+                height: 200px;
+            }
+            .lab-image {
+                height: 140px;
+                margin: 10px 0;
             }
         }
     </style>
@@ -200,113 +278,105 @@
             <p class="subtitle">Timeline of Genius and Innovation (1856-1943)</p>
         </header>
 
-        <main>
-            <article>
+        <div class="content-wrapper">
+            <main>
+                <article>
+                    <section class="timeline">
+                        <div class="timeline-item">
+                            <div class="year">1856</div>
+                            <div class="event">Born in Smiljan, Austrian Empire during a lightning storm</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1875-1878</div>
+                            <div class="event">Studied at Austrian Polytechnic in Graz</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1881</div>
+                            <div class="event">Worked as chief electrician in Budapest</div>
+                            <div class="invention">Conceived the rotating magnetic field principle</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1884</div>
+                            <div class="event">Immigrated to USA, briefly worked with Edison</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1887-1888</div>
+                            <div class="event">Developed AC induction motor system</div>
+                            <div class="invention">AC Induction Motor - Revolutionary electrical power distribution</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1891</div>
+                            <div class="event">Invented the Tesla coil</div>
+                            <div class="invention">Tesla Coil - High-frequency transformer for wireless power</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1893</div>
+                            <div class="event">Demonstrated wireless communication at World's Fair</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1895</div>
+                            <div class="event">Designed Niagara Falls hydroelectric plant</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1898</div>
+                            <div class="event">First remote-controlled device demonstration</div>
+                            <div class="invention">Radio-Controlled Boat - Modern remote control precursor</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1899-1900</div>
+                            <div class="event">Colorado Springs laboratory experiments</div>
+                            <div class="invention">Wireless Power Transmission - Groundbreaking electricity experiments</div>
+                        </div>
+
+                        <img src="https://ichef.bbci.co.uk/ace/ws/549/cpsprodpb/11B97/production/_128199527_22d77f37-7ee1-499d-9fd1-acfd6ba7ea13.jpg.webp" 
+                             alt="Tesla in his Colorado Springs laboratory with magnifying transmitter" 
+                             class="lab-image"
+                             loading="lazy">
+
+                        <div class="timeline-item">
+                            <div class="year">1901-1917</div>
+                            <div class="event">Wardenclyffe Tower for worldwide wireless communication</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1917</div>
+                            <div class="event">Proposed radar technology principles</div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="year">1943</div>
+                            <div class="event">Died in New York, leaving 300+ patents</div>
+                        </div>
+                    </section>
+
+                    <button class="print-btn" onclick="window.print()" aria-label="Print timeline as PDF">
+                        🖨️ Print as PDF
+                    </button>
+                </article>
+            </main>
+
+            <aside>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG" 
                      alt="Portrait of Nikola Tesla" 
                      class="tesla-portrait"
                      loading="lazy">
-
-                <section class="timeline">
-                    <div class="timeline-item">
-                        <div class="year">1856</div>
-                        <div class="event">Born in Smiljan, Austrian Empire (modern-day Croatia) during a lightning storm</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1875-1878</div>
-                        <div class="event">Studied at Austrian Polytechnic in Graz</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1881</div>
-                        <div class="event">Worked as chief electrician in Budapest</div>
-                        <div class="invention">💡 Conceived the rotating magnetic field principle</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1884</div>
-                        <div class="event">Immigrated to the United States, briefly worked with Thomas Edison</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1885</div>
-                        <div class="event">Left Edison's company and founded Tesla Electric Light Company</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1887-1888</div>
-                        <div class="event">Developed the AC induction motor system</div>
-                        <div class="invention">⚡ AC Induction Motor - Revolutionary design that enabled modern electrical power distribution</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1891</div>
-                        <div class="event">Invented the Tesla coil</div>
-                        <div class="invention">🔌 Tesla Coil - High-frequency transformer for wireless power transmission experiments</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1893</div>
-                        <div class="event">Demonstrated wireless communication and AC power at World's Fair</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1895</div>
-                        <div class="event">Designed first hydroelectric power plant at Niagara Falls</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1898</div>
-                        <div class="event">Demonstrated first remote-controlled device</div>
-                        <div class="invention">📡 Radio-Controlled Boat - Precursor to modern remote control technology</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1899-1900</div>
-                        <div class="event">Colorado Springs laboratory experiments</div>
-                        <div class="invention">⚡ Wireless Power Transmission - Conducted groundbreaking experiments in wireless electricity</div>
-                    </div>
-                </section>
-
-                <img src="https://ichef.bbci.co.uk/ace/ws/549/cpsprodpb/11B97/production/_128199527_22d77f37-7ee1-499d-9fd1-acfd6ba7ea13.jpg.webp" 
-                     alt="Tesla in his Colorado Springs laboratory with his magnifying transmitter" 
-                     class="lab-image"
-                     loading="lazy">
-
-                <section class="timeline">
-                    <div class="timeline-item">
-                        <div class="year">1901-1917</div>
-                        <div class="event">Wardenclyffe Tower project for worldwide wireless communication</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1917</div>
-                        <div class="event">Proposed principles of radar technology</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1928</div>
-                        <div class="event">Patented flying machine design (early helicopter concept)</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="year">1943</div>
-                        <div class="event">Died in New York City, leaving behind over 300 patents</div>
-                    </div>
-                </section>
-
-                <button class="print-btn" onclick="window.print()" aria-label="Print this timeline as PDF">
-                    🖨️ Print Timeline as PDF
-                </button>
-            </article>
-        </main>
+            </aside>
+        </div>
 
         <footer>
-            <p><strong>Legacy:</strong> Tesla's inventions laid the foundation for modern electrical engineering, wireless technology, and renewable energy systems.</p>
+            <p class="legacy">Tesla's inventions laid the foundation for modern electrical engineering, wireless technology, and renewable energy systems.</p>
             <div class="student-info">
-                <p>Prepared by: Sultan Marwan Al-Yafei</p>
-                <p>Class: 304</p>
+                <p class="student-name">Sultan Marwan Al-Yafei</p>
+                <p class="class-info">Class: 304</p>
             </div>
         </footer>
     </div>
