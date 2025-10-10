@@ -1,390 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikola Tesla Timeline Project</title>
-    <style>
-        body {
-            box-sizing: border-box;
-            font-family: 'Georgia', serif;
-            margin: 0;
-            padding: 20mm;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100%;
-            color: #333;
-        }
-
-        .page {
-            background: white;
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto;
-            padding: 15mm;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 3px solid #4a90e2;
-            padding-bottom: 10px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            color: #2c3e50;
-            margin: 0;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .header p {
-            font-size: 12px;
-            color: #7f8c8d;
-            margin: 5px 0 0 0;
-            font-style: italic;
-        }
-
-        .tesla-intro {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            gap: 15px;
-        }
-
-        .tesla-photo {
-            width: 80px;
-            height: 100px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 2px solid #4a90e2;
-            flex-shrink: 0;
-        }
-
-        .intro-text {
-            flex: 1;
-            font-size: 11px;
-            line-height: 1.4;
-            color: #2c3e50;
-        }
-
-        .timeline {
-            position: relative;
-            margin: 15px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, #4a90e2, #764ba2);
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            display: flex;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .timeline-item:nth-child(odd) {
-            flex-direction: row;
-        }
-
-        .timeline-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .timeline-content {
-            width: 48%;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 8px;
-            border-left: 4px solid #4a90e2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            border-left: none;
-            border-right: 4px solid #764ba2;
-        }
-
-        .timeline-year {
-            font-size: 14px;
-            font-weight: bold;
-            color: #4a90e2;
-            margin-bottom: 3px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-year {
-            color: #764ba2;
-        }
-
-        .timeline-title {
-            font-size: 11px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 3px;
-        }
-
-        .timeline-description {
-            font-size: 9px;
-            color: #555;
-            line-height: 1.3;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            top: 10px;
-            width: 12px;
-            height: 12px;
-            background: #4a90e2;
-            border: 2px solid white;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-
-        .timeline-item:nth-child(even) .timeline-dot {
-            background: #764ba2;
-        }
-
-        .lab-image {
-            width: 100%;
-            max-width: 200px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin: 10px auto;
-            display: block;
-            border: 2px solid #ddd;
-        }
-
-        .print-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #4a90e2, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .print-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 15mm;
-            right: 15mm;
-            text-align: right;
-            font-size: 10px;
-            color: #7f8c8d;
-        }
-
-        .footer .name {
-            font-weight: bold;
-            color: #4a90e2;
-            margin-bottom: 2px;
-        }
-
-        .footer .class {
-            font-style: italic;
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .page {
-                box-shadow: none;
-                margin: 0;
-                width: 100%;
-                min-height: 100%;
-            }
-            
-            .print-btn {
-                display: none;
-            }
-        }
-
-        @page {
-            size: A4;
-            margin: 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikola Tesla Timeline</title>
+<style>
+    @page { size: A4; margin: 20mm; }
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        background: #fdfdfd;
+        color: #111;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 180mm;
+        margin: auto;
+        padding: 10mm;
+        box-sizing: border-box;
+    }
+    h1, h2 {
+        text-align: center;
+        color: #0a3d62;
+    }
+    h1 { font-size: 24pt; }
+    h2 { font-size: 18pt; margin-top: 20px; }
+    p {
+        font-size: 12pt;
+        margin: 10px 0;
+    }
+    .timeline {
+        border-left: 3px solid #0a3d62;
+        padding-left: 15px;
+        margin: 20px 0;
+    }
+    .event {
+        margin-bottom: 15px;
+    }
+    .event img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 5px;
+        border-radius: 5px;
+    }
+    .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-weight: bold;
+    }
+    .print-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 12pt;
+        background-color: #0a3d62;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .print-btn:hover {
+        background-color: #062f4f;
+    }
+</style>
 </head>
 <body>
-    <button class="print-btn" onclick="printToPDF()">🖨️ Print to PDF</button>
-    
-    <div class="page">
-        <div class="header">
-            <h1>Nikola Tesla: Timeline of Genius</h1>
-            <p>The Life and Revolutionary Inventions of the Master of Electricity</p>
+<div class="container">
+    <h1>Nikola Tesla: A Timeline of Inventions</h1>
+
+    <div class="timeline">
+        <div class="event">
+            <h2>1856 - Birth</h2>
+            <p>Nikola Tesla was born on July 10, 1856, in Smiljan, Croatia.</p>
         </div>
 
-        <div class="tesla-intro">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG" alt="Nikola Tesla Portrait" class="tesla-photo" onerror="this.src=''; this.alt='Tesla portrait failed to load'; this.style.display='none';">
-            <div class="intro-text">
-                <strong>Nikola Tesla (1856-1943)</strong> was a Serbian-American inventor, electrical engineer, mechanical engineer, and futurist best known for his contributions to the design of the modern alternating current (AC) electricity supply system. His revolutionary inventions and visionary ideas laid the foundation for many technologies we use today.
-            </div>
+        <div class="event">
+            <h2>1884 - Arrival in USA</h2>
+            <p>Tesla arrived in New York City and started working with Thomas Edison.</p>
         </div>
 
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1856</div>
-                    <div class="timeline-title">Birth in Smiljan</div>
-                    <div class="timeline-description">Born during a lightning storm in Smiljan, Austrian Empire (modern-day Croatia). His mother predicted he would be "a child of light."</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1875</div>
-                    <div class="timeline-title">Austrian Polytechnic</div>
-                    <div class="timeline-description">Enrolled at Austrian Polytechnic in Graz, studying mathematics, physics, and mechanics with exceptional grades.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1882</div>
-                    <div class="timeline-title">AC Motor Concept</div>
-                    <div class="timeline-description">Conceived the idea of the rotating magnetic field and AC induction motor while walking in Budapest's city park.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1884</div>
-                    <div class="timeline-title">Arrival in America</div>
-                    <div class="timeline-description">Immigrated to the United States with little money but carrying a letter of recommendation to Thomas Edison.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1888</div>
-                    <div class="timeline-title">AC Motor Patent</div>
-                    <div class="timeline-description">Received patents for his AC induction motor and polyphase system, revolutionizing electrical power transmission.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1891</div>
-                    <div class="timeline-title">Tesla Coil Invention</div>
-                    <div class="timeline-description">Invented the Tesla coil, a high-frequency transformer that became fundamental to wireless technology and radio.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1893</div>
-                    <div class="timeline-title">World's Fair Triumph</div>
-                    <div class="timeline-description">Demonstrated AC power at Chicago World's Fair, proving its superiority over DC in the "War of Currents."</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1895</div>
-                    <div class="timeline-title">Niagara Falls Power</div>
-                    <div class="timeline-description">His AC system powered the first major hydroelectric plant at Niagara Falls, lighting up Buffalo, New York.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1899-1900</div>
-                    <div class="timeline-title">Colorado Springs Laboratory</div>
-                    <div class="timeline-description">Conducted wireless power transmission experiments with his "Magnifying Transmitter," creating artificial lightning.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
+        <div class="event">
+            <h2>1891 - Tesla Coil</h2>
+            <p>Tesla invented the Tesla Coil, a high-voltage, high-frequency transformer.</p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG" alt="Nikola Tesla">
         </div>
 
-        <img src="https://ichef.bbci.co.uk/ace/ws/549/cpsprodpb/11B97/production/_128199527_22d77f37-7ee1-499d-9fd1-acfd6ba7ea13.jpg.webp" alt="Tesla in Colorado Springs Laboratory" class="lab-image" onerror="this.src=''; this.alt='Laboratory image failed to load'; this.style.display='none';">
-
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1901</div>
-                    <div class="timeline-title">Wardenclyffe Tower</div>
-                    <div class="timeline-description">Began construction of Wardenclyffe Tower for worldwide wireless communication and power transmission.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-year">1943</div>
-                    <div class="timeline-title">Legacy Lives On</div>
-                    <div class="timeline-description">Died in New York City, leaving behind over 300 patents and ideas that continue to inspire modern technology.</div>
-                </div>
-                <div class="timeline-dot"></div>
-            </div>
+        <div class="event">
+            <h2>1899 - Colorado Springs Experiments</h2>
+            <p>He conducted high-voltage experiments in Colorado Springs with his magnifying transmitter.</p>
+            <img src="https://ichef.bbci.co.uk/ace/ws/549/cpsprodpb/11B97/production/_128199527_22d77f37-7ee1-499d-9fd1-acfd6ba7ea13.jpg.webp" alt="Tesla in Colorado Springs">
         </div>
 
-        <div class="footer">
-            <div class="name">Sultan Marwan Al-Yafei</div>
-            <div class="class">Class: 304</div>
+        <div class="event">
+            <h2>1937 - Later Years</h2>
+            <p>Tesla continued developing ideas for wireless energy and passed away in New York on January 7, 1943.</p>
         </div>
     </div>
 
-    <script>
-        function printToPDF() {
-            // Hide the print button temporarily
-            const printBtn = document.querySelector('.print-btn');
-            printBtn.style.display = 'none';
-            
-            // Trigger print dialog
-            window.print();
-            
-            // Show the button again after a short delay
-            setTimeout(() => {
-                printBtn.style.display = 'block';
-            }, 1000);
-        }
+    <div class="footer">
+        Sultan Marwan Al-Yafai<br>
+        Class: 304
+    </div>
 
-        // Handle image loading errors gracefully
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('img');
-            images.forEach(img => {
-                img.addEventListener('error', function() {
-                    this.style.display = 'none';
-                });
-            });
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98c256ca2618edbb',t:'MTc2MDA1OTY4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <button class="print-btn" onclick="window.print()">Print PDF</button>
+</div>
+</body>
 </html>
