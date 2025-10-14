@@ -3,267 +3,626 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بحث عن مؤسس علم الكيمياء</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'arabic': ['Noto Sans Arabic', 'Amiri', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <title>الاجتماعات الرقمية - بحث شامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans Arabic', 'Amiri', serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .no-print {
+            background: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .print-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .print-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 90, 160, 0.4);
+        }
+
+        .document {
+            padding: 25mm 20mm 25mm 20mm;
+            min-height: 297mm;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--primary-color);
+            page-break-inside: avoid;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-family: 'Amiri', serif;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: var(--secondary-color);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .author-info {
+            background: linear-gradient(135deg, var(--light-bg), #e8f4f8);
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 5px solid var(--accent-color);
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            page-break-inside: avoid;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            color: var(--secondary-color);
+            margin: 25px 0 15px 0;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1.1em;
+            line-height: 1.9;
+            page-break-inside: avoid;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            page-break-inside: avoid;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #e8f4f8, var(--light-bg));
+            padding: 25px;
+            border-radius: 10px;
+            border-right: 5px solid var(--accent-color);
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .benefits-list, .challenges-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            page-break-inside: avoid;
+        }
+
+        ul {
+            padding-right: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+            page-break-inside: avoid;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            page-break-inside: avoid;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: var(--light-bg);
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #f0f8ff, var(--light-bg));
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid var(--accent-color);
+            margin-top: 40px;
+            page-break-inside: avoid;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+            color: var(--secondary-color);
+            page-break-inside: avoid;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
         @media print {
-            .no-print {
-                display: none !important;
-            }
-            
             @page {
                 size: A4;
-                margin: 2cm 1.5cm;
+                margin: 15mm 10mm 15mm 10mm;
             }
-            
+
             body {
                 font-size: 12pt;
                 line-height: 1.6;
-                color: #000;
-                background: white;
             }
-            
-            .main-container {
+
+            .no-print {
+                display: none !important;
+            }
+
+            .container {
                 max-width: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .document {
                 padding: 0;
                 margin: 0;
+                min-height: auto;
+                box-shadow: none;
             }
-            
-            .page-break {
-                page-break-before: always;
+
+            .section, .highlight-box, .benefits-list, .challenges-list, .conclusion, table {
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
-            
+
+            h1, h2, h3 {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            p {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                orphans: 3;
+                widows: 3;
+            }
+
+            .main-title {
+                font-size: 24pt;
+            }
+
             h1 {
                 font-size: 18pt;
-                margin-bottom: 1cm;
             }
-            
+
             h2 {
-                font-size: 14pt;
-                margin: 0.8cm 0 0.4cm 0;
+                font-size: 16pt;
             }
-            
+
             h3 {
-                font-size: 12pt;
-                margin: 0.6cm 0 0.3cm 0;
-            }
-            
-            p {
-                margin-bottom: 0.5cm;
-                text-align: justify;
-            }
-            
-            .sidebar-title {
-                writing-mode: vertical-rl;
-                text-orientation: mixed;
-                position: absolute;
-                right: 0;
-                background: #f3f4f6;
-                padding: 0.5cm;
-                height: 100%;
-                width: 1.5cm;
-                font-weight: bold;
-                font-size: 10pt;
+                font-size: 14pt;
             }
         }
-        
-        .dark-mode {
-            background: #1a1a1a;
-            color: #e5e5e5;
+
+        @media (max-width: 768px) {
+            .document {
+                padding: 15px;
+            }
+
+            .main-title {
+                font-size: 2em;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .table-container {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
+<body>
+    <div class="container">
+        <div class="no-print">
+            <button class="print-btn" onclick="window.print()">🖨️ طباعة وحفظ كملف PDF</button>
+        </div>
 
-<body class="bg-gray-50 text-gray-900 font-arabic leading-relaxed">
-    <!-- Dark mode detection -->
-    <script>
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-            document.body.classList.add('dark-mode');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark-mode');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark-mode');
-            }
-        });
-    </script>
+        <div class="document">
+            <div class="header">
+                <h1 class="main-title">الاجتماعات الرقمية</h1>
+                <p class="subtitle">دراسة شاملة حول تقنيات الاجتماعات الرقمية وتأثيرها على العمل الحديث</p>
 
-    <!-- Print Button -->
-    <div class="no-print fixed top-4 left-4 z-50">
-        <button onclick="window.print()" 
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200 flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 002 2z"/>
-            </svg>
-            طباعة وحفظ PDF
-        </button>
+            </div>
+
+            <div class="section">
+                <h1>المقدمة</h1>
+                <p>شهدت السنوات الأخيرة تطوراً هائلاً في مجال التكنولوجيا الرقمية، وقد أدى هذا التطور إلى تغييرات جذرية في طرق التواصل والعمل. ومن أبرز هذه التغييرات ظهور الاجتماعات الرقمية التي أصبحت جزءاً لا يتجزأ من الحياة المهنية والأكاديمية الحديثة.</p>
+                
+                <p>لقد أحدثت جائحة كوفيد-19 نقلة نوعية في استخدام تقنيات الاجتماعات الرقمية، حيث اضطرت المؤسسات والشركات حول العالم إلى تبني هذه التقنيات بشكل مكثف للحفاظ على استمرارية العمل والتعليم. وقد أثبتت هذه التجربة فعالية الاجتماعات الرقمية وقدرتها على تحقيق أهداف مختلفة بكفاءة عالية.</p>
+
+                <div class="highlight-box">
+                    <p><strong>الهدف من هذا البحث:</strong> يهدف هذا البحث إلى دراسة الاجتماعات الرقمية من جوانب متعددة، بما في ذلك تعريفها وأنواعها وفوائدها والتحديات التي تواجهها، بالإضافة إلى استكشاف مستقبل هذه التقنية وتأثيرها على طبيعة العمل في المستقبل.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h1>تعريف الاجتماعات الرقمية</h1>
+                <p>الاجتماعات الرقمية أو الافتراضية هي شكل من أشكال التواصل والتفاعل بين مجموعة من الأشخاص عبر منصات إلكترونية وتطبيقات متخصصة، حيث يمكن للمشاركين التفاعل مع بعضهم البعض من مواقع جغرافية مختلفة باستخدام أجهزة الحاسوب أو الهواتف الذكية أو الأجهزة اللوحية.</p>
+
+                <h2>خصائص الاجتماعات الرقمية</h2>
+                <ul>
+                    <li><strong>التفاعل الصوتي والمرئي:</strong> إمكانية رؤية وسماع جميع المشاركين في الوقت الفعلي</li>
+                    <li><strong>مشاركة الشاشة:</strong> عرض المحتوى والعروض التقديمية لجميع المشاركين</li>
+                    <li><strong>الدردشة النصية:</strong> تبادل الرسائل الكتابية أثناء الاجتماع</li>
+                    <li><strong>التسجيل:</strong> إمكانية تسجيل الاجتماع للمراجعة اللاحقة</li>
+                    <li><strong>إدارة المشاركين:</strong> التحكم في صلاحيات المشاركين وإدارة الاجتماع</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <div class="section">
+                <h1>أنواع الاجتماعات الرقمية</h1>
+                
+                <h2>1. الاجتماعات المؤسسية</h2>
+                <p>تشمل اجتماعات العمل الروتينية، واجتماعات فرق العمل، واجتماعات الإدارة العليا، واجتماعات التخطيط الاستراتيجي. هذه الاجتماعات تركز على مناقشة المشاريع وتقييم الأداء واتخاذ القرارات المهمة.</p>
+
+                <h2>2. الاجتماعات التعليمية</h2>
+                <p>تضم الفصول الافتراضية، والندوات التعليمية، وورش العمل التدريبية، واجتماعات أولياء الأمور مع المعلمين. تهدف هذه الاجتماعات إلى نقل المعرفة وتطوير المهارات.</p>
+
+                <h2>3. الاجتماعات الطبية</h2>
+                <p>تشمل الاستشارات الطبية عن بُعد، واجتماعات الفرق الطبية، والمؤتمرات الطبية المتخصصة. هذه الاجتماعات تسهم في تقديم الرعاية الصحية وتبادل الخبرات الطبية.</p>
+
+                <h2>4. الاجتماعات الاجتماعية</h2>
+                <p>تتضمن لقاءات العائلة والأصدقاء، والمناسبات الاجتماعية، والأنشطة الترفيهية. هذه الاجتماعات تحافظ على الروابط الاجتماعية وتقوي العلاقات الشخصية.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نوع الاجتماع</th>
+                                <th>الهدف الرئيسي</th>
+                                <th>المدة المتوسطة</th>
+                                <th>عدد المشاركين</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>مؤسسي</td>
+                                <td>اتخاذ القرارات</td>
+                                <td>30-120 دقيقة</td>
+                                <td>5-50 شخص</td>
+                            </tr>
+                            <tr>
+                                <td>تعليمي</td>
+                                <td>نقل المعرفة</td>
+                                <td>45-180 دقيقة</td>
+                                <td>10-500 شخص</td>
+                            </tr>
+                            <tr>
+                                <td>طبي</td>
+                                <td>تقديم الرعاية</td>
+                                <td>15-60 دقيقة</td>
+                                <td>2-20 شخص</td>
+                            </tr>
+                            <tr>
+                                <td>اجتماعي</td>
+                                <td>التواصل الشخصي</td>
+                                <td>30-180 دقيقة</td>
+                                <td>2-100 شخص</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h1>المنصات والتقنيات المستخدمة</h1>
+                
+                <h2>المنصات الرئيسية</h2>
+                <p>تتنوع منصات الاجتماعات الرقمية لتلبي احتياجات مختلفة، ومن أشهر هذه المنصات:</p>
+
+                <h3>منصات الأعمال المتقدمة</h3>
+                <ul>
+                    <li><strong>Microsoft Teams:</strong> منصة شاملة تدمج الاجتماعات مع أدوات العمل التعاونية</li>
+                    <li><strong>Zoom:</strong> منصة مرنة تدعم اجتماعات كبيرة الحجم مع جودة عالية</li>
+                    <li><strong>Google Meet:</strong> حل بسيط ومتكامل مع خدمات جوجل السحابية</li>
+                    <li><strong>Cisco Webex:</strong> منصة متقدمة للمؤسسات الكبيرة مع ميزات أمان عالية</li>
+                </ul>
+
+                <h3>التقنيات المساندة</h3>
+                <ul>
+                    <li><strong>الذكاء الاصطناعي:</strong> لتحسين جودة الصوت والصورة وتوفير الترجمة الفورية</li>
+                    <li><strong>الواقع المعزز:</strong> لإضافة عناصر تفاعلية إلى الاجتماعات</li>
+                    <li><strong>التخزين السحابي:</strong> لحفظ التسجيلات والمستندات المشتركة</li>
+                    <li><strong>أمان البيانات:</strong> تشفير متقدم لحماية المحتوى والمعلومات</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <div class="section">
+                <h1>فوائد الاجتماعات الرقمية</h1>
+                
+                <div class="benefits-list">
+                    <h2>الفوائد الاقتصادية</h2>
+                    <ul>
+                        <li><strong>توفير التكاليف:</strong> تقليل تكاليف السفر والإقامة والانتقال بشكل كبير</li>
+                        <li><strong>زيادة الإنتاجية:</strong> توفير الوقت المستغرق في التنقل والاستفادة منه في العمل</li>
+                        <li><strong>تقليل البنية التحتية:</strong> عدم الحاجة لقاعات اجتماعات كبيرة ومكلفة</li>
+                        <li><strong>المرونة في الجدولة:</strong> سهولة تنظيم اجتماعات متعددة في أوقات مختلفة</li>
+                    </ul>
+
+                    <h2>الفوائد البيئية</h2>
+                    <ul>
+                        <li><strong>تقليل الانبعاثات الكربونية:</strong> تقليل الحاجة للسفر والتنقل</li>
+                        <li><strong>الاستدامة البيئية:</strong> تقليل استهلاك الورق والموارد الطبيعية</li>
+                        <li><strong>الحفاظ على الطاقة:</strong> تقليل استهلاك الطاقة في المباني والمواصلات</li>
+                    </ul>
+
+                    <h2>الفوائد الاجتماعية</h2>
+                    <ul>
+                        <li><strong>إمكانية الوصول:</strong> تمكين الأشخاص ذوي الإعاقة من المشاركة بسهولة</li>
+                        <li><strong>التوازن بين العمل والحياة:</strong> قضاء وقت أكثر مع العائلة</li>
+                        <li><strong>التواصل العالمي:</strong> ربط الأشخاص من جميع أنحاء العالم</li>
+                        <li><strong>المشاركة المتساوية:</strong> منح جميع المشاركين فرصة متساوية للتعبير</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h1>التحديات والمشاكل</h1>
+                
+                <div class="challenges-list">
+                    <h2>التحديات التقنية</h2>
+                    <ul>
+                        <li><strong>جودة الاتصال:</strong> مشاكل الإنترنت وانقطاع الاتصال</li>
+                        <li><strong>التوافقية:</strong> صعوبات في استخدام المنصات المختلفة</li>
+                        <li><strong>الأمان السيبراني:</strong> مخاطر اختراق الاجتماعات والبيانات</li>
+                        <li><strong>الدعم التقني:</strong> نقص الخبرة التقنية لدى بعض المستخدمين</li>
+                    </ul>
+
+                    <h2>التحديات البشرية</h2>
+                    <ul>
+                        <li><strong>إرهاق الشاشة:</strong> التعب من الجلوس أمام الشاشة لفترات طويلة</li>
+                        <li><strong>فقدان التفاعل الشخصي:</strong> نقص التواصل غير اللفظي</li>
+                        <li><strong>صعوبة التركيز:</strong> تشتت الانتباه بسبب البيئة المنزلية</li>
+                        <li><strong>مقاومة التغيير:</strong> تفضيل البعض للاجتماعات التقليدية</li>
+                    </ul>
+
+                    <h2>التحديات التنظيمية</h2>
+                    <ul>
+                        <li><strong>إدارة الوقت:</strong> صعوبة في التحكم بمدة الاجتماعات</li>
+                        <li><strong>متابعة المشاركة:</strong> تحدي ضمان مشاركة جميع الحضور</li>
+                        <li><strong>توثيق القرارات:</strong> صعوبة في تسجيل وتوثيق النتائج</li>
+                        <li><strong>اختلاف المناطق الزمنية:</strong> تحدي تنسيق الأوقات عالمياً</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <div class="section">
+                <h1>أفضل الممارسات</h1>
+                
+                <h2>قبل الاجتماع</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>التحضير المسبق:</strong> إعداد جدول أعمال واضح ومفصل</li>
+                        <li><strong>اختبار التقنية:</strong> التأكد من جودة الصوت والصورة والاتصال</li>
+                        <li><strong>دعوة المشاركين:</strong> إرسال الدعوات مع تفاصيل الاجتماع</li>
+                        <li><strong>مشاركة المواد:</strong> إرسال العروض والمستندات مسبقاً</li>
+                    </ul>
+                </div>
+
+                <h2>أثناء الاجتماع</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>بدء منضبط:</strong> البدء في الوقت المحدد مع ترحيب بالحضور</li>
+                        <li><strong>إدارة النقاش:</strong> توزيع وقت المشاركة بين جميع الحضور</li>
+                        <li><strong>الوضوح في التواصل:</strong> التحدث بوضوح وتجنب المقاطعات</li>
+                        <li><strong>التفاعل النشط:</strong> تشجيع المشاركة واستخدام الأدوات التفاعلية</li>
+                    </ul>
+                </div>
+
+                <h2>بعد الاجتماع</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>توثيق النتائج:</strong> كتابة محضر الاجتماع والقرارات المتخذة</li>
+                        <li><strong>توزيع المهام:</strong> تحديد المسؤوليات والمواعيد النهائية</li>
+                        <li><strong>المتابعة:</strong> التحقق من تنفيذ القرارات والمهام</li>
+                        <li><strong>التقييم:</strong> جمع آراء المشاركين لتحسين الاجتماعات القادمة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h1>الأثر على بيئة العمل</h1>
+                
+                <p>لقد أحدثت الاجتماعات الرقمية تأثيراً جذرياً على طبيعة العمل الحديث، حيث ساهمت في تطوير نموذج العمل الهجين الذي يجمع بين العمل من المكتب والعمل عن بُعد. هذا التطور فتح آفاقاً جديدة أمام الشركات للاستفادة من المواهب العالمية دون القيود الجغرافية.</p>
+
+                <h2>التأثير على الثقافة المؤسسية</h2>
+                <p>أدت الاجتماعات الرقمية إلى تطوير ثقافة مؤسسية جديدة تركز على النتائج أكثر من الحضور الفعلي، وزادت من أهمية التواصل الواضح والتوثيق الدقيق. كما ساهمت في كسر الحواجز الهرمية التقليدية وجعلت التواصل أكثر ديمقراطية.</p>
+
+                <h2>تطوير مهارات جديدة</h2>
+                <p>أصبح من الضروري تطوير مهارات جديدة مثل إدارة الاجتماعات الرقمية، والتواصل الفعال عبر الشاشة، واستخدام الأدوات التقنية المختلفة. هذه المهارات أصبحت جزءاً أساسياً من المتطلبات المهنية في العصر الحديث.</p>
+
+                <h2>التأثير على الإنتاجية</h2>
+                <p>أظهرت الدراسات نتائج متباينة حول تأثير الاجتماعات الرقمية على الإنتاجية. فبينما ساهمت في توفير الوقت وتقليل التكاليف، إلا أنها أدت في بعض الحالات إلى زيادة عدد الاجتماعات وطولها، مما أثر سلباً على التركيز والإنتاجية الفردية.</p>
+            </div>
+
+            <div class="page-break"></div>
+
+            <div class="section">
+                <h1>مستقبل الاجتماعات الرقمية</h1>
+                
+                <h2>التطورات التقنية المتوقعة</h2>
+                <p>يشهد مجال الاجتماعات الرقمية تطوراً مستمراً مع ظهور تقنيات جديدة ومثيرة. من المتوقع أن تلعب تقنيات الذكاء الاصطناعي دوراً أكبر في تحسين تجربة الاجتماعات من خلال الترجمة الفورية، وتحليل المشاعر، وتلخيص المحتوى تلقائياً.</p>
+
+                <h2>الواقع الافتراضي والمعزز</h2>
+                <p>تعد تقنيات الواقع الافتراضي والمعزز من أبرز التطورات المستقبلية في مجال الاجتماعات الرقمية. هذه التقنيات ستوفر تجربة أكثر تفاعلية وواقعية، حيث يمكن للمشاركين التفاعل في بيئات ثلاثية الأبعاد ومشاركة التجارب بشكل أعمق.</p>
+
+                <h2>التكامل مع إنترنت الأشياء</h2>
+                <p>سيشهد المستقبل تكاملاً أكبر بين الاجتماعات الرقمية وأجهزة إنترنت الأشياء، مما سيتيح التحكم في البيئة المحيطة بالمشاركين تلقائياً، مثل تعديل الإضاءة ودرجة الحرارة وإعدادات الصوت لتحسين تجربة الاجتماع.</p>
+
+                <h2>الذكاء الاصطناعي والتحليل المتقدم</h2>
+                <p>ستصبح أنظمة الذكاء الاصطناعي أكثر تطوراً في تحليل سلوك المشاركين ومستوى انخراطهم، وتقديم توصيات لتحسين فعالية الاجتماعات. كما ستتمكن من إنتاج ملخصات ذكية وتحديد النقاط الرئيسية والقرارات المتخذة تلقائياً.</p>
+
+                <div class="highlight-box">
+                    <h3>التحديات المستقبلية</h3>
+                    <p>رغم التطورات الواعدة، تبقى هناك تحديات مثل ضمان الخصوصية والأمان، وسد الفجوة الرقمية، والحفاظ على العنصر الإنساني في التفاعل. سيتطلب التعامل مع هذه التحديات تطوير قوانين ومعايير جديدة للتكنولوجيا والاستخدام الأخلاقي لها.</p>
+                </div>
+            </div>
+
+            <div class="conclusion">
+                <h1>الخاتمة</h1>
+                <p>إن الاجتماعات الرقمية ليست مجرد بديل مؤقت للاجتماعات التقليدية، بل أصبحت جزءاً دائماً من نسيج العمل والتعليم والحياة الاجتماعية الحديثة. لقد أثبتت هذه التقنية قدرتها على تجاوز الحدود الجغرافية والزمنية، وفتحت آفاقاً جديدة للتعاون والإبداع.</p>
+
+                <p>ومع ذلك، فإن النجاح في استخدام الاجتماعات الرقمية يتطلب فهماً عميقاً لتقنياتها وتحدياتها، وتطوير مهارات جديدة للتعامل معها بفعالية. كما يتطلب إيجاد التوازن المناسب بين الاستفادة من مزايا التكنولوجيا والحفاظ على العنصر الإنساني في التفاعل.</p>
+
+                <p>في المستقبل، نتوقع أن تصبح الاجتماعات الرقمية أكثر تطوراً وتفاعلية مع دمج تقنيات الذكاء الاصطناعي والواقع الافتراضي. هذا التطور سيتطلب من الأفراد والمؤسسات التكيف المستمر وتطوير قدراتهم للاستفادة القصوى من هذه التقنيات المتقدمة.</p>
+
+                <p>إن فهم الاجتماعات الرقمية وإتقان استخدامها أصبح ضرورة حتمية في عالم اليوم، وسيكون عاملاً حاسماً في نجاح الأفراد والمؤسسات في المستقبل القريب والبعيد.</p>
+            </div>
+
+
+        </div>
     </div>
 
-    <div class="main-container max-w-4xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg min-h-screen">
-        <!-- العنوان الرئيسي -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 border-b-4 border-blue-600 pb-4 inline-block">
-                جابر بن حيان
-            </h1>
-            <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
-                مؤسس علم الكيمياء الحديث
-            </h2>
-        </div>
-
-        <!-- المقدمة -->
-        <div class="mb-8">
-            <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
-                يُعتبر أبو موسى جابر بن حيان الأزدي الكوفي، المعروف في الغرب باسم "جيبر" (Geber)، من أعظم العلماء في التاريخ الإسلامي، وهو الذي أرسى الأسس العلمية لعلم الكيمياء الحديث. عاش في القرن الثامن الميلادي (721-815م) وقدم إسهامات جوهرية غيّرت مجرى تطور العلوم الطبيعية. يُطلق عليه لقب "أبو الكيمياء" و"أول من وضع الأسس العلمية لعلم الكيمياء" لما قدمه من ابتكارات ومنهجيات علمية رائدة.
-            </p>
-        </div>
-
-        <!-- النشأة والحياة -->
-        <div class="mb-8 relative">
-            <div class="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-blue-600">
-                <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 pr-4">النشأة والحياة المبكرة</h3>
-            </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    وُلد جابر بن حيان في مدينة طوس بخراسان (إيران حالياً)، ونشأ في عائلة من قبيلة الأزد اليمنية. انتقل مع عائلته إلى الكوفة في العراق، حيث تلقى تعليمه الأولي. كان والده حيان بن عبد الله من المؤيدين للدولة العباسية، مما أتاح لجابر فرصة الاقتراب من البلاط العباسي والاستفادة من المكتبات الغنية والبيئة العلمية المزدهرة في بغداد.
-                </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تتلمذ جابر على يد الإمام جعفر الصادق، الذي كان عالماً موسوعياً في الفلسفة والعلوم الطبيعية. هذا التلمذة أثرت بشكل كبير على تكوينه العلمي وفلسفته في البحث والتجريب. كما استفاد من معارف العلماء اليونانيين والفرس والهنود، مما جعله يجمع بين التراث العلمي للحضارات المختلفة ويبني عليه.
-                </p>
-            </div>
-        </div>
-
-        <!-- الإنجازات العلمية -->
-        <div class="mb-8 relative">
-            <div class="bg-green-50 dark:bg-green-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-green-600">
-                <h3 class="text-xl font-bold text-green-800 dark:text-green-300 pr-4">الإنجازات والاكتشافات العلمية</h3>
-            </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">المنهج العلمي في الكيمياء</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    كان جابر بن حيان أول من أدخل المنهج التجريبي المنظم في علم الكيمياء. رفض الاكتفاء بالنظريات المجردة وأكد على ضرورة التجريب والملاحظة المباشرة. وضع قواعد أساسية للتجريب الكيميائي، منها: دقة الملاحظة، توثيق النتائج، تكرار التجارب للتأكد من صحة النتائج، واستخدام الأدوات المناسبة للقياس.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">اكتشاف الأحماض والقلويات</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يُنسب إلى جابر اكتشاف وتحضير العديد من الأحماض المهمة، بما في ذلك حمض الكبريتيك (زيت الزاج)، حمض النيتريك (ماء الفضة)، وحمض الهيدروكلوريك (روح الملح). كما طور طرقاً لتحضير الماء الملكي (Aqua Regia) الذي يستطيع إذابة الذهب. هذه الاكتشافات كانت ثورية في عصرها وما زالت تُستخدم في الصناعات الحديثة.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الأدوات والمعدات المختبرية</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    ابتكر جابر العديد من الأدوات والمعدات المختبرية التي ما زالت تُستخدم حتى اليوم، مثل الإنبيق (الأنبوب المقطر)، المقطرة، الخلايا التحليلية، والميزان الحساس. كما طور تقنيات التقطير، التبخير، التبلور، والترشيح. هذه الأدوات والتقنيات شكلت الأساس للمختبرات الكيميائية الحديثة.
-                </p>
-            </div>
-        </div>
-
-        <!-- النظريات والمؤلفات - بداية الصفحة الثانية -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-purple-50 dark:bg-purple-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-purple-600">
-                <h3 class="text-xl font-bold text-purple-800 dark:text-purple-300 pr-4">النظريات والمؤلفات</h3>
-            </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">نظرية الميزان</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    وضع جابر نظرية "الميزان" التي تقوم على فكرة أن جميع المواد تتكون من خليط من العناصر الأساسية بنسب محددة. هذه النظرية كانت سابقة لعصرها وتحتوي على بذور قانون النسب الثابتة في الكيمياء الحديثة. كان يؤمن بأن تغيير نسب هذه العناصر يمكن أن يؤدي إلى تحويل مادة إلى أخرى.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">نظرية الكبريت والزئبق</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    طور جابر نظرية تقول بأن جميع المعادن تتكون من كبريت وزئبق بنسب مختلفة. هذه النظرية، رغم عدم دقتها بالمعايير الحديثة، كانت محاولة رائدة لتفسير تكوين المواد وخصائصها. أضاف لاحقاً عنصر الملح كعنصر ثالث، مكوناً ما يُعرف بنظرية العناصر الثلاثة.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">المؤلفات والتراث العلمي</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    ألف جابر أكثر من 100 كتاب ورسالة في مختلف فروع العلم، بما في ذلك الكيمياء، الفلك، الرياضيات، الطب، والفلسفة. من أشهر مؤلفاته: "كتاب السموم ودفع مضارها"، "كتاب الخواص الكبير"، "كتاب أصول الكيمياء"، و"كتاب الرحمة في الطب والحكمة". هذه المؤلفات انتشرت في العالم الإسلامي وترجمت إلى اللاتينية والعبرية واليونانية.
-                </p>
-            </div>
-        </div>
-
-        <!-- التأثير على العلم الحديث -->
-        <div class="mb-8 relative">
-            <div class="bg-orange-50 dark:bg-orange-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-orange-600">
-                <h3 class="text-xl font-bold text-orange-800 dark:text-orange-300 pr-4">التأثير على العلم الحديث</h3>
-            </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    كان لأعمال جابر بن حيان تأثير عميق على تطور العلوم في أوروبا خلال القرون الوسطى وعصر النهضة. ترجمت كتبه إلى اللاتينية في القرن الثاني عشر، وأصبحت مراجع أساسية في الجامعات الأوروبية. تأثر به علماء أوروبيون مشهورون مثل روجر بيكون وألبرتوس ماغنوس، اللذان اعتبراه أستاذاً لهما في الكيمياء.
-                </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    منهجه العلمي في التجريب والملاحظة أثر على تطور المنهج العلمي الحديث. مبادئه في دقة القياس، توثيق التجارب، والتحقق من النتائج أصبحت جزءاً لا يتجزأ من البحث العلمي المعاصر. كما أن اكتشافاته في مجال الأحماض والتقطير ما زالت تُستخدم في الصناعات الكيميائية والصيدلانية الحديثة.
-                </p>
-            </div>
-        </div>
-
-        <!-- الخاتمة -->
-        <div class="mb-8 relative">
-            <div class="bg-red-50 dark:bg-red-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-red-600">
-                <h3 class="text-xl font-bold text-red-800 dark:text-red-300 pr-4">الخاتمة والإرث الخالد</h3>
-            </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يبقى جابر بن حيان رمزاً للعبقرية العلمية والريادة في البحث والاكتشاف. إرثه العلمي يتجاوز حدود الزمن والجغرافيا، ويُذكرنا بالدور المحوري الذي لعبته الحضارة الإسلامية في تطوير العلوم وإرساء أسس المعرفة الحديثة. من خلال منهجه التجريبي الصارم واكتشافاته الرائدة، وضع جابر الأسس التي قامت عليها الكيمياء الحديثة، مما يجعله بحق أبا هذا العلم ومؤسسه الأول.
-                </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    إن دراسة حياة وإنجازات جابر بن حيان تُظهر لنا أهمية الفضول العلمي، والمثابرة في البحث، والإيمان بقوة التجريب والملاحظة في كشف أسرار الطبيعة. كما تُذكرنا بأن العلم لا يعرف حدوداً جغرافية أو ثقافية، وأن الإسهامات العلمية الحقيقية تنتمي إلى الإنسانية جمعاء وتستفيد منها الأجيال المتعاقبة.
-                </p>
-            </div>
-        </div>
-
-        <!-- معلومات إضافية -->
-        <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
-            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 text-center">معلومات سريعة</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">سنة الولادة:</strong> 721م / 103هـ
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">سنة الوفاة:</strong> 815م / 200هـ
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">مكان الولادة:</strong> طوس، خراسان
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">الاسم باللاتينية:</strong> Geber
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">التخصص:</strong> الكيمياء، الطب، الفلك
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-3 rounded">
-                    <strong class="text-blue-600 dark:text-blue-400">عدد المؤلفات:</strong> أكثر من 100 كتاب
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // تحسين تجربة الطباعة
+        // تحديث التاريخ
+        const now = new Date();
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            weekday: 'long'
+        };
+        const arabicDate = now.toLocaleDateString('ar-SA', options);
+        
+        document.getElementById('current-date').textContent = arabicDate;
+
+
+        // تحسين الطباعة
         window.addEventListener('beforeprint', function() {
             document.body.style.fontSize = '12pt';
             document.body.style.lineHeight = '1.6';
         });
-        
+
         window.addEventListener('afterprint', function() {
             document.body.style.fontSize = '';
             document.body.style.lineHeight = '';
+        });
+
+        // إضافة تأثيرات تفاعلية للطباعة
+        const printBtn = document.querySelector('.print-btn');
+        printBtn.addEventListener('click', function() {
+            // إضافة رسالة تأكيد قبل الطباعة
+            setTimeout(() => {
+                const printMessage = document.createElement('div');
+                printMessage.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #4CAF50;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    z-index: 1000;
+                    font-family: 'Cairo', sans-serif;
+                `;
+                printMessage.textContent = 'جاري التحضير للطباعة...';
+                document.body.appendChild(printMessage);
+                
+                setTimeout(() => {
+                    document.body.removeChild(printMessage);
+                }, 3000);
+            }, 100);
         });
     </script>
 </body>
