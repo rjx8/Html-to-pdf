@@ -5,92 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مؤسس علم الكيمياء</title>
 <style>
-    @page { size: A4; margin: 20mm; }
-    body { font-family: Arial, sans-serif; line-height: 1.7; color: #222; margin: 0; padding: 0; background: #fff; }
-    .container { width: 100%; padding: 20px; box-sizing: border-box; }
-    h1, h2, h3 { text-align: center; color: #0a3d62; page-break-after: avoid; }
-    h1 { font-size: 28px; margin-bottom: 20px; }
-    h2 { font-size: 22px; margin-top: 30px; margin-bottom: 15px; }
-    h3 { font-size: 18px; margin-top: 20px; margin-bottom: 10px; }
-    p { text-align: justify; margin-bottom: 15px; page-break-inside: avoid; }
-    img { display: block; margin: 15px auto; max-width: 100%; height: auto; page-break-inside: avoid; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; page-break-inside: avoid; }
-    th, td { border: 1px solid #0a3d62; padding: 8px; text-align: center; }
-    th { background-color: #0a3d62; color: white; }
-    .print-btn { display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #0a3d62; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-    .print-btn:hover { background-color: #1e5ba6; }
-    .avoid-break { page-break-inside: avoid; }
+    /* إعدادات الصفحة للطباعة A4 */
+    @page {
+        size: A4;
+        margin: 2cm;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #fdfdfd;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        page-break-inside: avoid;
+    }
+
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        color: #2980b9;
+        text-align: right;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    p {
+        text-align: justify;
+        margin-bottom: 15px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        page-break-inside: avoid;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .print-button {
+        display: block;
+        width: 220px;
+        margin: 30px auto;
+        padding: 10px 0;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .print-button:hover {
+        background-color: #2980b9;
+    }
 </style>
 </head>
 <body>
 <div class="container">
-    <h1>جابر بن حيان: مؤسس علم الكيمياء</h1>
+    <h1>مؤسس علم الكيمياء</h1>
 
-    <h2>مقدمة</h2>
-    <p class="avoid-break">
-        يعد جابر بن حيان أحد أعظم العلماء في تاريخ الكيمياء، ويعرف بأنه "أبو الكيمياء الحديثة". جمع بين العلم والتجربة العملية، وأسس لمبادئ علمية لا تزال تُستخدم حتى اليوم. في هذا البحث سنتعرف على حياته، إسهاماته، وأثره على العلم الحديث.
-    </p>
+    <h2>نشأته وتعليمه</h2>
+    <p>جابر بن حيان، الذي عاش في القرن الثامن الميلادي في مدينة طوس، يُعتبر رائد الكيمياء. نشأ في بيئة علمية، حيث كان والده يعمل في العلوم الدينية والطبيعية، مما أثر على شغفه بالعلم منذ الصغر. تلقى تعليمه الأولي في العلوم الدينية واللغة، ومن ثم اتجه لدراسة الكيمياء والصيدلة والتجارب العلمية، وجمع بين المعرفة النظرية والخبرة العملية.</p>
 
-    <h2>حياة جابر بن حيان</h2>
-    <p class="avoid-break">
-        وُلد جابر بن حيان في الكوفة أو طوس حسب بعض المصادر، في القرن الثامن الميلادي. تلقى علومه على يد كبار العلماء في عصره، وكان شغوفًا بالفلسفة والطب والكيمياء. عرف عنه المثابرة والاهتمام بالتجارب العملية التي تعتمد على منهج علمي دقيق.
-    </p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Jabir_ibn_Hayyan.jpg/440px-Jabir_ibn_Hayyan.jpg" alt="جابر بن حيان">
+    <h2>إسهاماته العلمية</h2>
+    <p>ساهم جابر بن حيان في تطوير أدوات وتجارب الكيمياء، وابتكر العديد من المعدات المخبرية التي لا تزال تُستخدم بشكل مشابه حتى اليوم. اكتشف مواد كيميائية جديدة مثل الكبريتات والنيترات، ووضع أسس المعادلات لتفاعلات التحليل الكيميائي. كما أسس منهجية التجربة العلمية التي تعتمد على الدقة والملاحظة والنقل العلمي.</p>
 
-    <h2>إسهاماته في الكيمياء</h2>
-    <p class="avoid-break">
-        يعتبر جابر بن حيان مؤسس علم الكيمياء التجريبية، حيث قام بوضع أسس التقطير، التبلور، والتبخير، وابتكر عدة طرق لفصل المواد الكيميائية. من أهم اكتشافاته:
-    </p>
-    <ul>
-        <li>اكتشاف حمض الكبريتيك والنيتريك واستخدامهما في التحليل الكيميائي.</li>
-        <li>ابتكار أدوات مخبرية مثل المِرجل والأدوات الزجاجية.</li>
-        <li>تجارب على المعادن لتحويل بعضها إلى مواد أخرى، ما ساهم في تطور الخيمياء إلى الكيمياء الحديثة.</li>
-    </ul>
+    <h2>أثره على الكيمياء الحديثة</h2>
+    <p>لعب جابر دوراً محورياً في تحويل الكيمياء من مجرد ممارسة صوفية أو سحرية إلى علم قائم على التجربة والملاحظة. أثر ذلك في تطور الكيمياء في العصور الوسطى وأوروبا لاحقاً، وأصبح نموذجاً للعلماء الذين جاءوا بعده.</p>
 
-    <h3>جدول إنجازاته العلمية</h3>
+    <h2>جدول إنجازاته</h2>
     <table>
         <tr>
-            <th>الإنجاز</th>
-            <th>التفاصيل</th>
+            <th>المجال</th>
+            <th>الإسهام</th>
         </tr>
         <tr>
-            <td>التقطير</td>
-            <td>وضع أسس عملية التقطير لفصل المواد الكيميائية واسترجاع السوائل.</td>
+            <td>المعدات المخبرية</td>
+            <td>ابتكار أواني وأجهزة مخبرية حديثة</td>
         </tr>
         <tr>
-            <td>الأحماض</td>
-            <td>اكتشاف واستخدام حمض الكبريتيك والنيتريك في التجارب المخبرية.</td>
+            <td>المواد الكيميائية</td>
+            <td>اكتشاف الكبريتات والنيترات</td>
         </tr>
         <tr>
-            <td>الكتب العلمية</td>
-            <td>تأليف أكثر من 200 كتاب في الكيمياء والفلسفة الطبيعية.</td>
-        </tr>
-        <tr>
-            <td>المخاليط والمعادن</td>
-            <td>دراسة خصائص المعادن والمخاليط لتطوير العمليات الكيميائية.</td>
+            <td>المنهجية العلمية</td>
+            <td>تطوير منهجية التجربة والملاحظة الدقيقة</td>
         </tr>
     </table>
 
-    <h2>فلسفته العلمية</h2>
-    <p class="avoid-break">
-        كان جابر بن حيان يركز على التجربة العملية والبرهان العلمي، ويرى أن المعرفة لا تتحقق إلا من خلال التجربة الدقيقة والملاحظة المباشرة. استخدم منهجًا تجريبيًا ساعده على تطوير تقنيات الكيمياء الحديثة.
-    </p>
-
-    <h2>أثره على الكيمياء الحديثة</h2>
-    <p class="avoid-break">
-        بفضل إسهاماته، أصبح للكيمياء منهج علمي واضح قائم على التجربة والملاحظة. تقنيات جابر في التقطير والتبلور واكتشاف الأحماض أسست للعديد من التطبيقات في المختبرات الحديثة، كما ساعدت في تطور الصناعات الكيميائية والصيدلانية.
-    </p>
-
     <h2>خاتمة</h2>
-    <p class="avoid-break">
-        يمثل جابر بن حيان نموذجًا للعالم المبدع الذي جمع بين النظرية والتطبيق، ومؤسّس علم الكيمياء الحديث. إرثه العلمي يبقى مصدر إلهام للأجيال، ويذكرنا بأهمية البحث العلمي والمنهجية في اكتشاف أسرار الطبيعة.
-    </p>
+    <p>يبقى جابر بن حيان رمزاً للعلم والتجربة، ومؤسساً للنهج العلمي في الكيمياء. إسهاماته شكلت حجر الأساس الذي اعتمد عليه العلماء لتطوير علم الكيمياء الحديث، وجعلت منه شخصية تاريخية خالدة في علوم الكيمياء.</p>
 
-    <h2>صور إضافية للتجارب الكيميائية</h2>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Alchemy_lab_1.jpg/440px-Alchemy_lab_1.jpg" alt="تجارب كيميائية">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Alchemy_lab_2.jpg/440px-Alchemy_lab_2.jpg" alt="أدوات مخبرية">
-
-    <button class="print-btn" onclick="window.print()">حفظ كملف PDF</button>
+    <button class="print-button" onclick="window.print()">احفظ كملف PDF</button>
 </div>
 </body>
 </html>
