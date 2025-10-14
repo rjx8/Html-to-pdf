@@ -1,136 +1,96 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>مؤسس الكيمياء الحديث</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-        /* إعداد الصفحة للطباعة A4 */
-        @page {
-            size: A4;
-            margin: 2cm;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: #222;
-        }
-
-        .page {
-            width: 21cm;
-            min-height: 29.7cm;
-            padding: 2cm;
-            margin: 1cm auto;
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-            background: #fff;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #0B3D91;
-        }
-
-        h1 {
-            margin-bottom: 1rem;
-        }
-
-        h2 {
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            text-align: justify;
-            margin-bottom: 1rem;
-            font-size: 16px;
-        }
-
-        .print-button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #0B3D91;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        /* عند الطباعة نخفي الزر */
-        @media print {
-            .print-button {
-                display: none;
-            }
-            body, .page {
-                margin: 0;
-                box-shadow: none;
-            }
-        }
-
-        /* تقسيم المحتوى إلى صفحات عند الطباعة */
-        .page-break {
-            page-break-after: always;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مؤسس علم الكيمياء</title>
+<style>
+    @page { size: A4; margin: 20mm; }
+    body { font-family: Arial, sans-serif; line-height: 1.7; color: #222; margin: 0; padding: 0; background: #fff; }
+    .container { width: 100%; padding: 20px; box-sizing: border-box; }
+    h1, h2, h3 { text-align: center; color: #0a3d62; page-break-after: avoid; }
+    h1 { font-size: 28px; margin-bottom: 20px; }
+    h2 { font-size: 22px; margin-top: 30px; margin-bottom: 15px; }
+    h3 { font-size: 18px; margin-top: 20px; margin-bottom: 10px; }
+    p { text-align: justify; margin-bottom: 15px; page-break-inside: avoid; }
+    img { display: block; margin: 15px auto; max-width: 100%; height: auto; page-break-inside: avoid; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; page-break-inside: avoid; }
+    th, td { border: 1px solid #0a3d62; padding: 8px; text-align: center; }
+    th { background-color: #0a3d62; color: white; }
+    .print-btn { display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #0a3d62; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    .print-btn:hover { background-color: #1e5ba6; }
+    .avoid-break { page-break-inside: avoid; }
+</style>
 </head>
 <body>
-    <div class="page">
-        <h1>مؤسس الكيمياء الحديث</h1>
-        <p>
-            يُعتبر <strong>روبرت بويل</strong> (1627-1691) أحد أبرز الشخصيات في تأسيس علم الكيمياء الحديث، حيث قام بتجارب علمية دقيقة، ورفض النظريات القديمة المبنية على الفلسفة فقط. 
-            كان له دور كبير في فصل الكيمياء عن الفلسفة الطبيعية، ووضع أساسًا للطريقة العلمية التجريبية.
-        </p>
-        <h2>حياته العلمية</h2>
-        <p>
-            وُلد روبرت بويل في أيرلندا لعائلة غنية، واهتم منذ صغره بالعلوم والرياضيات. كتب العديد من المؤلفات التي تركز على التجربة والملاحظة الدقيقة. 
-            أشهر اكتشافاته تشمل قانون بويل للغازات، الذي يوضح العلاقة بين الضغط والحجم عند درجة حرارة ثابتة.
-        </p>
-        <h2>مساهماته في الكيمياء</h2>
-        <p>
-            ساهم بويل في تطوير الكيمياء التجريبية من خلال:
-            <ul>
-                <li>استخدام الأجهزة العلمية الدقيقة للتجارب.</li>
-                <li>تأكيد على أهمية القياس والتسجيل الدقيق للنتائج.</li>
-                <li>تحدي النظريات القديمة حول العناصر الأربعة (الهواء، النار، الماء، الأرض).</li>
-            </ul>
-        </p>
-        <div class="page-break"></div>
-    </div>
+<div class="container">
+    <h1>جابر بن حيان: مؤسس علم الكيمياء</h1>
 
-    <div class="page">
-        <h2>أعماله وكتبه</h2>
-        <p>
-            كتب روبرت بويل أكثر من 40 كتابًا في الكيمياء والفيزياء والفلسفة الطبيعية. من أبرز أعماله:
-            <ul>
-                <li>كتاب "The Sceptical Chymist" الذي اعتبره الكثيرون بداية الكيمياء الحديثة.</li>
-                <li>أبحاث عن ضغط الغازات وسلوك السوائل.</li>
-            </ul>
-        </p>
-        <h2>أثره على العلم الحديث</h2>
-        <p>
-            تأثير بويل على الكيمياء الحديثة كان هائلًا، حيث شجع العلماء على التجربة والقياس بدلاً من الاعتماد على التخمين والنظريات القديمة. 
-            فلسفته العلمية ساعدت على تطوير العلوم التجريبية بشكل عام، ووضع أسس الكيمياء كما نعرفها اليوم.
-        </p>
-        <div class="page-break"></div>
-    </div>
+    <h2>مقدمة</h2>
+    <p class="avoid-break">
+        يعد جابر بن حيان أحد أعظم العلماء في تاريخ الكيمياء، ويعرف بأنه "أبو الكيمياء الحديثة". جمع بين العلم والتجربة العملية، وأسس لمبادئ علمية لا تزال تُستخدم حتى اليوم. في هذا البحث سنتعرف على حياته، إسهاماته، وأثره على العلم الحديث.
+    </p>
 
-    <div class="page">
-        <h2>خاتمة</h2>
-        <p>
-            روبرت بويل مثال رائع على كيف يمكن للشغف بالعلم والملاحظة الدقيقة أن يغير مسار المعرفة البشرية. 
-            إن إنجازاته في الكيمياء وضعت الأسس للعلوم التجريبية الحديثة، وجعلت الكيمياء علماً دقيقاً يمكن الاعتماد عليه في التجارب والبحوث.
-        </p>
-    </div>
+    <h2>حياة جابر بن حيان</h2>
+    <p class="avoid-break">
+        وُلد جابر بن حيان في الكوفة أو طوس حسب بعض المصادر، في القرن الثامن الميلادي. تلقى علومه على يد كبار العلماء في عصره، وكان شغوفًا بالفلسفة والطب والكيمياء. عرف عنه المثابرة والاهتمام بالتجارب العملية التي تعتمد على منهج علمي دقيق.
+    </p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Jabir_ibn_Hayyan.jpg/440px-Jabir_ibn_Hayyan.jpg" alt="جابر بن حيان">
 
-    <button class="print-button" onclick="window.print()">طباعة المشروع PDF</button>
+    <h2>إسهاماته في الكيمياء</h2>
+    <p class="avoid-break">
+        يعتبر جابر بن حيان مؤسس علم الكيمياء التجريبية، حيث قام بوضع أسس التقطير، التبلور، والتبخير، وابتكر عدة طرق لفصل المواد الكيميائية. من أهم اكتشافاته:
+    </p>
+    <ul>
+        <li>اكتشاف حمض الكبريتيك والنيتريك واستخدامهما في التحليل الكيميائي.</li>
+        <li>ابتكار أدوات مخبرية مثل المِرجل والأدوات الزجاجية.</li>
+        <li>تجارب على المعادن لتحويل بعضها إلى مواد أخرى، ما ساهم في تطور الخيمياء إلى الكيمياء الحديثة.</li>
+    </ul>
+
+    <h3>جدول إنجازاته العلمية</h3>
+    <table>
+        <tr>
+            <th>الإنجاز</th>
+            <th>التفاصيل</th>
+        </tr>
+        <tr>
+            <td>التقطير</td>
+            <td>وضع أسس عملية التقطير لفصل المواد الكيميائية واسترجاع السوائل.</td>
+        </tr>
+        <tr>
+            <td>الأحماض</td>
+            <td>اكتشاف واستخدام حمض الكبريتيك والنيتريك في التجارب المخبرية.</td>
+        </tr>
+        <tr>
+            <td>الكتب العلمية</td>
+            <td>تأليف أكثر من 200 كتاب في الكيمياء والفلسفة الطبيعية.</td>
+        </tr>
+        <tr>
+            <td>المخاليط والمعادن</td>
+            <td>دراسة خصائص المعادن والمخاليط لتطوير العمليات الكيميائية.</td>
+        </tr>
+    </table>
+
+    <h2>فلسفته العلمية</h2>
+    <p class="avoid-break">
+        كان جابر بن حيان يركز على التجربة العملية والبرهان العلمي، ويرى أن المعرفة لا تتحقق إلا من خلال التجربة الدقيقة والملاحظة المباشرة. استخدم منهجًا تجريبيًا ساعده على تطوير تقنيات الكيمياء الحديثة.
+    </p>
+
+    <h2>أثره على الكيمياء الحديثة</h2>
+    <p class="avoid-break">
+        بفضل إسهاماته، أصبح للكيمياء منهج علمي واضح قائم على التجربة والملاحظة. تقنيات جابر في التقطير والتبلور واكتشاف الأحماض أسست للعديد من التطبيقات في المختبرات الحديثة، كما ساعدت في تطور الصناعات الكيميائية والصيدلانية.
+    </p>
+
+    <h2>خاتمة</h2>
+    <p class="avoid-break">
+        يمثل جابر بن حيان نموذجًا للعالم المبدع الذي جمع بين النظرية والتطبيق، ومؤسّس علم الكيمياء الحديث. إرثه العلمي يبقى مصدر إلهام للأجيال، ويذكرنا بأهمية البحث العلمي والمنهجية في اكتشاف أسرار الطبيعة.
+    </p>
+
+    <h2>صور إضافية للتجارب الكيميائية</h2>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Alchemy_lab_1.jpg/440px-Alchemy_lab_1.jpg" alt="تجارب كيميائية">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Alchemy_lab_2.jpg/440px-Alchemy_lab_2.jpg" alt="أدوات مخبرية">
+
+    <button class="print-btn" onclick="window.print()">حفظ كملف PDF</button>
+</div>
 </body>
 </html>
