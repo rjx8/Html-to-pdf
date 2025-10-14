@@ -1,120 +1,270 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مؤسس علم الكيمياء</title>
-<style>
-    /* إعدادات الصفحة للطباعة A4 */
-    @page {
-        size: A4;
-        margin: 2cm;
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background-color: #fdfdfd;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        page-break-inside: avoid;
-    }
-
-    h1 {
-        color: #2c3e50;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    h2 {
-        color: #2980b9;
-        text-align: right;
-        margin-top: 30px;
-        margin-bottom: 15px;
-    }
-
-    p {
-        text-align: justify;
-        margin-bottom: 15px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        page-break-inside: avoid;
-    }
-
-    th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: center;
-    }
-
-    .print-button {
-        display: block;
-        width: 220px;
-        margin: 30px auto;
-        padding: 10px 0;
-        background-color: #3498db;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-    }
-
-    .print-button:hover {
-        background-color: #2980b9;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث عن مؤسس علم الكيمياء</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'arabic': ['Noto Sans Arabic', 'Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans Arabic', 'Amiri', serif;
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            @page {
+                size: A4;
+                margin: 2cm 1.5cm;
+            }
+            
+            body {
+                font-size: 12pt;
+                line-height: 1.6;
+                color: #000;
+                background: white;
+            }
+            
+            .main-container {
+                max-width: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            h1 {
+                font-size: 18pt;
+                margin-bottom: 1cm;
+            }
+            
+            h2 {
+                font-size: 14pt;
+                margin: 0.8cm 0 0.4cm 0;
+            }
+            
+            h3 {
+                font-size: 12pt;
+                margin: 0.6cm 0 0.3cm 0;
+            }
+            
+            p {
+                margin-bottom: 0.5cm;
+                text-align: justify;
+            }
+            
+            .sidebar-title {
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                position: absolute;
+                right: 0;
+                background: #f3f4f6;
+                padding: 0.5cm;
+                height: 100%;
+                width: 1.5cm;
+                font-weight: bold;
+                font-size: 10pt;
+            }
+        }
+        
+        .dark-mode {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+    </style>
 </head>
-<body>
-<div class="container">
-    <h1>مؤسس علم الكيمياء</h1>
 
-    <h2>نشأته وتعليمه</h2>
-    <p>جابر بن حيان، الذي عاش في القرن الثامن الميلادي في مدينة طوس، يُعتبر رائد الكيمياء. نشأ في بيئة علمية، حيث كان والده يعمل في العلوم الدينية والطبيعية، مما أثر على شغفه بالعلم منذ الصغر. تلقى تعليمه الأولي في العلوم الدينية واللغة، ومن ثم اتجه لدراسة الكيمياء والصيدلة والتجارب العلمية، وجمع بين المعرفة النظرية والخبرة العملية.</p>
+<body class="bg-gray-50 text-gray-900 font-arabic leading-relaxed">
+    <!-- Dark mode detection -->
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark-mode');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark-mode');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark-mode');
+            }
+        });
+    </script>
 
-    <h2>إسهاماته العلمية</h2>
-    <p>ساهم جابر بن حيان في تطوير أدوات وتجارب الكيمياء، وابتكر العديد من المعدات المخبرية التي لا تزال تُستخدم بشكل مشابه حتى اليوم. اكتشف مواد كيميائية جديدة مثل الكبريتات والنيترات، ووضع أسس المعادلات لتفاعلات التحليل الكيميائي. كما أسس منهجية التجربة العلمية التي تعتمد على الدقة والملاحظة والنقل العلمي.</p>
+    <!-- Print Button -->
+    <div class="no-print fixed top-4 left-4 z-50">
+        <button onclick="window.print()" 
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 002 2z"/>
+            </svg>
+            طباعة وحفظ PDF
+        </button>
+    </div>
 
-    <h2>أثره على الكيمياء الحديثة</h2>
-    <p>لعب جابر دوراً محورياً في تحويل الكيمياء من مجرد ممارسة صوفية أو سحرية إلى علم قائم على التجربة والملاحظة. أثر ذلك في تطور الكيمياء في العصور الوسطى وأوروبا لاحقاً، وأصبح نموذجاً للعلماء الذين جاءوا بعده.</p>
+    <div class="main-container max-w-4xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg min-h-screen">
+        <!-- العنوان الرئيسي -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 border-b-4 border-blue-600 pb-4 inline-block">
+                جابر بن حيان
+            </h1>
+            <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
+                مؤسس علم الكيمياء الحديث
+            </h2>
+        </div>
 
-    <h2>جدول إنجازاته</h2>
-    <table>
-        <tr>
-            <th>المجال</th>
-            <th>الإسهام</th>
-        </tr>
-        <tr>
-            <td>المعدات المخبرية</td>
-            <td>ابتكار أواني وأجهزة مخبرية حديثة</td>
-        </tr>
-        <tr>
-            <td>المواد الكيميائية</td>
-            <td>اكتشاف الكبريتات والنيترات</td>
-        </tr>
-        <tr>
-            <td>المنهجية العلمية</td>
-            <td>تطوير منهجية التجربة والملاحظة الدقيقة</td>
-        </tr>
-    </table>
+        <!-- المقدمة -->
+        <div class="mb-8">
+            <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+                يُعتبر أبو موسى جابر بن حيان الأزدي الكوفي، المعروف في الغرب باسم "جيبر" (Geber)، من أعظم العلماء في التاريخ الإسلامي، وهو الذي أرسى الأسس العلمية لعلم الكيمياء الحديث. عاش في القرن الثامن الميلادي (721-815م) وقدم إسهامات جوهرية غيّرت مجرى تطور العلوم الطبيعية. يُطلق عليه لقب "أبو الكيمياء" و"أول من وضع الأسس العلمية لعلم الكيمياء" لما قدمه من ابتكارات ومنهجيات علمية رائدة.
+            </p>
+        </div>
 
-    <h2>خاتمة</h2>
-    <p>يبقى جابر بن حيان رمزاً للعلم والتجربة، ومؤسساً للنهج العلمي في الكيمياء. إسهاماته شكلت حجر الأساس الذي اعتمد عليه العلماء لتطوير علم الكيمياء الحديث، وجعلت منه شخصية تاريخية خالدة في علوم الكيمياء.</p>
+        <!-- النشأة والحياة -->
+        <div class="mb-8 relative">
+            <div class="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-blue-600">
+                <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 pr-4">النشأة والحياة المبكرة</h3>
+            </div>
+            <div class="pr-8 mt-4">
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    وُلد جابر بن حيان في مدينة طوس بخراسان (إيران حالياً)، ونشأ في عائلة من قبيلة الأزد اليمنية. انتقل مع عائلته إلى الكوفة في العراق، حيث تلقى تعليمه الأولي. كان والده حيان بن عبد الله من المؤيدين للدولة العباسية، مما أتاح لجابر فرصة الاقتراب من البلاط العباسي والاستفادة من المكتبات الغنية والبيئة العلمية المزدهرة في بغداد.
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    تتلمذ جابر على يد الإمام جعفر الصادق، الذي كان عالماً موسوعياً في الفلسفة والعلوم الطبيعية. هذا التلمذة أثرت بشكل كبير على تكوينه العلمي وفلسفته في البحث والتجريب. كما استفاد من معارف العلماء اليونانيين والفرس والهنود، مما جعله يجمع بين التراث العلمي للحضارات المختلفة ويبني عليه.
+                </p>
+            </div>
+        </div>
 
-    <button class="print-button" onclick="window.print()">احفظ كملف PDF</button>
-</div>
+        <!-- الإنجازات العلمية -->
+        <div class="mb-8 relative">
+            <div class="bg-green-50 dark:bg-green-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-green-600">
+                <h3 class="text-xl font-bold text-green-800 dark:text-green-300 pr-4">الإنجازات والاكتشافات العلمية</h3>
+            </div>
+            <div class="pr-8 mt-4">
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">المنهج العلمي في الكيمياء</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    كان جابر بن حيان أول من أدخل المنهج التجريبي المنظم في علم الكيمياء. رفض الاكتفاء بالنظريات المجردة وأكد على ضرورة التجريب والملاحظة المباشرة. وضع قواعد أساسية للتجريب الكيميائي، منها: دقة الملاحظة، توثيق النتائج، تكرار التجارب للتأكد من صحة النتائج، واستخدام الأدوات المناسبة للقياس.
+                </p>
+
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">اكتشاف الأحماض والقلويات</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    يُنسب إلى جابر اكتشاف وتحضير العديد من الأحماض المهمة، بما في ذلك حمض الكبريتيك (زيت الزاج)، حمض النيتريك (ماء الفضة)، وحمض الهيدروكلوريك (روح الملح). كما طور طرقاً لتحضير الماء الملكي (Aqua Regia) الذي يستطيع إذابة الذهب. هذه الاكتشافات كانت ثورية في عصرها وما زالت تُستخدم في الصناعات الحديثة.
+                </p>
+
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الأدوات والمعدات المختبرية</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    ابتكر جابر العديد من الأدوات والمعدات المختبرية التي ما زالت تُستخدم حتى اليوم، مثل الإنبيق (الأنبوب المقطر)، المقطرة، الخلايا التحليلية، والميزان الحساس. كما طور تقنيات التقطير، التبخير، التبلور، والترشيح. هذه الأدوات والتقنيات شكلت الأساس للمختبرات الكيميائية الحديثة.
+                </p>
+            </div>
+        </div>
+
+        <!-- النظريات والمؤلفات - بداية الصفحة الثانية -->
+        <div class="page-break mb-8 relative">
+            <div class="bg-purple-50 dark:bg-purple-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-purple-600">
+                <h3 class="text-xl font-bold text-purple-800 dark:text-purple-300 pr-4">النظريات والمؤلفات</h3>
+            </div>
+            <div class="pr-8 mt-4">
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">نظرية الميزان</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    وضع جابر نظرية "الميزان" التي تقوم على فكرة أن جميع المواد تتكون من خليط من العناصر الأساسية بنسب محددة. هذه النظرية كانت سابقة لعصرها وتحتوي على بذور قانون النسب الثابتة في الكيمياء الحديثة. كان يؤمن بأن تغيير نسب هذه العناصر يمكن أن يؤدي إلى تحويل مادة إلى أخرى.
+                </p>
+
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">نظرية الكبريت والزئبق</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    طور جابر نظرية تقول بأن جميع المعادن تتكون من كبريت وزئبق بنسب مختلفة. هذه النظرية، رغم عدم دقتها بالمعايير الحديثة، كانت محاولة رائدة لتفسير تكوين المواد وخصائصها. أضاف لاحقاً عنصر الملح كعنصر ثالث، مكوناً ما يُعرف بنظرية العناصر الثلاثة.
+                </p>
+
+                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">المؤلفات والتراث العلمي</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    ألف جابر أكثر من 100 كتاب ورسالة في مختلف فروع العلم، بما في ذلك الكيمياء، الفلك، الرياضيات، الطب، والفلسفة. من أشهر مؤلفاته: "كتاب السموم ودفع مضارها"، "كتاب الخواص الكبير"، "كتاب أصول الكيمياء"، و"كتاب الرحمة في الطب والحكمة". هذه المؤلفات انتشرت في العالم الإسلامي وترجمت إلى اللاتينية والعبرية واليونانية.
+                </p>
+            </div>
+        </div>
+
+        <!-- التأثير على العلم الحديث -->
+        <div class="mb-8 relative">
+            <div class="bg-orange-50 dark:bg-orange-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-orange-600">
+                <h3 class="text-xl font-bold text-orange-800 dark:text-orange-300 pr-4">التأثير على العلم الحديث</h3>
+            </div>
+            <div class="pr-8 mt-4">
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    كان لأعمال جابر بن حيان تأثير عميق على تطور العلوم في أوروبا خلال القرون الوسطى وعصر النهضة. ترجمت كتبه إلى اللاتينية في القرن الثاني عشر، وأصبحت مراجع أساسية في الجامعات الأوروبية. تأثر به علماء أوروبيون مشهورون مثل روجر بيكون وألبرتوس ماغنوس، اللذان اعتبراه أستاذاً لهما في الكيمياء.
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    منهجه العلمي في التجريب والملاحظة أثر على تطور المنهج العلمي الحديث. مبادئه في دقة القياس، توثيق التجارب، والتحقق من النتائج أصبحت جزءاً لا يتجزأ من البحث العلمي المعاصر. كما أن اكتشافاته في مجال الأحماض والتقطير ما زالت تُستخدم في الصناعات الكيميائية والصيدلانية الحديثة.
+                </p>
+            </div>
+        </div>
+
+        <!-- الخاتمة -->
+        <div class="mb-8 relative">
+            <div class="bg-red-50 dark:bg-red-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-red-600">
+                <h3 class="text-xl font-bold text-red-800 dark:text-red-300 pr-4">الخاتمة والإرث الخالد</h3>
+            </div>
+            <div class="pr-8 mt-4">
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    يبقى جابر بن حيان رمزاً للعبقرية العلمية والريادة في البحث والاكتشاف. إرثه العلمي يتجاوز حدود الزمن والجغرافيا، ويُذكرنا بالدور المحوري الذي لعبته الحضارة الإسلامية في تطوير العلوم وإرساء أسس المعرفة الحديثة. من خلال منهجه التجريبي الصارم واكتشافاته الرائدة، وضع جابر الأسس التي قامت عليها الكيمياء الحديثة، مما يجعله بحق أبا هذا العلم ومؤسسه الأول.
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                    إن دراسة حياة وإنجازات جابر بن حيان تُظهر لنا أهمية الفضول العلمي، والمثابرة في البحث، والإيمان بقوة التجريب والملاحظة في كشف أسرار الطبيعة. كما تُذكرنا بأن العلم لا يعرف حدوداً جغرافية أو ثقافية، وأن الإسهامات العلمية الحقيقية تنتمي إلى الإنسانية جمعاء وتستفيد منها الأجيال المتعاقبة.
+                </p>
+            </div>
+        </div>
+
+        <!-- معلومات إضافية -->
+        <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 text-center">معلومات سريعة</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">سنة الولادة:</strong> 721م / 103هـ
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">سنة الوفاة:</strong> 815م / 200هـ
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">مكان الولادة:</strong> طوس، خراسان
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">الاسم باللاتينية:</strong> Geber
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">التخصص:</strong> الكيمياء، الطب، الفلك
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded">
+                    <strong class="text-blue-600 dark:text-blue-400">عدد المؤلفات:</strong> أكثر من 100 كتاب
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تحسين تجربة الطباعة
+        window.addEventListener('beforeprint', function() {
+            document.body.style.fontSize = '12pt';
+            document.body.style.lineHeight = '1.6';
+        });
+        
+        window.addEventListener('afterprint', function() {
+            document.body.style.fontSize = '';
+            document.body.style.lineHeight = '';
+        });
+    </script>
 </body>
 </html>
