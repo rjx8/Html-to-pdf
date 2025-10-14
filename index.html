@@ -1,299 +1,136 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مقسم ملفات PDF</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#5D5CDE',
-                    }
-                }
+    <title>مؤسس الكيمياء الحديث</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        /* إعداد الصفحة للطباعة A4 */
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #222;
+        }
+
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 2cm;
+            margin: 1cm auto;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #0B3D91;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 1rem;
+            font-size: 16px;
+        }
+
+        .print-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #0B3D91;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* عند الطباعة نخفي الزر */
+        @media print {
+            .print-button {
+                display: none;
+            }
+            body, .page {
+                margin: 0;
+                box-shadow: none;
             }
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .dark {
-            background-color: #181818;
+
+        /* تقسيم المحتوى إلى صفحات عند الطباعة */
+        .page-break {
+            page-break-after: always;
         }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
-
-<div class="min-h-screen py-8 px-4">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-primary mb-2">مقسم ملفات PDF</h1>
-            <p class="text-gray-600 dark:text-gray-400">قسم ملف PDF واحد إلى عدة ملفات منفصلة (حتى 5 ملفات)</p>
-        </div>
-
-        <!-- Upload Section -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
-            <label for="pdfFile" class="block text-lg font-semibold mb-4">اختر ملف PDF:</label>
-            <div class="relative">
-                <input type="file" id="pdfFile" accept=".pdf" class="hidden">
-                <div id="uploadArea" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors">
-                    <div class="text-6xl text-gray-400 mb-4">📄</div>
-                    <p class="text-lg text-gray-600 dark:text-gray-400">اضغط هنا لاختيار ملف PDF</p>
-                </div>
-            </div>
-            <div id="fileInfo" class="hidden mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <p class="font-semibold text-blue-800 dark:text-blue-200">معلومات الملف:</p>
-                <p id="fileName" class="text-blue-600 dark:text-blue-300"></p>
-                <p id="pageCount" class="text-blue-600 dark:text-blue-300"></p>
-            </div>
-        </div>
-
-        <!-- Split Configuration -->
-        <div id="splitConfig" class="hidden bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
-            <h2 class="text-xl font-bold mb-4">تكوين التقسيم:</h2>
-            <div id="rangeInputs" class="space-y-4">
-                <!-- Range inputs will be added dynamically -->
-            </div>
-            <button id="addRange" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                إضافة نطاق جديد
-            </button>
-        </div>
-
-        <!-- Action Buttons -->
-        <div id="actionButtons" class="hidden text-center">
-            <button id="splitBtn" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-purple-600 transition-colors font-semibold text-lg">
-                تقسيم الملف
-            </button>
-        </div>
-
-        <!-- Progress -->
-        <div id="progress" class="hidden mt-6">
-            <div class="bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                <div id="progressBar" class="bg-primary h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
-            <p id="progressText" class="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">جاري المعالجة...</p>
-        </div>
-
-        <!-- Results -->
-        <div id="results" class="hidden mt-6">
-            <h3 class="text-xl font-bold mb-4">الملفات المقسمة:</h3>
-            <div id="downloadLinks" class="space-y-2">
-                <!-- Download links will be added here -->
-            </div>
-        </div>
+<body>
+    <div class="page">
+        <h1>مؤسس الكيمياء الحديث</h1>
+        <p>
+            يُعتبر <strong>روبرت بويل</strong> (1627-1691) أحد أبرز الشخصيات في تأسيس علم الكيمياء الحديث، حيث قام بتجارب علمية دقيقة، ورفض النظريات القديمة المبنية على الفلسفة فقط. 
+            كان له دور كبير في فصل الكيمياء عن الفلسفة الطبيعية، ووضع أساسًا للطريقة العلمية التجريبية.
+        </p>
+        <h2>حياته العلمية</h2>
+        <p>
+            وُلد روبرت بويل في أيرلندا لعائلة غنية، واهتم منذ صغره بالعلوم والرياضيات. كتب العديد من المؤلفات التي تركز على التجربة والملاحظة الدقيقة. 
+            أشهر اكتشافاته تشمل قانون بويل للغازات، الذي يوضح العلاقة بين الضغط والحجم عند درجة حرارة ثابتة.
+        </p>
+        <h2>مساهماته في الكيمياء</h2>
+        <p>
+            ساهم بويل في تطوير الكيمياء التجريبية من خلال:
+            <ul>
+                <li>استخدام الأجهزة العلمية الدقيقة للتجارب.</li>
+                <li>تأكيد على أهمية القياس والتسجيل الدقيق للنتائج.</li>
+                <li>تحدي النظريات القديمة حول العناصر الأربعة (الهواء، النار، الماء، الأرض).</li>
+            </ul>
+        </p>
+        <div class="page-break"></div>
     </div>
-</div>
 
-<!-- Custom Modal for alerts -->
-<div id="alertModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-        <p id="alertMessage" class="text-gray-700 dark:text-gray-300 mb-4"></p>
-        <div class="flex justify-end">
-            <button id="alertOk" class="px-4 py-2 bg-primary text-white hover:bg-purple-600 rounded">موافق</button>
-        </div>
+    <div class="page">
+        <h2>أعماله وكتبه</h2>
+        <p>
+            كتب روبرت بويل أكثر من 40 كتابًا في الكيمياء والفيزياء والفلسفة الطبيعية. من أبرز أعماله:
+            <ul>
+                <li>كتاب "The Sceptical Chymist" الذي اعتبره الكثيرون بداية الكيمياء الحديثة.</li>
+                <li>أبحاث عن ضغط الغازات وسلوك السوائل.</li>
+            </ul>
+        </p>
+        <h2>أثره على العلم الحديث</h2>
+        <p>
+            تأثير بويل على الكيمياء الحديثة كان هائلًا، حيث شجع العلماء على التجربة والقياس بدلاً من الاعتماد على التخمين والنظريات القديمة. 
+            فلسفته العلمية ساعدت على تطوير العلوم التجريبية بشكل عام، ووضع أسس الكيمياء كما نعرفها اليوم.
+        </p>
+        <div class="page-break"></div>
     </div>
-</div>
 
-<script>
-// Dark mode detection
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.classList.add('dark');
-}
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    if (event.matches) {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-});
+    <div class="page">
+        <h2>خاتمة</h2>
+        <p>
+            روبرت بويل مثال رائع على كيف يمكن للشغف بالعلم والملاحظة الدقيقة أن يغير مسار المعرفة البشرية. 
+            إن إنجازاته في الكيمياء وضعت الأسس للعلوم التجريبية الحديثة، وجعلت الكيمياء علماً دقيقاً يمكن الاعتماد عليه في التجارب والبحوث.
+        </p>
+    </div>
 
-// Custom alert function
-function showAlert(message) {
-    document.getElementById('alertMessage').textContent = message;
-    document.getElementById('alertModal').classList.remove('hidden');
-}
-
-document.getElementById('alertOk').addEventListener('click', () => {
-    document.getElementById('alertModal').classList.add('hidden');
-});
-
-let pdfDoc = null;
-let totalPages = 0;
-let rangeCount = 0;
-
-// File upload handling
-document.getElementById('uploadArea').addEventListener('click', () => {
-    document.getElementById('pdfFile').click();
-});
-
-document.getElementById('pdfFile').addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (file.type !== 'application/pdf') {
-        showAlert('يرجى اختيار ملف PDF صحيح');
-        return;
-    }
-
-    try {
-        const arrayBuffer = await file.arrayBuffer();
-        pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-        totalPages = pdfDoc.getPageCount();
-
-        // Show file info
-        document.getElementById('fileName').textContent = `اسم الملف: ${file.name}`;
-        document.getElementById('pageCount').textContent = `عدد الصفحات: ${totalPages}`;
-        document.getElementById('fileInfo').classList.remove('hidden');
-
-        // Initialize with first range
-        rangeCount = 0;
-        document.getElementById('rangeInputs').innerHTML = '';
-        addNewRange();
-        
-        document.getElementById('splitConfig').classList.remove('hidden');
-        document.getElementById('actionButtons').classList.remove('hidden');
-    } catch (error) {
-        showAlert('حدث خطأ في قراءة ملف PDF');
-        console.error('Error loading PDF:', error);
-    }
-});
-
-// Add new range
-document.getElementById('addRange').addEventListener('click', addNewRange);
-
-function addNewRange() {
-    if (rangeCount >= 5) {
-        showAlert('الحد الأقصى هو 5 ملفات');
-        return;
-    }
-
-    rangeCount++;
-    const rangeDiv = document.createElement('div');
-    rangeDiv.className = 'flex items-center gap-4 p-4 bg-white dark:bg-gray-700 rounded-lg';
-    rangeDiv.innerHTML = `
-        <span class="font-semibold text-gray-700 dark:text-gray-300">ملف ${rangeCount}:</span>
-        <div class="flex items-center gap-2">
-            <label class="text-sm text-gray-600 dark:text-gray-400">من صفحة:</label>
-            <input type="number" class="from-page w-20 px-2 py-1 border rounded text-base" min="1" max="${totalPages}" value="${rangeCount === 1 ? 1 : ''}">
-        </div>
-        <div class="flex items-center gap-2">
-            <label class="text-sm text-gray-600 dark:text-gray-400">إلى صفحة:</label>
-            <input type="number" class="to-page w-20 px-2 py-1 border rounded text-base" min="1" max="${totalPages}" value="">
-        </div>
-        <button onclick="removeRange(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm">حذف</button>
-    `;
-
-    document.getElementById('rangeInputs').appendChild(rangeDiv);
-
-    // Update add button visibility
-    if (rangeCount >= 5) {
-        document.getElementById('addRange').classList.add('hidden');
-    }
-}
-
-function removeRange(button) {
-    button.parentElement.remove();
-    rangeCount--;
-    
-    // Update range numbers
-    const ranges = document.querySelectorAll('#rangeInputs > div');
-    ranges.forEach((range, index) => {
-        range.querySelector('span').textContent = `ملف ${index + 1}:`;
-    });
-
-    // Show add button if under limit
-    if (rangeCount < 5) {
-        document.getElementById('addRange').classList.remove('hidden');
-    }
-}
-
-// Split PDF
-document.getElementById('splitBtn').addEventListener('click', async () => {
-    const ranges = [];
-    const rangeElements = document.querySelectorAll('#rangeInputs > div');
-
-    if (rangeElements.length === 0) {
-        showAlert('يرجى إضافة نطاق واحد على الأقل');
-        return;
-    }
-
-    // Validate ranges
-    for (let i = 0; i < rangeElements.length; i++) {
-        const element = rangeElements[i];
-        const fromPage = parseInt(element.querySelector('.from-page').value);
-        const toPage = parseInt(element.querySelector('.to-page').value);
-
-        if (!fromPage || !toPage) {
-            showAlert(`يرجى ملء جميع الحقول للملف ${i + 1}`);
-            return;
-        }
-
-        if (fromPage > toPage) {
-            showAlert(`الصفحة الأولى يجب أن تكون أصغر من أو تساوي الصفحة الأخيرة للملف ${i + 1}`);
-            return;
-        }
-
-        if (fromPage < 1 || toPage > totalPages) {
-            showAlert(`نطاق الصفحات للملف ${i + 1} خارج نطاق الملف (1-${totalPages})`);
-            return;
-        }
-
-        ranges.push({ from: fromPage, to: toPage, index: i + 1 });
-    }
-
-    // Show progress
-    document.getElementById('progress').classList.remove('hidden');
-    document.getElementById('results').classList.add('hidden');
-    document.getElementById('downloadLinks').innerHTML = '';
-
-    try {
-        for (let i = 0; i < ranges.length; i++) {
-            const range = ranges[i];
-            
-            // Update progress
-            const progress = ((i + 1) / ranges.length) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `معالجة الملف ${i + 1} من ${ranges.length}...`;
-
-            // Create new PDF with specified pages
-            const newPdf = await PDFLib.PDFDocument.create();
-            const pages = await newPdf.copyPages(pdfDoc, Array.from({length: range.to - range.from + 1}, (_, i) => range.from - 1 + i));
-            
-            pages.forEach(page => newPdf.addPage(page));
-
-            // Generate PDF bytes
-            const pdfBytes = await newPdf.save();
-            
-            // Create download link
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const filename = `ملف_${range.index}_صفحة_${range.from}_الى_${range.to}.pdf`;
-
-            const downloadDiv = document.createElement('div');
-            downloadDiv.className = 'flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg';
-            downloadDiv.innerHTML = `
-                <span class="text-green-800 dark:text-green-200">${filename}</span>
-                <a href="${url}" download="${filename}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">تحميل</a>
-            `;
-
-            document.getElementById('downloadLinks').appendChild(downloadDiv);
-        }
-
-        document.getElementById('progressText').textContent = 'تم الانتهاء بنجاح!';
-        document.getElementById('results').classList.remove('hidden');
-
-    } catch (error) {
-        showAlert('حدث خطأ أثناء تقسيم الملف');
-        console.error('Error splitting PDF:', error);
-    }
-});
-
-</script>
-
+    <button class="print-button" onclick="window.print()">طباعة المشروع PDF</button>
 </body>
 </html>
