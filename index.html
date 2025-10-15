@@ -3,312 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع قصة يوسف عليه السلام</title>
+    <title>كرة القدم - التربية البدنية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @media print {
             @page {
                 size: A4;
-                margin: 1.2cm;
+                margin: 1.5cm 1.5cm;
             }
-            
-            body {
-                font-size: 11pt;
-                line-height: 1.4;
-                font-family: 'Amiri', serif;
-            }
-            
-            .page-break {
-                page-break-before: always;
-                padding-top: 0.5cm;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            h1 {
-                font-size: 20pt;
-                margin-bottom: 0.8cm;
-                text-align: center;
-            }
-            
-            .side-heading {
-                font-size: 14pt;
-                margin: 0.4cm 0 0.3cm 0;
-                border-right: 4px solid #059669;
-                padding-right: 0.4cm;
-                font-weight: bold;
-                color: #047857;
-            }
-            
-            .sub-heading {
-                font-size: 12pt;
-                margin: 0.3cm 0 0.2cm 0;
-                font-weight: 600;
-                color: #374151;
-            }
-            
-            p {
-                margin-bottom: 0.3cm;
-                text-align: justify;
-            }
-            
-            .verse {
-                font-size: 11pt;
-                margin: 0.3cm 0;
-                padding: 0.3cm;
-                background: #F0FDF4;
-                border-right: 3px solid #059669;
-                font-style: italic;
-            }
-            
-            .info-box {
-                margin: 0.2cm 0;
-                padding: 0.4cm;
-                page-break-inside: avoid;
-            }
-            
-            ul, ol {
-                margin: 0.15cm 0;
-            }
-            
-            li {
-                margin-bottom: 0.1cm;
-            }
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; }
         }
-        
         body {
             font-family: 'Amiri', 'Noto Sans Arabic', serif;
             line-height: 1.6;
         }
-        
-        .main-title {
-            text-align: center;
-            color: #047857;
-            font-weight: 700;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #059669;
-            padding-bottom: 15px;
-            display: inline-block;
-            width: 100%;
-        }
-        
-        .side-heading {
-            border-right: 4px solid #059669;
-            padding-right: 15px;
-            margin: 20px 0 10px 0;
-            font-weight: 600;
-            color: #047857;
+        .section-title {
+            background: #1e40af;
+            color: white;
+            padding: 12px 20px;
+            margin: 25px 0 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-weight: bold;
             font-size: 18px;
         }
-        
-        .sub-heading {
-            font-weight: 600;
-            color: #374151;
-            margin: 15px 0 8px 0;
-        }
-        
-        .verse {
-            background: #F0FDF4;
+        .content-box {
+            background: #f8fafc;
             padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #059669;
-            border-radius: 8px 0 0 8px;
-            font-style: italic;
-            font-size: 16px;
-            color: #065F46;
+            margin: 15px 0;
+            border-right: 4px solid #dc2626;
+            border-radius: 0 8px 8px 0;
         }
-        
-        .info-box {
-            background: #FFFBEB;
+        .football-field {
+            width: 100%;
+            height: 300px;
+            background: #16a34a;
+            border: 3px solid #fff;
+            position: relative;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+        .center-spot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+        }
+        .goal-box {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 130px;
+            height: 180px;
+            border: 2px solid white;
+        }
+        .goal-left { right: 0; }
+        .goal-right { left: 0; }
+        .goal-small {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 120px;
+            border: 2px solid white;
+        }
+        .goal-small-left { right: 0; }
+        .goal-small-right { left: 0; }
+        .penalty-spot {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+        }
+        .penalty-left { right: 85px; }
+        .penalty-right { left: 85px; }
+        .football {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .football::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid #000;
+            border-radius: 50%;
+        }
+        .football::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            border-radius: 50%;
+        }
+        .formation-diagram {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
             padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #D97706;
-            border-radius: 8px 0 0 8px;
+            background: #f1f5f9;
+            border-radius: 8px;
         }
-        
-        .highlight-box {
-            background: #F0F9FF;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #3B82F6;
-            border-radius: 8px 0 0 8px;
+        .player {
+            background: #1e40af;
+            color: white;
+            padding: 8px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 12px;
         }
-        
-        .lesson-box {
-            background: #FEF7FF;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #8B5CF6;
-            border-radius: 8px 0 0 8px;
-        }
-        
-        .story-box {
-            background: #F8FAFC;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #64748B;
-            border-radius: 8px 0 0 8px;
-        }
+        .goalkeeper { background: #dc2626; }
     </style>
 </head>
-<body class="bg-white text-black" dir="rtl">
+<body class="bg-gray-50 text-gray-800">
 
     <!-- زر الطباعة -->
-    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+    <div class="no-print fixed top-4 left-4 z-50">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200">
             🖨️ طباعة المشروع
         </button>
     </div>
 
-    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
+    <div class="max-w-4xl mx-auto p-8 bg-white shadow-lg min-h-screen">
 
-        <!-- الصفحة الأولى -->
-        <div>
-            <h1 class="main-title" style="font-size: 32px;">
-                قصة يوسف عليه السلام
-                <br>
-                <span style="font-size: 20px; color: #6B7280;">أحسن القصص وأعظم العبر</span>
-            </h1>
+        <!-- العنوان الرئيسي -->
+        <div class="text-center mb-12 border-b-4 border-green-600 pb-6">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">كرة القدم</h1>
+            <h2 class="text-2xl font-semibold text-green-600">رياضة الجماهير والمهارات</h2>
+        </div>
 
-            <div class="side-heading">مقدمة القصة</div>
-            
-            <p>قصة يوسف عليه السلام هي إحدى أجمل القصص في القرآن الكريم، وقد خصها الله تعالى بسورة كاملة تحمل اسمه. قال الله تعالى في مطلع السورة: "نَحْنُ نَقُصُّ عَلَيْكَ أَحْسَنَ الْقَصَصِ"، مما يدل على أهميتها العظيمة وما تحتويه من دروس وعبر.</p>
-            
-            <p>تبدأ القصة برؤيا يوسف الصادقة وتنتهي بتحقيقها، وتمر عبر محطات مليئة بالابتلاءات والصبر والحكمة، لتكون مدرسة متكاملة في الأخلاق والإيمان والتعامل مع تقلبات الحياة.</p>
+        <!-- المقدمة -->
+        <div class="mb-8">
+            <div class="section-title">مقدمة عن كرة القدم</div>
+            <p class="text-lg text-justify mb-4">
+                كرة القدم هي الرياضة الأكثر شعبية في العالم، يلعبها أكثر من 250 مليون لاعب في أكثر من 200 دولة. تعتمد على العمل الجماعي، اللياقة البدنية، والمهارات الفردية في التمرير، التسديد، والتحكم بالكرة.
+            </p>
+        </div>
 
-            <div class="verse">
-                "إِذْ قَالَ يُوسُفُ لِأَبِيهِ يَا أَبَتِ إِنِّي رَأَيْتُ أَحَدَ عَشَرَ كَوْكَبًا وَالشَّمْسَ وَالْقَمَرَ رَأَيْتُهُمْ لِي سَاجِدِينَ"
-            </div>
-
-            <div class="side-heading">أحداث القصة الرئيسية</div>
+        <!-- أساسيات كرة القدم -->
+        <div class="page-break mb-8">
+            <div class="section-title">أساسيات كرة القدم</div>
             
-            <div class="sub-heading">الرؤيا ونصيحة الأب</div>
-            <p>رأى يوسف عليه السلام وهو صغير رؤيا عجيبة، فقصها على أبيه يعقوب عليه السلام، الذي نصحه بعدم قصها على إخوته خوفاً من حسدهم وكيدهم. هذا يعلمنا أهمية الكتمان والحكمة في بعض الأمور.</p>
-            
-            <div class="sub-heading">حسد الإخوة والمؤامرة</div>
-            <p>شعر إخوة يوسف بالغيرة من محبة أبيهم الزائدة له، فتآمروا عليه وقرروا إلقاءه في البئر. هذا الحدث يُظهر خطورة الحسد وكيف يمكن أن يدفع الإنسان لأعمال شنيعة حتى مع أقرب الناس إليه.</p>
-            
-            <div class="story-box">
-                <strong>المحطات الرئيسية في القصة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>الرؤيا وتحذير الأب</li>
-                    <li>مؤامرة الإخوة وإلقاؤه في البئر</li>
-                    <li>بيعه في سوق العبيد في مصر</li>
-                    <li>محاولة إغواء امرأة العزيز له</li>
-                    <li>دخوله السجن ظلماً</li>
-                    <li>تفسير أحلام الملك</li>
-                    <li>تولي منصب وزير المالية</li>
-                    <li>لقاؤه مع إخوته وعفوه عنهم</li>
+            <div class="content-box">
+                <h3 class="font-bold text-lg mb-3 text-red-600">القواعد الأساسية:</h3>
+                <ul class="list-disc pr-6 space-y-2">
+                    <li>مباراة كرة القدم تستمر 90 دقيقة (شوطين × 45 دقيقة)</li>
+                    <li>كل فريق يتكون من 11 لاعباً (10 لاعبين + حارس مرمى)</li>
+                    <li>الفوز يحصل على 3 نقاط، التعادل نقطة واحدة، الخسارة صفر</li>
+                    <li>الهدف يسجل عندما تعبر الكرة خط المرمى بالكامل</li>
                 </ul>
             </div>
 
-            <div class="sub-heading">في بيت العزيز</div>
-            <p>اشتراه عزيز مصر وأكرم مثواه، لكن امرأة العزيز راودته عن نفسه فاستعصم وفضل السجن على المعصية. هذا الموقف يُظهر قوة الإيمان وأهمية التمسك بالمبادئ حتى في أصعب الظروف.</p>
+            <!-- رسم ملعب كرة القدم -->
+            <div class="football-field">
+                <div class="center-circle"></div>
+                <div class="center-spot"></div>
+                <div class="goal-box goal-left"></div>
+                <div class="goal-box goal-right"></div>
+                <div class="goal-small goal-small-left"></div>
+                <div class="goal-small goal-small-right"></div>
+                <div class="penalty-spot penalty-left"></div>
+                <div class="penalty-spot penalty-right"></div>
+                <div class="football"></div>
+            </div>
+            <p class="text-center text-sm text-gray-600 mb-6">رسم تخطيطي لملعب كرة القدم</p>
+        </div>
 
-            <div class="verse">
-                "قَالَ رَبِّ السِّجْنُ أَحَبُّ إِلَيَّ مِمَّا يَدْعُونَنِي إِلَيْهِ وَإِلَّا تَصْرِفْ عَنِّي كَيْدَهُنَّ أَصْبُ إِلَيْهِنَّ وَأَكُن مِّنَ الْجَاهِلِينَ"
+        <!-- المهارات الأساسية -->
+        <div class="page-break mb-8">
+            <div class="section-title">المهارات الأساسية</div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="content-box">
+                    <h4 class="font-bold mb-2">التمرير (Passing)</h4>
+                    <p>نقل الكرة بدقة من لاعب لآخر باستخدام القدم الداخلية أو الخارجية</p>
+                </div>
+                <div class="content-box">
+                    <h4 class="font-bold mb-2">الاستلام (Control)</h4>
+                    <p>استقبال الكرة والسيطرة عليها باستخدام الصدر، الفخذ، أو القدم</p>
+                </div>
+                <div class="content-box">
+                    <h4 class="font-bold mb-2">التسديد (Shooting)</h4>
+                    <p>توجيه الكرة نحو المرمى بقوة ودقة باستخدام مختلف أجزاء القدم</p>
+                </div>
+                <div class="content-box">
+                    <h4 class="font-bold mb-2">المراوغة (Dribbling)</h4>
+                    <p>التحكم بالكرة أثناء الجري وتغيير الاتجاهات لتفادي المنافسين</p>
+                </div>
             </div>
 
-            <div class="sub-heading">في السجن</div>
-            <p>في السجن، أظهر يوسف أخلاقه الحسنة ودعا إلى الله، وفسر أحلام السجناء. هذا يعلمنا أن الداعية الحق لا يتوقف عن دعوته في أي ظرف، وأن الصبر على البلاء مع الاستمرار في العمل الصالح هو سبيل النجاة.</p>
-
-            <div class="sub-heading">تفسير رؤيا الملك</div>
-            <p>عندما رأى الملك رؤيا السبع بقرات، تذكر ساقي الملك يوسف وقدرته على تفسير الأحلام. فسر يوسف الرؤيا وقدم خطة اقتصادية محكمة لمواجهة سنوات الجدب، مما أدى إلى تعيينه وزيراً.</p>
-
-            <div class="side-heading">الحكمة والإدارة</div>
-            
-            <p>أظهر يوسف عليه السلام قدرات إدارية واقتصادية فذة في إدارة خزائن مصر. خطط لسبع سنوات من الرخاء وسبع سنوات من الجدب، وأنقذ مصر والمنطقة من مجاعة شديدة. هذا يعلمنا أهمية التخطيط المستقبلي والإدارة الحكيمة للموارد.</p>
-            
-            <div class="highlight-box">
-                <strong>صفات القائد في شخصية يوسف:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>الأمانة والصدق:</strong> "إِنَّكَ الْيَوْمَ لَدَيْنَا مَكِينٌ أَمِينٌ"</li>
-                    <li><strong>الحكمة والتخطيط:</strong> وضع خطة استراتيجية لـ 14 سنة</li>
-                    <li><strong>العدالة:</strong> طبق القانون حتى على أخيه</li>
-                    <li><strong>التسامح:</strong> عفا عن إخوته وقال "لَا تَثْرِيبَ عَلَيْكُمُ الْيَوْمَ"</li>
-                    <li><strong>التواضع:</strong> نسب الفضل لله في كل إنجازاته</li>
-                </ul>
+            <!-- جدول المهارات -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300 text-sm">
+                    <thead>
+                        <tr class="bg-blue-600 text-white">
+                            <th class="border border-gray-300 p-3">المهارة</th>
+                            <th class="border border-gray-300 p-3">التقنية</th>
+                            <th class="border border-gray-300 p-3">الأهمية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 p-3">التمرير القصير</td>
+                            <td class="border border-gray-300 p-3">باطن القدم</td>
+                            <td class="border border-gray-300 p-3">عالية - للحفاظ على التملك</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-3">التمرير الطويل</td>
+                            <td class="border border-gray-300 p-3">ظهر القدم</td>
+                            <td class="border border-gray-300 p-3">متوسطة - لتغيير اتجاه الهجوم</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 p-3">التسديد</td>
+                            <td class="border border-gray-300 p-3">ظهر القدم/باطن القدم</td>
+                            <td class="border border-gray-300 p-3">عالية جداً - لتسجيل الأهداف</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- الصفحة الثانية -->
-        <div class="page-break">
-            <div class="side-heading">لقاء الإخوة والمصالحة</div>
+        <!-- المراكز والتشكيلات -->
+        <div class="page-break mb-8">
+            <div class="section-title">مراكز اللاعبين والتشكيلات</div>
             
-            <p>عندما اشتد الجدب، جاء إخوة يوسف إلى مصر لشراء الطعام، فعرفهم ولم يعرفوه. تعامل معهم بحكمة وتدرج حتى كشف لهم عن هويته، وعفا عنهم عفواً جميلاً، وطلب منهم إحضار أبيهم وأهلهم للعيش في مصر.</p>
-            
-            <div class="verse">
-                "قَالَ لَا تَثْرِيبَ عَلَيْكُمُ الْيَوْمَ يَغْفِرُ اللَّهُ لَكُمْ وَهُوَ أَرْحَمُ الرَّاحِمِينَ"
+            <div class="content-box mb-6">
+                <h3 class="font-bold text-lg mb-3 text-red-600">مراكز اللاعبين:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-3 bg-blue-100 rounded">
+                        <strong>حارس المرمى</strong>
+                        <p class="text-sm">حماية المرمى</p>
+                    </div>
+                    <div class="text-center p-3 bg-green-100 rounded">
+                        <strong>الدفاع</strong>
+                        <p class="text-sm">منع الهجمات</p>
+                    </div>
+                    <div class="text-center p-3 bg-yellow-100 rounded">
+                        <strong>الوسط</strong>
+                        <p class="text-sm">ربط الدفاع بالهجوم</p>
+                    </div>
+                    <div class="text-center p-3 bg-red-100 rounded">
+                        <strong>الهجوم</strong>
+                        <p class="text-sm">تسجيل الأهداف</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="sub-heading">لم شمل الأسرة</div>
-            <p>التقى يوسف بأبيه يعقوب عليه السلام بعد سنوات طويلة من الفراق، ورفع أبويه على العرش، وخرّ له إخوته سجداً، فتحققت رؤياه التي رآها في صغره. هذا يؤكد أن وعد الله حق وأن الصبر مفتاح الفرج.</p>
+            <!-- رسم تشكيل 4-4-2 -->
+            <h4 class="font-bold mb-3 text-center">تشكيل 4-4-2 الكلاسيكي</h4>
+            <div class="formation-diagram">
+                <div class="player goalkeeper">حارس المرمى</div>
+                <div></div><div></div><div></div>
+                
+                <div class="player">مدافع أيمن</div>
+                <div class="player">مدافع مركزي</div>
+                <div class="player">مدافع مركزي</div>
+                <div class="player">مدافع أيسر</div>
+                
+                <div class="player">وسط ميدان أيمن</div>
+                <div class="player">وسط ميدان دفاعي</div>
+                <div class="player">وسط ميدان هجومي</div>
+                <div class="player">وسط ميدان أيسر</div>
+                
+                <div></div>
+                <div class="player">مهاجم</div>
+                <div class="player">مهاجم</div>
+                <div></div>
+            </div>
+        </div>
 
-            <div class="side-heading">الدروس والعبر المستفادة</div>
+        <!-- اللياقة البدنية -->
+        <div class="page-break mb-8">
+            <div class="section-title">اللياقة البدنية في كرة القدم</div>
             
-            <div class="sub-heading">الصبر والثبات على المبادئ</div>
-            <p>تعلمنا قصة يوسف أن الصبر على البلاء والثبات على المبادئ هما سبيل النجاة والنجاح. رغم كل المحن التي واجهها، لم يتخلَّ يوسف عن إيمانه وأخلاقه، وكان هذا سبب علو مكانته ونجاحه.</p>
-            
-            <div class="sub-heading">العفو والتسامح</div>
-            <p>أروع ما في القصة هو عفو يوسف عن إخوته رغم ما فعلوه به. هذا يعلمنا أن العفو عند المقدرة من أسمى الأخلاق، وأن التسامح يبني الجسور ويصلح النفوس أكثر من الانتقام.</p>
-
-            <div class="lesson-box">
-                <strong>الدروس الأخلاقية من القصة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>العفة والطهارة:</strong> تفضيل السجن على المعصية</li>
-                    <li><strong>الأمانة في العمل:</strong> إخلاص يوسف في جميع المناصب التي تولاها</li>
-                    <li><strong>بر الوالدين:</strong> محبته وطاعته لأبيه يعقوب</li>
-                    <li><strong>العدل والإنصاف:</strong> تطبيق القانون دون محاباة</li>
-                    <li><strong>الدعوة إلى الله:</strong> حتى في أصعب الظروف</li>
-                    <li><strong>الاعتراف بفضل الله:</strong> نسبة النعم إلى الله وحده</li>
-                </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="content-box">
+                    <h4 class="font-bold mb-3 text-green-600">عناصر اللياقة المطلوبة:</h4>
+                    <ul class="list-disc pr-6 space-y-2">
+                        <li><strong>التحمل القلبي التنفسي:</strong> الجري لمسافات طويلة</li>
+                        <li><strong>السرعة:</strong> الركض السريع والانطلاقات</li>
+                        <li><strong>الرشاقة:</strong> تغيير الاتجاهات بسرعة</li>
+                        <li><strong>القوة:</strong> خاصة في الأرجل والجذع</li>
+                        <li><strong>المرونة:</strong> لمنع الإصابات</li>
+                    </ul>
+                </div>
+                
+                <div class="content-box">
+                    <h4 class="font-bold mb-3 text-green-600">إحصائيات الجري:</h4>
+                    <ul class="list-disc pr-6 space-y-2">
+                        <li>المسافة المقطوعة: 10-12 كم للمباراة</li>
+                        <li>الانطلاقات السريعة: 40-60 مرة للمباراة</li>
+                        <li>الركض الخلفي: 2-3 كم للمباراة</li>
+                        <li>المشي: 2-3 كم للمباراة</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="sub-heading">حسن التخطيط والإدارة</div>
-            <p>أظهرت القصة أهمية التخطيط المستقبلي والإدارة الحكيمة. خطة يوسف لمواجهة السنوات العجاف تُعتبر نموذجاً في التخطيط الاستراتيجي والإدارة الاقتصادية الرشيدة.</p>
+            <!-- خريطة فهم تكتيكية -->
+            <div class="content-box mt-6">
+                <h4 class="font-bold mb-3 text-center">خريطة فهم الهجوم والدفاع</h4>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="text-center p-4 bg-blue-50 rounded">
+                        <strong class="text-blue-700">الهجوم</strong>
+                        <div class="mt-2 text-sm text-justify">
+                            <p>• خلق المساحات</p>
+                            <p>• التمريرات السريعة</p>
+                            <p>• الحركة بدون كرة</p>
+                            <p>• التسديد على المرمى</p>
+                        </div>
+                    </div>
+                    <div class="text-center p-4 bg-red-50 rounded">
+                        <strong class="text-red-700">الدفاع</strong>
+                        <div class="mt-2 text-sm text-justify">
+                            <p>• الضغط على الخصم</p>
+                            <p>• قطع المسارات</p>
+                            <p>• التغطية الدفاعية</p>
+                            <p>• الخروج من الكرة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="sub-heading">قدرة الله وحكمته</div>
-            <p>تُظهر القصة كيف يُحول الله المحن إلى منح، والبلايا إلى عطايا. ما بدا شراً في البداية (إلقاؤه في البئر) كان بداية الطريق إلى الخير والعلو والمكانة الرفيعة.</p>
-
-            <div class="side-heading">التطبيقات العملية</div>
+        <!-- التغذية والإصابات -->
+        <div class="page-break mb-8">
+            <div class="section-title">التغذية والوقاية من الإصابات</div>
             
-            <div class="info-box">
-                <strong>كيف نطبق دروس قصة يوسف في حياتنا:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>في العمل:</strong> الأمانة والإخلاص والإتقان في أداء المهام</li>
-                    <li><strong>في العلاقات:</strong> العفو والتسامح وحسن التعامل مع الآخرين</li>
-                    <li><strong>في المحن:</strong> الصبر والثبات والثقة في حكمة الله</li>
-                    <li><strong>في القيادة:</strong> العدالة والحكمة وتحمل المسؤولية</li>
-                    <li><strong>في التخطيط:</strong> النظرة المستقبلية والاستعداد للتحديات</li>
-                    <li><strong>في الدعوة:</strong> الحكمة والموعظة الحسنة في كل المناسبات</li>
-                </ul>
+            <div class="content-box mb-6">
+                <h4 class="font-bold mb-3 text-red-600">نظام التغذية للاعب كرة القدم:</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300 text-sm">
+                        <thead>
+                            <tr class="bg-green-600 text-white">
+                                <th class="border border-gray-300 p-2">الوقت</th>
+                                <th class="border border-gray-300 p-2">الوجبة</th>
+                                <th class="border border-gray-300 p-2">الأهمية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 p-2">قبل المباراة بـ 3 ساعات</td>
+                                <td class="border border-gray-300 p-2">كاربوهيدرات معقدة</td>
+                                <td class="border border-gray-300 p-2">توفير الطاقة</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2">أثناء المباراة</td>
+                                <td class="border border-gray-300 p-2">ماء + مشروبات رياضية</td>
+                                <td class="border border-gray-300 p-2">ترطيب الجسم</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 p-2">بعد المباراة</td>
+                                <td class="border border-gray-300 p-2">بروتين + كاربوهيدرات</td>
+                                <td class="border border-gray-300 p-2">استعادة العضلات</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="side-heading">خاتمة القصة ودعاء يوسف</div>
-            
-            <p>تنتهي القصة بدعاء يوسف عليه السلام الذي يلخص حكمة الحياة وغايتها. بعد أن حقق الله له ما وعده وجمع شمله بأهله، توجه إلى ربه بالشكر والدعاء:</p>
-
-            <div class="verse">
-                "رَبِّ قَدْ آتَيْتَنِي مِنَ الْمُلْكِ وَعَلَّمْتَنِي مِن تَأْوِيلِ الْأَحَادِيثِ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ أَنتَ وَلِيِّي فِي الدُّنْيَا وَالْآخِرَةِ تَوَفَّنِي مُسْلِمًا وَأَلْحِقْنِي بِالصَّالِحِينَ"
+            <div class="content-box">
+                <h4 class="font-bold mb-3 text-red-600">الإصابات الشائعة والوقاية:</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <strong>الإصابات الشائعة:</strong>
+                        <ul class="list-disc pr-6 mt-2 text-sm">
+                            <li>التواء الكاحل</li>
+                            <li>إصابات الركبة</li>
+                            <li>الشد العضلي</li>
+                            <li>الكدمات</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>طرق الوقاية:</strong>
+                        <ul class="list-disc pr-6 mt-2 text-sm">
+                            <li>الإحماء الجيد</li>
+                            <li>التمطية بعد التمرين</li>
+                            <li>استخدام المعدات المناسبة</li>
+                            <li>التدريب المتوازن</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <p>هذا الدعاء يعلمنا أن الغاية من كل نعم الدنيا هي شكر الله والتقرب إليه، وأن أعظم ما يتمناه المؤمن هو أن يموت على الإسلام ويُحشر مع الصالحين.</p>
-
-            <div class="highlight-box">
-                <strong>الرسالة الخالدة من قصة يوسف:</strong>
-                <p>قصة يوسف عليه السلام تعلمنا أن الله لا يضيع أجر من أحسن عملاً، وأن الصبر والتقوى والأخلاق الحسنة هي سبيل النجاح في الدنيا والآخرة. كما تؤكد أن الفرج مع الكرب، وأن العاقبة للمتقين، وأن حكمة الله تجري بما فيه خير العبد حتى لو لم يدرك ذلك في البداية.</p>
+        <!-- الخاتمة -->
+        <div class="mb-8">
+            <div class="section-title">خاتمة</div>
+            <div class="content-box">
+                <p class="text-justify">
+                    كرة القدم ليست مجرد رياضة، بل هي فن يتطلب مزيجاً من المهارات الفنية، اللياقة البدنية، الذكاء التكتيكي، والعمل الجماعي. تطوير هذه الجوانب يساعد في إنتاج لاعب متكامل قادر على الإبداع في الملعب والمساهمة في نجاح فريقه.
+                </p>
+                <p class="text-justify mt-3">
+                    النجاح في كرة القدم يتطلب التزاماً بالتدريب المستمر، الاهتمام بالتغذية، والراحة الكافية، بالإضافة إلى التعلم المستمر وتطوير المهارات.
+                </p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // تحسين الطباعة
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '11pt';
+            document.body.style.fontSize = '12pt';
         });
     </script>
 </body>
