@@ -13,7 +13,6 @@
                 margin: 1.5cm 1.5cm;
             }
             .no-print { display: none !important; }
-            .page-break { page-break-before: always; }
             
             /* تصغير النصوص أثناء الطباعة */
             body {
@@ -39,34 +38,34 @@
             background: #1e40af;
             color: white;
             padding: 12px 20px;
-            margin: 25px 0 15px 0;
+            margin: 20px 0 10px 0;
             border-radius: 0 8px 8px 0;
             font-weight: bold;
             font-size: 18px;
         }
         .content-box {
             background: #f8fafc;
-            padding: 15px;
-            margin: 15px 0;
+            padding: 12px;
+            margin: 10px 0;
             border-right: 4px solid #dc2626;
             border-radius: 0 8px 8px 0;
         }
         .football-field {
             width: 100%;
-            height: 250px;
+            height: 200px;
             background: #16a34a;
             border: 3px solid #fff;
             position: relative;
-            margin: 15px 0;
-            border-radius: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
         }
         .center-circle {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border: 2px solid white;
             border-radius: 50%;
         }
@@ -75,8 +74,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: white;
             border-radius: 50%;
         }
@@ -84,8 +83,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 110px;
-            height: 150px;
+            width: 90px;
+            height: 120px;
             border: 2px solid white;
         }
         .goal-left { right: 0; }
@@ -94,8 +93,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 50px;
-            height: 100px;
+            width: 40px;
+            height: 80px;
             border: 2px solid white;
         }
         .goal-small-left { right: 0; }
@@ -104,23 +103,23 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: white;
             border-radius: 50%;
         }
-        .penalty-left { right: 70px; }
-        .penalty-right { left: 70px; }
+        .penalty-left { right: 60px; }
+        .penalty-right { left: 60px; }
         .football {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             background: white;
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(0,0,0,0.3);
+            box-shadow: 0 0 6px rgba(0,0,0,0.3);
         }
         .football::before {
             content: "";
@@ -128,8 +127,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             border: 2px solid #000;
             border-radius: 50%;
         }
@@ -139,141 +138,105 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             border: 1px solid #000;
             border-radius: 50%;
         }
         .formation-diagram {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 15px 0;
-            padding: 12px;
+            gap: 6px;
+            margin: 10px 0;
+            padding: 10px;
             background: #f1f5f9;
-            border-radius: 8px;
+            border-radius: 6px;
         }
         .player {
             background: #1e40af;
             color: white;
-            padding: 6px;
+            padding: 5px;
             text-align: center;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 10px;
         }
         .goalkeeper { background: #dc2626; }
         
-        /* عناصر التحكم بالحجم لكل صفحة */
-        .page-controls {
+        /* عناصر التحكم بالحجم */
+        .size-controls {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border: 2px solid #1e40af;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
         }
         .size-btn {
             background: #1e40af;
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 10px;
+            margin: 0 2px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            width: 40px;
-            text-align: center;
         }
         .size-btn:hover {
             background: #1e3a8a;
         }
-        .print-btn {
-            background: #059669;
-            margin-top: 5px;
-        }
-        .page-nav {
-            display: flex;
-            gap: 5px;
-            margin-top: 5px;
-        }
-        .nav-btn {
-            background: #7c3aed;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
         
-        /* إخفاء الصفحات */
-        .page {
-            display: none;
+        /* تحسين التدفق */
+        .compact-section {
+            margin-bottom: 15px;
         }
-        .page.active {
-            display: block;
+        .compact-grid {
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .compact-table {
+            margin: 8px 0;
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- عناصر التحكم بالحجم لكل صفحة -->
-    <div class="page-controls no-print">
-        <div style="text-align: center; margin-bottom: 5px; font-weight: bold; color: #1e40af;">التحكم</div>
-        
-        <div style="display: flex; gap: 5px;">
-            <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
-            <button class="size-btn" onclick="changeFontSize('normal')">A</button>
-            <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
-        </div>
-        
-        <button class="size-btn print-btn" onclick="window.print()">🖨️</button>
-        
-        <div class="page-nav">
-            <button class="nav-btn" onclick="changePage(-1)">←</button>
-            <span style="padding: 6px 10px; font-size: 12px; font-weight: bold;" id="pageIndicator">1/7</span>
-            <button class="nav-btn" onclick="changePage(1)">→</button>
-        </div>
-        
-        <div style="margin-top: 5px; font-size: 10px; text-align: center;">
-            الصفحة: <span id="currentPageTitle">المقدمة</span>
-        </div>
+    <!-- عناصر التحكم بالحجم -->
+    <div class="size-controls no-print">
+        <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
+        <button class="size-btn" onclick="changeFontSize('normal')">A</button>
+        <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
+        <button class="size-btn" onclick="window.print()" style="background: #059669; margin-right: 8px;">🖨️ طباعة</button>
     </div>
 
-    <div class="max-w-4xl mx-auto p-8 bg-white shadow-lg min-h-screen" id="content">
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg min-h-screen" id="content">
 
-        <!-- الصفحة 1: المقدمة -->
-        <div class="page active" id="page1">
-            <!-- العنوان الرئيسي -->
-            <div class="text-center mb-12 border-b-4 border-green-600 pb-6">
-                <h1 class="text-4xl font-bold text-gray-800 mb-4">كرة القدم</h1>
-                <h2 class="text-2xl font-semibold text-green-600">رياضة الجماهير والمهارات</h2>
-            </div>
-
-            <!-- المقدمة -->
-            <div class="mb-8">
-                <div class="section-title">مقدمة عن كرة القدم</div>
-                <p class="text-lg text-justify mb-4">
-                    كرة القدم هي الرياضة الأكثر شعبية في العالم، يلعبها أكثر من 250 مليون لاعب في أكثر من 200 دولة. تعتمد على العمل الجماعي، اللياقة البدنية، والمهارات الفردية في التمرير، التسديد، والتحكم بالكرة.
-                </p>
-                <p class="text-justify">
-                    تعتبر كرة القدم وسيلة رائعة لتعزيز الصحة البدنية والعقلية، وتطوير مهارات العمل الجماعي والانضباط. كما أنها تلعب دوراً مهماً في بناء الشخصية وتعزيز الثقة بالنفس.
-                </p>
-            </div>
+        <!-- العنوان الرئيسي -->
+        <div class="text-center mb-8 border-b-3 border-green-600 pb-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-3">كرة القدم</h1>
+            <h2 class="text-xl font-semibold text-green-600">رياضة الجماهير والمهارات</h2>
         </div>
 
-        <!-- الصفحة 2: أساسيات كرة القدم -->
-        <div class="page page-break" id="page2">
+        <!-- المقدمة -->
+        <div class="compact-section">
+            <div class="section-title">مقدمة عن كرة القدم</div>
+            <p class="text-justify mb-3">
+                كرة القدم هي الرياضة الأكثر شعبية في العالم، يلعبها أكثر من 250 مليون لاعب في أكثر من 200 دولة. تعتمد على العمل الجماعي، اللياقة البدنية، والمهارات الفردية في التمرير، التسديد، والتحكم بالكرة.
+            </p>
+            <p class="text-justify">
+                تعتبر كرة القدم وسيلة رائعة لتعزيز الصحة البدنية والعقلية، وتطوير مهارات العمل الجماعي والانضباط. كما أنها تلعب دوراً مهماً في بناء الشخصية وتعزيز الثقة بالنفس.
+            </p>
+        </div>
+
+        <!-- أساسيات كرة القدم -->
+        <div class="compact-section">
             <div class="section-title">أساسيات كرة القدم</div>
             
             <div class="content-box">
-                <h3 class="font-bold text-lg mb-3 text-red-600">القواعد الأساسية:</h3>
-                <ul class="list-disc pr-6 space-y-2">
+                <h3 class="font-bold mb-2 text-red-600">القواعد الأساسية:</h3>
+                <ul class="list-disc pr-5 space-y-1">
                     <li>مباراة كرة القدم تستمر 90 دقيقة (شوطين × 45 دقيقة)</li>
                     <li>كل فريق يتكون من 11 لاعباً (10 لاعبين + حارس مرمى)</li>
                     <li>الفوز يحصل على 3 نقاط، التعادل نقطة واحدة، الخسارة صفر</li>
@@ -294,91 +257,91 @@
                 <div class="penalty-spot penalty-right"></div>
                 <div class="football"></div>
             </div>
-            <p class="text-center text-sm text-gray-600 mb-6">رسم تخطيطي لملعب كرة القدم</p>
+            <p class="text-center text-xs text-gray-600 mb-4">رسم تخطيطي لملعب كرة القدم</p>
         </div>
 
-        <!-- الصفحة 3: المهارات الأساسية -->
-        <div class="page page-break" id="page3">
+        <!-- المهارات الأساسية -->
+        <div class="compact-section">
             <div class="section-title">المهارات الأساسية</div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
                 <div class="content-box">
-                    <h4 class="font-bold mb-2">التمرير (Passing)</h4>
-                    <p>نقل الكرة بدقة من لاعب لآخر باستخدام القدم الداخلية أو الخارجية</p>
+                    <h4 class="font-bold mb-1">التمرير (Passing)</h4>
+                    <p class="text-sm">نقل الكرة بدقة من لاعب لآخر باستخدام القدم الداخلية أو الخارجية</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-2">الاستلام (Control)</h4>
-                    <p>استقبال الكرة والسيطرة عليها باستخدام الصدر، الفخذ، أو القدم</p>
+                    <h4 class="font-bold mb-1">الاستلام (Control)</h4>
+                    <p class="text-sm">استقبال الكرة والسيطرة عليها باستخدام الصدر، الفخذ، أو القدم</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-2">التسديد (Shooting)</h4>
-                    <p>توجيه الكرة نحو المرمى بقوة ودقة باستخدام مختلف أجزاء القدم</p>
+                    <h4 class="font-bold mb-1">التسديد (Shooting)</h4>
+                    <p class="text-sm">توجيه الكرة نحو المرمى بقوة ودقة باستخدام مختلف أجزاء القدم</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-2">المراوغة (Dribbling)</h4>
-                    <p>التحكم بالكرة أثناء الجري وتغيير الاتجاهات لتفادي المنافسين</p>
+                    <h4 class="font-bold mb-1">المراوغة (Dribbling)</h4>
+                    <p class="text-sm">التحكم بالكرة أثناء الجري وتغيير الاتجاهات لتفادي المنافسين</p>
                 </div>
             </div>
 
             <!-- جدول المهارات -->
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-300 text-sm">
+            <div class="overflow-x-auto compact-table">
+                <table class="w-full border-collapse border border-gray-300 text-xs">
                     <thead>
                         <tr class="bg-blue-600 text-white">
-                            <th class="border border-gray-300 p-2">المهارة</th>
-                            <th class="border border-gray-300 p-2">التقنية</th>
-                            <th class="border border-gray-300 p-2">الأهمية</th>
+                            <th class="border border-gray-300 p-1">المهارة</th>
+                            <th class="border border-gray-300 p-1">التقنية</th>
+                            <th class="border border-gray-300 p-1">الأهمية</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-2">التمرير القصير</td>
-                            <td class="border border-gray-300 p-2">باطن القدم</td>
-                            <td class="border border-gray-300 p-2">عالية - للحفاظ على التملك</td>
+                            <td class="border border-gray-300 p-1">التمرير القصير</td>
+                            <td class="border border-gray-300 p-1">باطن القدم</td>
+                            <td class="border border-gray-300 p-1">عالية - للحفاظ على التملك</td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 p-2">التمرير الطويل</td>
-                            <td class="border border-gray-300 p-2">ظهر القدم</td>
-                            <td class="border border-gray-300 p-2">متوسطة - لتغيير اتجاه الهجوم</td>
+                            <td class="border border-gray-300 p-1">التمرير الطويل</td>
+                            <td class="border border-gray-300 p-1">ظهر القدم</td>
+                            <td class="border border-gray-300 p-1">متوسطة - لتغيير اتجاه الهجوم</td>
                         </tr>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-2">التسديد</td>
-                            <td class="border border-gray-300 p-2">ظهر القدم/باطن القدم</td>
-                            <td class="border border-gray-300 p-2">عالية جداً - لتسجيل الأهداف</td>
+                            <td class="border border-gray-300 p-1">التسديد</td>
+                            <td class="border border-gray-300 p-1">ظهر القدم/باطن القدم</td>
+                            <td class="border border-gray-300 p-1">عالية جداً - لتسجيل الأهداف</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- الصفحة 4: المراكز والتشكيلات -->
-        <div class="page page-break" id="page4">
+        <!-- المراكز والتشكيلات -->
+        <div class="compact-section">
             <div class="section-title">مراكز اللاعبين والتشكيلات</div>
             
-            <div class="content-box mb-6">
-                <h3 class="font-bold text-lg mb-3 text-red-600">مراكز اللاعبين:</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="text-center p-3 bg-blue-100 rounded">
+            <div class="content-box mb-4">
+                <h3 class="font-bold mb-2 text-red-600">مراكز اللاعبين:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="text-center p-2 bg-blue-100 rounded text-sm">
                         <strong>حارس المرمى</strong>
-                        <p class="text-sm">حماية المرمى</p>
+                        <p class="text-xs">حماية المرمى</p>
                     </div>
-                    <div class="text-center p-3 bg-green-100 rounded">
+                    <div class="text-center p-2 bg-green-100 rounded text-sm">
                         <strong>الدفاع</strong>
-                        <p class="text-sm">منع الهجمات</p>
+                        <p class="text-xs">منع الهجمات</p>
                     </div>
-                    <div class="text-center p-3 bg-yellow-100 rounded">
+                    <div class="text-center p-2 bg-yellow-100 rounded text-sm">
                         <strong>الوسط</strong>
-                        <p class="text-sm">ربط الدفاع بالهجوم</p>
+                        <p class="text-xs">ربط الدفاع بالهجوم</p>
                     </div>
-                    <div class="text-center p-3 bg-red-100 rounded">
+                    <div class="text-center p-2 bg-red-100 rounded text-sm">
                         <strong>الهجوم</strong>
-                        <p class="text-sm">تسجيل الأهداف</p>
+                        <p class="text-xs">تسجيل الأهداف</p>
                     </div>
                 </div>
             </div>
 
             <!-- رسم تشكيل 4-4-2 -->
-            <h4 class="font-bold mb-3 text-center">تشكيل 4-4-2 الكلاسيكي</h4>
+            <h4 class="font-bold mb-2 text-center text-sm">تشكيل 4-4-2 الكلاسيكي</h4>
             <div class="formation-diagram">
                 <div class="player goalkeeper">حارس المرمى</div>
                 <div></div><div></div><div></div>
@@ -400,14 +363,14 @@
             </div>
         </div>
 
-        <!-- الصفحة 5: اللياقة البدنية -->
-        <div class="page page-break" id="page5">
+        <!-- اللياقة البدنية -->
+        <div class="compact-section">
             <div class="section-title">اللياقة البدنية في كرة القدم</div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
                 <div class="content-box">
-                    <h4 class="font-bold mb-3 text-green-600">عناصر اللياقة المطلوبة:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
+                    <h4 class="font-bold mb-2 text-green-600">عناصر اللياقة المطلوبة:</h4>
+                    <ul class="list-disc pr-5 space-y-1 text-sm">
                         <li><strong>التحمل القلبي التنفسي:</strong> الجري لمسافات طويلة</li>
                         <li><strong>السرعة:</strong> الركض السريع والانطلاقات</li>
                         <li><strong>الرشاقة:</strong> تغيير الاتجاهات بسرعة</li>
@@ -417,8 +380,8 @@
                 </div>
                 
                 <div class="content-box">
-                    <h4 class="font-bold mb-3 text-green-600">إحصائيات الجري:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
+                    <h4 class="font-bold mb-2 text-green-600">إحصائيات الجري:</h4>
+                    <ul class="list-disc pr-5 space-y-1 text-sm">
                         <li>المسافة المقطوعة: 10-12 كم للمباراة</li>
                         <li>الانطلاقات السريعة: 40-60 مرة للمباراة</li>
                         <li>الركض الخلفي: 2-3 كم للمباراة</li>
@@ -428,21 +391,21 @@
             </div>
 
             <!-- خريطة فهم تكتيكية -->
-            <div class="content-box mt-6">
-                <h4 class="font-bold mb-3 text-center">خريطة فهم الهجوم والدفاع</h4>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="text-center p-4 bg-blue-50 rounded">
-                        <strong class="text-blue-700">الهجوم</strong>
-                        <div class="mt-2 text-sm text-justify">
+            <div class="content-box mt-4">
+                <h4 class="font-bold mb-2 text-center text-sm">خريطة فهم الهجوم والدفاع</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center p-3 bg-blue-50 rounded">
+                        <strong class="text-blue-700 text-sm">الهجوم</strong>
+                        <div class="mt-1 text-xs text-justify">
                             <p>• خلق المساحات</p>
                             <p>• التمريرات السريعة</p>
                             <p>• الحركة بدون كرة</p>
                             <p>• التسديد على المرمى</p>
                         </div>
                     </div>
-                    <div class="text-center p-4 bg-red-50 rounded">
-                        <strong class="text-red-700">الدفاع</strong>
-                        <div class="mt-2 text-sm text-justify">
+                    <div class="text-center p-3 bg-red-50 rounded">
+                        <strong class="text-red-700 text-sm">الدفاع</strong>
+                        <div class="mt-1 text-xs text-justify">
                             <p>• الضغط على الخصم</p>
                             <p>• قطع المسارات</p>
                             <p>• التغطية الدفاعية</p>
@@ -453,36 +416,36 @@
             </div>
         </div>
 
-        <!-- الصفحة 6: التغذية والإصابات -->
-        <div class="page page-break" id="page6">
+        <!-- التغذية والإصابات -->
+        <div class="compact-section">
             <div class="section-title">التغذية والوقاية من الإصابات</div>
             
-            <div class="content-box mb-6">
-                <h4 class="font-bold mb-3 text-red-600">نظام التغذية للاعب كرة القدم:</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse border border-gray-300 text-sm">
+            <div class="content-box mb-4">
+                <h4 class="font-bold mb-2 text-red-600">نظام التغذية للاعب كرة القدم:</h4>
+                <div class="overflow-x-auto compact-table">
+                    <table class="w-full border-collapse border border-gray-300 text-xs">
                         <thead>
                             <tr class="bg-green-600 text-white">
-                                <th class="border border-gray-300 p-2">الوقت</th>
-                                <th class="border border-gray-300 p-2">الوجبة</th>
-                                <th class="border border-gray-300 p-2">الأهمية</th>
+                                <th class="border border-gray-300 p-1">الوقت</th>
+                                <th class="border border-gray-300 p-1">الوجبة</th>
+                                <th class="border border-gray-300 p-1">الأهمية</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="bg-gray-50">
-                                <td class="border border-gray-300 p-2">قبل المباراة بـ 3 ساعات</td>
-                                <td class="border border-gray-300 p-2">كاربوهيدرات معقدة</td>
-                                <td class="border border-gray-300 p-2">توفير الطاقة</td>
+                                <td class="border border-gray-300 p-1">قبل المباراة بـ 3 ساعات</td>
+                                <td class="border border-gray-300 p-1">كاربوهيدرات معقدة</td>
+                                <td class="border border-gray-300 p-1">توفير الطاقة</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 p-2">أثناء المباراة</td>
-                                <td class="border border-gray-300 p-2">ماء + مشروبات رياضية</td>
-                                <td class="border border-gray-300 p-2">ترطيب الجسم</td>
+                                <td class="border border-gray-300 p-1">أثناء المباراة</td>
+                                <td class="border border-gray-300 p-1">ماء + مشروبات رياضية</td>
+                                <td class="border border-gray-300 p-1">ترطيب الجسم</td>
                             </tr>
                             <tr class="bg-gray-50">
-                                <td class="border border-gray-300 p-2">بعد المباراة</td>
-                                <td class="border border-gray-300 p-2">بروتين + كاربوهيدرات</td>
-                                <td class="border border-gray-300 p-2">استعادة العضلات</td>
+                                <td class="border border-gray-300 p-1">بعد المباراة</td>
+                                <td class="border border-gray-300 p-1">بروتين + كاربوهيدرات</td>
+                                <td class="border border-gray-300 p-1">استعادة العضلات</td>
                             </tr>
                         </tbody>
                     </table>
@@ -490,11 +453,11 @@
             </div>
 
             <div class="content-box">
-                <h4 class="font-bold mb-3 text-red-600">الإصابات الشائعة والوقاية:</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h4 class="font-bold mb-2 text-red-600">الإصابات الشائعة والوقاية:</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
-                        <strong>الإصابات الشائعة:</strong>
-                        <ul class="list-disc pr-6 mt-2 text-sm">
+                        <strong class="text-sm">الإصابات الشائعة:</strong>
+                        <ul class="list-disc pr-5 mt-1 text-xs">
                             <li>التواء الكاحل</li>
                             <li>إصابات الركبة</li>
                             <li>الشد العضلي</li>
@@ -502,8 +465,8 @@
                         </ul>
                     </div>
                     <div>
-                        <strong>طرق الوقاية:</strong>
-                        <ul class="list-disc pr-6 mt-2 text-sm">
+                        <strong class="text-sm">طرق الوقاية:</strong>
+                        <ul class="list-disc pr-5 mt-1 text-xs">
                             <li>الإحماء الجيد</li>
                             <li>التمطية بعد التمرين</li>
                             <li>استخدام المعدات المناسبة</li>
@@ -514,18 +477,15 @@
             </div>
         </div>
 
-        <!-- الصفحة 7: الخاتمة -->
-        <div class="page page-break" id="page7">
+        <!-- الخاتمة -->
+        <div class="compact-section">
             <div class="section-title">خاتمة</div>
             <div class="content-box">
-                <p class="text-justify">
+                <p class="text-justify text-sm">
                     كرة القدم ليست مجرد رياضة، بل هي فن يتطلب مزيجاً من المهارات الفنية، اللياقة البدنية، الذكاء التكتيكي، والعمل الجماعي. تطوير هذه الجوانب يساعد في إنتاج لاعب متكامل قادر على الإبداع في الملعب والمساهمة في نجاح فريقه.
                 </p>
-                <p class="text-justify mt-3">
+                <p class="text-justify mt-2 text-sm">
                     النجاح في كرة القدم يتطلب التزاماً بالتدريب المستمر، الاهتمام بالتغذية، والراحة الكافية، بالإضافة إلى التعلم المستمر وتطوير المهارات.
-                </p>
-                <p class="text-justify mt-3">
-                    كما أن كرة القدم تعلمنا قيماً مهمة مثل الانضباط، العمل الجماعي، الاحترام، والصبر. هذه القيم لا تقل أهمية عن المهارات الرياضية نفسها.
                 </p>
             </div>
         </div>
@@ -533,19 +493,6 @@
     </div>
 
     <script>
-        // متغيرات التحكم بالصفحات
-        let currentPage = 1;
-        const totalPages = 7;
-        const pageTitles = {
-            1: "المقدمة",
-            2: "أساسيات كرة القدم", 
-            3: "المهارات الأساسية",
-            4: "المراكز والتشكيلات",
-            5: "اللياقة البدنية",
-            6: "التغذية والإصابات",
-            7: "الخاتمة"
-        };
-
         // دالة تغيير حجم الخط
         function changeFontSize(size) {
             const content = document.getElementById('content');
@@ -553,74 +500,26 @@
             
             switch(size) {
                 case 'smaller':
-                    content.style.fontSize = (currentSize - 2) + 'px';
+                    content.style.fontSize = (currentSize - 1) + 'px';
                     break;
                 case 'larger':
-                    content.style.fontSize = (currentSize + 2) + 'px';
+                    content.style.fontSize = (currentSize + 1) + 'px';
                     break;
                 case 'normal':
-                    content.style.fontSize = '16px';
+                    content.style.fontSize = '14px';
                     break;
             }
         }
-
-        // دالة تغيير الصفحة
-        function changePage(direction) {
-            // إخفاء الصفحة الحالية
-            document.getElementById(`page${currentPage}`).classList.remove('active');
-            
-            // تغيير رقم الصفحة
-            currentPage += direction;
-            
-            // التأكد من أن رقم الصفحة ضمن الحدود
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-            
-            // إظهار الصفحة الجديدة
-            document.getElementById(`page${currentPage}`).classList.add('active');
-            
-            // تحديث المؤشر
-            updatePageIndicator();
-        }
-
-        // دالة تحديث مؤشر الصفحة
-        function updatePageIndicator() {
-            document.getElementById('pageIndicator').textContent = `${currentPage}/${totalPages}`;
-            document.getElementById('currentPageTitle').textContent = pageTitles[currentPage];
-        }
-
-        // تهيئة المؤشر
-        updatePageIndicator();
 
         // أثناء الطباعة يتم تصغير النصوص تلقائياً
         window.addEventListener('beforeprint', function() {
             document.body.style.fontSize = '10pt';
             document.body.style.lineHeight = '1.3';
-            
-            // إظهار جميع الصفحات أثناء الطباعة
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('active');
-            });
         });
         
         window.addEventListener('afterprint', function() {
             document.body.style.fontSize = '';
             document.body.style.lineHeight = '';
-            
-            // إعادة إظهار الصفحة الحالية فقط
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(`page${currentPage}`).classList.add('active');
-        });
-
-        // إضافة اختصارات لوحة المفاتيح
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight') {
-                changePage(-1); // السهم الأيمن للصفحة السابقة (RTL)
-            } else if (event.key === 'ArrowLeft') {
-                changePage(1); // السهم الأيسر للصفحة التالية (RTL)
-            }
         });
     </script>
 </body>
