@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إصابات النشاط البدني - دراسة شاملة</title>
+    <title>Robotics Project</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         @media print {
             @page {
@@ -15,23 +15,13 @@
             
             body {
                 font-size: 11pt;
-                line-height: 1.3;
-                font-family: 'Amiri', serif;
+                line-height: 1.4;
+                font-family: 'Inter', sans-serif;
             }
             
             .page-break {
                 page-break-before: always;
-                padding-top: 0.3cm;
-            }
-            
-            .title-page {
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                page-break-after: always;
+                padding-top: 0.5cm;
             }
             
             .no-print {
@@ -39,44 +29,45 @@
             }
             
             h1 {
-                font-size: 18pt;
-                margin-bottom: 0.4cm;
+                font-size: 20pt;
+                margin-bottom: 0.8cm;
+                text-align: center;
             }
             
-            h2 {
+            .side-heading {
                 font-size: 14pt;
-                margin: 0.3cm 0 0.2cm 0;
+                margin: 0.4cm 0 0.3cm 0;
+                border-left: 4px solid #3B82F6;
+                padding-left: 0.4cm;
+                font-weight: bold;
+                color: #1E40AF;
             }
             
-            h3 {
+            .sub-heading {
                 font-size: 12pt;
-                margin: 0.25cm 0 0.15cm 0;
+                margin: 0.3cm 0 0.2cm 0;
+                font-weight: 600;
+                color: #374151;
             }
             
             p {
-                margin-bottom: 0.25cm;
+                margin-bottom: 0.3cm;
                 text-align: justify;
             }
             
             table {
                 font-size: 9pt;
+                margin: 0.3cm 0;
+            }
+            
+            .info-box {
                 margin: 0.2cm 0;
-            }
-            
-            .section-title {
-                margin: 0.2cm 0 0.15cm 0;
-                padding: 0.25cm 0.4cm;
-                page-break-after: avoid;
-            }
-            
-            .content-box {
-                margin: 0.15cm 0;
-                padding: 0.3cm;
+                padding: 0.4cm;
                 page-break-inside: avoid;
             }
             
             ul, ol {
-                margin: 0.1cm 0;
+                margin: 0.15cm 0;
             }
             
             li {
@@ -85,337 +76,208 @@
         }
         
         body {
-            font-family: 'Amiri', 'Noto Sans Arabic', serif;
-            line-height: 1.5;
+            font-family: 'Inter', 'Roboto', sans-serif;
+            line-height: 1.6;
         }
         
-        .title-page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .main-title {
             text-align: center;
+            color: #1E40AF;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3B82F6;
+            padding-bottom: 15px;
+            display: inline-block;
+            width: 100%;
         }
         
-        .section-title {
-            background: #E3F2FD;
-            padding: 8px 15px;
-            border-right: 4px solid #1976D2;
+        .side-heading {
+            border-left: 4px solid #3B82F6;
+            padding-left: 15px;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+            color: #1E40AF;
+            font-size: 18px;
+        }
+        
+        .sub-heading {
+            font-weight: 600;
+            color: #374151;
             margin: 15px 0 8px 0;
-            font-weight: bold;
         }
         
-        .content-box {
-            background: #f9f9f9;
-            padding: 12px;
-            margin: 8px 0;
-            border-right: 3px solid #4CAF50;
+        .info-box {
+            background: #F8FAFC;
+            padding: 15px;
+            margin: 12px 0;
+            border-left: 3px solid #10B981;
+            border-radius: 0 8px 8px 0;
         }
         
-        .reference-item {
-            margin-bottom: 6px;
-            padding-right: 15px;
-            text-indent: -15px;
+        .highlight-box {
+            background: #EFF6FF;
+            padding: 15px;
+            margin: 12px 0;
+            border-left: 3px solid #3B82F6;
+            border-radius: 0 8px 8px 0;
         }
     </style>
 </head>
-<body class="bg-white text-black" dir="rtl">
+<body class="bg-white text-black">
 
-    <!-- زر الطباعة -->
-    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <button onclick="window.print()" style="background: #2E7D32; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-            🖨️ طباعة البحث
+    <!-- Print Button -->
+    <div class="no-print" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <button onclick="window.print()" style="background: #3B82F6; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            🖨️ Print Project
         </button>
     </div>
 
     <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
 
-        <!-- صفحة العنوان -->
-        <div class="title-page">
-            <h1 style="font-size: 28pt; color: #2E7D32; margin-bottom: 20px; border-bottom: 3px solid #2E7D32; padding-bottom: 15px;">
-                إصابات النشاط البدني
+        <!-- Page 1 -->
+        <div>
+            <h1 class="main-title" style="font-size: 32px;">
+                ROBOTICS: THE FUTURE OF TECHNOLOGY
             </h1>
-            <h2 style="font-size: 20pt; color: #1976D2; margin-bottom: 40px;">
-                دراسة شاملة للتشخيص والعلاج والوقاية
-            </h2>
-            <div style="margin-top: 40px;">
-                <p style="font-size: 16pt; margin-bottom: 10px;">إعداد: [اسم الطالب]</p>
-                <p style="font-size: 16pt; margin-bottom: 10px;">المادة: التربية البدنية</p>
-                <p style="font-size: 16pt;">التاريخ: 2024</p>
-            </div>
-        </div>
 
-        <!-- الفهرس -->
-        <div class="page-break">
-            <div class="section-title">
-                <h2 style="color: #2E7D32; margin: 0;">فهرس المحتويات</h2>
-            </div>
+            <div class="side-heading">Introduction to Robotics</div>
             
-            <div style="margin: 15px 0;">
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>1.</strong> المقدمة وأهمية الدراسة</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>2.</strong> تعريف إصابات النشاط البدني</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>3.</strong> أنواع الإصابات الرياضية</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>4.</strong> الإصابات الحادة والمزمنة</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>5.</strong> العوامل المؤثرة في حدوث الإصابات</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>6.</strong> الإسعافات الأولية للإصابات</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>7.</strong> طرق العلاج والتأهيل</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>8.</strong> الوقاية من الإصابات</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>9.</strong> الإصابات الشائعة حسب الرياضة</div>
-                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>10.</strong> المراجع العلمية</div>
-            </div>
-        </div>
+            <p>Robotics is a rapidly evolving field that combines engineering, computer science, and artificial intelligence to create machines capable of performing tasks autonomously or with minimal human intervention. From manufacturing assembly lines to space exploration, robots have become integral to modern society and continue to revolutionize how we work, live, and interact with technology.</p>
+            
+            <p>The word "robot" originated from the Czech word "robota," meaning forced labor or work. Today, robots range from simple automated machines to sophisticated humanoid androids capable of complex decision-making and learning.</p>
 
-        <!-- المقدمة -->
-        <div class="page-break">
-            <div class="section-title">المقدمة وأهمية الدراسة</div>
+            <div class="side-heading">History and Evolution</div>
             
-            <p>تشكل إصابات النشاط البدني تحدياً كبيراً للممارسين الرياضيين والمهتمين باللياقة البدنية على حد سواء. مع تزايد الوعي بأهمية النشاط البدني للصحة العامة، ازدادت أيضاً معدلات الإصابات المرتبطة بممارسة الرياضة والتمارين البدنية.</p>
+            <div class="sub-heading">Early Beginnings</div>
+            <p>The concept of automated machines dates back to ancient civilizations. The Greeks created mechanical devices called "automata," while Leonardo da Vinci designed mechanical knights in the 15th century. However, modern robotics began in the 20th century with the development of programmable machines.</p>
             
-            <p>تشير الإحصائيات العالمية إلى أن أكثر من 3.5 مليون إصابة مرتبطة بالرياضة تحدث سنوياً، مما يبرز أهمية فهم هذه الإصابات وآليات الوقاية منها. تهدف هذه الدراسة إلى تقديم رؤية شاملة لإصابات النشاط البدني، من حيث التعريف، التصنيف، الأسباب، طرق التشخيص، والعلاج.</p>
-            
-            <div class="content-box">
-                <strong>أهداف الدراسة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>تحديد أنواع الإصابات الرياضية المختلفة</li>
-                    <li>تحليل العوامل المؤثرة في حدوث الإصابات</li>
-                    <li>شرح طرق العلاج والتأهيل المناسبة</li>
-                    <li>تقديم استراتيجيات وقائية فعالة</li>
+            <div class="sub-heading">Industrial Revolution</div>
+            <p>The first industrial robot, Unimate, was installed in a General Motors assembly line in 1961. This marked the beginning of the industrial robotics era, transforming manufacturing processes worldwide.</p>
+
+            <div class="info-box">
+                <strong>Key Milestones in Robotics:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>1921: Karel Čapek introduces the term "robot" in his play "R.U.R."</li>
+                    <li>1950: Isaac Asimov formulates the Three Laws of Robotics</li>
+                    <li>1961: First industrial robot Unimate begins operation</li>
+                    <li>1997: NASA's Sojourner rover explores Mars</li>
+                    <li>2000: Honda introduces ASIMO humanoid robot</li>
+                    <li>2012: Curiosity rover lands on Mars with advanced AI capabilities</li>
                 </ul>
             </div>
 
-            <div class="section-title" style="margin-top: 20px;">تعريف إصابات النشاط البدني</div>
+            <div class="side-heading">Types of Robots</div>
             
-            <p>تعرف إصابات النشاط البدني على أنها أي ضرر يلحق بأنسجة الجسم نتيجة للممارسة الرياضية أو النشاط البدني. يمكن أن تؤثر هذه الإصابات على العظام، العضلات، الأوتار، الأربطة، أو الغضاريف، وتتراوح في شدتها من الإصابات البسيطة إلى الإصابات الخطيرة التي تتطلب تدخلاً جراحياً.</p>
+            <div class="sub-heading">Industrial Robots</div>
+            <p>These robots are designed for manufacturing and production environments. They perform tasks such as welding, painting, assembly, packaging, and quality control with high precision and speed. Industrial robots have significantly improved production efficiency and product quality while reducing human exposure to dangerous conditions.</p>
             
-            <div class="content-box">
-                <strong>خصائص إصابات النشاط البدني:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>تحدث أثناء أو بعد النشاط البدني مباشرة</li>
-                    <li>تؤثر على وظيفة الجزء المصاب</li>
-                    <li>تتطلب فترة للتعافي والعلاج</li>
-                    <li>قد تؤدي إلى تغيير في نمط الممارسة الرياضية</li>
-                </ul>
-            </div>
-        </div>
+            <div class="sub-heading">Service Robots</div>
+            <p>Service robots assist humans in various non-industrial applications. This category includes domestic robots like vacuum cleaners, lawn mowers, and personal assistants, as well as professional service robots used in healthcare, security, and hospitality.</p>
+            
+            <div class="sub-heading">Humanoid Robots</div>
+            <p>These robots are designed to resemble and mimic human appearance and behavior. Examples include Honda's ASIMO, Boston Dynamics' Atlas, and SoftBank's Pepper. Humanoid robots are often used for research, entertainment, and social interaction purposes.</p>
 
-        <!-- أنواع الإصابات -->
-        <div class="page-break">
-            <div class="section-title">أنواع الإصابات الرياضية</div>
-            
-            <h3>الإصابات العضلية</h3>
-            <p>تشمل الإصابات العضلية الشد العضلي، التمزق العضلي، والتهاب العضلات. تحدث هذه الإصابات نتيجة الإجهاد المفاجئ أو المفرط على العضلات، وتتراوح في شدتها من التمزقات البسيطة إلى التمزقات الكاملة.</p>
-            
-            <h3>إصابات المفاصل</h3>
-            <p>تشمل التواء المفاصل، الخلع، والتهاب المفاصل. تعتبر مفاصل الركبة والكاحل والكتف الأكثر عرضة للإصابة في النشاط البدني بسبب طبيعة الحركات المتعددة الاتجاهات التي تؤديها.</p>
-            
-            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 15px 0;">
                 <thead>
-                    <tr style="background: #E3F2FD;">
-                        <th width="25%">نوع الإصابة</th>
-                        <th width="45%">الأعراض</th>
-                        <th width="30%">مدة الشفاء</th>
+                    <tr style="background: #EFF6FF;">
+                        <th width="25%">Robot Type</th>
+                        <th width="40%">Primary Functions</th>
+                        <th width="35%">Common Applications</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>الشد العضلي</td>
-                        <td>ألم مفاجئ، تشنج، صعوبة في الحركة</td>
-                        <td>3-7 أيام</td>
+                        <td>Industrial</td>
+                        <td>Manufacturing, Assembly, Welding</td>
+                        <td>Automotive, Electronics, Aerospace</td>
                     </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td>الالتواء</td>
-                        <td>ألم، تورم، كدمات، عدم استقرار</td>
-                        <td>2-6 أسابيع</td>
-                    </tr>
-                    <tr>
-                        <td>الكسر</td>
-                        <td>ألم شديد، تورم، تشوه، عدم القدرة على التحمل</td>
-                        <td>6-12 أسبوع</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="section-title" style="margin-top: 20px;">الإصابات الحادة والمزمنة</div>
-            
-            <h3>الإصابات الحادة</h3>
-            <p>تحدث الإصابات الحادة بشكل مفاجئ نتيجة حادث أو صدمة محددة. تشمل الأمثلة على الإصابات الحادة الكسور، الالتواءات، والخلع. تظهر أعراض هذه الإصابات فوراً وتتطلب تدخلاً طبياً عاجلاً في كثير من الأحيان.</p>
-            
-            <h3>الإصابات المزمنة</h3>
-            <p>تتطور الإصابات المزمنة تدريجياً مع مرور الوقت نتيجة الإجهاد المتكرر على أنسجة الجسم. تشمل الأمثلة التهاب الأوتار، إصابات الإجهاد المتكرر، والتهاب العضلات. غالباً ما تكون هذه الإصابات مرتبطة بأخطاء في التدريب أو التقنية.</p>
-        </div>
-
-        <!-- العوامل المؤثرة والإسعافات الأولية -->
-        <div class="page-break">
-            <div class="section-title">العوامل المؤثرة في حدوث الإصابات</div>
-            
-            <h3>العوامل الداخلية</h3>
-            <ul style="margin-right: 20px; margin-bottom: 12px;">
-                <li><strong>العمر:</strong> تختلف أنواع الإصابات باختلاف العمر</li>
-                <li><strong>الجنس:</strong> توجد اختلافات في قابلية الإصابة بين الجنسين</li>
-                <li><strong>اللياقة البدنية:</strong> تقلل اللياقة الجيدة من خطر الإصابة</li>
-                <li><strong>التشريح:</strong> الاختلافات التشريحية قد تزيد من خطر الإصابة</li>
-                <li><strong>التاريخ الصحي:</strong> الإصابات السابقة تزيد من خطر الإصابة مرة أخرى</li>
-            </ul>
-            
-            <h3>العوامل الخارجية</h3>
-            <ul style="margin-right: 20px;">
-                <li><strong>طريقة التدريب:</strong> زيادة الحمل التدريبي المفاجئ</li>
-                <li><strong>المعدات:</strong> استخدام معدات غير مناسبة أو تالفة</li>
-                <li><strong>الملعب:</strong> حالة سطح الملعب وجودته</li>
-                <li><strong>الطقس:</strong> الظروف الجوية وتأثيرها على الأداء</li>
-                <li><strong>التغذية:</strong> سوء التغذية والجفاف</li>
-            </ul>
-
-            <div class="section-title" style="margin-top: 20px;">الإسعافات الأولية للإصابات</div>
-            
-            <p>تعتبر الإسعافات الأولية المناسبة حاسمة في تقليل شدة الإصابة وتسريع عملية الشفاء. يوصى باستخدام بروتوكول RICE للإصابات الحادة:</p>
-            
-            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
-                <thead>
-                    <tr style="background: #E3F2FD;">
-                        <th width="25%">الخطوة</th>
-                        <th width="35%">الوصف</th>
-                        <th width="40%">التطبيق العملي</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>الراحة (Rest)</strong></td>
-                        <td>إيقاف النشاط فوراً</td>
-                        <td>منع تفاقم الإصابة</td>
-                    </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td><strong>الثلج (Ice)</strong></td>
-                        <td>تبريد المنطقة المصابة</td>
-                        <td>وضع ثلج لمدة 15-20 دقيقة كل ساعتين</td>
+                    <tr style="background: #F8FAFC;">
+                        <td>Medical</td>
+                        <td>Surgery, Rehabilitation, Assistance</td>
+                        <td>Hospitals, Clinics, Home Care</td>
                     </tr>
                     <tr>
-                        <td><strong>الضغط (Compression)</strong></td>
-                        <td>الضغط على المنطقة</td>
-                        <td>استخدام ضمادة مرنة للضغط</td>
+                        <td>Military/Defense</td>
+                        <td>Surveillance, Bomb Disposal, Combat</td>
+                        <td>Armed Forces, Security Agencies</td>
                     </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td><strong>الرفع (Elevation)</strong></td>
-                        <td>رفع الطرف المصاب</td>
-                        <td>رفع فوق مستوى القلب لتقليل التورم</td>
+                    <tr style="background: #F8FAFC;">
+                        <td>Exploration</td>
+                        <td>Data Collection, Sample Analysis</td>
+                        <td>Space Missions, Deep Sea, Hazardous Areas</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- العلاج والوقاية -->
+        <!-- Page 2 -->
         <div class="page-break">
-            <div class="section-title">طرق العلاج والتأهيل</div>
+            <div class="side-heading">Key Components and Technologies</div>
             
-            <h3>العلاج التحفظي</h3>
-            <p>يشمل العلاج التحفظي الطرق غير الجراحية مثل الراحة، العلاج الطبيعي، والأدوية. يعد هذا النوع من العلاج مناسباً لمعظم الإصابات الرياضية ويهدف إلى تخفيف الألم، تقليل الالتهاب، واستعادة الوظيفة.</p>
+            <div class="sub-heading">Sensors and Perception</div>
+            <p>Modern robots rely on various sensors to perceive their environment. These include cameras for vision, LIDAR for distance measurement, accelerometers for motion detection, and tactile sensors for touch. Advanced perception systems enable robots to navigate complex environments and interact safely with humans and objects.</p>
             
-            <h3>العلاج الجراحي</h3>
-            <p>يلجأ للعلاج الجراحي في الحالات الشديدة مثل تمزق الأربطة الكامل، الكسور المعقدة، أو الإصابات التي لا تستجيب للعلاج التحفظي.</p>
+            <div class="sub-heading">Actuators and Movement</div>
+            <p>Actuators are the "muscles" of robots, converting electrical energy into mechanical motion. Common types include electric motors, hydraulic systems, and pneumatic actuators. The choice of actuator depends on the required speed, precision, and force for specific applications.</p>
             
-            <h3>برامج التأهيل</h3>
-            <p>تهدف برامج التأهيل إلى استعادة القوة، المرونة، والوظيفة الكاملة للجزء المصاب. تشمل هذه البرامج تمارين متدرجة تبدأ بالحركات البسيطة وتتقدم إلى التمارين الوظيفية.</p>
+            <div class="sub-heading">Artificial Intelligence and Machine Learning</div>
+            <p>AI enables robots to make decisions, learn from experience, and adapt to new situations. Machine learning algorithms allow robots to improve their performance over time by analyzing data and identifying patterns. This capability is crucial for autonomous vehicles, personal assistants, and advanced manufacturing systems.</p>
 
-            <div class="section-title" style="margin-top: 20px;">الوقاية من الإصابات</div>
-            
-            <p>تعتبر الوقاية من الإصابات أفضل من العلاج. يمكن تقليل خطر الإصابة من خلال اتباع استراتيجيات وقائية شاملة تشمل:</p>
-            
-            <h3>الإحماء والتبريد</h3>
-            <p>يعد الإحماء المناسب قبل النشاط البدني والتبريد بعده من أهم استراتيجيات الوقاية. يساعد الإحماء على زيادة تدفق الدم للعضلات ورفع درجة حرارة الجسم.</p>
-            
-            <h3>التدريب المتوازن</h3>
-            <p>يشمل التدريب المتوازن تطوير جميع عناصر اللياقة البدنية بما فيها القوة، المرونة، التحمل، والتوازن.</p>
-            
-            <div class="content-box">
-                <strong>نصائح وقائية إضافية:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>استخدام المعدات المناسبة والملابس الرياضية المناسبة</li>
-                    <li>التدريب على التقنية الصحيحة لأداء التمارين</li>
-                    <li>الاستماع إلى إشارات الجسم وتجنب التدريب عند الشعور بالألم</li>
-                    <li>الحصول على قسط كافٍ من النوم والراحة</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- الإصابات الشائعة والمراجع -->
-        <div class="page-break">
-            <div class="section-title">الإصابات الشائعة حسب الرياضة</div>
-            
-            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
-                <thead>
-                    <tr style="background: #E3F2FD;">
-                        <th width="25%">الرياضة</th>
-                        <th width="50%">الإصابات الشائعة</th>
-                        <th width="25%">نسبة الحدوث</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>كرة القدم</td>
-                        <td>التواء الكاحل، إصابات الركبة، إصابات الفخذ</td>
-                        <td>35%</td>
-                    </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td>كرة السلة</td>
-                        <td>إصابات الكاحل، إصابات الأصابع، التمزقات العضلية</td>
-                        <td>15%</td>
-                    </tr>
-                    <tr>
-                        <td>الرياضات القتالية</td>
-                        <td>إصابات الوجه، الكسور، الالتواءات</td>
-                        <td>12%</td>
-                    </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td>الرياضات المائية</td>
-                        <td>إصابات الكتف، إصابات الرقبة، الشد العضلي</td>
-                        <td>8%</td>
-                    </tr>
-                    <tr>
-                        <td>رياضات المضرب</td>
-                        <td>مرفق التنس، إصابات الكتف، إصابات الرسغ</td>
-                        <td>10%</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="content-box" style="margin-top: 12px;">
-                <strong>إحصائيات مهمة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>تشكل إصابات الأطراف السفلية 50% من إجمالي الإصابات الرياضية</li>
-                    <li>تحدث 30% من الإصابات خلال المنافسات و70% خلال التدريبات</li>
-                    <li>تزداد معدلات الإصابة بنسبة 25% عند الرياضيين تحت سن 18 سنة</li>
-                    <li>50% من الإصابات يمكن منعها من خلال برامج الوقاية المناسبة</li>
+            <div class="highlight-box">
+                <strong>Essential Robot Components:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li><strong>Control System:</strong> The "brain" that processes information and makes decisions</li>
+                    <li><strong>Power Supply:</strong> Batteries, fuel cells, or electrical connections</li>
+                    <li><strong>Communication Systems:</strong> WiFi, Bluetooth, or specialized protocols</li>
+                    <li><strong>User Interface:</strong> Screens, voice recognition, or mobile applications</li>
+                    <li><strong>Safety Systems:</strong> Emergency stops, collision avoidance, fail-safes</li>
                 </ul>
             </div>
 
-            <div class="section-title" style="margin-top: 20px;">المراجع العلمية</div>
+            <div class="side-heading">Applications and Impact</div>
             
-            <div style="margin: 12px 0;">
-                <div class="reference-item"><strong>1.</strong> الجمعية الأمريكية للطب الرياضي. (2023). المبادئ التوجيهية للوقاية من الإصابات الرياضية. مجلة الطب الرياضي، 45(2)، 123-145.</div>
-                
-                <div class="reference-item"><strong>2.</strong> سميث، ج.، وأحمد، م. (2022). العلاج الطبيعي لإصابات النشاط البدني. دار النشر العلمي، القاهرة.</div>
-                
-                <div class="reference-item"><strong>3.</strong> منظمة الصحة العالمية. (2021). تقرير عالمي عن إصابات النشاط البدني. جنيف: منشورات منظمة الصحة العالمية.</div>
-                
-                <div class="reference-item"><strong>4.</strong> المركز الوطني للطب الرياضي. (2020). دليل التشخيص والعلاج للإصابات الرياضية. الرياض: وزارة الصحة.</div>
-                
-                <div class="reference-item"><strong>5.</strong> البنك الدولي. (2019). التكلفة الاقتصادية للإصابات الرياضية. واشنطن: منشورات البنك الدولي.</div>
-                
-                <div class="reference-item"><strong>6.</strong> محمد، ع.، والغامدي، ف. (2018). علم وظائف الأعضاء الرياضي والتأهيل. مكتبة الملك فهد الوطنية، الرياض.</div>
-            </div>
+            <div class="sub-heading">Healthcare Revolution</div>
+            <p>Robots are transforming healthcare through surgical precision, patient care, and rehabilitation. Surgical robots like the da Vinci system enable minimally invasive procedures with enhanced precision. Robotic prosthetics restore mobility and function to amputees, while therapeutic robots assist in physical and cognitive rehabilitation.</p>
             
-            <div class="content-box" style="margin-top: 15px;">
-                <h3 style="text-align: center; color: #2E7D32; margin: 0 0 8px 0;">خاتمة وتوصيات</h3>
-                <p style="margin-bottom: 8px;">تشكل إصابات النشاط البدني تحدياً مستمراً للمجتمع الرياضي والطبي. من خلال فهم أنواع الإصابات، أسبابها، وطرق الوقاية والعلاج، يمكن تقليل معدلات الإصابة وتحسين جودة حياة الممارسين للنشاط البدني.</p>
-                <p>توصي هذه الدراسة بضرورة تطوير برامج وقائية شاملة، وتعزيز الوعي بأهمية الإحماء والتبريد، وتشجيع الممارسة الصحيحة للتمارين الرياضية. كما تؤكد على أهمية التعاون بين المتخصصين في المجال الطبي والرياضي لتقديم رعاية متكاملة للرياضيين.</p>
+            <div class="sub-heading">Transportation and Logistics</div>
+            <p>Autonomous vehicles represent one of the most visible applications of robotics in daily life. Self-driving cars, delivery drones, and automated warehouses are reshaping transportation and logistics industries. Companies like Amazon use thousands of robots in fulfillment centers to process orders efficiently.</p>
+            
+            <div class="sub-heading">Space Exploration</div>
+            <p>Robots have been instrumental in space exploration, from the Mars rovers to the International Space Station's robotic arms. These machines can operate in environments too dangerous or distant for human presence, collecting valuable scientific data and performing maintenance tasks.</p>
+
+            <div class="side-heading">Challenges and Future Prospects</div>
+            
+            <div class="sub-heading">Technical Challenges</div>
+            <p>Despite significant advances, robotics faces several technical challenges including power limitations, complex environment navigation, human-robot interaction, and ensuring reliability in critical applications. Developing robots that can operate safely alongside humans remains a key challenge.</p>
+            
+            <div class="sub-heading">Ethical and Social Considerations</div>
+            <p>As robots become more capable and widespread, society must address important questions about employment displacement, privacy, decision-making autonomy, and the ethical implications of artificial intelligence. Establishing appropriate regulations and guidelines is crucial for responsible robotics development.</p>
+
+            <div class="info-box">
+                <strong>Future Trends in Robotics:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>Increased AI integration and autonomous decision-making capabilities</li>
+                    <li>Collaborative robots (cobots) working alongside humans</li>
+                    <li>Swarm robotics for coordinated group behaviors</li>
+                    <li>Soft robotics using flexible, bio-inspired materials</li>
+                    <li>Edge computing for faster, more responsive robot operations</li>
+                    <li>Enhanced human-robot interfaces using voice, gesture, and brain-computer interfaces</li>
+                </ul>
             </div>
+
+            <div class="side-heading">Conclusion</div>
+            
+            <p>Robotics represents one of the most transformative technologies of our time, with applications spanning virtually every aspect of human activity. From manufacturing and healthcare to exploration and entertainment, robots are enhancing human capabilities and solving complex challenges.</p>
+            
+            <p>As we advance into the future, the integration of artificial intelligence, machine learning, and advanced materials will create even more sophisticated and capable robotic systems. Success in this field will require continued innovation, careful consideration of ethical implications, and collaborative efforts between technologists, policymakers, and society as a whole.</p>
+            
+            <p>The future of robotics is not just about creating more advanced machines, but about developing technology that augments human potential and improves quality of life for people around the world. As this field continues to evolve, it will undoubtedly play a central role in shaping the future of human civilization.</p>
         </div>
 
     </div>
 
     <script>
-        // تحسين الطباعة
+        // Print optimization
         window.addEventListener('beforeprint', function() {
             document.body.style.fontSize = '11pt';
         });
