@@ -14,10 +14,26 @@
             }
             .no-print { display: none !important; }
             .page-break { page-break-before: always; }
+            
+            /* تصغير النصوص أثناء الطباعة */
+            body {
+                font-size: 10pt !important;
+                line-height: 1.3 !important;
+            }
+            h1 { font-size: 16pt !important; }
+            h2 { font-size: 14pt !important; }
+            h3 { font-size: 12pt !important; }
+            h4 { font-size: 11pt !important; }
+            .section-title { font-size: 12pt !important; padding: 8px 15px !important; }
+            .content-box { padding: 10px !important; }
+            table { font-size: 8pt !important; }
+            .player { font-size: 9pt !important; padding: 5px !important; }
         }
+        
         body {
             font-family: 'Amiri', 'Noto Sans Arabic', serif;
             line-height: 1.6;
+            font-size: 12pt;
         }
         .section-title {
             background: #1e40af;
@@ -37,11 +53,11 @@
         }
         .football-field {
             width: 100%;
-            height: 300px;
+            height: 250px;
             background: #16a34a;
             border: 3px solid #fff;
             position: relative;
-            margin: 20px 0;
+            margin: 15px 0;
             border-radius: 10px;
         }
         .center-circle {
@@ -49,8 +65,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border: 2px solid white;
             border-radius: 50%;
         }
@@ -59,8 +75,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: white;
             border-radius: 50%;
         }
@@ -68,8 +84,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 130px;
-            height: 180px;
+            width: 110px;
+            height: 150px;
             border: 2px solid white;
         }
         .goal-left { right: 0; }
@@ -78,8 +94,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 60px;
-            height: 120px;
+            width: 50px;
+            height: 100px;
             border: 2px solid white;
         }
         .goal-small-left { right: 0; }
@@ -88,23 +104,23 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: white;
             border-radius: 50%;
         }
-        .penalty-left { right: 85px; }
-        .penalty-right { left: 85px; }
+        .penalty-left { right: 70px; }
+        .penalty-right { left: 70px; }
         .football {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: white;
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
         }
         .football::before {
             content: "";
@@ -112,8 +128,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             border: 2px solid #000;
             border-radius: 50%;
         }
@@ -123,41 +139,68 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             border: 1px solid #000;
             border-radius: 50%;
         }
         .formation-diagram {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-            padding: 15px;
+            gap: 8px;
+            margin: 15px 0;
+            padding: 12px;
             background: #f1f5f9;
             border-radius: 8px;
         }
         .player {
             background: #1e40af;
             color: white;
-            padding: 8px;
+            padding: 6px;
             text-align: center;
-            border-radius: 5px;
-            font-size: 12px;
+            border-radius: 4px;
+            font-size: 11px;
         }
         .goalkeeper { background: #dc2626; }
+        
+        /* عناصر التحكم بالحجم */
+        .size-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 2px solid #1e40af;
+        }
+        .size-btn {
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .size-btn:hover {
+            background: #1e3a8a;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- زر الطباعة -->
-    <div class="no-print fixed top-4 left-4 z-50">
-        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200">
-            🖨️ طباعة المشروع
-        </button>
+    <!-- عناصر التحكم بالحجم -->
+    <div class="size-controls no-print">
+        <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
+        <button class="size-btn" onclick="changeFontSize('normal')">A</button>
+        <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
+        <button class="size-btn" onclick="window.print()" style="background: #059669; margin-right: 10px;">🖨️ طباعة</button>
     </div>
 
-    <div class="max-w-4xl mx-auto p-8 bg-white shadow-lg min-h-screen">
+    <div class="max-w-4xl mx-auto p-8 bg-white shadow-lg min-h-screen" id="content">
 
         <!-- العنوان الرئيسي -->
         <div class="text-center mb-12 border-b-4 border-green-600 pb-6">
@@ -184,6 +227,7 @@
                     <li>كل فريق يتكون من 11 لاعباً (10 لاعبين + حارس مرمى)</li>
                     <li>الفوز يحصل على 3 نقاط، التعادل نقطة واحدة، الخسارة صفر</li>
                     <li>الهدف يسجل عندما تعبر الكرة خط المرمى بالكامل</li>
+                    <li>اللاعب لا يمكنه لمس الكرة بيده إلا حارس المرمى في منطقته</li>
                 </ul>
             </div>
 
@@ -230,26 +274,26 @@
                 <table class="w-full border-collapse border border-gray-300 text-sm">
                     <thead>
                         <tr class="bg-blue-600 text-white">
-                            <th class="border border-gray-300 p-3">المهارة</th>
-                            <th class="border border-gray-300 p-3">التقنية</th>
-                            <th class="border border-gray-300 p-3">الأهمية</th>
+                            <th class="border border-gray-300 p-2">المهارة</th>
+                            <th class="border border-gray-300 p-2">التقنية</th>
+                            <th class="border border-gray-300 p-2">الأهمية</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-3">التمرير القصير</td>
-                            <td class="border border-gray-300 p-3">باطن القدم</td>
-                            <td class="border border-gray-300 p-3">عالية - للحفاظ على التملك</td>
+                            <td class="border border-gray-300 p-2">التمرير القصير</td>
+                            <td class="border border-gray-300 p-2">باطن القدم</td>
+                            <td class="border border-gray-300 p-2">عالية - للحفاظ على التملك</td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 p-3">التمرير الطويل</td>
-                            <td class="border border-gray-300 p-3">ظهر القدم</td>
-                            <td class="border border-gray-300 p-3">متوسطة - لتغيير اتجاه الهجوم</td>
+                            <td class="border border-gray-300 p-2">التمرير الطويل</td>
+                            <td class="border border-gray-300 p-2">ظهر القدم</td>
+                            <td class="border border-gray-300 p-2">متوسطة - لتغيير اتجاه الهجوم</td>
                         </tr>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-3">التسديد</td>
-                            <td class="border border-gray-300 p-3">ظهر القدم/باطن القدم</td>
-                            <td class="border border-gray-300 p-3">عالية جداً - لتسجيل الأهداف</td>
+                            <td class="border border-gray-300 p-2">التسديد</td>
+                            <td class="border border-gray-300 p-2">ظهر القدم/باطن القدم</td>
+                            <td class="border border-gray-300 p-2">عالية جداً - لتسجيل الأهداف</td>
                         </tr>
                     </tbody>
                 </table>
@@ -435,8 +479,33 @@
     </div>
 
     <script>
+        // دالة تغيير حجم الخط
+        function changeFontSize(size) {
+            const content = document.getElementById('content');
+            const currentSize = parseInt(getComputedStyle(content).fontSize);
+            
+            switch(size) {
+                case 'smaller':
+                    content.style.fontSize = (currentSize - 2) + 'px';
+                    break;
+                case 'larger':
+                    content.style.fontSize = (currentSize + 2) + 'px';
+                    break;
+                case 'normal':
+                    content.style.fontSize = '16px';
+                    break;
+            }
+        }
+
+        // أثناء الطباعة يتم تصغير النصوص تلقائياً
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '12pt';
+            document.body.style.fontSize = '10pt';
+            document.body.style.lineHeight = '1.3';
+        });
+        
+        window.addEventListener('afterprint', function() {
+            document.body.style.fontSize = '';
+            document.body.style.lineHeight = '';
         });
     </script>
 </body>
