@@ -29,12 +29,12 @@
             
             @page {
                 size: A4;
-                margin: 2cm 1.5cm;
+                margin: 1.5cm 1cm;
             }
             
             body {
-                font-size: 12pt;
-                line-height: 1.6;
+                font-size: 11pt;
+                line-height: 1.5;
                 color: #000;
                 background: white;
             }
@@ -43,100 +43,77 @@
                 max-width: none;
                 padding: 0;
                 margin: 0;
+                box-shadow: none;
             }
             
             .page-break {
                 page-break-before: always;
+                margin-top: 2cm;
+            }
+            
+            .avoid-break {
+                page-break-inside: avoid;
             }
             
             h1 {
-                font-size: 18pt;
-                margin-bottom: 1cm;
+                font-size: 16pt;
+                margin-bottom: 0.8cm;
             }
             
             h2 {
-                font-size: 14pt;
-                margin: 0.8cm 0 0.4cm 0;
-            }
-            
-            h3 {
-                font-size: 12pt;
+                font-size: 13pt;
                 margin: 0.6cm 0 0.3cm 0;
             }
             
+            h3 {
+                font-size: 11pt;
+                margin: 0.4cm 0 0.2cm 0;
+            }
+            
             p {
-                margin-bottom: 0.5cm;
+                margin-bottom: 0.3cm;
                 text-align: justify;
             }
             
-            .sidebar-title {
-                writing-mode: vertical-rl;
-                text-orientation: mixed;
-                position: absolute;
-                right: 0;
-                background: #f3f4f6;
-                padding: 0.5cm;
-                height: 100%;
-                width: 1.5cm;
-                font-weight: bold;
-                font-size: 10pt;
+            .compact-table {
+                font-size: 9pt;
+            }
+            
+            .compact-list {
+                margin-bottom: 0.2cm;
             }
         }
         
-        .dark-mode {
-            background: #1a1a1a;
-            color: #e5e5e5;
+        .print-optimized {
+            font-size: 11pt;
+            line-height: 1.5;
         }
         
         .fact-box {
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border-right: 4px solid #0ea5e9;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .dark-mode .fact-box {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0c4a6e 100%);
-            color: #e0f2fe;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin: 1rem 0;
+            border-right: 3px solid #0ea5e9;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 10pt;
         }
         
         .reference-item {
-            margin-bottom: 0.5rem;
-            padding-right: 1rem;
-            border-right: 3px solid #3b82f6;
+            margin-bottom: 0.3rem;
+            padding-right: 0.8rem;
+            border-right: 2px solid #3b82f6;
+            font-size: 9pt;
         }
         
         .index-item {
-            margin-bottom: 0.5rem;
-            padding-right: 1rem;
+            margin-bottom: 0.3rem;
+            padding-right: 0.8rem;
+            font-size: 10pt;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-900 font-arabic leading-relaxed">
-    <!-- Dark mode detection -->
-    <script>
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-            document.body.classList.add('dark-mode');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark-mode');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark-mode');
-            }
-        });
-    </script>
-
+<body class="bg-gray-50 text-gray-900 font-arabic leading-relaxed print-optimized">
     <!-- Print Button -->
     <div class="no-print fixed top-4 left-4 z-50">
         <button onclick="window.print()" 
@@ -148,82 +125,62 @@
         </button>
     </div>
 
-    <div class="main-container max-w-4xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg min-h-screen">
+    <div class="main-container max-w-4xl mx-auto p-6 bg-white shadow-lg">
         <!-- الفهرس -->
-        <div class="mb-12 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
-            <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-4 text-center">فهرس المحتويات</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="index-item">
-                    <strong>1.</strong> المقدمة وأهمية الدراسة
-                </div>
-                <div class="index-item">
-                    <strong>2.</strong> تعريف إصابات النشاط البدني
-                </div>
-                <div class="index-item">
-                    <strong>3.</strong> أنواع الإصابات الرياضية
-                </div>
-                <div class="index-item">
-                    <strong>4.</strong> الإصابات الحادة والمزمنة
-                </div>
-                <div class="index-item">
-                    <strong>5.</strong> العوامل المؤثرة في حدوث الإصابات
-                </div>
-                <div class="index-item">
-                    <strong>6.</strong> الإسعافات الأولية للإصابات
-                </div>
-                <div class="index-item">
-                    <strong>7.</strong> طرق العلاج والتأهيل
-                </div>
-                <div class="index-item">
-                    <strong>8.</strong> الوقاية من الإصابات
-                </div>
-                <div class="index-item">
-                    <strong>9.</strong> الإصابات الشائعة حسب الرياضة
-                </div>
-                <div class="index-item">
-                    <strong>10.</strong> المراجع العلمية
-                </div>
+        <div class="mb-8 bg-blue-50 p-4 rounded-lg avoid-break">
+            <h2 class="text-xl font-bold text-blue-800 mb-3 text-center">فهرس المحتويات</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div class="index-item"><strong>1.</strong> المقدمة وأهمية الدراسة</div>
+                <div class="index-item"><strong>2.</strong> تعريف إصابات النشاط البدني</div>
+                <div class="index-item"><strong>3.</strong> أنواع الإصابات الرياضية</div>
+                <div class="index-item"><strong>4.</strong> الإصابات الحادة والمزمنة</div>
+                <div class="index-item"><strong>5.</strong> العوامل المؤثرة في حدوث الإصابات</div>
+                <div class="index-item"><strong>6.</strong> الإسعافات الأولية للإصابات</div>
+                <div class="index-item"><strong>7.</strong> طرق العلاج والتأهيل</div>
+                <div class="index-item"><strong>8.</strong> الوقاية من الإصابات</div>
+                <div class="index-item"><strong>9.</strong> الإصابات الشائعة حسب الرياضة</div>
+                <div class="index-item"><strong>10.</strong> المراجع العلمية</div>
             </div>
         </div>
 
         <!-- العنوان الرئيسي -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 border-b-4 border-green-600 pb-4 inline-block">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-3 border-b-3 border-green-600 pb-3 inline-block">
                 إصابات النشاط البدني
             </h1>
-            <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400">
+            <h2 class="text-xl font-semibold text-green-600">
                 دراسة شاملة للتشخيص والعلاج والوقاية
             </h2>
         </div>
 
         <!-- الصفحة 1: المقدمة -->
-        <div class="mb-8">
-            <div class="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-blue-600">
-                <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 pr-4">المقدمة وأهمية الدراسة</h3>
+        <div class="mb-6 avoid-break">
+            <div class="bg-blue-50 p-1 rounded-r-lg mr-3 border-r-3 border-blue-600">
+                <h3 class="text-lg font-bold text-blue-800 pr-3">المقدمة وأهمية الدراسة</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
-                    تشكل إصابات النشاط البدني تحدياً كبيراً للممارسين الرياضيين والمهتمين باللياقة البدنية على حد سواء. مع تزايد الوعي بأهمية النشاط البدني للصحة العامة، ازدادت أيضاً معدلات الإصابات المرتبطة بممارسة الرياضة والتمارين البدنية. تشير الإحصائيات العالمية إلى أن أكثر من 3.5 مليون إصابة مرتبطة بالرياضة تحدث سنوياً، مما يبرز أهمية فهم هذه الإصابات وآليات الوقاية منها.
+            <div class="pr-6 mt-3">
+                <p class="text-gray-700 mb-3 text-justify">
+                    تشكل إصابات النشاط البدني تحدياً كبيراً للممارسين الرياضيين والمهتمين باللياقة البدنية. مع تزايد الوعي بأهمية النشاط البدني، ازدادت أيضاً معدلات الإصابات المرتبطة بالرياضة. تشير الإحصائيات إلى أن أكثر من 3.5 مليون إصابة مرتبطة بالرياضة تحدث سنوياً.
                 </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تهدف هذه الدراسة إلى تقديم رؤية شاملة لإصابات النشاط البدني، من حيث التعريف، التصنيف، الأسباب، طرق التشخيص، والعلاج. كما تسلط الضوء على استراتيجيات الوقاية الفعالة التي يمكن أن تقلل من معدلات الإصابة وتحسن من أداء الرياضيين.
+                <p class="text-gray-700 mb-3 text-justify">
+                    تهدف هذه الدراسة إلى تقديم رؤية شاملة لإصابات النشاط البدني، من حيث التعريف، التصنيف، الأسباب، طرق التشخيص، والعلاج. كما تسلط الضوء على استراتيجيات الوقاية الفعالة.
                 </p>
             </div>
         </div>
 
         <!-- الصفحة 2: تعريف الإصابات -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-green-50 dark:bg-green-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-green-600">
-                <h3 class="text-xl font-bold text-green-800 dark:text-green-300 pr-4">تعريف إصابات النشاط البدني</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-green-50 p-1 rounded-r-lg mr-3 border-r-3 border-green-600">
+                <h3 class="text-lg font-bold text-green-800 pr-3">تعريف إصابات النشاط البدني</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تعرف إصابات النشاط البدني على أنها أي ضرر يلحق بأنسجة الجسم نتيجة للممارسة الرياضية أو النشاط البدني. يمكن أن تؤثر هذه الإصابات على العظام، العضلات، الأوتار، الأربطة، أو الغضاريف، وتتراوح في شدتها من الإصابات البسيطة إلى الإصابات الخطيرة التي تتطلب تدخلاً جراحياً.
+            <div class="pr-6 mt-3">
+                <p class="text-gray-700 mb-3 text-justify">
+                    تعرف إصابات النشاط البدني على أنها أي ضرر يلحق بأنسجة الجسم نتيجة للممارسة الرياضية أو النشاط البدني. يمكن أن تؤثر هذه الإصابات على العظام، العضلات، الأوتار، الأربطة، أو الغضاريف.
                 </p>
                 
                 <div class="fact-box">
-                    <h4 class="font-bold text-lg mb-2">خصائص إصابات النشاط البدني:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
+                    <h4 class="font-bold mb-2">خصائص إصابات النشاط البدني:</h4>
+                    <ul class="list-disc pr-5 space-y-1 compact-list">
                         <li>تحدث أثناء أو بعد النشاط البدني مباشرة</li>
                         <li>تؤثر على وظيفة الجزء المصاب</li>
                         <li>تتطلب فترة للتعافي والعلاج</li>
@@ -234,50 +191,45 @@
         </div>
 
         <!-- الصفحة 3: أنواع الإصابات -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-purple-50 dark:bg-purple-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-purple-600">
-                <h3 class="text-xl font-bold text-purple-800 dark:text-purple-300 pr-4">أنواع الإصابات الرياضية</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-purple-50 p-1 rounded-r-lg mr-3 border-r-3 border-purple-600">
+                <h3 class="text-lg font-bold text-purple-800 pr-3">أنواع الإصابات الرياضية</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الإصابات العضلية</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تشمل الإصابات العضلية الشد العضلي، التمزق العضلي، والتهاب العضلات. تحدث هذه الإصابات نتيجة الإجهاد المفاجئ أو المفرط على العضلات، وتتراوح في شدتها من التمزقات البسيطة إلى التمزقات الكاملة التي تتطلب تدخلاً جراحياً.
+            <div class="pr-6 mt-3">
+                <h4 class="font-semibold text-gray-800 mb-2">الإصابات العضلية</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    تشمل الشد العضلي، التمزق العضلي، والتهاب العضلات. تحدث نتيجة الإجهاد المفاجئ أو المفرط على العضلات.
                 </p>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">إصابات المفاصل</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تشمل التواء المفاصل، الخلع، والتهاب المفاصل. تعتبر مفاصل الركبة والكاحل والكتف الأكثر عرضة للإصابة في النشاط البدني بسبب طبيعة الحركات المتعددة الاتجاهات التي تؤديها.
+                <h4 class="font-semibold text-gray-800 mb-2">إصابات المفاصل</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    تشمل التواء المفاصل، الخلع، والتهاب المفاصل. تعتبر مفاصل الركبة والكاحل والكتف الأكثر عرضة للإصابة.
                 </p>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">إصابات العظام</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تشمل الكسور، الشقوق العظمية، والتهاب العظام. قد تحدث هذه الإصابات نتيجة الصدمات المباشرة أو الإجهاد المتكرر على العظام.
-                </p>
-
-                <div class="table-container">
-                    <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border-collapse border border-gray-300">
-                        <thead class="bg-gray-200 dark:bg-gray-700">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs compact-table border-collapse border border-gray-300">
+                        <thead class="bg-gray-200">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2">نوع الإصابة</th>
-                                <th class="border border-gray-300 px-4 py-2">الأعراض</th>
-                                <th class="border border-gray-300 px-4 py-2">مدة الشفاء</th>
+                                <th class="border border-gray-300 px-2 py-1">نوع الإصابة</th>
+                                <th class="border border-gray-300 px-2 py-1">الأعراض</th>
+                                <th class="border border-gray-300 px-2 py-1">مدة الشفاء</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">الشد العضلي</td>
-                                <td class="border border-gray-300 px-4 py-2">ألم مفاجئ، تشنج، صعوبة في الحركة</td>
-                                <td class="border border-gray-300 px-4 py-2">3-7 أيام</td>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 px-2 py-1">الشد العضلي</td>
+                                <td class="border border-gray-300 px-2 py-1">ألم مفاجئ، تشنج، صعوبة في الحركة</td>
+                                <td class="border border-gray-300 px-2 py-1">3-7 أيام</td>
                             </tr>
-                            <tr class="bg-gray-50 dark:bg-gray-700">
-                                <td class="border border-gray-300 px-4 py-2">الالتواء</td>
-                                <td class="border border-gray-300 px-4 py-2">ألم، تورم، كدمات، عدم استقرار</td>
-                                <td class="border border-gray-300 px-4 py-2">2-6 أسابيع</td>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-2 py-1">الالتواء</td>
+                                <td class="border border-gray-300 px-2 py-1">ألم، تورم، كدمات، عدم استقرار</td>
+                                <td class="border border-gray-300 px-2 py-1">2-6 أسابيع</td>
                             </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">الكسر</td>
-                                <td class="border border-gray-300 px-4 py-2">ألم شديد، تورم، تشوه، عدم القدرة على التحمل</td>
-                                <td class="border border-gray-300 px-4 py-2">6-12 أسبوع</td>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 px-2 py-1">الكسر</td>
+                                <td class="border border-gray-300 px-2 py-1">ألم شديد، تورم، تشوه</td>
+                                <td class="border border-gray-300 px-2 py-1">6-12 أسبوع</td>
                             </tr>
                         </tbody>
                     </table>
@@ -286,40 +238,38 @@
         </div>
 
         <!-- الصفحة 4: الإصابات الحادة والمزمنة -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-orange-50 dark:bg-orange-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-orange-600">
-                <h3 class="text-xl font-bold text-orange-800 dark:text-orange-300 pr-4">الإصابات الحادة والمزمنة</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-orange-50 p-1 rounded-r-lg mr-3 border-r-3 border-orange-600">
+                <h3 class="text-lg font-bold text-orange-800 pr-3">الإصابات الحادة والمزمنة</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الإصابات الحادة</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تحدث الإصابات الحادة بشكل مفاجئ نتيجة حادث أو صدمة محددة. تشمل الأمثلة على الإصابات الحادة الكسور، الالتواءات، والخلع. تظهر أعراض هذه الإصابات فوراً وتتطلب تدخلاً طبياً عاجلاً في كثير من الأحيان.
+            <div class="pr-6 mt-3">
+                <h4 class="font-semibold text-gray-800 mb-2">الإصابات الحادة</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    تحدث بشكل مفاجئ نتيجة حادث أو صدمة محددة. تشمل الكسور، الالتواءات، والخلع. تظهر أعراضها فوراً.
                 </p>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الإصابات المزمنة</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تتطور الإصابات المزمنة تدريجياً مع مرور الوقت نتيجة الإجهاد المتكرر على أنسجة الجسم. تشمل الأمثلة التهاب الأوتار، إصابات الإجهاد المتكرر، والتهاب العضلات. غالباً ما تكون هذه الإصابات مرتبطة بأخطاء في التدريب أو التقنية.
+                <h4 class="font-semibold text-gray-800 mb-2">الإصابات المزمنة</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    تتطور تدريجياً مع مرور الوقت نتيجة الإجهاد المتكرر. تشمل التهاب الأوتار وإصابات الإجهاد المتكرر.
                 </p>
 
                 <div class="fact-box">
-                    <h4 class="font-bold text-lg mb-2">الفرق بين الإصابات الحادة والمزمنة:</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <h4 class="font-bold mb-2">الفرق بين الإصابات الحادة والمزمنة:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                             <strong>الإصابات الحادة:</strong>
-                            <ul class="list-disc pr-6 mt-2">
+                            <ul class="list-disc pr-5 mt-1 compact-list">
                                 <li>بداية مفاجئة</li>
                                 <li>سبب واضح ومحدد</li>
                                 <li>ألم حاد وشديد</li>
-                                <li>تورم فوري</li>
                             </ul>
                         </div>
                         <div>
                             <strong>الإصابات المزمنة:</strong>
-                            <ul class="list-disc pr-6 mt-2">
+                            <ul class="list-disc pr-5 mt-1 compact-list">
                                 <li>تطور تدريجي</li>
                                 <li>سبب غير واضح</li>
                                 <li>ألم متقطع أو مستمر</li>
-                                <li>تورم خفيف</li>
                             </ul>
                         </div>
                     </div>
@@ -328,117 +278,93 @@
         </div>
 
         <!-- الصفحة 5: العوامل المؤثرة -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-red-50 dark:bg-red-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-red-600">
-                <h3 class="text-xl font-bold text-red-800 dark:text-red-300 pr-4">العوامل المؤثرة في حدوث الإصابات</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-red-50 p-1 rounded-r-lg mr-3 border-r-3 border-red-600">
+                <h3 class="text-lg font-bold text-red-800 pr-3">العوامل المؤثرة في حدوث الإصابات</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">العوامل الداخلية</h4>
-                <ul class="list-disc pr-6 text-gray-700 dark:text-gray-300 mb-4 space-y-2">
+            <div class="pr-6 mt-3">
+                <h4 class="font-semibold text-gray-800 mb-2">العوامل الداخلية</h4>
+                <ul class="list-disc pr-5 text-gray-700 mb-3 compact-list">
                     <li><strong>العمر:</strong> تختلف أنواع الإصابات باختلاف العمر</li>
-                    <li><strong>الجنس:</strong> توجد اختلافات في قابلية الإصابة بين الجنسين</li>
+                    <li><strong>الجنس:</strong> توجد اختلافات في قابلية الإصابة</li>
                     <li><strong>اللياقة البدنية:</strong> تقلل اللياقة الجيدة من خطر الإصابة</li>
-                    <li><strong>التشريح:</strong> الاختلافات التشريحية قد تزيد من خطر الإصابة</li>
-                    <li><strong>التاريخ الصحي:</strong> الإصابات السابقة تزيد من خطر الإصابة مرة أخرى</li>
                 </ul>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">العوامل الخارجية</h4>
-                <ul class="list-disc pr-6 text-gray-700 dark:text-gray-300 mb-4 space-y-2">
+                <h4 class="font-semibold text-gray-800 mb-2">العوامل الخارجية</h4>
+                <ul class="list-disc pr-5 text-gray-700 mb-3 compact-list">
                     <li><strong>طريقة التدريب:</strong> زيادة الحمل التدريبي المفاجئ</li>
-                    <li><strong>المعدات:</strong> استخدام معدات غير مناسبة أو تالفة</li>
+                    <li><strong>المعدات:</strong> استخدام معدات غير مناسبة</li>
                     <li><strong>الملعب:</strong> حالة سطح الملعب وجودته</li>
-                    <li><strong>الطقس:</strong> الظروف الجوية وتأثيرها على الأداء</li>
-                    <li><strong>التغذية:</strong> سوء التغذية والجفاف</li>
                 </ul>
             </div>
         </div>
 
         <!-- الصفحة 6: الإسعافات الأولية -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-indigo-600">
-                <h3 class="text-xl font-bold text-indigo-800 dark:text-indigo-300 pr-4">الإسعافات الأولية للإصابات</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-indigo-50 p-1 rounded-r-lg mr-3 border-r-3 border-indigo-600">
+                <h3 class="text-lg font-bold text-indigo-800 pr-3">الإسعافات الأولية للإصابات</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تعتبر الإسعافات الأولية المناسبة حاسمة في تقليل شدة الإصابة وتسريع عملية الشفاء. يوصى باستخدام بروتوكول RICE للإصابات الحادة:
+            <div class="pr-6 mt-3">
+                <p class="text-gray-700 mb-3 text-justify">
+                    تعتبر الإسعافات الأولية المناسبة حاسمة في تقليل شدة الإصابة. يوصى باستخدام بروتوكول RICE للإصابات الحادة:
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-2">الراحة (Rest)</h4>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">إيقاف النشاط فوراً لمنع تفاقم الإصابة</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                    <div class="bg-gray-100 p-3 rounded">
+                        <h4 class="font-bold text-gray-800 mb-1">الراحة (Rest)</h4>
+                        <p class="text-xs text-gray-700">إيقاف النشاط فوراً لمنع تفاقم الإصابة</p>
                     </div>
-                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-2">الثلج (Ice)</h4>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">وضع ثلج على المنطقة المصابة لمدة 15-20 دقيقة</p>
+                    <div class="bg-gray-100 p-3 rounded">
+                        <h4 class="font-bold text-gray-800 mb-1">الثلج (Ice)</h4>
+                        <p class="text-xs text-gray-700">وضع ثلج على المنطقة المصابة لمدة 15-20 دقيقة</p>
                     </div>
-                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-2">الضغط (Compression)</h4>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">استخدام ضمادة مرنة للضغط على المنطقة</p>
+                    <div class="bg-gray-100 p-3 rounded">
+                        <h4 class="font-bold text-gray-800 mb-1">الضغط (Compression)</h4>
+                        <p class="text-xs text-gray-700">استخدام ضمادة مرنة للضغط على المنطقة</p>
                     </div>
-                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-2">الرفع (Elevation)</h4>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">رفع الطرف المصاب فوق مستوى القلب</p>
+                    <div class="bg-gray-100 p-3 rounded">
+                        <h4 class="font-bold text-gray-800 mb-1">الرفع (Elevation)</h4>
+                        <p class="text-xs text-gray-700">رفع الطرف المصاب فوق مستوى القلب</p>
                     </div>
-                </div>
-
-                <div class="fact-box">
-                    <h4 class="font-bold text-lg mb-2">موانع استخدام بروتوكول RICE:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
-                        <li>الإصابات المفتوحة أو النازفة</li>
-                        <li>الإصابات التي تشمل كسور واضحة</li>
-                        <li>الإصابات التي تسبب خدراً أو تنميلاً</li>
-                        <li>الإصابات التي تؤثر على التنفس أو الوعي</li>
-                    </ul>
                 </div>
             </div>
         </div>
 
         <!-- الصفحة 7: العلاج والتأهيل -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-teal-50 dark:bg-teal-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-teal-600">
-                <h3 class="text-xl font-bold text-teal-800 dark:text-teal-300 pr-4">طرق العلاج والتأهيل</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-teal-50 p-1 rounded-r-lg mr-3 border-r-3 border-teal-600">
+                <h3 class="text-lg font-bold text-teal-800 pr-3">طرق العلاج والتأهيل</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">العلاج التحفظي</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يشمل العلاج التحفظي الطرق غير الجراحية مثل الراحة، العلاج الطبيعي، والأدوية. يعد هذا النوع من العلاج مناسباً لمعظم الإصابات الرياضية ويهدف إلى تخفيف الألم، تقليل الالتهاب، واستعادة الوظيفة.
+            <div class="pr-6 mt-3">
+                <h4 class="font-semibold text-gray-800 mb-2">العلاج التحفظي</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    يشمل الطرق غير الجراحية مثل الراحة، العلاج الطبيعي، والأدوية. يعد مناسباً لمعظم الإصابات الرياضية.
                 </p>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">العلاج الجراحي</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يلجأ للعلاج الجراحي في الحالات الشديدة مثل تمزق الأربطة الكامل، الكسور المعقدة، أو الإصابات التي لا تستجيب للعلاج التحفظي. تطورت التقنيات الجراحية بشكل كبير وأصبحت أقل تدخلاً مما يسرع من عملية الشفاء.
+                <h4 class="font-semibold text-gray-800 mb-2">برامج التأهيل</h4>
+                <p class="text-gray-700 mb-3 text-justify">
+                    تهدف إلى استعادة القوة، المرونة، والوظيفة الكاملة للجزء المصاب. تشمل تمارين متدرجة.
                 </p>
 
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">برامج التأهيل</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تهدف برامج التأهيل إلى استعادة القوة، المرونة، والوظيفة الكاملة للجزء المصاب. تشمل هذه البرامج تمارين متدرجة تبدأ بالحركات البسيطة وتتقدم إلى التمارين الوظيفية التي تحاكي النشاط الرياضي.
-                </p>
-
-                <div class="table-container">
-                    <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border-collapse border border-gray-300">
-                        <thead class="bg-gray-200 dark:bg-gray-700">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs compact-table border-collapse border border-gray-300">
+                        <thead class="bg-gray-200">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2">مرحلة التأهيل</th>
-                                <th class="border border-gray-300 px-4 py-2">الأهداف</th>
-                                <th class="border border-gray-300 px-4 py-2">التمارين المناسبة</th>
+                                <th class="border border-gray-300 px-2 py-1">مرحلة التأهيل</th>
+                                <th class="border border-gray-300 px-2 py-1">الأهداف</th>
+                                <th class="border border-gray-300 px-2 py-1">التمارين المناسبة</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">المرحلة الحادة</td>
-                                <td class="border border-gray-300 px-4 py-2">تخفيف الألم والالتهاب</td>
-                                <td class="border border-gray-300 px-4 py-2">تمارين نطاق الحركة الخفيفة</td>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 px-2 py-1">المرحلة الحادة</td>
+                                <td class="border border-gray-300 px-2 py-1">تخفيف الألم والالتهاب</td>
+                                <td class="border border-gray-300 px-2 py-1">تمارين نطاق الحركة</td>
                             </tr>
-                            <tr class="bg-gray-50 dark:bg-gray-700">
-                                <td class="border border-gray-300 px-4 py-2">المرحلة تحت الحادة</td>
-                                <td class="border border-gray-300 px-4 py-2">استعادة القوة والمرونة</td>
-                                <td class="border border-gray-300 px-4 py-2">تمارين المقاومة الخفيفة</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">المرحلة الوظيفية</td>
-                                <td class="border border-gray-300 px-4 py-2">العودة للنشاط الرياضي</td>
-                                <td class="border border-gray-300 px-4 py-2">تمارين محاكاة الرياضة</td>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-2 py-1">المرحلة تحت الحادة</td>
+                                <td class="border border-gray-300 px-2 py-1">استعادة القوة والمرونة</td>
+                                <td class="border border-gray-300 px-2 py-1">تمارين المقاومة</td>
                             </tr>
                         </tbody>
                     </table>
@@ -447,146 +373,100 @@
         </div>
 
         <!-- الصفحة 8: الوقاية -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-amber-50 dark:bg-amber-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-amber-600">
-                <h3 class="text-xl font-bold text-amber-800 dark:text-amber-300 pr-4">الوقاية من الإصابات</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-amber-50 p-1 rounded-r-lg mr-3 border-r-3 border-amber-600">
+                <h3 class="text-lg font-bold text-amber-800 pr-3">الوقاية من الإصابات</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تعتبر الوقاية من الإصابات أفضل من العلاج. يمكن تقليل خطر الإصابة من خلال اتباع استراتيجيات وقائية شاملة تشمل:
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">الإحماء والتبريد</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يعد الإحماء المناسب قبل النشاط البدني والتبريد بعده من أهم استراتيجيات الوقاية. يساعد الإحماء على زيادة تدفق الدم للعضلات ورفع درجة حرارة الجسم، بينما يساعد التبريد على استعادة الجسم لحالته الطبيعية.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">التدريب المتوازن</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    يشمل التدريب المتوازن تطوير جميع عناصر اللياقة البدنية بما فيها القوة، المرونة، التحمل، والتوازن. يساعد هذا النهج الشامل على تقوية الجسم بالكامل وتقليل خطر الإصابات.
-                </p>
-
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">التغذية والترطيب</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تلعب التغذية المناسبة والترطيب الكافي دوراً مهماً في الوقاية من الإصابات. يساعد الحفاظ على توازن السوائل والعناصر الغذائية على تحسين أداء العضلات وتقليل خطر التعب والإصابة.
+            <div class="pr-6 mt-3">
+                <p class="text-gray-700 mb-3 text-justify">
+                    تعتبر الوقاية من الإصابات أفضل من العلاج. يمكن تقليل خطر الإصابة من خلال استراتيجيات وقائية شاملة.
                 </p>
 
                 <div class="fact-box">
-                    <h4 class="font-bold text-lg mb-2">نصائح وقائية إضافية:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
-                        <li>استخدام المعدات المناسبة والملابس الرياضية المناسبة</li>
-                        <li>التدريب على التقنية الصحيحة لأداء التمارين</li>
-                        <li>الاستماع إلى إشارات الجسم وتجنب التدريب عند الشعور بالألم</li>
-                        <li>الحصول على قسط كافٍ من النوم والراحة</li>
-                        <li>الفحص الدوري مع المتخصصين في الطب الرياضي</li>
+                    <h4 class="font-bold mb-2">نصائح وقائية:</h4>
+                    <ul class="list-disc pr-5 space-y-1 compact-list">
+                        <li>الإحماء المناسب قبل النشاط البدني</li>
+                        <li>استخدام المعدات المناسبة</li>
+                        <li>التدريب على التقنية الصحيحة</li>
+                        <li>الاستماع إلى إشارات الجسم</li>
+                        <li>الحصول على قسط كافٍ من الراحة</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- الصفحة 9: الإصابات الشائعة -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-rose-50 dark:bg-rose-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-rose-600">
-                <h3 class="text-xl font-bold text-rose-800 dark:text-rose-300 pr-4">الإصابات الشائعة حسب الرياضة</h3>
+        <div class="page-break mb-6 avoid-break">
+            <div class="bg-rose-50 p-1 rounded-r-lg mr-3 border-r-3 border-rose-600">
+                <h3 class="text-lg font-bold text-rose-800 pr-3">الإصابات الشائعة حسب الرياضة</h3>
             </div>
-            <div class="pr-8 mt-4">
-                <div class="table-container">
-                    <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border-collapse border border-gray-300">
-                        <thead class="bg-gray-200 dark:bg-gray-700">
+            <div class="pr-6 mt-3">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs compact-table border-collapse border border-gray-300">
+                        <thead class="bg-gray-200">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2">الرياضة</th>
-                                <th class="border border-gray-300 px-4 py-2">الإصابات الشائعة</th>
-                                <th class="border border-gray-300 px-4 py-2">نسبة الحدوث</th>
+                                <th class="border border-gray-300 px-2 py-1">الرياضة</th>
+                                <th class="border border-gray-300 px-2 py-1">الإصابات الشائعة</th>
+                                <th class="border border-gray-300 px-2 py-1">نسبة الحدوث</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">كرة القدم</td>
-                                <td class="border border-gray-300 px-4 py-2">التواء الكاحل، إصابات الركبة، إصابات الفخذ</td>
-                                <td class="border border-gray-300 px-4 py-2">35%</td>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 px-2 py-1">كرة القدم</td>
+                                <td class="border border-gray-300 px-2 py-1">التواء الكاحل، إصابات الركبة</td>
+                                <td class="border border-gray-300 px-2 py-1">35%</td>
                             </tr>
-                            <tr class="bg-gray-50 dark:bg-gray-700">
-                                <td class="border border-gray-300 px-4 py-2">كرة السلة</td>
-                                <td class="border border-gray-300 px-4 py-2">إصابات الكاحل، إصابات الأصابع، التمزقات العضلية</td>
-                                <td class="border border-gray-300 px-4 py-2">15%</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">الرياضات القتالية</td>
-                                <td class="border border-gray-300 px-4 py-2">إصابات الوجه، الكسور، الالتواءات</td>
-                                <td class="border border-gray-300 px-4 py-2">12%</td>
-                            </tr>
-                            <tr class="bg-gray-50 dark:bg-gray-700">
-                                <td class="border border-gray-300 px-4 py-2">الرياضات المائية</td>
-                                <td class="border border-gray-300 px-4 py-2">إصابات الكتف، إصابات الرقبة، الشد العضلي</td>
-                                <td class="border border-gray-300 px-4 py-2">8%</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 px-4 py-2">رياضات المضرب</td>
-                                <td class="border border-gray-300 px-4 py-2">مرفق التنس، إصابات الكتف، إصابات الرسغ</td>
-                                <td class="border border-gray-300 px-4 py-2">10%</td>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-2 py-1">كرة السلة</td>
+                                <td class="border border-gray-300 px-2 py-1">إصابات الكاحل، إصابات الأصابع</td>
+                                <td class="border border-gray-300 px-2 py-1">15%</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="fact-box mt-6">
-                    <h4 class="font-bold text-lg mb-2">إحصائيات مهمة:</h4>
-                    <ul class="list-disc pr-6 space-y-2">
-                        <li>تشكل إصابات الأطراف السفلية 50% من إجمالي الإصابات الرياضية</li>
-                        <li>تحدث 30% من الإصابات خلال المنافسات و70% خلال التدريبات</li>
-                        <li>تزداد معدلات الإصابة بنسبة 25% عند الرياضيين تحت سن 18 سنة</li>
-                        <li>50% من الإصابات يمكن منعها من خلال برامج الوقاية المناسبة</li>
+                <div class="fact-box mt-4">
+                    <h4 class="font-bold mb-2">إحصائيات مهمة:</h4>
+                    <ul class="list-disc pr-5 space-y-1 compact-list">
+                        <li>تشكل إصابات الأطراف السفلية 50% من الإصابات</li>
+                        <li>تحدث 30% من الإصابات خلال المنافسات</li>
+                        <li>50% من الإصابات يمكن منعها بالوقاية</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- الصفحة 10: المراجع -->
-        <div class="page-break mb-8 relative">
-            <div class="bg-slate-50 dark:bg-slate-900/20 p-1 rounded-r-lg mr-4 border-r-4 border-slate-600">
-                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-300 pr-4">المراجع العلمية</h3>
+        <div class="page-break mb-6">
+            <div class="bg-slate-50 p-1 rounded-r-lg mr-3 border-r-3 border-slate-600">
+                <h3 class="text-lg font-bold text-slate-800 pr-3">المراجع العلمية</h3>
             </div>
-            <div class="pr-8 mt-4">
+            <div class="pr-6 mt-3">
                 <div class="reference-item">
-                    <strong>1.</strong> الجمعية الأمريكية للطب الرياضي. (2023). المبادئ التوجيهية للوقاية من الإصابات الرياضية. مجلة الطب الرياضي، 45(2)، 123-145.
+                    <strong>1.</strong> الجمعية الأمريكية للطب الرياضي. (2023). المبادئ التوجيهية للوقاية من الإصابات الرياضية.
                 </div>
                 <div class="reference-item">
-                    <strong>2.</strong> سميث، ج.، وأحمد، م. (2022). العلاج الطبيعي لإصابات النشاط البدني. دار النشر العلمي، القاهرة.
+                    <strong>2.</strong> سميث، ج.، وأحمد، م. (2022). العلاج الطبيعي لإصابات النشاط البدني.
                 </div>
                 <div class="reference-item">
-                    <strong>3.</strong> منظمة الصحة العالمية. (2021). تقرير عالمي عن إصابات النشاط البدني. جنيف: منشورات منظمة الصحة العالمية.
+                    <strong>3.</strong> منظمة الصحة العالمية. (2021). تقرير عالمي عن إصابات النشاط البدني.
                 </div>
                 <div class="reference-item">
-                    <strong>4.</strong> المركز الوطني للطب الرياضي. (2020). دليل التشخيص والعلاج للإصابات الرياضية. الرياض: وزارة الصحة.
+                    <strong>4.</strong> المركز الوطني للطب الرياضي. (2020). دليل التشخيص والعلاج للإصابات الرياضية.
                 </div>
                 <div class="reference-item">
-                    <strong>5.</strong> البنك الدولي. (2019). التكلفة الاقتصادية للإصابات الرياضية. واشنطن: منشورات البنك الدولي.
+                    <strong>5.</strong> البنك الدولي. (2019). التكلفة الاقتصادية للإصابات الرياضية.
                 </div>
-                <div class="reference-item">
-                    <strong>6.</strong> محمد، ع.، والغامدي، ف. (2018). علم وظائف الأعضاء الرياضي والتأهيل. مكتبة الملك فهد الوطنية، الرياض.
-                </div>
-                <div class="reference-item">
-                    <strong>7.</strong> الجمعية الأوروبية لطب الرياضة. (2017). البروتوكولات الحديثة في علاج الإصابات الرياضية. المجلة الأوروبية للطب الرياضي، 32(4)، 267-289.
-                </div>
-                <div class="reference-item">
-                    <strong>8.</strong> جامعة هارفارد للطب. (2016). دليل الإسعافات الأولية للإصابات الرياضية. بوسطن: منشورات جامعة هارفارد.
-                </div>
-                <div class="reference-item">
-                    <strong>9.</strong> الاتحاد الدولي للطب الرياضي. (2015). المعايير العالمية للوقاية من الإصابات في الرياضة. لوزان: منشورات الاتحاد.
-                </div>
-                <div class="reference-item">
-                    <strong>10.</strong> وزارة الشباب والرياضة. (2014). الاستراتيجية الوطنية للوقاية من الإصابات الرياضية. أبوظبي: مركز الإمارات للدراسات.
-                </div>
-            </div>
 
-            <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg mt-8">
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 text-center">خاتمة وتوصيات</h4>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    تشكل إصابات النشاط البدني تحدياً مستمراً للمجتمع الرياضي والطبي. من خلال فهم أنواع الإصابات، أسبابها، وطرق الوقاية والعلاج، يمكن تقليل معدلات الإصابة وتحسين جودة حياة الممارسين للنشاط البدني.
-                </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4 text-justify">
-                    توصي هذه الدراسة بضرورة تطوير برامج وقائية شاملة، وتعزيز الوعي بأهمية الإحماء والتبريد، وتشجيع الممارسة الصحيحة للتمارين الرياضية. كما تؤكد على أهمية التعاون بين المتخصصين في المجال الطبي والرياضي لتقديم رعاية متكاملة للرياضيين.
-                </p>
+                <div class="bg-gray-100 p-4 rounded-lg mt-6">
+                    <h4 class="font-semibold text-gray-800 mb-2 text-center">خاتمة وتوصيات</h4>
+                    <p class="text-gray-700 mb-2 text-justify">
+                        تشكل إصابات النشاط البدني تحدياً مستمراً للمجتمع الرياضي والطبي. من خلال فهم أنواع الإصابات وأسبابها وطرق الوقاية، يمكن تقليل معدلات الإصابة.
+                    </p>
+                    <p class="text-gray-700 text-justify">
+                        توصي هذه الدراسة بضرورة تطوير برامج وقائية شاملة، وتعزيز الوعي بأهمية الإحماء، وتشجيع الممارسة الصحيحة للتمارين الرياضية.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -594,13 +474,11 @@
     <script>
         // تحسين تجربة الطباعة
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '12pt';
-            document.body.style.lineHeight = '1.6';
+            document.body.classList.add('print-optimized');
         });
         
         window.addEventListener('afterprint', function() {
-            document.body.style.fontSize = '';
-            document.body.style.lineHeight = '';
+            document.body.classList.remove('print-optimized');
         });
     </script>
 </body>
