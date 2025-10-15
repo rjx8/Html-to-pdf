@@ -10,18 +10,28 @@
         @media print {
             @page {
                 size: A4;
-                margin: 1.5cm 1.5cm;
+                margin: 1.2cm;
             }
             
             body {
-                font-size: 12pt;
-                line-height: 1.4;
+                font-size: 11pt;
+                line-height: 1.3;
                 font-family: 'Amiri', serif;
             }
             
             .page-break {
                 page-break-before: always;
-                padding-top: 2cm;
+                padding-top: 0.3cm;
+            }
+            
+            .title-page {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                page-break-after: always;
             }
             
             .no-print {
@@ -29,32 +39,48 @@
             }
             
             h1 {
-                font-size: 20pt;
-                margin-bottom: 1cm;
+                font-size: 18pt;
+                margin-bottom: 0.4cm;
             }
             
             h2 {
-                font-size: 16pt;
-                margin: 0.8cm 0 0.4cm 0;
+                font-size: 14pt;
+                margin: 0.3cm 0 0.2cm 0;
             }
             
             h3 {
-                font-size: 14pt;
-                margin: 0.6cm 0 0.3cm 0;
+                font-size: 12pt;
+                margin: 0.25cm 0 0.15cm 0;
             }
             
             p {
-                margin-bottom: 0.4cm;
+                margin-bottom: 0.25cm;
                 text-align: justify;
             }
             
             table {
-                font-size: 10pt;
-                margin: 0.5cm 0;
+                font-size: 9pt;
+                margin: 0.2cm 0;
             }
             
-            .content-section {
-                margin-bottom: 0.8cm;
+            .section-title {
+                margin: 0.2cm 0 0.15cm 0;
+                padding: 0.25cm 0.4cm;
+                page-break-after: avoid;
+            }
+            
+            .content-box {
+                margin: 0.15cm 0;
+                padding: 0.3cm;
+                page-break-inside: avoid;
+            }
+            
+            ul, ol {
+                margin: 0.1cm 0;
+            }
+            
+            li {
+                margin-bottom: 0.1cm;
             }
         }
         
@@ -63,31 +89,32 @@
             line-height: 1.5;
         }
         
-        .header-box {
-            border: 2px solid #2E7D32;
-            padding: 15px;
+        .title-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            margin-bottom: 25px;
-            background: #f8fff8;
         }
         
         .section-title {
             background: #E3F2FD;
             padding: 8px 15px;
             border-right: 4px solid #1976D2;
-            margin: 20px 0 10px 0;
+            margin: 15px 0 8px 0;
             font-weight: bold;
         }
         
         .content-box {
             background: #f9f9f9;
             padding: 12px;
-            margin: 10px 0;
+            margin: 8px 0;
             border-right: 3px solid #4CAF50;
         }
         
         .reference-item {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             padding-right: 15px;
             text-indent: -15px;
         }
@@ -102,44 +129,44 @@
         </button>
     </div>
 
-    <div style="max-width: 21cm; margin: 0 auto; padding: 1.5cm;">
+    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
 
         <!-- صفحة العنوان -->
-        <div style="text-align: center; margin-bottom: 2cm;">
-            <h1 style="font-size: 24pt; color: #2E7D32; margin-bottom: 15px; border-bottom: 3px solid #2E7D32; padding-bottom: 15px; display: inline-block;">
+        <div class="title-page">
+            <h1 style="font-size: 28pt; color: #2E7D32; margin-bottom: 20px; border-bottom: 3px solid #2E7D32; padding-bottom: 15px;">
                 إصابات النشاط البدني
             </h1>
-            <h2 style="font-size: 18pt; color: #1976D2; margin-bottom: 20px;">
+            <h2 style="font-size: 20pt; color: #1976D2; margin-bottom: 40px;">
                 دراسة شاملة للتشخيص والعلاج والوقاية
             </h2>
-            <div style="margin-top: 1cm;">
-                <p style="font-size: 14pt;">إعداد: [اسم الطالب]</p>
-                <p style="font-size: 14pt;">المادة: التربية البدنية</p>
-                <p style="font-size: 14pt;">التاريخ: 2024</p>
+            <div style="margin-top: 40px;">
+                <p style="font-size: 16pt; margin-bottom: 10px;">إعداد: [اسم الطالب]</p>
+                <p style="font-size: 16pt; margin-bottom: 10px;">المادة: التربية البدنية</p>
+                <p style="font-size: 16pt;">التاريخ: 2024</p>
             </div>
         </div>
 
         <!-- الفهرس -->
         <div class="page-break">
-            <div class="header-box">
-                <h2 style="color: #2E7D32;">فهرس المحتويات</h2>
+            <div class="section-title">
+                <h2 style="color: #2E7D32; margin: 0;">فهرس المحتويات</h2>
             </div>
             
-            <div style="margin: 20px 0;">
-                <div style="margin-bottom: 10px;"><strong>1.</strong> المقدمة وأهمية الدراسة</div>
-                <div style="margin-bottom: 10px;"><strong>2.</strong> تعريف إصابات النشاط البدني</div>
-                <div style="margin-bottom: 10px;"><strong>3.</strong> أنواع الإصابات الرياضية</div>
-                <div style="margin-bottom: 10px;"><strong>4.</strong> الإصابات الحادة والمزمنة</div>
-                <div style="margin-bottom: 10px;"><strong>5.</strong> العوامل المؤثرة في حدوث الإصابات</div>
-                <div style="margin-bottom: 10px;"><strong>6.</strong> الإسعافات الأولية للإصابات</div>
-                <div style="margin-bottom: 10px;"><strong>7.</strong> طرق العلاج والتأهيل</div>
-                <div style="margin-bottom: 10px;"><strong>8.</strong> الوقاية من الإصابات</div>
-                <div style="margin-bottom: 10px;"><strong>9.</strong> الإصابات الشائعة حسب الرياضة</div>
-                <div style="margin-bottom: 10px;"><strong>10.</strong> المراجع العلمية</div>
+            <div style="margin: 15px 0;">
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>1.</strong> المقدمة وأهمية الدراسة</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>2.</strong> تعريف إصابات النشاط البدني</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>3.</strong> أنواع الإصابات الرياضية</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>4.</strong> الإصابات الحادة والمزمنة</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>5.</strong> العوامل المؤثرة في حدوث الإصابات</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>6.</strong> الإسعافات الأولية للإصابات</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>7.</strong> طرق العلاج والتأهيل</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>8.</strong> الوقاية من الإصابات</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>9.</strong> الإصابات الشائعة حسب الرياضة</div>
+                <div style="margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #ccc;"><strong>10.</strong> المراجع العلمية</div>
             </div>
         </div>
 
-        <!-- الصفحة 1: المقدمة -->
+        <!-- المقدمة -->
         <div class="page-break">
             <div class="section-title">المقدمة وأهمية الدراسة</div>
             
@@ -149,24 +176,21 @@
             
             <div class="content-box">
                 <strong>أهداف الدراسة:</strong>
-                <ul style="margin-right: 20px; margin-top: 10px;">
+                <ul style="margin-right: 20px; margin-top: 8px;">
                     <li>تحديد أنواع الإصابات الرياضية المختلفة</li>
                     <li>تحليل العوامل المؤثرة في حدوث الإصابات</li>
                     <li>شرح طرق العلاج والتأهيل المناسبة</li>
                     <li>تقديم استراتيجيات وقائية فعالة</li>
                 </ul>
             </div>
-        </div>
 
-        <!-- الصفحة 2: تعريف الإصابات -->
-        <div class="page-break">
-            <div class="section-title">تعريف إصابات النشاط البدني</div>
+            <div class="section-title" style="margin-top: 20px;">تعريف إصابات النشاط البدني</div>
             
             <p>تعرف إصابات النشاط البدني على أنها أي ضرر يلحق بأنسجة الجسم نتيجة للممارسة الرياضية أو النشاط البدني. يمكن أن تؤثر هذه الإصابات على العظام، العضلات، الأوتار، الأربطة، أو الغضاريف، وتتراوح في شدتها من الإصابات البسيطة إلى الإصابات الخطيرة التي تتطلب تدخلاً جراحياً.</p>
             
             <div class="content-box">
                 <strong>خصائص إصابات النشاط البدني:</strong>
-                <ul style="margin-right: 20px; margin-top: 10px;">
+                <ul style="margin-right: 20px; margin-top: 8px;">
                     <li>تحدث أثناء أو بعد النشاط البدني مباشرة</li>
                     <li>تؤثر على وظيفة الجزء المصاب</li>
                     <li>تتطلب فترة للتعافي والعلاج</li>
@@ -175,7 +199,7 @@
             </div>
         </div>
 
-        <!-- الصفحة 3: أنواع الإصابات -->
+        <!-- أنواع الإصابات -->
         <div class="page-break">
             <div class="section-title">أنواع الإصابات الرياضية</div>
             
@@ -185,7 +209,7 @@
             <h3>إصابات المفاصل</h3>
             <p>تشمل التواء المفاصل، الخلع، والتهاب المفاصل. تعتبر مفاصل الركبة والكاحل والكتف الأكثر عرضة للإصابة في النشاط البدني بسبب طبيعة الحركات المتعددة الاتجاهات التي تؤديها.</p>
             
-            <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
                 <thead>
                     <tr style="background: #E3F2FD;">
                         <th width="25%">نوع الإصابة</th>
@@ -211,55 +235,22 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
 
-        <!-- الصفحة 4: الإصابات الحادة والمزمنة -->
-        <div class="page-break">
-            <div class="section-title">الإصابات الحادة والمزمنة</div>
+            <div class="section-title" style="margin-top: 20px;">الإصابات الحادة والمزمنة</div>
             
             <h3>الإصابات الحادة</h3>
             <p>تحدث الإصابات الحادة بشكل مفاجئ نتيجة حادث أو صدمة محددة. تشمل الأمثلة على الإصابات الحادة الكسور، الالتواءات، والخلع. تظهر أعراض هذه الإصابات فوراً وتتطلب تدخلاً طبياً عاجلاً في كثير من الأحيان.</p>
             
             <h3>الإصابات المزمنة</h3>
             <p>تتطور الإصابات المزمنة تدريجياً مع مرور الوقت نتيجة الإجهاد المتكرر على أنسجة الجسم. تشمل الأمثلة التهاب الأوتار، إصابات الإجهاد المتكرر، والتهاب العضلات. غالباً ما تكون هذه الإصابات مرتبطة بأخطاء في التدريب أو التقنية.</p>
-            
-            <div class="content-box">
-                <strong>الفرق بين الإصابات الحادة والمزمنة:</strong>
-                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin-top: 10px;">
-                    <thead>
-                        <tr style="background: #E3F2FD;">
-                            <th width="50%">الإصابات الحادة</th>
-                            <th width="50%">الإصابات المزمنة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>بداية مفاجئة</td>
-                            <td>تطور تدريجي</td>
-                        </tr>
-                        <tr style="background: #f9f9f9;">
-                            <td>سبب واضح ومحدد</td>
-                            <td>سبب غير واضح</td>
-                        </tr>
-                        <tr>
-                            <td>ألم حاد وشديد</td>
-                            <td>ألم متقطع أو مستمر</td>
-                        </tr>
-                        <tr style="background: #f9f9f9;">
-                            <td>تورم فوري</td>
-                            <td>تورم خفيف</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
 
-        <!-- الصفحة 5: العوامل المؤثرة -->
+        <!-- العوامل المؤثرة والإسعافات الأولية -->
         <div class="page-break">
             <div class="section-title">العوامل المؤثرة في حدوث الإصابات</div>
             
             <h3>العوامل الداخلية</h3>
-            <ul style="margin-right: 20px; margin-bottom: 15px;">
+            <ul style="margin-right: 20px; margin-bottom: 12px;">
                 <li><strong>العمر:</strong> تختلف أنواع الإصابات باختلاف العمر</li>
                 <li><strong>الجنس:</strong> توجد اختلافات في قابلية الإصابة بين الجنسين</li>
                 <li><strong>اللياقة البدنية:</strong> تقلل اللياقة الجيدة من خطر الإصابة</li>
@@ -275,15 +266,12 @@
                 <li><strong>الطقس:</strong> الظروف الجوية وتأثيرها على الأداء</li>
                 <li><strong>التغذية:</strong> سوء التغذية والجفاف</li>
             </ul>
-        </div>
 
-        <!-- الصفحة 6: الإسعافات الأولية -->
-        <div class="page-break">
-            <div class="section-title">الإسعافات الأولية للإصابات</div>
+            <div class="section-title" style="margin-top: 20px;">الإسعافات الأولية للإصابات</div>
             
             <p>تعتبر الإسعافات الأولية المناسبة حاسمة في تقليل شدة الإصابة وتسريع عملية الشفاء. يوصى باستخدام بروتوكول RICE للإصابات الحادة:</p>
             
-            <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
                 <thead>
                     <tr style="background: #E3F2FD;">
                         <th width="25%">الخطوة</th>
@@ -314,19 +302,9 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <div class="content-box" style="margin-top: 15px;">
-                <strong>موانع استخدام بروتوكول RICE:</strong>
-                <ul style="margin-right: 20px; margin-top: 10px;">
-                    <li>الإصابات المفتوحة أو النازفة</li>
-                    <li>الإصابات التي تشمل كسور واضحة</li>
-                    <li>الإصابات التي تسبب خدراً أو تنميلاً</li>
-                    <li>الإصابات التي تؤثر على التنفس أو الوعي</li>
-                </ul>
-            </div>
         </div>
 
-        <!-- الصفحة 7: العلاج والتأهيل -->
+        <!-- العلاج والوقاية -->
         <div class="page-break">
             <div class="section-title">طرق العلاج والتأهيل</div>
             
@@ -334,68 +312,37 @@
             <p>يشمل العلاج التحفظي الطرق غير الجراحية مثل الراحة، العلاج الطبيعي، والأدوية. يعد هذا النوع من العلاج مناسباً لمعظم الإصابات الرياضية ويهدف إلى تخفيف الألم، تقليل الالتهاب، واستعادة الوظيفة.</p>
             
             <h3>العلاج الجراحي</h3>
-            <p>يلجأ للعلاج الجراحي في الحالات الشديدة مثل تمزق الأربطة الكامل، الكسور المعقدة، أو الإصابات التي لا تستجيب للعلاج التحفظي. تطورت التقنيات الجراحية بشكل كبير وأصبحت أقل تدخلاً مما يسرع من عملية الشفاء.</p>
+            <p>يلجأ للعلاج الجراحي في الحالات الشديدة مثل تمزق الأربطة الكامل، الكسور المعقدة، أو الإصابات التي لا تستجيب للعلاج التحفظي.</p>
             
             <h3>برامج التأهيل</h3>
-            <p>تهدف برامج التأهيل إلى استعادة القوة، المرونة، والوظيفة الكاملة للجزء المصاب. تشمل هذه البرامج تمارين متدرجة تبدأ بالحركات البسيطة وتتقدم إلى التمارين الوظيفية التي تحاكي النشاط الرياضي.</p>
-            
-            <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse;">
-                <thead>
-                    <tr style="background: #E3F2FD;">
-                        <th width="30%">مرحلة التأهيل</th>
-                        <th width="35%">الأهداف</th>
-                        <th width="35%">التمارين المناسبة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>المرحلة الحادة</td>
-                        <td>تخفيف الألم والالتهاب</td>
-                        <td>تمارين نطاق الحركة الخفيفة</td>
-                    </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td>المرحلة تحت الحادة</td>
-                        <td>استعادة القوة والمرونة</td>
-                        <td>تمارين المقاومة الخفيفة</td>
-                    </tr>
-                    <tr>
-                        <td>المرحلة الوظيفية</td>
-                        <td>العودة للنشاط الرياضي</td>
-                        <td>تمارين محاكاة الرياضة</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <p>تهدف برامج التأهيل إلى استعادة القوة، المرونة، والوظيفة الكاملة للجزء المصاب. تشمل هذه البرامج تمارين متدرجة تبدأ بالحركات البسيطة وتتقدم إلى التمارين الوظيفية.</p>
 
-        <!-- الصفحة 8: الوقاية -->
-        <div class="page-break">
-            <div class="section-title">الوقاية من الإصابات</div>
+            <div class="section-title" style="margin-top: 20px;">الوقاية من الإصابات</div>
             
             <p>تعتبر الوقاية من الإصابات أفضل من العلاج. يمكن تقليل خطر الإصابة من خلال اتباع استراتيجيات وقائية شاملة تشمل:</p>
             
             <h3>الإحماء والتبريد</h3>
-            <p>يعد الإحماء المناسب قبل النشاط البدني والتبريد بعده من أهم استراتيجيات الوقاية. يساعد الإحماء على زيادة تدفق الدم للعضلات ورفع درجة حرارة الجسم، بينما يساعد التبريد على استعادة الجسم لحالته الطبيعية.</p>
+            <p>يعد الإحماء المناسب قبل النشاط البدني والتبريد بعده من أهم استراتيجيات الوقاية. يساعد الإحماء على زيادة تدفق الدم للعضلات ورفع درجة حرارة الجسم.</p>
             
             <h3>التدريب المتوازن</h3>
-            <p>يشمل التدريب المتوازن تطوير جميع عناصر اللياقة البدنية بما فيها القوة، المرونة، التحمل، والتوازن. يساعد هذا النهج الشامل على تقوية الجسم بالكامل وتقليل خطر الإصابات.</p>
+            <p>يشمل التدريب المتوازن تطوير جميع عناصر اللياقة البدنية بما فيها القوة، المرونة، التحمل، والتوازن.</p>
             
             <div class="content-box">
                 <strong>نصائح وقائية إضافية:</strong>
-                <ul style="margin-right: 20px; margin-top: 10px;">
+                <ul style="margin-right: 20px; margin-top: 8px;">
                     <li>استخدام المعدات المناسبة والملابس الرياضية المناسبة</li>
                     <li>التدريب على التقنية الصحيحة لأداء التمارين</li>
                     <li>الاستماع إلى إشارات الجسم وتجنب التدريب عند الشعور بالألم</li>
                     <li>الحصول على قسط كافٍ من النوم والراحة</li>
-                    <li>الفحص الدوري مع المتخصصين في الطب الرياضي</li>
                 </ul>
             </div>
         </div>
 
-        <!-- الصفحة 9: الإصابات الشائعة -->
+        <!-- الإصابات الشائعة والمراجع -->
         <div class="page-break">
             <div class="section-title">الإصابات الشائعة حسب الرياضة</div>
             
-            <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse: collapse;">
                 <thead>
                     <tr style="background: #E3F2FD;">
                         <th width="25%">الرياضة</th>
@@ -432,22 +379,19 @@
                 </tbody>
             </table>
             
-            <div class="content-box" style="margin-top: 15px;">
+            <div class="content-box" style="margin-top: 12px;">
                 <strong>إحصائيات مهمة:</strong>
-                <ul style="margin-right: 20px; margin-top: 10px;">
+                <ul style="margin-right: 20px; margin-top: 8px;">
                     <li>تشكل إصابات الأطراف السفلية 50% من إجمالي الإصابات الرياضية</li>
                     <li>تحدث 30% من الإصابات خلال المنافسات و70% خلال التدريبات</li>
                     <li>تزداد معدلات الإصابة بنسبة 25% عند الرياضيين تحت سن 18 سنة</li>
                     <li>50% من الإصابات يمكن منعها من خلال برامج الوقاية المناسبة</li>
                 </ul>
             </div>
-        </div>
 
-        <!-- الصفحة 10: المراجع -->
-        <div class="page-break">
-            <div class="section-title">المراجع العلمية</div>
+            <div class="section-title" style="margin-top: 20px;">المراجع العلمية</div>
             
-            <div style="margin: 15px 0;">
+            <div style="margin: 12px 0;">
                 <div class="reference-item"><strong>1.</strong> الجمعية الأمريكية للطب الرياضي. (2023). المبادئ التوجيهية للوقاية من الإصابات الرياضية. مجلة الطب الرياضي، 45(2)، 123-145.</div>
                 
                 <div class="reference-item"><strong>2.</strong> سميث، ج.، وأحمد، م. (2022). العلاج الطبيعي لإصابات النشاط البدني. دار النشر العلمي، القاهرة.</div>
@@ -459,15 +403,11 @@
                 <div class="reference-item"><strong>5.</strong> البنك الدولي. (2019). التكلفة الاقتصادية للإصابات الرياضية. واشنطن: منشورات البنك الدولي.</div>
                 
                 <div class="reference-item"><strong>6.</strong> محمد، ع.، والغامدي، ف. (2018). علم وظائف الأعضاء الرياضي والتأهيل. مكتبة الملك فهد الوطنية، الرياض.</div>
-                
-                <div class="reference-item"><strong>7.</strong> الجمعية الأوروبية لطب الرياضة. (2017). البروتوكولات الحديثة في علاج الإصابات الرياضية. المجلة الأوروبية للطب الرياضي، 32(4)، 267-289.</div>
-                
-                <div class="reference-item"><strong>8.</strong> جامعة هارفارد للطب. (2016). دليل الإسعافات الأولية للإصابات الرياضية. بوسطن: منشورات جامعة هارفارد.</div>
             </div>
             
-            <div class="content-box" style="margin-top: 20px;">
-                <h3 style="text-align: center; color: #2E7D32;">خاتمة وتوصيات</h3>
-                <p>تشكل إصابات النشاط البدني تحدياً مستمراً للمجتمع الرياضي والطبي. من خلال فهم أنواع الإصابات، أسبابها، وطرق الوقاية والعلاج، يمكن تقليل معدلات الإصابة وتحسين جودة حياة الممارسين للنشاط البدني.</p>
+            <div class="content-box" style="margin-top: 15px;">
+                <h3 style="text-align: center; color: #2E7D32; margin: 0 0 8px 0;">خاتمة وتوصيات</h3>
+                <p style="margin-bottom: 8px;">تشكل إصابات النشاط البدني تحدياً مستمراً للمجتمع الرياضي والطبي. من خلال فهم أنواع الإصابات، أسبابها، وطرق الوقاية والعلاج، يمكن تقليل معدلات الإصابة وتحسين جودة حياة الممارسين للنشاط البدني.</p>
                 <p>توصي هذه الدراسة بضرورة تطوير برامج وقائية شاملة، وتعزيز الوعي بأهمية الإحماء والتبريد، وتشجيع الممارسة الصحيحة للتمارين الرياضية. كما تؤكد على أهمية التعاون بين المتخصصين في المجال الطبي والرياضي لتقديم رعاية متكاملة للرياضيين.</p>
             </div>
         </div>
@@ -477,7 +417,7 @@
     <script>
         // تحسين الطباعة
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '12pt';
+            document.body.style.fontSize = '11pt';
         });
     </script>
 </body>
