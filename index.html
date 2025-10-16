@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كرة القدم - التربية البدنية</title>
+    <title>سورة البقرة - دراسة الكفايات</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
             /* تصغير النصوص أثناء الطباعة */
             body {
                 font-size: 10pt !important;
-                line-height: 1.3 !important;
+                line-height: 1.4 !important;
             }
             h1 { font-size: 16pt !important; }
             h2 { font-size: 14pt !important; }
@@ -26,7 +26,7 @@
             .section-title { font-size: 12pt !important; padding: 8px 15px !important; }
             .content-box { padding: 10px !important; }
             table { font-size: 8pt !important; }
-            .player { font-size: 9pt !important; padding: 5px !important; }
+            .quran-verse { font-size: 11pt !important; }
         }
         
         body {
@@ -47,120 +47,28 @@
             background: #f8fafc;
             padding: 12px;
             margin: 10px 0;
-            border-right: 4px solid #dc2626;
+            border-right: 4px solid #059669;
             border-radius: 0 8px 8px 0;
         }
-        .football-field {
-            width: 100%;
-            height: 200px;
-            background: #16a34a;
-            border: 3px solid #fff;
-            position: relative;
-            margin: 10px 0;
-            border-radius: 8px;
-        }
-        .center-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border: 2px solid white;
-            border-radius: 50%;
-        }
-        .center-spot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-        }
-        .goal-box {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 90px;
-            height: 120px;
-            border: 2px solid white;
-        }
-        .goal-left { right: 0; }
-        .goal-right { left: 0; }
-        .goal-small {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 80px;
-            border: 2px solid white;
-        }
-        .goal-small-left { right: 0; }
-        .goal-small-right { left: 0; }
-        .penalty-spot {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-        }
-        .penalty-left { right: 60px; }
-        .penalty-right { left: 60px; }
-        .football {
-            width: 30px;
-            height: 30px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 6px rgba(0,0,0,0.3);
-        }
-        .football::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            border: 2px solid #000;
-            border-radius: 50%;
-        }
-        .football::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px;
-            height: 12px;
-            border: 1px solid #000;
-            border-radius: 50%;
-        }
-        .formation-diagram {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin: 10px 0;
+        .quran-verse {
+            background: #f0f9ff;
             padding: 10px;
-            background: #f1f5f9;
-            border-radius: 6px;
+            margin: 8px 0;
+            border-right: 3px solid #0369a1;
+            border-radius: 0 6px 6px 0;
+            font-family: 'Amiri', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            text-align: justify;
         }
-        .player {
-            background: #1e40af;
+        .verse-number {
+            background: #0369a1;
             color: white;
-            padding: 5px;
-            text-align: center;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
             font-size: 10px;
+            margin-left: 5px;
         }
-        .goalkeeper { background: #dc2626; }
         
         /* عناصر التحكم بالحجم */
         .size-controls {
@@ -172,10 +80,10 @@
             padding: 8px;
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid #1e40af;
+            border: 2px solid #059669;
         }
         .size-btn {
-            background: #1e40af;
+            background: #059669;
             color: white;
             border: none;
             padding: 6px 10px;
@@ -185,7 +93,7 @@
             font-weight: bold;
         }
         .size-btn:hover {
-            background: #1e3a8a;
+            background: #047857;
         }
         
         /* تحسين التدفق */
@@ -199,6 +107,19 @@
         .compact-table {
             margin: 8px 0;
         }
+        
+        /* علامات الترقيم المميزة */
+        .punctuation-note {
+            color: #dc2626;
+            font-weight: bold;
+            margin: 5px 0;
+            font-size: 11px;
+        }
+        .important-point {
+            border-right: 3px solid #dc2626;
+            padding-right: 10px;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -208,285 +129,280 @@
         <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
         <button class="size-btn" onclick="changeFontSize('normal')">A</button>
         <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
-        <button class="size-btn" onclick="window.print()" style="background: #059669; margin-right: 8px;">🖨️ طباعة</button>
+        <button class="size-btn" onclick="window.print()" style="background: #1e40af; margin-right: 8px;">🖨️ طباعة</button>
     </div>
 
     <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg min-h-screen" id="content">
 
         <!-- العنوان الرئيسي -->
         <div class="text-center mb-8 border-b-3 border-green-600 pb-4">
-            <h1 class="text-3xl font-bold text-gray-800 mb-3">كرة القدم</h1>
-            <h2 class="text-xl font-semibold text-green-600">رياضة الجماهير والمهارات</h2>
+            <h1 class="text-3xl font-bold text-gray-800 mb-3">سورة البقرة</h1>
+            <h2 class="text-xl font-semibold text-green-600">دراسة الكفايات والمنهجيات</h2>
         </div>
 
         <!-- المقدمة -->
         <div class="compact-section">
-            <div class="section-title">مقدمة عن كرة القدم</div>
+            <div class="section-title">مقدمة في سورة البقرة</div>
             <p class="text-justify mb-3">
-                كرة القدم هي الرياضة الأكثر شعبية في العالم، يلعبها أكثر من 250 مليون لاعب في أكثر من 200 دولة. تعتمد على العمل الجماعي، اللياقة البدنية، والمهارات الفردية في التمرير، التسديد، والتحكم بالكرة.
+                سورة البقرة هي أطول سور القرآن الكريم؛ حيث يبلغ عدد آياتها (286) آية، وهي سورة مدنية، وترتيبها الثاني في المصحف بعد سورة الفاتحة. 
             </p>
             <p class="text-justify">
-                تعتبر كرة القدم وسيلة رائعة لتعزيز الصحة البدنية والعقلية، وتطوير مهارات العمل الجماعي والانضباط. كما أنها تلعب دوراً مهماً في بناء الشخصية وتعزيز الثقة بالنفس.
+                تسميتها بـ"البقرة" جاء من قصة البقرة التي أمر الله بني إسرائيل بذبحها في عهد النبي موسى -عليه السلام-؛ ليكشف عن القاتل في قتيلٍ اختصموا فيه.
             </p>
+            
+            <div class="punctuation-note">
+                💡 ملاحظة: انتبه لعلامات الترقيم؛ فهي تساعد في فهم المعاني وتقسيم الأفكار.
+            </div>
         </div>
 
-        <!-- أساسيات كرة القدم -->
+        <!-- الخصائص العامة -->
         <div class="compact-section">
-            <div class="section-title">أساسيات كرة القدم</div>
+            <div class="section-title">الخصائص العامة للسورة</div>
             
             <div class="content-box">
-                <h3 class="font-bold mb-2 text-red-600">القواعد الأساسية:</h3>
+                <h3 class="font-bold mb-2 text-red-600">أبرز خصائص سورة البقرة:</h3>
                 <ul class="list-disc pr-5 space-y-1">
-                    <li>مباراة كرة القدم تستمر 90 دقيقة (شوطين × 45 دقيقة)</li>
-                    <li>كل فريق يتكون من 11 لاعباً (10 لاعبين + حارس مرمى)</li>
-                    <li>الفوز يحصل على 3 نقاط، التعادل نقطة واحدة، الخسارة صفر</li>
-                    <li>الهدف يسجل عندما تعبر الكرة خط المرمى بالكامل</li>
-                    <li>اللاعب لا يمكنه لمس الكرة بيده إلا حارس المرمى في منطقته</li>
+                    <li>أطول سور القرآن الكريم (286 آية)</li>
+                    <li>آخر آية نزلت من القرآن (آية الربا)</li>
+                    <li>اشتملت على أعظم آية في القرآن (آية الكرسي)</li>
+                    <li>تضمنت آخر ما نزل من الأحكام (آيات الصيام)</li>
+                    <li>ذكرت فيها قصة آدم -عليه السلام- كاملة</li>
                 </ul>
             </div>
 
-            <!-- رسم ملعب كرة القدم -->
-            <div class="football-field">
-                <div class="center-circle"></div>
-                <div class="center-spot"></div>
-                <div class="goal-box goal-left"></div>
-                <div class="goal-box goal-right"></div>
-                <div class="goal-small goal-small-left"></div>
-                <div class="goal-small goal-small-right"></div>
-                <div class="penalty-spot penalty-left"></div>
-                <div class="penalty-spot penalty-right"></div>
-                <div class="football"></div>
+            <!-- آية مميزة -->
+            <div class="quran-verse">
+                ﴿ذَ ٰلِكَ ٱلۡكِتَـٰبُ لَا رَیۡبَۛ فِیهِۛ هُدࣰى لِّلۡمُتَّقِینَ﴾
+                <span class="verse-number">٢</span>
             </div>
-            <p class="text-center text-xs text-gray-600 mb-4">رسم تخطيطي لملعب كرة القدم</p>
+            <p class="text-center text-xs text-gray-600 mb-4">أول آية في سورة البقرة - سمة الوضوح واليقين</p>
         </div>
 
-        <!-- المهارات الأساسية -->
+        <!-- المحاور الرئيسية -->
         <div class="compact-section">
-            <div class="section-title">المهارات الأساسية</div>
+            <div class="section-title">المحاور الرئيسية في السورة</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
                 <div class="content-box">
-                    <h4 class="font-bold mb-1">التمرير (Passing)</h4>
-                    <p class="text-sm">نقل الكرة بدقة من لاعب لآخر باستخدام القدم الداخلية أو الخارجية</p>
+                    <h4 class="font-bold mb-1">١. العقيدة والإيمان:</h4>
+                    <p class="text-sm">- توحيد الله وصفاته، - الإيمان بالغيب، - النبوة والرسالة.</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-1">الاستلام (Control)</h4>
-                    <p class="text-sm">استقبال الكرة والسيطرة عليها باستخدام الصدر، الفخذ، أو القدم</p>
+                    <h4 class="font-bold mb-1">٢. التشريعات والأحكام:</h4>
+                    <p class="text-sm">- الصلاة، - الصيام، - الزكاة، - الحج، - المعاملات.</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-1">التسديد (Shooting)</h4>
-                    <p class="text-sm">توجيه الكرة نحو المرمى بقوة ودقة باستخدام مختلف أجزاء القدم</p>
+                    <h4 class="font-bold mb-1">٣. القصص والعبر:</h4>
+                    <p class="text-sm">- قصة آدم، - بنو إسرائيل، - إبراهيم -عليه السلام-.</p>
                 </div>
                 <div class="content-box">
-                    <h4 class="font-bold mb-1">المراوغة (Dribbling)</h4>
-                    <p class="text-sm">التحكم بالكرة أثناء الجري وتغيير الاتجاهات لتفادي المنافسين</p>
+                    <h4 class="font-bold mb-1">٤. الأخلاق والآداب:</h4>
+                    <p class="text-sm">- الصبر، - التقوى، - البر، - الإحسان، - العدل.</p>
                 </div>
             </div>
 
-            <!-- جدول المهارات -->
+            <!-- جدول المحاور -->
             <div class="overflow-x-auto compact-table">
                 <table class="w-full border-collapse border border-gray-300 text-xs">
                     <thead>
-                        <tr class="bg-blue-600 text-white">
-                            <th class="border border-gray-300 p-1">المهارة</th>
-                            <th class="border border-gray-300 p-1">التقنية</th>
-                            <th class="border border-gray-300 p-1">الأهمية</th>
+                        <tr class="bg-green-600 text-white">
+                            <th class="border border-gray-300 p-1">المحور</th>
+                            <th class="border border-gray-300 p-1">الموضوعات</th>
+                            <th class="border border-gray-300 p-1">الأهداف</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">التمرير القصير</td>
-                            <td class="border border-gray-300 p-1">باطن القدم</td>
-                            <td class="border border-gray-300 p-1">عالية - للحفاظ على التملك</td>
+                            <td class="border border-gray-300 p-1">العقيدة</td>
+                            <td class="border border-gray-300 p-1">التوحيد، الإيمان، اليوم الآخر</td>
+                            <td class="border border-gray-300 p-1">بناء اليقين والإيمان القلبي</td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 p-1">التمرير الطويل</td>
-                            <td class="border border-gray-300 p-1">ظهر القدم</td>
-                            <td class="border border-gray-300 p-1">متوسطة - لتغيير اتجاه الهجوم</td>
+                            <td class="border border-gray-300 p-1">التشريع</td>
+                            <td class="border border-gray-300 p-1">العبادات، المعاملات، الأحوال</td>
+                            <td class="border border-gray-300 p-1">تنظيم حياة الفرد والمجتمع</td>
                         </tr>
                         <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">التسديد</td>
-                            <td class="border border-gray-300 p-1">ظهر القدم/باطن القدم</td>
-                            <td class="border border-gray-300 p-1">عالية جداً - لتسجيل الأهداف</td>
+                            <td class="border border-gray-300 p-1">الأخلاق</td>
+                            <td class="border border-gray-300 p-1">الفضائل، الآداب، المعاملات</td>
+                            <td class="border border-gray-300 p-1">تهذيب النفس وتزكيتها</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- المراكز والتشكيلات -->
+        <!-- الكفايات المستهدفة -->
         <div class="compact-section">
-            <div class="section-title">مراكز اللاعبين والتشكيلات</div>
+            <div class="section-title">الكفايات المستهدفة من دراسة السورة</div>
             
             <div class="content-box mb-4">
-                <h3 class="font-bold mb-2 text-red-600">مراكز اللاعبين:</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div class="text-center p-2 bg-blue-100 rounded text-sm">
-                        <strong>حارس المرمى</strong>
-                        <p class="text-xs">حماية المرمى</p>
-                    </div>
-                    <div class="text-center p-2 bg-green-100 rounded text-sm">
-                        <strong>الدفاع</strong>
-                        <p class="text-xs">منع الهجمات</p>
-                    </div>
-                    <div class="text-center p-2 bg-yellow-100 rounded text-sm">
-                        <strong>الوسط</strong>
-                        <p class="text-xs">ربط الدفاع بالهجوم</p>
-                    </div>
-                    <div class="text-center p-2 bg-red-100 rounded text-sm">
-                        <strong>الهجوم</strong>
-                        <p class="text-xs">تسجيل الأهداف</p>
-                    </div>
-                </div>
+                <h3 class="font-bold mb-2 text-red-600">الكفايات العقدية:</h3>
+                <ul class="list-disc pr-5 space-y-1 text-sm">
+                    <li>تعزيز الإيمان بالله وتوحيده</li>
+                    <li>التعرف على صفات الله وأسمائه الحسنى</li>
+                    <li>الإيمان بالملائكة والكتب والرسل</li>
+                    <li>اليقين باليوم الآخر والقدر خيره وشره</li>
+                </ul>
             </div>
 
-            <!-- رسم تشكيل 4-4-2 -->
-            <h4 class="font-bold mb-2 text-center text-sm">تشكيل 4-4-2 الكلاسيكي</h4>
-            <div class="formation-diagram">
-                <div class="player goalkeeper">حارس المرمى</div>
-                <div></div><div></div><div></div>
-                
-                <div class="player">مدافع أيمن</div>
-                <div class="player">مدافع مركزي</div>
-                <div class="player">مدافع مركزي</div>
-                <div class="player">مدافع أيسر</div>
-                
-                <div class="player">وسط ميدان أيمن</div>
-                <div class="player">وسط ميدان دفاعي</div>
-                <div class="player">وسط ميدان هجومي</div>
-                <div class="player">وسط ميدان أيسر</div>
-                
-                <div></div>
-                <div class="player">مهاجم</div>
-                <div class="player">مهاجم</div>
-                <div></div>
+            <div class="content-box mb-4">
+                <h3 class="font-bold mb-2 text-red-600">الكفايات التشريعية:</h3>
+                <ul class="list-disc pr-5 space-y-1 text-sm">
+                    <li>فهم أحكام العبادات (الصلاة، الصيام، الزكاة، الحج)</li>
+                    <li>معرفة أحكام المعاملات (البيع، الربا، الديون)</li>
+                    <li>الإلمام بأحكام الأسرة (الزواج، الطلاق، الرضاع)</li>
+                    <li>فقه الجنايات والحدود</li>
+                </ul>
+            </div>
+
+            <!-- آية الكفايات -->
+            <div class="quran-verse">
+                ﴿یَـٰۤأَیُّهَا ٱلنَّاسُ ٱعۡبُدُوا۟ رَبَّكُمُ ٱلَّذِی خَلَقَكُمۡ وَٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
+                <span class="verse-number">٢١</span>
+            </div>
+            
+            <div class="punctuation-note">
+                🔍 انتبه: الفاصلة بين الجملتين توضح العلاقة السببية بين الخلق والعبادة.
             </div>
         </div>
 
-        <!-- اللياقة البدنية -->
+        <!-- المنهجية في الدراسة -->
         <div class="compact-section">
-            <div class="section-title">اللياقة البدنية في كرة القدم</div>
+            <div class="section-title">المنهجية في دراسة السورة</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
                 <div class="content-box">
-                    <h4 class="font-bold mb-2 text-green-600">عناصر اللياقة المطلوبة:</h4>
-                    <ul class="list-disc pr-5 space-y-1 text-sm">
-                        <li><strong>التحمل القلبي التنفسي:</strong> الجري لمسافات طويلة</li>
-                        <li><strong>السرعة:</strong> الركض السريع والانطلاقات</li>
-                        <li><strong>الرشاقة:</strong> تغيير الاتجاهات بسرعة</li>
-                        <li><strong>القوة:</strong> خاصة في الأرجل والجذع</li>
-                        <li><strong>المرونة:</strong> لمنع الإصابات</li>
-                    </ul>
+                    <h4 class="font-bold mb-1">المنهج التحليلي:</h4>
+                    <p class="text-sm">- تحليل الآيات، - فهم السياق، - استنباط الأحكام.</p>
                 </div>
-                
                 <div class="content-box">
-                    <h4 class="font-bold mb-2 text-green-600">إحصائيات الجري:</h4>
-                    <ul class="list-disc pr-5 space-y-1 text-sm">
-                        <li>المسافة المقطوعة: 10-12 كم للمباراة</li>
-                        <li>الانطلاقات السريعة: 40-60 مرة للمباراة</li>
-                        <li>الركض الخلفي: 2-3 كم للمباراة</li>
-                        <li>المشي: 2-3 كم للمباراة</li>
-                    </ul>
+                    <h4 class="font-bold mb-1">المنهج المقارن:</h4>
+                    <p class="text-sm">- مقارنة الآيات، - الموازنة بين الأحكام.</p>
+                </div>
+                <div class="content-box">
+                    <h4 class="font-bold mb-1">المنهج التطبيقي:</h4>
+                    <p class="text-sm">- تطبيق الأحكام، - الاستفادة من القصص.</p>
+                </div>
+                <div class="content-box">
+                    <h4 class="font-bold mb-1">المنهج التكاملي:</h4>
+                    <p class="text-sm">- الربط بين الموضوعات، - التكامل بين الأحكام.</p>
                 </div>
             </div>
 
-            <!-- خريطة فهم تكتيكية -->
-            <div class="content-box mt-4">
-                <h4 class="font-bold mb-2 text-center text-sm">خريطة فهم الهجوم والدفاع</h4>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center p-3 bg-blue-50 rounded">
-                        <strong class="text-blue-700 text-sm">الهجوم</strong>
-                        <div class="mt-1 text-xs text-justify">
-                            <p>• خلق المساحات</p>
-                            <p>• التمريرات السريعة</p>
-                            <p>• الحركة بدون كرة</p>
-                            <p>• التسديد على المرمى</p>
-                        </div>
-                    </div>
-                    <div class="text-center p-3 bg-red-50 rounded">
-                        <strong class="text-red-700 text-sm">الدفاع</strong>
-                        <div class="mt-1 text-xs text-justify">
-                            <p>• الضغط على الخصم</p>
-                            <p>• قطع المسارات</p>
-                            <p>• التغطية الدفاعية</p>
-                            <p>• الخروج من الكرة</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- خطوات الدراسة -->
+            <div class="content-box">
+                <h4 class="font-bold mb-2 text-green-600">خطوات دراسة السورة:</h4>
+                <ol class="list-decimal pr-5 space-y-1 text-sm" style="list-style-type: arabic-indic;">
+                    <li>التعرف على سبب النزول والسياق التاريخي</li>
+                    <li>فهم المعاني اللغوية والمفردات</li>
+                    <li>تحليل الآيات واستنباط الأحكام</li>
+                    <li>الربط بين الآيات والموضوعات</li>
+                    <li>تطبيق الدروس والعبر في الحياة</li>
+                </ol>
             </div>
         </div>
 
-        <!-- التغذية والإصابات -->
+        <!-- القصص والعبر -->
         <div class="compact-section">
-            <div class="section-title">التغذية والوقاية من الإصابات</div>
+            <div class="section-title">القصص والعبر في السورة</div>
             
             <div class="content-box mb-4">
-                <h4 class="font-bold mb-2 text-red-600">نظام التغذية للاعب كرة القدم:</h4>
-                <div class="overflow-x-auto compact-table">
-                    <table class="w-full border-collapse border border-gray-300 text-xs">
-                        <thead>
-                            <tr class="bg-green-600 text-white">
-                                <th class="border border-gray-300 p-1">الوقت</th>
-                                <th class="border border-gray-300 p-1">الوجبة</th>
-                                <th class="border border-gray-300 p-1">الأهمية</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 p-1">قبل المباراة بـ 3 ساعات</td>
-                                <td class="border border-gray-300 p-1">كاربوهيدرات معقدة</td>
-                                <td class="border border-gray-300 p-1">توفير الطاقة</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-1">أثناء المباراة</td>
-                                <td class="border border-gray-300 p-1">ماء + مشروبات رياضية</td>
-                                <td class="border border-gray-300 p-1">ترطيب الجسم</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 p-1">بعد المباراة</td>
-                                <td class="border border-gray-300 p-1">بروتين + كاربوهيدرات</td>
-                                <td class="border border-gray-300 p-1">استعادة العضلات</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h3 class="font-bold mb-2 text-red-600">قصة آدم -عليه السلام-:</h3>
+                <p class="text-sm text-justify">
+                    تبدأ السورة بقصة خلق آدم -عليه السلام-، وتعليمه الأسماء كلها، وسجود الملائكة له، وإسكانه الجنة، ثم اختباره بشجرة المنع، وخروجه منها.
+                </p>
+                <div class="quran-verse mt-2">
+                    ﴿وَإِذۡ قُلۡنَا لِلۡمَلَـٰۤىِٕكَةِ ٱسۡجُدُوا۟ لِـَٔادَمَ فَسَجَدُوۤا۟ إِلَّاۤ إِبۡلِیسَ أَبَىٰ وَٱسۡتَكۡبَرَ وَكَانَ مِنَ ٱلۡكَـٰفِرِینَ﴾
+                    <span class="verse-number">٣٤</span>
                 </div>
             </div>
 
             <div class="content-box">
-                <h4 class="font-bold mb-2 text-red-600">الإصابات الشائعة والوقاية:</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <strong class="text-sm">الإصابات الشائعة:</strong>
-                        <ul class="list-disc pr-5 mt-1 text-xs">
-                            <li>التواء الكاحل</li>
-                            <li>إصابات الركبة</li>
-                            <li>الشد العضلي</li>
-                            <li>الكدمات</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <strong class="text-sm">طرق الوقاية:</strong>
-                        <ul class="list-disc pr-5 mt-1 text-xs">
-                            <li>الإحماء الجيد</li>
-                            <li>التمطية بعد التمرين</li>
-                            <li>استخدام المعدات المناسبة</li>
-                            <li>التدريب المتوازن</li>
-                        </ul>
-                    </div>
+                <h3 class="font-bold mb-2 text-red-600">قصة بني إسرائيل:</h3>
+                <p class="text-sm text-justify">
+                    تذكر السورة قصص بني إسرائيل مع أنبيائهم، ونعم الله عليهم، وتمردهم وعصيانهم، وكيف كانت عاقبة المفسدين منهم.
+                </p>
+                <div class="quran-verse mt-2">
+                    ﴿وَإِذۡ قُلۡنَا ٱدۡخُلُوا۟ هَـٰذِهِ ٱلۡقَرۡیَةَ فَكُلُوا۟ مِنۡهَا حَیۡثُ شِئۡتُمۡ رَغَدࣰا وَٱدۡخُلُوا۟ ٱلۡبَابَ سُجَّدࣰا وَقُولُوا۟ حِطَّةࣱ نَّغۡفِرۡ لَكُمۡ خَطَـٰیَـٰكُمۡۚ وَسَنَزِیدُ ٱلۡمُحۡسِنِینَ﴾
+                    <span class="verse-number">٥٨</span>
                 </div>
+            </div>
+            
+            <div class="punctuation-note">
+                ✨ لاحظ: النقطة في نهاية الجملة تدل على اكتمال المعنى، والفاصلة تفصل بين الجمل المتصلة.
             </div>
         </div>
 
-        <!-- الخاتمة -->
+        <!-- الأحكام التشريعية -->
         <div class="compact-section">
-            <div class="section-title">خاتمة</div>
+            <div class="section-title">الأحكام التشريعية في السورة</div>
+            
+            <div class="overflow-x-auto compact-table">
+                <table class="w-full border-collapse border border-gray-300 text-xs">
+                    <thead>
+                        <tr class="bg-blue-600 text-white">
+                            <th class="border border-gray-300 p-1">الحكم</th>
+                            <th class="border border-gray-300 p-1">الآيات</th>
+                            <th class="border border-gray-300 p-1">التفاصيل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 p-1">الصيام</td>
+                            <td class="border border-gray-300 p-1">١٨٣-١٨٧</td>
+                            <td class="border border-gray-300 p-1">فرضية الصيام، الرخصة للمريض والمسافر</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">الربا</td>
+                            <td class="border border-gray-300 p-1">٢٧٥-٢٧٩</td>
+                            <td class="border border-gray-300 p-1">تحريم الربا، وعقوبته، والبديل الحلال</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 p-1">الوصية</td>
+                            <td class="border border-gray-300 p-1">١٨٠-١٨٢</td>
+                            <td class="border border-gray-300 p-1">حكم الوصية، وشروطها، وأحكامها</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">القصاص</td>
+                            <td class="border border-gray-300 p-1">١٧٨-١٧٩</td>
+                            <td class="border border-gray-300 p-1">حكم القصاص في القتل، والدية</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- آية الأحكام -->
+            <div class="quran-verse mt-3">
+                ﴿یَـٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ كُتِبَ عَلَیۡكُمُ ٱلصِّیَامُ كَمَا كُتِبَ عَلَى ٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
+                <span class="verse-number">١٨٣</span>
+            </div>
+            
+            <div class="punctuation-note">
+                💫 مهم: انتبه لعلامة النداء (يا) التي تدل على المناداة والاهتمام، وعلامة التعجب (!) التي قد تستخدم في الشرح.
+            </div>
+        </div>
+
+        <!-- الخاتمة والتطبيقات -->
+        <div class="compact-section">
+            <div class="section-title">الخاتمة والتطبيقات العملية</div>
             <div class="content-box">
                 <p class="text-justify text-sm">
-                    كرة القدم ليست مجرد رياضة، بل هي فن يتطلب مزيجاً من المهارات الفنية، اللياقة البدنية، الذكاء التكتيكي، والعمل الجماعي. تطوير هذه الجوانب يساعد في إنتاج لاعب متكامل قادر على الإبداع في الملعب والمساهمة في نجاح فريقه.
+                    سورة البقرة تمثل منهجاً متكاملاً للحياة؛ حيث تشمل العقيدة، والعبادة، والأخلاق، والتشريع. ودراستها تساعد في بناء الشخصية المسلمة المتكاملة.
                 </p>
                 <p class="text-justify mt-2 text-sm">
-                    النجاح في كرة القدم يتطلب التزاماً بالتدريب المستمر، الاهتمام بالتغذية، والراحة الكافية، بالإضافة إلى التعلم المستمر وتطوير المهارات.
+                    ومن أهم التطبيقات العملية: المحافظة على الصلوات، والصيام، والزكاة، والتحلي بالأخلاق الحسنة، والابتعاد عن المحرمات، والعمل بما أمر الله به.
                 </p>
+                
+                <div class="important-point mt-3">
+                    <strong>الخاتمة:</strong> سورة البقرة هي دستور حياة للمسلم، ومنهج شامل للتعامل مع الله، والنفس، والمجتمع.
+                </div>
+            </div>
+
+            <!-- آية الختام -->
+            <div class="quran-verse mt-3">
+                ﴿ءَامَنَ ٱلرَّسُولُ بِمَاۤ أُنزِلَ إِلَیۡهِ مِن رَّبِّهِۦ وَٱلۡمُؤۡمِنُونَۚ كُلٌّ ءَامَنَ بِٱللَّهِ وَمَلَـٰۤىِٕكَتِهِۦ وَكُتُبِهِۦ وَرُسُلِهِۦ لَا نُفَرِّقُ بَیۡنَ أَحَدࣲ مِّن رُّسُلِهِۦۚ وَقَالُوا۟ سَمِعۡنَا وَأَطَعۡنَاۖ غُفۡرَانَكَ رَبَّنَا وَإِلَیۡكَ ٱلۡمَصِیرُ﴾
+                <span class="verse-number">٢٨٥</span>
             </div>
         </div>
 
@@ -514,7 +430,7 @@
         // أثناء الطباعة يتم تصغير النصوص تلقائياً
         window.addEventListener('beforeprint', function() {
             document.body.style.fontSize = '10pt';
-            document.body.style.lineHeight = '1.3';
+            document.body.style.lineHeight = '1.4';
         });
         
         window.addEventListener('afterprint', function() {
