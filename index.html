@@ -4,86 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مشروع سورة البقرة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* إعدادات الطباعة */
         @media print {
             @page {
                 size: A4;
-                margin: 0.5cm 0.5cm;
-            }
-            .no-print { display: none !important; }
-            .page-break { 
-                page-break-before: always;
-                margin-top: 0;
-                padding-top: 0;
+                margin: 0.3cm;
+                padding: 0;
             }
             
             body {
-                font-size: 9pt !important;
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                padding: 0.5cm !important;
+                font-size: 11pt !important;
                 line-height: 1.2 !important;
-                margin: 0;
-                padding: 0;
+                transform: scale(1) !important;
+                zoom: 1 !important;
             }
-            h1 { font-size: 14pt !important; margin: 5px 0 !important; }
-            h2 { font-size: 12pt !important; margin: 4px 0 !important; }
-            .section-title { 
-                font-size: 11pt !important; 
-                padding: 6px 10px !important;
-                margin: 8px 0 4px 0 !important;
+            
+            .page-break {
+                page-break-before: always;
+                margin-top: 0 !important;
+                padding-top: 0 !important;
             }
-            .content-box { 
-                padding: 6px 8px !important;
-                margin: 4px 0 !important;
-            }
-            .quran-verse {
-                padding: 5px 6px !important;
-                margin: 3px 0 !important;
-                font-size: 10pt !important;
-                line-height: 1.4 !important;
+            
+            .no-print {
+                display: none !important;
             }
         }
-        
+
+        /* إعدادات الشاشة */
         body {
-            font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            font-family: 'Amiri', 'Times New Roman', serif;
             line-height: 1.3;
-            font-size: 10pt;
+            font-size: 12pt;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background: white;
+            color: black;
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
+
         .section-title {
             background: #1e40af;
             color: white;
-            padding: 8px 12px;
-            margin: 10px 0 6px 0;
+            padding: 6px 12px;
+            margin: 8px 0 4px 0;
             border-radius: 0 4px 4px 0;
             font-weight: bold;
-            font-size: 12pt;
+            font-size: 13pt;
+            page-break-inside: avoid;
         }
+
         .content-box {
             background: #f8fafc;
-            padding: 8px 10px;
-            margin: 5px 0;
-            border-right: 2px solid #059669;
-            border-radius: 0 4px 4px 0;
-        }
-        .quran-verse {
-            background: #f0f9ff;
             padding: 6px 8px;
             margin: 4px 0;
+            border-right: 2px solid #059669;
+            border-radius: 0 4px 4px 0;
+            page-break-inside: avoid;
+        }
+
+        .quran-verse {
+            background: #f0f9ff;
+            padding: 5px 8px;
+            margin: 3px 0;
             border-right: 2px solid #0369a1;
             border-radius: 0 3px 3px 0;
             font-family: 'Amiri', serif;
             font-size: 11pt;
             line-height: 1.5;
+            page-break-inside: avoid;
         }
+
         .verse-number {
             background: #0369a1;
             color: white;
-            padding: 1px 3px;
+            padding: 1px 4px;
             border-radius: 2px;
-            font-size: 8px;
-            margin-left: 3px;
+            font-size: 8pt;
+            margin-right: 5px;
         }
 
         .size-controls {
@@ -92,266 +97,214 @@
             left: 10px;
             z-index: 1000;
             background: white;
-            padding: 4px;
-            border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border: 1px solid #059669;
         }
+
         .size-btn {
             background: #059669;
             color: white;
             border: none;
-            padding: 3px 6px;
-            margin: 0 1px;
-            border-radius: 2px;
+            padding: 4px 8px;
+            margin: 0 2px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 10pt;
         }
 
-        /* إزالة جميع المسافات الكبيرة */
-        .compact * {
-            margin: 0;
-            padding: 0;
+        /* منع تكسر العناصر بين الصفحات */
+        .keep-together {
+            page-break-inside: avoid;
         }
-        .compact p {
-            margin-bottom: 3px !important;
+        
+        /* إعدادات النصوص */
+        h1, h2, h3, h4, p, ul, li {
+            margin: 2px 0;
+            padding: 1px 0;
         }
-        .compact ul {
-            margin-top: 2px !important;
-            margin-bottom: 2px !important;
+        
+        ul {
+            padding-right: 15px;
         }
-        .compact li {
-            margin-bottom: 1px !important;
+        
+        li {
+            margin-bottom: 1px;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 compact">
+<body>
 
     <div class="size-controls no-print">
-        <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
-        <button class="size-btn" onclick="changeFontSize('normal')">A</button>
-        <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
-        <button class="size-btn" onclick="window.print()" style="background: #1e40af; margin-right: 2px;">🖨️</button>
+        <button class="size-btn" onclick="changeScaling('smaller')">تصغير</button>
+        <button class="size-btn" onclick="changeScaling('normal')">عادي</button>
+        <button class="size-btn" onclick="changeScaling('larger')">تكبير</button>
+        <button class="size-btn" onclick="window.print()" style="background: #1e40af;">🖨️ طباعة</button>
     </div>
 
-    <div class="max-w-4xl mx-auto p-3 bg-white min-h-screen" id="content">
-
-        <!-- العنوان الرئيسي -->
-        <div class="text-center mb-4 border-b-1 border-green-600 pb-2">
-            <h1 class="text-xl font-bold text-gray-800 mb-1">سورة البقرة</h1>
-            <h2 class="text-sm font-semibold text-green-600">أطول سور القرآن الكريم</h2>
+    <!-- الصفحة 1 -->
+    <div class="keep-together">
+        <div style="text-align: center; margin-bottom: 15px; border-bottom: 2px solid #059669; padding-bottom: 8px;">
+            <h1 style="font-size: 20pt; margin: 5px 0;">سورة البقرة</h1>
+            <h2 style="font-size: 14pt; margin: 3px 0; color: #059669;">أطول سور القرآن الكريم</h2>
         </div>
 
-        <!-- المقدمة -->
-        <div>
-            <div class="section-title">مقدمة</div>
-            <p class="text-justify">
-                سورة البقرة هي السورة الثانية في ترتيب المصحف الشريف، وعدد آياتها 286 آية مما يجعلها أطول سور القرآن الكريم. وهي سورة مدنية نزلت في المدينة المنورة بعد الهجرة.
+        <div class="section-title">مقدمة</div>
+        <p style="text-align: justify; margin-bottom: 8px;">
+            سورة البقرة هي السورة الثانية في ترتيب المصحف الشريف، وعدد آياتها 286 آية مما يجعلها أطول سور القرآن الكريم. وهي سورة مدنية نزلت في المدينة المنورة بعد الهجرة.
+        </p>
+        <p style="text-align: justify;">
+            تبدأ السورة بالحروف المقطعة (الم)، وتُعتبر من السور التي اشتملت على تشريعات متعددة، وعقائد، ومواعظ، وقصص تهدف إلى بناء المجتمع المسلم.
+        </p>
+    </div>
+
+    <!-- الصفحة 2 -->
+    <div class="page-break keep-together">
+        <div class="section-title">سبب التسمية</div>
+        <div class="content-box">
+            <p style="text-align: justify; margin-bottom: 6px;">
+                سُميت سورة البقرة بهذا الاسم بسبب قصة البقرة التي وردت في الآيات 67-73، حيث أمر الله بني إسرائيل بذبح بقرة ليضربوا بها القتيل فيعيده الله إلى الحياة.
             </p>
-            <p class="text-justify">
-                تبدأ السورة بالحروف المقطعة (الم)، وتُعتبر من السور التي اشتملت على تشريعات متعددة، وعقائد، ومواعظ، وقصص تهدف إلى بناء المجتمع المسلم.
-            </p>
-        </div>
-
-        <!-- سبب التسمية -->
-        <div class="page-break">
-            <div class="section-title">سبب التسمية</div>
-            <div class="content-box">
-                <p class="text-justify">
-                    سُميت سورة البقرة بهذا الاسم بسبب قصة البقرة التي وردت في الآيات 67-73، حيث أمر الله بني إسرائيل بذبح بقرة ليضربوا بها القتيل فيعيده الله إلى الحياة.
-                </p>
-                <div class="quran-verse">
-                    ﴿وَإِذۡ قَالَ مُوسَىٰ لِقَوۡمِهِۦٓ إِنَّ ٱللَّهَ یَأۡمُرُكُمۡ أَن تَذۡبَحُوا۟ بَقَرَةࣰۖ قَالُوۤا۟ أَتَتَّخِذُنَا هُزُوࣰاۖ قَالَ أَعُوذُ بِٱللَّهِ أَنۡ أَكُونَ مِنَ ٱلۡجَـٰهِلِینَ﴾
-                    <span class="verse-number">٦٧</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- المحاور الرئيسية -->
-        <div class="page-break">
-            <div class="section-title">المحاور الرئيسية</div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                <div class="content-box">
-                    <h4 class="font-bold text-red-600 text-sm">المحور العقدي:</h4>
-                    <ul class="list-disc pr-3 text-xs">
-                        <li>التوحيد والإيمان بالله</li>
-                        <li>الإيمان بالملائكة والكتب</li>
-                        <li>الإيمان بالرسل واليوم الآخر</li>
-                        <li>الإيمان بالقدر خيره وشره</li>
-                    </ul>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold text-red-600 text-sm">المحور التشريعي:</h4>
-                    <ul class="list-disc pr-3 text-xs">
-                        <li>أحكام الصلاة والصيام</li>
-                        <li>أحكام الزكاة والحج</li>
-                        <li>أحكام المعاملات المالية</li>
-                        <li>أحكام الأسرة والمواريث</li>
-                    </ul>
-                </div>
-            </div>
             <div class="quran-verse">
-                ﴿یَـٰۤأَیُّهَا ٱلنَّاسُ ٱعۡبُدُوا۟ رَبَّكُمُ ٱلَّذِی خَلَقَكُمۡ وَٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
-                <span class="verse-number">٢١</span>
+                <span class="verse-number">٦٧</span>
+                ﴿وَإِذۡ قَالَ مُوسَىٰ لِقَوۡمِهِۦٓ إِنَّ ٱللَّهَ یَأۡمُرُكُمۡ أَن تَذۡبَحُوا۟ بَقَرَةࣰۖ قَالُوۤا۟ أَتَتَّخِذُنَا هُزُوࣰاۖ قَالَ أَعُوذُ بِٱللَّهِ أَنۡ أَكُونَ مِنَ ٱلۡجَـٰهِلِینَ﴾
             </div>
         </div>
 
-        <!-- الأحكام التشريعية -->
-        <div class="page-break">
-            <div class="section-title">الأحكام التشريعية</div>
-            <div class="content-box mb-2">
-                <h4 class="font-bold text-green-600 text-sm">أحكام الصيام:</h4>
-                <p class="text-justify text-xs">
-                    تناولت السورة أحكام الصيام في الآيات 183-187، حيث فرض الله الصيام على المسلمين.
-                </p>
-                <div class="quran-verse">
-                    ﴿یَـٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ كُتِبَ عَلَیۡكُمُ ٱلصِّیَامُ كَمَا كُتِبَ عَلَى ٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
-                    <span class="verse-number">١٨٣</span>
-                </div>
-            </div>
+        <div class="section-title">المحاور الرئيسية</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0;">
             <div class="content-box">
-                <h4 class="font-bold text-green-600 text-sm">أحكام الربا:</h4>
-                <p class="text-justify text-xs">
-                    حرمت السورة الربا تحريماً قاطعاً في الآيات 275-279.
-                </p>
-                <div class="quran-verse">
-                    ﴿وَأَحَلَّ ٱللَّهُ ٱلۡبَیۡعَ وَحَرَّمَ ٱلرِّبَوٰاۚ﴾
-                    <span class="verse-number">٢٧٥</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- القصص والعبر -->
-        <div class="page-break">
-            <div class="section-title">القصص والعبر</div>
-            <div class="content-box mb-2">
-                <h4 class="font-bold text-blue-600 text-sm">قصة آدم عليه السلام:</h4>
-                <p class="text-justify text-xs">
-                    تبدأ السورة بقصة خلق آدم، وتعليمه الأسماء، وسجود الملائكة له.
-                </p>
-                <div class="quran-verse">
-                    ﴿وَإِذۡ قُلۡنَا لِلۡمَلَـٰۤىِٕكَةِ ٱسۡجُدُوا۟ لِـَٔادَمَ فَسَجَدُوۤا۟ إِلَّاۤ إِبۡلِیسَ أَبَىٰ وَٱسۡتَكۡبَرَ وَكَانَ مِنَ ٱلۡكَـٰفِرِینَ﴾
-                    <span class="verse-number">٣٤</span>
-                </div>
-            </div>
-            <div class="content-box">
-                <h4 class="font-bold text-blue-600 text-sm">قصة بني إسرائيل:</h4>
-                <p class="text-justify text-xs">
-                    ذكرت السورة قصص بني إسرائيل مع أنبيائهم، ونعم الله عليهم.
-                </p>
-                <div class="quran-verse">
-                    ﴿وَإِذۡ ءَاتَیۡنَا مُوسَى ٱلۡكِتَـٰبَ وَٱلۡفُرۡقَانَ لَعَلَّكُمۡ تَهۡتَدُونَ﴾
-                    <span class="verse-number">٥٣</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- الفضائل -->
-        <div class="page-break">
-            <div class="section-title">فضائل السورة</div>
-            <div class="content-box">
-                <ul class="list-disc pr-3 text-xs">
-                    <li>تحوي أعظم آية في القرآن (آية الكرسي)</li>
-                    <li>تحفظ قارئها من الشياطين والسحر</li>
-                    <li>تكون شفيعاً لصاحبها يوم القيامة</li>
-                    <li>من قرأها في بيته لم يدخله الشيطان ثلاثة أيام</li>
+                <h4 style="color: #dc2626; margin: 3px 0; font-size: 11pt;">المحور العقدي:</h4>
+                <ul style="font-size: 10pt;">
+                    <li>التوحيد والإيمان بالله</li>
+                    <li>الإيمان بالملائكة والكتب</li>
+                    <li>الإيمان بالرسل واليوم الآخر</li>
+                    <li>الإيمان بالقدر خيره وشره</li>
                 </ul>
-                <div class="q>
-                <div class="quran-verse mt-uran-verse mt-1">
-                    ﴿1">
-                    ﴿ٱٱللَّهُ لللَّهُ لَاَاۤ إِلَۤ إِلَــٰهَ إٰهَ إِلَِّلَّا هُوَ ٱا هُوَ ٱلۡحلۡحََیُّ ٱلۡیُّ ٱلۡقَیُّومُقَیُّومُۚ لَا تَۚ لَا تَأۡخُذأۡخُذُهُۥ سِنُهُۥ سِنَةࣱ وَلَةࣱ وَلَا نَوَۡا نَوۡممࣱۚ لࣱۚ لَّهُۥ مَاَّهُۥ مَا فِی ٱلس فِی ٱلسَّمَـَّٰمَـٰوَ ٰتوَ ٰتِ وَمَاِ وَمَا فِی فِی ٱل ٱلۡأۡأَرۡضَِرۡضِ﴾
-                   ﴾
-                    <span class="verse-number"> <span class="verse-number">٢٥٥</٢٥٥</spanspan>
-                </div>
-                </div>
->
             </div>
-        </            </div>
-        </divdiv>
-
-        <!-- الخ>
-
-        <!-- الخاتمةاتمة -->
-        <div>
- -->
-        <div>
-            <div class="section            <div class="section-title">-title">خاتمة</خاتمة</divdiv>
-            <div class>
             <div class="content-box">
-               ="content-box">
-                <p class="text-justify text <p class="text-justify text-xs">
--xs">
-                    سورة البقرة تمثل دست                    سورة البقرة تمثل دستوراً كاملاً للمسلم في حياته؛ حيث تشوراً كاملاً للمسلم في حياته؛ حيث تشمل العقيدةمل العقيدة، والعب، والعبادة، والأخلاقادة، والأخلاق،، والمعاملات والمعاملات. وهي ت. وهي تهدف إلى بناء الشخصهدف إلى بناء الشخصية المسلمةية المسلمة المتكاملة المتكاملة، وتأسيس، وتأسيس المجتمع الإسلامي الق المجتمع الإسلامي القويوي.
-.
-                </p>
-                <p class                </p>
-                <p class="text="text-justify text-xs">
-                    وقد جمع-justify text-xs">
-                    وقد جمعت بين الترغت بين الترغيب والترهيب، والوعد واليب والترهيب، والوعد والوعيد،وعيد، والقصص والعبر والقصص والعبر،، مما يجعلها مدر مما يجعلها مدرسة متسة متكاملة للتربيةكاملة للتربية الإسلامية الإسلامية.
-                </p.
-                </p>
-           >
+                <h4 style="color: #dc2626; margin: 3px 0; font-size: 11pt;">المحور التشريعي:</h4>
+                <ul style="font-size: 10pt;">
+                    <li>أحكام الصلاة والصيام</li>
+                    <li>أحكام الزكاة والحج</li>
+                    <li>أحكام المعاملات المالية</li>
+                    <li>أحكام الأسرة والمواريث</li>
+                </ul>
             </div>
-        </ </div>
-        </divdiv>
-
+        </div>
     </div>
 
->
+    <!-- الصفحة 3 -->
+    <div class="page-break keep-together">
+        <div class="quran-verse">
+            <span class="verse-number">٢١</span>
+            ﴿یَـٰۤأَیُّهَا ٱلنَّاسُ ٱعۡبُدُوا۟ رَبَّكُمُ ٱلَّذِی خَلَقَكُمۡ وَٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
+        </div>
 
+        <div class="section-title">الأحكام التشريعية</div>
+        <div class="content-box" style="margin-bottom: 8px;">
+            <h4 style="color: #059669; margin: 3px 0; font-size: 11pt;">أحكام الصيام:</h4>
+            <p style="text-align: justify; margin-bottom: 4px; font-size: 10pt;">
+                تناولت السورة أحكام الصيام في الآيات 183-187، حيث فرض الله الصيام على المسلمين.
+            </p>
+            <div class="quran-verse">
+                <span class="verse-number">١٨٣</span>
+                ﴿یَـٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ كُتِبَ عَلَیۡكُمُ ٱلصِّیَامُ كَمَا كُتِبَ عَلَى ٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h4 style="color: #059669; margin: 3px 0; font-size: 11pt;">أحكام الربا:</h4>
+            <p style="text-align: justify; margin-bottom: 4px; font-size: 10pt;">
+                حرمت السورة الربا تحريماً قاطعاً في الآيات 275-279.
+            </p>
+            <div class="quran-verse">
+                <span class="verse-number">٢٧٥</span>
+                ﴿وَأَحَلَّ ٱللَّهُ ٱلۡبَیۡعَ وَحَرَّمَ ٱلرِّبَوٰاۚ﴾
+            </div>
+        </div>
     </div>
 
-       <script>
-        <script>
-        function change function changeFontSize(size) {
-FontSize(size) {
-                       const content = document.getElementById const content = document.getElementById('content');
-            const currentSize = parseInt(getComputedStyle(content('content');
-            const currentSize = parseInt(getComputedStyle(content).fontSize);
-).fontSize);
+    <!-- الصفحة 4 -->
+    <div class="page-break keep-together">
+        <div class="section-title">القصص والعبر</div>
+        <div class="content-box" style="margin-bottom: 8px;">
+            <h4 style="color: #1e40af; margin: 3px 0; font-size: 11pt;">قصة آدم عليه السلام:</h4>
+            <p style="text-align: justify; margin-bottom: 4px; font-size: 10pt;">
+                تبدأ السورة بقصة خلق آدم، وتعليمه الأسماء، وسجود الملائكة له.
+            </p>
+            <div class="quran-verse">
+                <span class="verse-number">٣٤</span>
+                ﴿وَإِذۡ قُلۡنَا لِلۡمَلَـٰۤىِٕكَةِ ٱسۡجُدُوا۟ لِـَٔادَمَ فَسَجَدُوۤا۟ إِلَّاۤ إِبۡلِیسَ أَبَىٰ وَٱسۡتَكۡبَرَ وَكَانَ مِنَ ٱلۡكَـٰفِرِینَ﴾
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h4 style="color: #1e40af; margin: 3px 0; font-size: 11pt;">قصة بني إسرائيل:</h4>
+            <p style="text-align: justify; margin-bottom: 4px; font-size: 10pt;">
+                ذكرت السورة قصص بني إسرائيل مع أنبيائهم، ونعم الله عليهم.
+            </p>
+            <div class="quran-verse">
+                <span class="verse-number">٥٣</span>
+                ﴿وَإِذۡ ءَاتَیۡنَا مُوسَى ٱلۡكِتَـٰبَ وَٱلۡفُرۡقَانَ لَعَلَّكُمۡ تَهۡتَدُونَ﴾
+            </div>
+        </div>
+
+        <div class="section-title">فضائل السورة</div>
+        <div class="content-box">
+            <ul style="font-size: 10pt;">
+                <li>تحوي أعظم آية في القرآن (آية الكرسي)</li>
+                <li>تحفظ قارئها من الشياطين والسحر</li>
+                <li>تكون شفيعاً لصاحبها يوم القيامة</li>
+                <li>من قرأها في بيته لم يدخله الشيطان ثلاثة أيام</li>
+            </ul>
+            <div class="quran-verse" style="margin-top: 6px;">
+                <span class="verse-number">٢٥٥</span>
+                ﴿ٱللَّهُ لَاۤ إِلَـٰهَ إِلَّا هُوَ ٱلۡحَیُّ ٱلۡقَیُّومُۚ لَا تَأۡخُذُهُۥ سِنَةࣱ وَلَا نَوۡمࣱۚ لَّهُۥ مَا فِی ٱلسَّمَـٰوَ ٰتِ وَمَا فِی ٱلۡأَرۡضِ﴾
+            </div>
+        </div>
+    </div>
+
+    <!-- الصفحة 5 -->
+    <div class="page-break keep-together">
+        <div class="section-title">خاتمة</div>
+        <div class="content-box">
+            <p style="text-align: justify; margin-bottom: 6px; font-size: 11pt;">
+                سورة البقرة تمثل دستوراً كاملاً للمسلم في حياته؛ حيث تشمل العقيدة، والعبادة، والأخلاق، والمعاملات. وهي تهدف إلى بناء الشخصية المسلمة المتكاملة، وتأسيس المجتمع الإسلامي القوي.
+            </p>
+            <p style="text-align: justify; font-size: 11pt;">
+                وقد جمعت بين الترغيب والترهيب، والوعد والوعيد، والقصص والعبر، مما يجعلها مدرسة متكاملة للتربية الإسلامية.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentScale = 1;
+        
+        function changeScaling(size) {
+            const content = document.body;
             
-                       
-            switch(size) switch(size) {
+            switch(size) {
                 case 'smaller':
-                    content.style.fontSize = ( {
-                case 'smaller':
-                    content.style.fontSizecurrentSize - 1) + 'px';
+                    currentScale = Math.max(0.7, currentScale - 0.1);
                     break;
- = (currentSize - 1) + 'px';
-                    break;
-                case 'larg                case 'larger':
-                    content.style.fontSize = (currentSize + 1) + 'px';
+                case 'larger':
+                    currentScale = Math.min(1.3, currentScale + 0.1);
                     break;
                 case 'normal':
-                    content.style.fontSizeer':
-                    content.style.fontSize = (currentSize + 1) + 'px';
-                    break;
-                case 'normal':
-                    content.style = '10px';
+                    currentScale = 1;
                     break;
             }
+            
+            content.style.transform = `scale(${currentScale})`;
+            content.style.transformOrigin = 'top center';
         }
 
+        // إلغاء التحجيم أثناء الطباعة
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '9pt';
-            document.body.fontSize = '10px';
-                    break;
-            }
-        }
-
-        window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '9pt';
-            document.body.style.lineHeight = '1.style.lineHeight = '1.2';
-        });
-        
-        window.addEventListener('afterprint',.2';
-        });
-        
-        window.addEventListener('afterprint function() {
-            document.body.style.fontSize = '';
-            document', function() {
-            document.body.style.fontSize = '';
-.body.style.lineHeight = '';
+            document.body.style.transform = 'scale(1)';
+            document.body.style.zoom = '1';
         });
     </script>
 </body>
