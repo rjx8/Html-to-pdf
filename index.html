@@ -3,440 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سورة البقرة - دراسة الكفايات</title>
+    <title>ورقة الأسئلة - مجرة درب التبانة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @media print {
             @page {
                 size: A4;
-                margin: 1.5cm 1.5cm;
+                margin: 2cm 1.5cm;
             }
             .no-print { display: none !important; }
-            
-            /* تصغير النصوص أثناء الطباعة */
-            body {
-                font-size: 10pt !important;
-                line-height: 1.4 !important;
-            }
-            h1 { font-size: 16pt !important; }
-            h2 { font-size: 14pt !important; }
-            h3 { font-size: 12pt !important; }
-            h4 { font-size: 11pt !important; }
-            .section-title { font-size: 12pt !important; padding: 8px 15px !important; }
-            .content-box { padding: 10px !important; }
-            table { font-size: 8pt !important; }
-            .quran-verse { font-size: 11pt !important; }
+            .page-break { page-break-before: always; }
         }
-        
         body {
             font-family: 'Amiri', 'Noto Sans Arabic', serif;
-            line-height: 1.6;
-            font-size: 12pt;
         }
-        .section-title {
-            background: #1e40af;
-            color: white;
-            padding: 12px 20px;
-            margin: 20px 0 10px 0;
-            border-radius: 0 8px 8px 0;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .content-box {
-            background: #f8fafc;
-            padding: 12px;
-            margin: 10px 0;
-            border-right: 4px solid #059669;
-            border-radius: 0 8px 8px 0;
-        }
-        .quran-verse {
-            background: #f0f9ff;
-            padding: 10px;
-            margin: 8px 0;
-            border-right: 3px solid #0369a1;
-            border-radius: 0 6px 6px 0;
-            font-family: 'Amiri', serif;
-            font-size: 14px;
-            line-height: 1.8;
-            text-align: justify;
-        }
-        .verse-number {
-            background: #0369a1;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 10px;
-            margin-left: 5px;
-        }
-        
-        /* عناصر التحكم بالحجم */
-        .size-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: white;
-            padding: 8px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid #059669;
-        }
-        .size-btn {
-            background: #059669;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            margin: 0 2px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .size-btn:hover {
-            background: #047857;
-        }
-        
-        /* تحسين التدفق */
-        .compact-section {
-            margin-bottom: 15px;
-        }
-        .compact-grid {
-            gap: 8px;
-            margin: 8px 0;
-        }
-        .compact-table {
-            margin: 8px 0;
-        }
-        
-        /* علامات الترقيم المميزة */
-        .punctuation-note {
-            color: #dc2626;
-            font-weight: bold;
-            margin: 5px 0;
-            font-size: 11px;
-        }
-        .important-point {
-            border-right: 3px solid #dc2626;
-            padding-right: 10px;
-            margin: 5px 0;
+        .question-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50">
 
-    <!-- عناصر التحكم بالحجم -->
-    <div class="size-controls no-print">
-        <button class="size-btn" onclick="changeFontSize('smaller')">A-</button>
-        <button class="size-btn" onclick="changeFontSize('normal')">A</button>
-        <button class="size-btn" onclick="changeFontSize('larger')">A+</button>
-        <button class="size-btn" onclick="window.print()" style="background: #1e40af; margin-right: 8px;">🖨️ طباعة</button>
+    <!-- زر الطباعة -->
+    <div class="no-print fixed top-4 left-4 z-50">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold">
+            🖨️ طباعة الورقة
+        </button>
     </div>
 
-    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg min-h-screen" id="content">
-
-        <!-- العنوان الرئيسي -->
-        <div class="text-center mb-8 border-b-3 border-green-600 pb-4">
-            <h1 class="text-3xl font-bold text-gray-800 mb-3">سورة البقرة</h1>
-            <h2 class="text-xl font-semibold text-green-600">دراسة الكفايات والمنهجيات</h2>
-        </div>
-
-        <!-- المقدمة -->
-        <div class="compact-section">
-            <div class="section-title">مقدمة في سورة البقرة</div>
-            <p class="text-justify mb-3">
-                سورة البقرة هي أطول سور القرآن الكريم؛ حيث يبلغ عدد آياتها (286) آية، وهي سورة مدنية، وترتيبها الثاني في المصحف بعد سورة الفاتحة. 
-            </p>
-            <p class="text-justify">
-                تسميتها بـ"البقرة" جاء من قصة البقرة التي أمر الله بني إسرائيل بذبحها في عهد النبي موسى -عليه السلام-؛ ليكشف عن القاتل في قتيلٍ اختصموا فيه.
-            </p>
-            
-            <div class="punctuation-note">
-                💡 ملاحظة: انتبه لعلامات الترقيم؛ فهي تساعد في فهم المعاني وتقسيم الأفكار.
-            </div>
-        </div>
-
-        <!-- الخصائص العامة -->
-        <div class="compact-section">
-            <div class="section-title">الخصائص العامة للسورة</div>
-            
-            <div class="content-box">
-                <h3 class="font-bold mb-2 text-red-600">أبرز خصائص سورة البقرة:</h3>
-                <ul class="list-disc pr-5 space-y-1">
-                    <li>أطول سور القرآن الكريم (286 آية)</li>
-                    <li>آخر آية نزلت من القرآن (آية الربا)</li>
-                    <li>اشتملت على أعظم آية في القرآن (آية الكرسي)</li>
-                    <li>تضمنت آخر ما نزل من الأحكام (آيات الصيام)</li>
-                    <li>ذكرت فيها قصة آدم -عليه السلام- كاملة</li>
-                </ul>
-            </div>
-
-            <!-- آية مميزة -->
-            <div class="quran-verse">
-                ﴿ذَ ٰلِكَ ٱلۡكِتَـٰبُ لَا رَیۡبَۛ فِیهِۛ هُدࣰى لِّلۡمُتَّقِینَ﴾
-                <span class="verse-number">٢</span>
-            </div>
-            <p class="text-center text-xs text-gray-600 mb-4">أول آية في سورة البقرة - سمة الوضوح واليقين</p>
-        </div>
-
-        <!-- المحاور الرئيسية -->
-        <div class="compact-section">
-            <div class="section-title">المحاور الرئيسية في السورة</div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">١. العقيدة والإيمان:</h4>
-                    <p class="text-sm">- توحيد الله وصفاته، - الإيمان بالغيب، - النبوة والرسالة.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">٢. التشريعات والأحكام:</h4>
-                    <p class="text-sm">- الصلاة، - الصيام، - الزكاة، - الحج، - المعاملات.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">٣. القصص والعبر:</h4>
-                    <p class="text-sm">- قصة آدم، - بنو إسرائيل، - إبراهيم -عليه السلام-.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">٤. الأخلاق والآداب:</h4>
-                    <p class="text-sm">- الصبر، - التقوى، - البر، - الإحسان، - العدل.</p>
-                </div>
-            </div>
-
-            <!-- جدول المحاور -->
-            <div class="overflow-x-auto compact-table">
-                <table class="w-full border-collapse border border-gray-300 text-xs">
-                    <thead>
-                        <tr class="bg-green-600 text-white">
-                            <th class="border border-gray-300 p-1">المحور</th>
-                            <th class="border border-gray-300 p-1">الموضوعات</th>
-                            <th class="border border-gray-300 p-1">الأهداف</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">العقيدة</td>
-                            <td class="border border-gray-300 p-1">التوحيد، الإيمان، اليوم الآخر</td>
-                            <td class="border border-gray-300 p-1">بناء اليقين والإيمان القلبي</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-1">التشريع</td>
-                            <td class="border border-gray-300 p-1">العبادات، المعاملات، الأحوال</td>
-                            <td class="border border-gray-300 p-1">تنظيم حياة الفرد والمجتمع</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">الأخلاق</td>
-                            <td class="border border-gray-300 p-1">الفضائل، الآداب، المعاملات</td>
-                            <td class="border border-gray-300 p-1">تهذيب النفس وتزكيتها</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- الكفايات المستهدفة -->
-        <div class="compact-section">
-            <div class="section-title">الكفايات المستهدفة من دراسة السورة</div>
-            
-            <div class="content-box mb-4">
-                <h3 class="font-bold mb-2 text-red-600">الكفايات العقدية:</h3>
-                <ul class="list-disc pr-5 space-y-1 text-sm">
-                    <li>تعزيز الإيمان بالله وتوحيده</li>
-                    <li>التعرف على صفات الله وأسمائه الحسنى</li>
-                    <li>الإيمان بالملائكة والكتب والرسل</li>
-                    <li>اليقين باليوم الآخر والقدر خيره وشره</li>
-                </ul>
-            </div>
-
-            <div class="content-box mb-4">
-                <h3 class="font-bold mb-2 text-red-600">الكفايات التشريعية:</h3>
-                <ul class="list-disc pr-5 space-y-1 text-sm">
-                    <li>فهم أحكام العبادات (الصلاة، الصيام، الزكاة، الحج)</li>
-                    <li>معرفة أحكام المعاملات (البيع، الربا، الديون)</li>
-                    <li>الإلمام بأحكام الأسرة (الزواج، الطلاق، الرضاع)</li>
-                    <li>فقه الجنايات والحدود</li>
-                </ul>
-            </div>
-
-            <!-- آية الكفايات -->
-            <div class="quran-verse">
-                ﴿یَـٰۤأَیُّهَا ٱلنَّاسُ ٱعۡبُدُوا۟ رَبَّكُمُ ٱلَّذِی خَلَقَكُمۡ وَٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
-                <span class="verse-number">٢١</span>
-            </div>
-            
-            <div class="punctuation-note">
-                🔍 انتبه: الفاصلة بين الجملتين توضح العلاقة السببية بين الخلق والعبادة.
-            </div>
-        </div>
-
-        <!-- المنهجية في الدراسة -->
-        <div class="compact-section">
-            <div class="section-title">المنهجية في دراسة السورة</div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 compact-grid">
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">المنهج التحليلي:</h4>
-                    <p class="text-sm">- تحليل الآيات، - فهم السياق، - استنباط الأحكام.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">المنهج المقارن:</h4>
-                    <p class="text-sm">- مقارنة الآيات، - الموازنة بين الأحكام.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">المنهج التطبيقي:</h4>
-                    <p class="text-sm">- تطبيق الأحكام، - الاستفادة من القصص.</p>
-                </div>
-                <div class="content-box">
-                    <h4 class="font-bold mb-1">المنهج التكاملي:</h4>
-                    <p class="text-sm">- الربط بين الموضوعات، - التكامل بين الأحكام.</p>
-                </div>
-            </div>
-
-            <!-- خطوات الدراسة -->
-            <div class="content-box">
-                <h4 class="font-bold mb-2 text-green-600">خطوات دراسة السورة:</h4>
-                <ol class="list-decimal pr-5 space-y-1 text-sm" style="list-style-type: arabic-indic;">
-                    <li>التعرف على سبب النزول والسياق التاريخي</li>
-                    <li>فهم المعاني اللغوية والمفردات</li>
-                    <li>تحليل الآيات واستنباط الأحكام</li>
-                    <li>الربط بين الآيات والموضوعات</li>
-                    <li>تطبيق الدروس والعبر في الحياة</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- القصص والعبر -->
-        <div class="compact-section">
-            <div class="section-title">القصص والعبر في السورة</div>
-            
-            <div class="content-box mb-4">
-                <h3 class="font-bold mb-2 text-red-600">قصة آدم -عليه السلام-:</h3>
-                <p class="text-sm text-justify">
-                    تبدأ السورة بقصة خلق آدم -عليه السلام-، وتعليمه الأسماء كلها، وسجود الملائكة له، وإسكانه الجنة، ثم اختباره بشجرة المنع، وخروجه منها.
+    <!-- الصفحة الأولى -->
+    <div class="page-break question-page bg-white p-8">
+        <div class="max-w-2xl">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
+                <p class="text-xl text-gray-700 leading-relaxed">
+                    لماذا سميت مجرتنا درب التبانة وكيف اكتشف العلماء شكلها ونحن بداخلها
                 </p>
-                <div class="quran-verse mt-2">
-                    ﴿وَإِذۡ قُلۡنَا لِلۡمَلَـٰۤىِٕكَةِ ٱسۡجُدُوا۟ لِـَٔادَمَ فَسَجَدُوۤا۟ إِلَّاۤ إِبۡلِیسَ أَبَىٰ وَٱسۡتَكۡبَرَ وَكَانَ مِنَ ٱلۡكَـٰفِرِینَ﴾
-                    <span class="verse-number">٣٤</span>
-                </div>
             </div>
-
-            <div class="content-box">
-                <h3 class="font-bold mb-2 text-red-600">قصة بني إسرائيل:</h3>
-                <p class="text-sm text-justify">
-                    تذكر السورة قصص بني إسرائيل مع أنبيائهم، ونعم الله عليهم، وتمردهم وعصيانهم، وكيف كانت عاقبة المفسدين منهم.
-                </p>
-                <div class="quran-verse mt-2">
-                    ﴿وَإِذۡ قُلۡنَا ٱدۡخُلُوا۟ هَـٰذِهِ ٱلۡقَرۡیَةَ فَكُلُوا۟ مِنۡهَا حَیۡثُ شِئۡتُمۡ رَغَدࣰا وَٱدۡخُلُوا۟ ٱلۡبَابَ سُجَّدࣰا وَقُولُوا۟ حِطَّةࣱ نَّغۡفِرۡ لَكُمۡ خَطَـٰیَـٰكُمۡۚ وَسَنَزِیدُ ٱلۡمُحۡسِنِینَ﴾
-                    <span class="verse-number">٥٨</span>
-                </div>
-            </div>
-            
-            <div class="punctuation-note">
-                ✨ لاحظ: النقطة في نهاية الجملة تدل على اكتمال المعنى، والفاصلة تفصل بين الجمل المتصلة.
+            <div class="border-t-2 border-gray-300 pt-4">
+                <p class="text-lg font-bold text-gray-800">الاسم: عمار المطيري</p>
             </div>
         </div>
-
-        <!-- الأحكام التشريعية -->
-        <div class="compact-section">
-            <div class="section-title">الأحكام التشريعية في السورة</div>
-            
-            <div class="overflow-x-auto compact-table">
-                <table class="w-full border-collapse border border-gray-300 text-xs">
-                    <thead>
-                        <tr class="bg-blue-600 text-white">
-                            <th class="border border-gray-300 p-1">الحكم</th>
-                            <th class="border border-gray-300 p-1">الآيات</th>
-                            <th class="border border-gray-300 p-1">التفاصيل</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">الصيام</td>
-                            <td class="border border-gray-300 p-1">١٨٣-١٨٧</td>
-                            <td class="border border-gray-300 p-1">فرضية الصيام، الرخصة للمريض والمسافر</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-1">الربا</td>
-                            <td class="border border-gray-300 p-1">٢٧٥-٢٧٩</td>
-                            <td class="border border-gray-300 p-1">تحريم الربا، وعقوبته، والبديل الحلال</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="border border-gray-300 p-1">الوصية</td>
-                            <td class="border border-gray-300 p-1">١٨٠-١٨٢</td>
-                            <td class="border border-gray-300 p-1">حكم الوصية، وشروطها، وأحكامها</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-1">القصاص</td>
-                            <td class="border border-gray-300 p-1">١٧٨-١٧٩</td>
-                            <td class="border border-gray-300 p-1">حكم القصاص في القتل، والدية</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- آية الأحكام -->
-            <div class="quran-verse mt-3">
-                ﴿یَـٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ كُتِبَ عَلَیۡكُمُ ٱلصِّیَامُ كَمَا كُتِبَ عَلَى ٱلَّذِینَ مِن قَبۡلِكُمۡ لَعَلَّكُمۡ تَتَّقُونَ﴾
-                <span class="verse-number">١٨٣</span>
-            </div>
-            
-            <div class="punctuation-note">
-                💫 مهم: انتبه لعلامة النداء (يا) التي تدل على المناداة والاهتمام، وعلامة التعجب (!) التي قد تستخدم في الشرح.
-            </div>
-        </div>
-
-        <!-- الخاتمة والتطبيقات -->
-        <div class="compact-section">
-            <div class="section-title">الخاتمة والتطبيقات العملية</div>
-            <div class="content-box">
-                <p class="text-justify text-sm">
-                    سورة البقرة تمثل منهجاً متكاملاً للحياة؛ حيث تشمل العقيدة، والعبادة، والأخلاق، والتشريع. ودراستها تساعد في بناء الشخصية المسلمة المتكاملة.
-                </p>
-                <p class="text-justify mt-2 text-sm">
-                    ومن أهم التطبيقات العملية: المحافظة على الصلوات، والصيام، والزكاة، والتحلي بالأخلاق الحسنة، والابتعاد عن المحرمات، والعمل بما أمر الله به.
-                </p>
-                
-                <div class="important-point mt-3">
-                    <strong>الخاتمة:</strong> سورة البقرة هي دستور حياة للمسلم، ومنهج شامل للتعامل مع الله، والنفس، والمجتمع.
-                </div>
-            </div>
-
-            <!-- آية الختام -->
-            <div class="quran-verse mt-3">
-                ﴿ءَامَنَ ٱلرَّسُولُ بِمَاۤ أُنزِلَ إِلَیۡهِ مِن رَّبِّهِۦ وَٱلۡمُؤۡمِنُونَۚ كُلٌّ ءَامَنَ بِٱللَّهِ وَمَلَـٰۤىِٕكَتِهِۦ وَكُتُبِهِۦ وَرُسُلِهِۦ لَا نُفَرِّقُ بَیۡنَ أَحَدࣲ مِّن رُّسُلِهِۦۚ وَقَالُوا۟ سَمِعۡنَا وَأَطَعۡنَاۖ غُفۡرَانَكَ رَبَّنَا وَإِلَیۡكَ ٱلۡمَصِیرُ﴾
-                <span class="verse-number">٢٨٥</span>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        // دالة تغيير حجم الخط
-        function changeFontSize(size) {
-            const content = document.getElementById('content');
-            const currentSize = parseInt(getComputedStyle(content).fontSize);
-            
-            switch(size) {
-                case 'smaller':
-                    content.style.fontSize = (currentSize - 1) + 'px';
-                    break;
-                case 'larger':
-                    content.style.fontSize = (currentSize + 1) + 'px';
-                    break;
-                case 'normal':
-                    content.style.fontSize = '14px';
-                    break;
-            }
-        }
+    <!-- الصفحة الثانية -->
+    <div class="page-break question-page bg-white p-8">
+        <div class="max-w-2xl">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
+                <p class="text-xl text-gray-700 leading-relaxed">
+                    كم يستغرق الضوء ليقطع مجرتنا وماهي اذرعها الاساسية
+                </p>
+            </div>
+            <div class="border-t-2 border-gray-300 pt-4">
+                <p class="text-lg font-bold text-gray-800">الاسم: احمد الحربي</p>
+            </div>
+        </div>
+    </div>
 
-        // أثناء الطباعة يتم تصغير النصوص تلقائياً
-        window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '10pt';
-            document.body.style.lineHeight = '1.4';
-        });
-        
-        window.addEventListener('afterprint', function() {
-            document.body.style.fontSize = '';
-            document.body.style.lineHeight = '';
-        });
-    </script>
+    <!-- الصفحة الثالثة -->
+    <div class="page-break question-page bg-white p-8">
+        <div class="max-w-2xl">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
+                <p class="text-xl text-gray-700 leading-relaxed">
+                    كيف تشكلت مجرتنا عبر الزمن وهل المجرات الاخرى تشبهها
+                </p>
+            </div>
+            <div class="border-t-2 border-gray-300 pt-4">
+                <p class="text-lg font-bold text-gray-800">الاسم: ايمن الغامدي</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- الصفحة الرابعة -->
+    <div class="page-break question-page bg-white p-8">
+        <div class="max-w-2xl">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
+                <p class="text-xl text-gray-700 leading-relaxed">
+                    هل توجد حياة أخرى محتملة داخل كواكب مجرتنا، وهل يوجد مجموعة شمسية اخرى؟
+                </p>
+            </div>
+            <div class="border-t-2 border-gray-300 pt-4">
+                <p class="text-lg font-bold text-gray-800">الاسم: رايد السحيمي</p>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
