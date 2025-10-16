@@ -9,22 +9,33 @@
     <style>
         @media print {
             @page {
-                size: A4;
-                margin: 2cm 1.5cm;
+                size: 1920px 1080px;
+                margin: 0;
             }
             .no-print { display: none !important; }
             .page-break { page-break-before: always; }
         }
         body {
             font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            width: 1920px;
+            height: 1080px;
+            margin: 0;
+            padding: 0;
         }
         .question-page {
-            min-height: 100vh;
+            width: 1920px;
+            height: 1080px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .question-container {
+            max-width: 1400px;
+            padding: 40px;
         }
     </style>
 </head>
@@ -33,66 +44,66 @@
     <!-- زر الطباعة -->
     <div class="no-print fixed top-4 left-4 z-50">
         <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold">
-            🖨️ طباعة الورقة
+            🖨️ طباعة العرض
         </button>
     </div>
 
     <!-- الصفحة الأولى -->
-    <div class="page-break question-page bg-white p-8">
-        <div class="max-w-2xl">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
-                <p class="text-xl text-gray-700 leading-relaxed">
+    <div class="page-break question-page">
+        <div class="question-container">
+            <div class="mb-16">
+                <h2 class="text-5xl font-bold mb-8">السؤال:</h2>
+                <p class="text-4xl leading-relaxed">
                     لماذا سميت مجرتنا درب التبانة وكيف اكتشف العلماء شكلها ونحن بداخلها
                 </p>
             </div>
-            <div class="border-t-2 border-gray-300 pt-4">
-                <p class="text-lg font-bold text-gray-800">الاسم: عمار المطيري</p>
+            <div class="border-t-2 border-white pt-6">
+                <p class="text-3xl font-bold">الاسم: عمار المطيري</p>
             </div>
         </div>
     </div>
 
     <!-- الصفحة الثانية -->
-    <div class="page-break question-page bg-white p-8">
-        <div class="max-w-2xl">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
-                <p class="text-xl text-gray-700 leading-relaxed">
+    <div class="page-break question-page" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <div class="question-container">
+            <div class="mb-16">
+                <h2 class="text-5xl font-bold mb-8">السؤال:</h2>
+                <p class="text-4xl leading-relaxed">
                     كم يستغرق الضوء ليقطع مجرتنا وماهي اذرعها الاساسية
                 </p>
             </div>
-            <div class="border-t-2 border-gray-300 pt-4">
-                <p class="text-lg font-bold text-gray-800">الاسم: احمد الحربي</p>
+            <div class="border-t-2 border-white pt-6">
+                <p class="text-3xl font-bold">الاسم: احمد الحربي</p>
             </div>
         </div>
     </div>
 
     <!-- الصفحة الثالثة -->
-    <div class="page-break question-page bg-white p-8">
-        <div class="max-w-2xl">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
-                <p class="text-xl text-gray-700 leading-relaxed">
+    <div class="page-break question-page" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <div class="question-container">
+            <div class="mb-16">
+                <h2 class="text-5xl font-bold mb-8">السؤال:</h2>
+                <p class="text-4xl leading-relaxed">
                     كيف تشكلت مجرتنا عبر الزمن وهل المجرات الاخرى تشبهها
                 </p>
             </div>
-            <div class="border-t-2 border-gray-300 pt-4">
-                <p class="text-lg font-bold text-gray-800">الاسم: ايمن الغامدي</p>
+            <div class="border-t-2 border-white pt-6">
+                <p class="text-3xl font-bold">الاسم: ايمن الغامدي</p>
             </div>
         </div>
     </div>
 
     <!-- الصفحة الرابعة -->
-    <div class="page-break question-page bg-white p-8">
-        <div class="max-w-2xl">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">السؤال:</h2>
-                <p class="text-xl text-gray-700 leading-relaxed">
+    <div class="page-break question-page" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <div class="question-container">
+            <div class="mb-16">
+                <h2 class="text-5xl font-bold mb-8">السؤال:</h2>
+                <p class="text-4xl leading-relaxed">
                     هل توجد حياة أخرى محتملة داخل كواكب مجرتنا، وهل يوجد مجموعة شمسية اخرى؟
                 </p>
             </div>
-            <div class="border-t-2 border-gray-300 pt-4">
-                <p class="text-lg font-bold text-gray-800">الاسم: رايد السحيمي</p>
+            <div class="border-t-2 border-white pt-6">
+                <p class="text-3xl font-bold">الاسم: رايد السحيمي</p>
             </div>
         </div>
     </div>
