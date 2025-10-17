@@ -2,433 +2,332 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>تنوع الفطريات وبيئتها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنوع الفطريات وبيئاتها</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* تنسيقات عامة */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #000;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-            -webkit-text-size-adjust: 100%;
-        }
-        
-        /* تنسيقات الطباعة */
         @media print {
             @page {
                 size: A4;
-                margin: 1.5cm;
-                margin-right: 2.5cm;
-                margin-left: 2cm;
-                margin-top: 2cm;
-                margin-bottom: 2cm;
+                margin: 1.2cm;
             }
             
             body {
-                font-size: 14px;
-                line-height: 1.5;
-            }
-            
-            .print-button {
-                display: none !important;
-            }
-            
-            h1, h2, h3, h4, h5, h6 {
-                page-break-after: avoid;
-                page-break-inside: avoid;
-            }
-            
-            p, ul, ol, table, img {
-                page-break-inside: avoid;
-            }
-            
-            table, img {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-            
-            h2 {
-                page-break-before: auto;
+                font-size: 11pt;
+                line-height: 1.4;
+                font-family: 'Amiri', serif;
             }
             
             .page-break {
-                page-break-after: always;
+                page-break-before: always;
+                padding-top: 0.5cm;
             }
             
-            .no-break {
+            .no-print {
+                display: none !important;
+            }
+            
+            h1 {
+                font-size: 20pt;
+                margin-bottom: 0.8cm;
+                text-align: center;
+            }
+            
+            .side-heading {
+                font-size: 14pt;
+                margin: 0.4cm 0 0.3cm 0;
+                border-right: 4px solid #059669;
+                padding-right: 0.4cm;
+                font-weight: bold;
+                color: #047857;
+            }
+            
+            .sub-heading {
+                font-size: 12pt;
+                margin: 0.3cm 0 0.2cm 0;
+                font-weight: 600;
+                color: #374151;
+            }
+            
+            p {
+                margin-bottom: 0.3cm;
+                text-align: justify;
+            }
+            
+            .verse {
+                font-size: 11pt;
+                margin: 0.3cm 0;
+                padding: 0.3cm;
+                background: #F0FDF4;
+                border-right: 3px solid #059669;
+                font-style: italic;
+            }
+            
+            .info-box {
+                margin: 0.2cm 0;
+                padding: 0.4cm;
                 page-break-inside: avoid;
             }
-        }
-        
-        /* تنسيقات الشاشة */
-        @media screen {
-            body {
-                padding: 20px;
-                max-width: 800px;
-                margin: 0 auto;
+            
+            ul, ol {
+                margin: 0.15cm 0;
             }
             
-            .print-button {
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                background-color: #333;
-                color: white;
-                border: none;
-                padding: 15px 25px;
-                font-size: 18px;
-                border-radius: 5px;
-                cursor: pointer;
-                z-index: 1000;
-                width: 60px;
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            }
-            
-            .print-button:hover {
-                background-color: #000;
+            li {
+                margin-bottom: 0.1cm;
             }
         }
         
-        /* تنسيقات النصوص */
-        h1 {
-            font-size: 28px;
+        body {
+            font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            line-height: 1.6;
+        }
+        
+        .main-title {
             text-align: center;
-            margin: 30px 0;
-            color: #000;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-        
-        h2 {
-            font-size: 20px;
-            text-align: right;
-            margin: 25px 0 15px;
-            color: #333;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-        
-        h3 {
-            font-size: 18px;
-            text-align: right;
-            margin: 20px 0 10px;
-            color: #333;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-        
-        h4 {
-            font-size: 16px;
-            text-align: right;
-            margin: 15px 0 8px;
-            color: #666;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-        
-        p {
-            margin-bottom: 15px;
-            text-align: right;
-            font-size: 16px;
-        }
-        
-        /* تنسيقات الجداول */
-        table {
+            color: #047857;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #059669;
+            padding-bottom: 15px;
+            display: inline-block;
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            table-layout: fixed;
-            page-break-inside: avoid;
         }
         
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
-            text-align: right;
-            font-size: 14px;
-        }
-        
-        th {
-            background-color: #f5f5f5;
-            font-weight: bold;
-        }
-        
-        /* تنسيقات القوائم */
-        ul, ol {
-            margin-right: 20px;
-            margin-bottom: 15px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-            text-align: right;
-        }
-        
-        /* تنسيقات الصور */
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            page-break-inside: avoid;
-        }
-        
-        /* تنسيقات المربعات التوضيحية */
-        .info-box {
-            border: 1px solid #666;
-            background-color: #f9f9f9;
-            padding: 15px;
-            margin: 15px 0;
-            page-break-inside: avoid;
-        }
-        
-        /* تنسيقات أرقام الصفحات */
-        .page-number {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
-        
-        /* تنسيقات صفحة الغلاف */
-        .cover-page {
-            text-align: center;
-            padding: 50px 0;
-            page-break-after: always;
-        }
-        
-        .cover-page h1 {
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-        
-        .student-info {
-            margin-top: 100px;
+        .side-heading {
+            border-right: 4px solid #059669;
+            padding-right: 15px;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+            color: #047857;
             font-size: 18px;
         }
         
-        /* تنسيقات المراجع */
-        .references {
-            margin-top: 30px;
-            font-size: 14px;
+        .sub-heading {
+            font-weight: 600;
+            color: #374151;
+            margin: 15px 0 8px 0;
         }
         
-        .references h3 {
-            margin-bottom: 15px;
+        .verse {
+            background: #F0FDF4;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #059669;
+            border-radius: 8px 0 0 8px;
+            font-style: italic;
+            font-size: 16px;
         }
         
-        .references ul {
-            list-style-type: none;
+        .info-box {
+            background: #FEF7FF;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #8B5CF6;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .highlight-box {
+            background: #F0F9FF;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #3B82F6;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .comparison-box {
+            background: #FFFBEB;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #F59E0B;
+            border-radius: 8px 0 0 8px;
         }
     </style>
 </head>
-<body>
+<body class="bg-white text-black" dir="rtl">
+
     <!-- زر الطباعة -->
-    <button class="print-button" onclick="window.print()" title="طباعة">
-        🖨️
-    </button>
-
-    <!-- صفحة الغلاف -->
-    <div class="cover-page">
-        <h1>تنوع الفطريات وبيئتها</h1>
-        <div class="student-info">
-            <p>إعداد: [اسم الطالب]</p>
-            <p>التاريخ: [التاريخ]</p>
-        </div>
+    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            🖨️ طباعة المشروع
+        </button>
     </div>
 
-    <!-- المحتوى الرئيسي -->
-    <div class="content">
-        <!-- المقدمة -->
-        <h2>مقدمة</h2>
-        <p>الفطريات هي كائنات حية حقيقية النواة، تشكل مملكة مستقلة تسمى مملكة الفطريات (Fungi). تتميز بعدم قدرتها على صنع غذائها بنفسها، لذا فهي إما مترممة أو متكافلة أو متطفلة. تلعب الفطريات دوراً حيوياً في النظم البيئية كمعيدات للمواد العضوية، كما أن لها أهمية اقتصادية كبيرة في الصناعات الغذائية والدوائية.</p>
-        
-        <div class="info-box">
-            <h4>حقائق سريعة عن الفطريات:</h4>
-            <ul>
-                <li>يوجد أكثر من 144,000 نوع معروف من الفطريات</li>
-                <li>تشير التقديرات إلى وجود 2.2-3.8 مليون نوع في الطبيعة</li>
-                <li>أكبر كائن حي على الأرض هو فطر عيش الغراب في ولاية أوريغون الأمريكية</li>
-                <li>بعض الفطريات تستخدم في إنتاج المضادات الحيوية مثل البنسلين</li>
-            </ul>
+    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
+
+        <!-- الصفحة الأولى -->
+        <div>
+            <h1 class="main-title" style="font-size: 28px;">
+                تنوع الفطريات وبيئاتها
+                <br>
+                <span style="font-size: 20px; color: #6B7280;">دراسة في عالم الكائنات الحية الدقيقة</span>
+            </h1>
+
+            <div class="side-heading">مقدمة: عالم الفطريات المذهل</div>
+            
+            <p>تشكل الفطريات مملكة بيولوجية مستقلة تضم أكثر من 144,000 نوع معروف، وتقدر الدراسات الحديثة أن العدد الفعلي قد يصل إلى 3.8 مليون نوع. تعيش الفطريات في جميع البيئات تقريباً، من القطب الشمالي إلى الصحاري الحارة، ومن قمم الجبال إلى أعماق المحيطات.</p>
+            
+            <p>تلعب الفطريات أدواراً حيوية في النظم البيئية، فهي المسؤولة عن تحليل المواد العضوية وإعادة تدوير المغذيات إلى التربة، كما تشكل علاقات تكافلية مع النباتات تساعدها على امتصاص الماء والمعادن.</p>
+
+            <div class="side-heading">التصنيف العلمي للفطريات</div>
+            
+            <div class="sub-heading">مملكة مستقلة</div>
+            <p>كانت الفطريات تُصنف سابقاً ضمن المملكة النباتية، لكن الدراسات الحديثة أثبتت أنها تشكل مملكة مستقلة تماماً. تتميز الفطريات بجدران خلوية تحتوي على الكيتين، وتفتقر إلى البلاستيدات الخضراء، مما يجعلها غير قادرة على القيام بعملية البناء الضوئي.</p>
+            
+            <div class="info-box">
+                <strong>خصائص الفطريات العامة:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li>كائنات حقيقية النواة</li>
+                    <li>تتكاثر بالأبواغ</li>
+                    <li>غير ذاتية التغذية (هتروتروفية)</li>
+                    <li>جدرانها الخلوية تحتوي على الكيتين</li>
+                    <li>تخزن الطاقة على شكل جليكوجين</li>
+                </ul>
+            </div>
+            
+            <div class="sub-heading">الشعب الرئيسية للفطريات</div>
+            <p>تنقسم مملكة الفطريات إلى عدة شعب رئيسية، لكل منها خصائصها المميزة وبيئاتها الخاصة:</p>
+            
+            <div class="highlight-box">
+                <strong>الشعب الرئيسية للفطريات:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>الفطريات الزقية (Ascomycota):</strong> أكبر شعب الفطريات، تضم حوالي 64,000 نوع</li>
+                    <li><strong>الفطريات الدعامية (Basidiomycota):</strong> تضم الفطريات المشروم والصدأ</li>
+                    <li><strong>الفطريات الكيسية (Zygomycota):</strong> تضم فطريات العفن الأسود</li>
+                    <li><strong>الفطريات اللزجة المختلطة (Myxomycota):</strong> تجمع بين خصائص الفطريات والطلائعيات</li>
+                    <li><strong>الفطريات المختزلة (Chytridiomycota):</strong> تعيش غالباً في البيئات المائية</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">تنوع الفطريات من حيث الشكل والتركيب</div>
+            
+            <div class="sub-heading">الفطريات الخيطية (الرشيقة)</div>
+            <p>معظم الفطريات تتكون من خيوط دقيقة تسمى الهيفات، والتي تتشابك معاً لتشكل الغزل الفطري. هذا التركيب يزيد من مساحة السطح المعرض للبيئة المحيطة، مما يسهل امتصاص المواد الغذائية.</p>
+            
+            <div class="sub-heading">الفطريات وحيدة الخلية</div>
+            <p>بعض الفطريات مثل الخمائر هي كائنات وحيدة الخلية، تتكاثر بالتبرعم. هذه الفطريات تلعب أدواراً مهمة في الصناعات الغذائية مثل صناعة الخبز والمشروبات الكحولية.</p>
+            
+            <div class="sub-heading">الفطريات الكبيرة</div>
+            <p>تضم مملكة الفطريات بعضاً من أكبر الكائنات الحية على الأرض. في ولاية أوريغون الأمريكية، تم اكتشاف فطر عسلي يغطي مساحة 8.9 كيلومتر مربع، ويقدر عمره بـ 2,400 عام.</p>
         </div>
 
-        <!-- تنوع الفطريات -->
-        <h2>تنوع الفطريات</h2>
-        <p>تنقسم الفطريات إلى عدة شعب رئيسية بناءً على تركيبها وطريقة تكاثرها:</p>
-        
-        <h3>الفطريات البيضية (Oomycota)</h3>
-        <p>تتميز بوجود أبواغ سوطية، وتعيش غالباً في البيئات المائية أو الرطبة. بعضها يسبب أمراضاً للنباتات مثل مرض اللفحة المتأخرة في البطاطس والطماطم.</p>
-        
-        <h3>الفطريات الكيتريدية (Chytridiomycota)</h3>
-        <p>هي أبسط الفطريات، وتتميز بوجود أبواغ سوطية. بعضها يعيش مترمماً في الماء والتربة، والبعض الآخر متطفل على النباتات والحيوانات.</p>
-        
-        <h3>الفطريات الزيجوتية (Zygomycota)</h3>
-        <p>تعيش في التربة وعلى المواد العضوية المتحللة. من أمثلتها فطر العفن الأسود (Rhizopus) الذي ينمو على الخبز والفواكه.</p>
-        
-        <h3>الفطريات الكيسية (Ascomycota)</h3>
-        <p>تشكل أكبر مجموعة من الفطريات، وتشمل الخمائر، وفطريات الكأس، وبعض أنواع عيش الغراب. تنتج أبواغاً داخل أكياس تسمى الأكياس الزقية.</p>
-        
-        <h3>الفطريات الدعامية (Basidiomycota)</h3>
-        <p>تشمل معظم فطريات عيش الغراب المعروفة، وفطريات الصدأ، وفطريات التفحم. تنتج أبواغاً على تركيب خاص يسمى الدعامة.</p>
-        
-        <!-- جدول مقارنة بين شعب الفطريات -->
-        <h3>مقارنة بين الشعب الرئيسية للفطريات</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 20%;">الشعبة</th>
-                    <th style="width: 25%;">الخصائص</th>
-                    <th style="width: 25%;">طريقة التكاثر</th>
-                    <th style="width: 30%;">أمثلة</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>الفطريات البيضية</td>
-                    <td>جدران خلوية من السليلوز، أبواغ سوطية</td>
-                    <td>تكاثر جنسي ولا جنسي</td>
-                    <td>فطر اللفحة المتأخرة</td>
-                </tr>
-                <tr>
-                    <td>الفطريات الكيتريدية</td>
-                    <td>أبسط الفطريات، أبواغ سوطية</td>
-                    <td>تكاثر جنسي ولا جنسي</td>
-                    <td>فطر الكيتريد</td>
-                </tr>
-                <tr>
-                    <td>الفطريات الزيجوتية</td>
-                    <td>خيوط فطرية غير مقسمة، لا حواجز</td>
-                    <td>تكاثر جنسي بتكوين الزيجوسبور</td>
-                    <td>العفن الأسود</td>
-                </tr>
-                <tr>
-                    <td>الفطريات الكيسية</td>
-                    <td>خيوط فطرية مقسمة بحواجز</td>
-                    <td>تكاثر جنسي بالأكياس الزقية</td>
-                    <td>الخميرة، فطر الكمأة</td>
-                </tr>
-                <tr>
-                    <td>الفطريات الدعامية</td>
-                    <td>خيوط فطرية مقسمة بحواجز</td>
-                    <td>تكاثر جنسي بالدعامات</td>
-                    <td>عيش الغراب، فطر الصدأ</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- الصفحة الثانية -->
+        <div class="page-break">
+            <div class="side-heading">بيئات الفطريات المختلفة</div>
+            
+            <p>تتميز الفطريات بقدرة مذهلة على التكيف مع مختلف البيئات، مما يمكنها من العيش في ظروف قاسية لا تستطيع معظم الكائنات الحية تحملها.</p>
+            
+            <div class="sub-heading">الفطريات الأرضية</div>
+            
+            <div class="info-box">
+                <strong>أنواع الفطريات الأرضية:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>الفطريات المتكافلة:</strong> تعيش مع جذور النباتات في علاقة تبادل منفعة</li>
+                    <li><strong>الفطريات الرمية:</strong> تحلل المواد العضوية الميتة</li>
+                    <li><strong>الفطريات المتطفلة:</strong> تعيش على كائنات حية أخرى وتسبب لها الأمراض</li>
+                </ul>
+            </div>
 
-        <!-- بيئة الفطريات -->
-        <h2>بيئة الفطريات</h2>
-        <p>تعيش الفطريات في مختلف البيئات وتلعب أدواراً بيئية متنوعة:</p>
-        
-        <h3>الفطريات المترممة (Saprophytic Fungi)</h3>
-        <p>تعيش على المواد العضوية الميتة وتحللها، مما يساهم في إعادة تدوير العناصر الغذائية في النظم البيئية. تعتبر هذه الفطريات من أهم الكائنات المحللة في الطبيعة.</p>
-        
-        <h3>الفطريات المتكافلة (Symbiotic Fungi)</h3>
-        <p>تعيش في علاقة تكافلية مع كائنات أخرى، مثل:</p>
-        <ul>
-            <li>الأشنات: علاقة تكافلية بين الفطريات والطحالب</li>
-            <li>الفطريات الجذرية: علاقة تكافلية مع جذور النباتات</li>
-        </ul>
-        
-        <h3>الفطريات المتطفلة (Parasitic Fungi)</h3>
-        <p>تعيش على حساب كائنات حية أخرى، مسببة لها الأمراض. بعضها يتطفل على النباتات مسبباً خسائر اقتصادية كبيرة في المحاصيل الزراعية.</p>
-        
-        <!-- أهمية الفطريات -->
-        <h2>أهمية الفطريات</h2>
-        <p>للفطريات أهمية كبيرة في مختلف المجالات:</p>
-        
-        <h3>الأهمية البيئية</h3>
-        <ul>
-            <li>تحليل المواد العضوية وإعادة تدوير العناصر الغذائية</li>
-            <li>المساهمة في تكوين التربة وتحسين خواصها</li>
-            <li>المشاركة في الدورات البيوجيوكيميائية</li>
-        </ul>
-        
-        <h3>الأهمية الاقتصادية</h3>
-        <ul>
-            <li>استخدامها في الصناعات الغذائية (الخبز، الجبن، المشروبات)</li>
-            <li>إنتاج المضادات الحيوية (البنسلين)</li>
-            <li>إنتاج الإنزيمات والأحماض العضوية</li>
-            <li>المكافحة الحيوية للآفات</li>
-        </ul>
-        
-        <h3>الأهمية الطبية</h3>
-        <ul>
-            <li>إنتاج الأدوية والمضادات الحيوية</li>
-            <li>بعض الفطريات مصدر للفيتامينات والهرمونات</li>
-            <li>البحث في استخدام الفطريات لعلاج الأمراض</li>
-        </ul>
-        
-        <!-- الخاتمة -->
-        <h2>خاتمة</h2>
-        <p>تشكل الفطريات مملكة حيوية ومتنوعة تلعب أدواراً أساسية في النظم البيئية. يتجلى تنوعها في تركيبها وطرق تكاثرها وبيئاتها المختلفة. تعتبر الفطريات من أهم الكائنات المحللة التي تساهم في إعادة تدوير العناصر الغذائية، كما أن لها أهمية اقتصادية وطبية كبيرة. يبقى فهم تنوع الفطريات وبيئاتها أمراً حاسماً للحفاظ على التوازن البيئي والاستفادة من إمكاناتها في مختلف المجالات.</p>
-        
-        <!-- المراجع -->
-        <div class="references">
-            <h3>المراجع</h3>
-            <ul>
-                <li>Alexopoulos, C. J., Mims, C. W., & Blackwell, M. (1996). Introductory Mycology. John Wiley & Sons.</li>
-                <li>Webster, J., & Weber, R. (2007). Introduction to Fungi. Cambridge University Press.</li>
-                <li>Kendrick, B. (2000). The Fifth Kingdom. Focus Publishing.</li>
-            </ul>
+            <div class="sub-heading">الفطريات المائية</div>
+            <p>تعيش بعض الفطريات في البيئات المائية، سواء في المياه العذبة أو المالحة. تلعب هذه الفطريات دوراً مهماً في تحليل المواد العضوية في النظم البيئية المائية.</p>
+            
+            <div class="sub-heading">الفطريات في البيئات القاسية</div>
+            <p>تستطيع بعض الفطريات العيش في بيئات قاسية مثل الصحاري الحارة والمناطق القطبية الباردة. بعض الفطريات تطور آليات خاصة للبقاء في هذه الظروف، مثل إنتاج أصباغ واقية من الأشعة فوق البنفسجية.</p>
+
+            <div class="comparison-box">
+                <strong>مقارنة بين بيئات الفطريات المختلفة:</strong>
+                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
+                    <thead>
+                        <tr style="background: #FEF3C7;">
+                            <th width="25%">البيئة</th>
+                            <th width="25%">أمثلة على الفطريات</th>
+                            <th width="25%">التكيفات الخاصة</th>
+                            <th width="25%">الدور البيئي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>التربة</td>
+                            <td>فطر البنسيليوم، فطر الأسبرجلس</td>
+                            <td>إنتاج إنزيمات محللة</td>
+                            <td>تحليل المواد العضوية</td>
+                        </tr>
+                        <tr style="background: #FFFBEB;">
+                            <td>المياه العذبة</td>
+                            <td>الفطريات الكيتريدية</td>
+                            <td>أبواغ سوطية للحركة</td>
+                            <td>تحليل الأوراق الميتة</td>
+                        </tr>
+                        <tr>
+                            <td>المحيطات</td>
+                            <td>فطريات الخمائر البحرية</td>
+                            <td>تحمل الملوحة العالية</td>
+                            <td>تحليل الكائنات البحرية</td>
+                        </tr>
+                        <tr style="background: #FFFBEB;">
+                            <td>المناطق القطبية</td>
+                            <td>الفطريات النفسية</td>
+                            <td>نشاط إنزيمي في درجات حرارة منخفضة</td>
+                            <td>تحلل المواد في التربة المتجمدة</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="side-heading">الأهمية البيئية والاقتصادية للفطريات</div>
+            
+            <div class="sub-heading">دور الفطريات في النظم البيئية</div>
+            <p>تلعب الفطريات أدواراً حيوية في النظم البيئية، أهمها تحليل المواد العضوية وإعادة تدوير العناصر الغذائية إلى التربة. بدون الفطريات، ستتراكم المواد العضوية الميتة ولن تتوفر المغذيات اللازمة لنمو النباتات.</p>
+            
+            <div class="sub-heading">الفطريات والعلاقات التكافلية</div>
+            <p>تشكل العديد من الفطريات علاقات تكافلية مع النباتات، حيث تساعدها على امتصاص الماء والمعادن من التربة. هذه العلاقة تسمى "الميكوريزا"، وتوجد في حوالي 90% من النباتات البرية.</p>
+            
+            <div class="sub-heading">الاستخدامات الاقتصادية للفطريات</div>
+            <p>تستخدم الفطريات في العديد من الصناعات، مثل صناعة الأدوية (البنسلين)، والصناعات الغذائية (الخبز، الجبن، المشروبات الكحولية)، وإنتاج الإنزيمات والأحماض العضوية.</p>
+
+            <div class="highlight-box">
+                <strong>الاستخدامات الصناعية للفطريات:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li>إنتاج المضادات الحيوية مثل البنسلين</li>
+                    <li>صناعة الخبز والمشروبات الكحولية باستخدام الخميرة</li>
+                    <li>إنتاج إنزيمات تستخدم في الصناعات الغذائية والمنظفات</li>
+                    <li>إنتاج الأحماض العضوية مثل حامض الستريك</li>
+                    <li>المكافحة البيولوجية للآفات الزراعية</li>
+                    <li>معالجة النفايات العضوية</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">الفطريات الممرضة والمفيدة</div>
+            
+            <div class="sub-heading">الفطريات الممرضة</div>
+            <p>بعض الفطريات تسبب أمراضاً خطيرة للإنسان والحيوان والنبات. تشمل الأمراض الفطرية البشرية القوباء الحلقية ومرض القدم الرياضي والعدوى الجهازية الخطيرة للأشخاص ذوي المناعة الضعيفة.</p>
+            
+            <div class="sub-heading">الفطريات المفيدة</div>
+            <p>إلى جانب الاستخدامات الصناعية، تقدم الفطريات فوائد عديدة للبيئة وللإنسان. بعض الفطريات تستخدم في المعالجة الحيوية لتنظيف التربة والمياه الملوثة بالمواد السامة.</p>
+            
+            <div class="sub-heading">الفطريات الصالحة للأكل</div>
+            <p>يستهلك البشر العديد من أنواع الفطريات الصالحة للأكل، مثل عيش الغراب والكمأة. هذه الفطريات غنية بالبروتينات والفيتامينات والمعادن، وتستخدم في العديد من المطابخ حول العالم.</p>
+
+            <div class="side-heading">خاتمة: مستقبل دراسة الفطريات</div>
+            
+            <p>على الرغم من التقدم الكبير في دراسة الفطريات، لا يزال هناك الكثير لنتعلمه عن هذا العالم المدهش. تشير التقديرات إلى أننا لم نكتشف سوى 5% من أنواع الفطريات الموجودة على الأرض.</p>
+            
+            <p>مع تطور التقنيات الجزيئية وأدوات التسلسل الجيني، أصبح من الممكن دراسة التنوع الفطري بشكل أعمق، واكتشاف أنواع جديدة وفهم العلاقات التطورية بينها بشكل أفضل.</p>
+            
+            <div class="info-box">
+                <strong>اتجاهات البحث المستقبلية:</strong>
+                <p>يركز البحث العلمي حالياً على استكشاف التنوع الفطري في البيئات القاسية، وفهم الآليات الجزيئية لتكيف الفطريات مع مختلف الظروف، واستغلال الفطريات في التطبيقات البيوتكنولوجية الجديدة مثل إنتاج الوقود الحيوي والمواد البلاستيكية القابلة للتحلل.</p>
+            </div>
         </div>
+
     </div>
-
-    <!-- أرقام الصفحات -->
-    <div class="page-number"></div>
 
     <script>
-        // إضافة أرقام الصفحات تلقائياً
-        document.addEventListener('DOMContentLoaded', function() {
-            const pageNumbers = document.querySelectorAll('.page-number');
-            let pageCount = 1;
-            
-            pageNumbers.forEach(function(pageNumber) {
-                pageNumber.textContent = 'صفحة ' + pageCount;
-                pageCount++;
-            });
-            
-            // معالجة أخطاء الطباعة
-            window.onbeforeprint = function() {
-                console.log('بدء عملية الطباعة');
-            };
-            
-            window.onafterprint = function() {
-                console.log('انتهت عملية الطباعة');
-            };
+        // تحسين الطباعة
+        window.addEventListener('beforeprint', function() {
+            document.body.style.fontSize = '11pt';
         });
-        
-        // معالجة أخطاء الطباعة
-        function handlePrint() {
-            try {
-                window.print();
-            } catch (error) {
-                alert('حدث خطأ أثناء الطباعة: ' + error.message);
-            }
-        }
-        
-        // تحديث زر الطباعة
-        document.querySelector('.print-button').onclick = handlePrint;
     </script>
 </body>
 </html>
