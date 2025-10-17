@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تنوع الفطريات وبيئتها - قالب A4</title>
+<title>تنوع الفطريات وبيئتها - قالب عملي</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-body { font-family: 'Amiri','Noto Sans Arabic', serif; margin:0; padding:0; line-height:1.6; background:#f4f4f4; }
-.container { max-width: 21cm; margin: 20px auto; padding: 1cm; background:white; box-shadow:0 0 8px rgba(0,0,0,0.1);}
-.section { border:1px dashed #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff; position:relative; }
-.section .drag-handle { cursor: move; position:absolute; top:5px; left:5px; color:#999; font-size:12px; }
-h1 { text-align:center; color:#047857; font-weight:700; margin-bottom:15px; border-bottom:3px solid #059669; padding-bottom:10px; }
+body { font-family:'Amiri','Noto Sans Arabic', serif; margin:0; padding:0; background:#f4f4f4; line-height:1.6; }
+.container { max-width:21cm; margin:20px auto; padding:1cm; background:white; box-shadow:0 0 8px rgba(0,0,0,0.1);}
+.section { border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff; position:relative; touch-action: none;}
+.section h1,h2,h3,p,ul,li,table { margin:5px 0; }
 .side-heading { font-size:18px; font-weight:600; color:#047857; border-right:4px solid #059669; padding-right:10px; margin:10px 0; }
 .sub-heading { font-weight:600; color:#374151; margin:8px 0; }
-p { margin-bottom:5px; text-align:justify; }
 .info-box { background:#FEF7FF; padding:10px; margin:8px 0; border-right:3px solid #8B5CF6; border-radius:5px; page-break-inside:avoid; }
 .highlight-box { background:#F0F9FF; padding:10px; margin:8px 0; border-right:3px solid #3B82F6; border-radius:5px; page-break-inside:avoid; }
 .comparison-box { background:#FFFBEB; padding:10px; margin:8px 0; border-right:3px solid #F59E0B; border-radius:5px; page-break-inside:avoid; }
 table { width:100%; border-collapse:collapse; page-break-inside:avoid; }
 th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
+.drag-btn { position:absolute; top:5px; left:5px; background:#059669; color:white; font-size:12px; padding:2px 5px; border-radius:3px; cursor:pointer; }
+.resize-btn { position:absolute; top:5px; right:5px; background:#3B82F6; color:white; font-size:12px; padding:2px 5px; border-radius:3px; cursor:pointer; }
 @media print {
-    body { background:white; font-size:11pt; line-height:1.4; }
+    body { background:white; font-size:11pt; }
     .container { box-shadow:none; margin:0; padding:1.2cm; }
+    .drag-btn, .resize-btn, .print-btn { display:none; }
     .section { border:none; }
 }
 </style>
@@ -31,29 +32,33 @@ th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
 
 <div class="container">
 
+    <!-- العنوان -->
     <div class="section" id="title">
-        <div class="drag-handle">⇅</div>
+        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
+        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
         <h1>تنوع الفطريات وبيئتها</h1>
     </div>
 
+    <!-- مقدمة -->
     <div class="section" id="introduction">
-        <div class="drag-handle">⇅</div>
+        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
+        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
         <div class="side-heading">مقدمة عن الفطريات</div>
         <p>الفطريات هي مملكة مستقلة من الكائنات الحية، تتميز بقدرتها على التحلل وامتصاص المواد العضوية من البيئة المحيطة. تلعب دوراً أساسياً في التوازن البيئي وإعادة تدوير العناصر الغذائية.</p>
     </div>
 
+    <!-- تنوع الفطريات -->
     <div class="section" id="diversity">
-        <div class="drag-handle">⇅</div>
+        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
+        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
         <div class="side-heading">تنوع الفطريات</div>
         <div class="sub-heading">الفطريات الميكروسكوبية</div>
         <p>تشمل الخمائر والفطريات الغروية، وهي غير مرئية بالعين المجردة. تستخدم هذه الفطريات في الصناعات الغذائية مثل إنتاج الخبز والمشروبات الكحولية.</p>
-
         <div class="sub-heading">الفطريات الكبيرة</div>
         <p>مثل الفطر الأبيض والفطر البري، ويمكن رؤيتها بسهولة. تلعب هذه الفطريات دوراً مهماً في النظام البيئي كمحللات للنفايات النباتية.</p>
-
         <div class="highlight-box">
             <strong>أمثلة شائعة:</strong>
-            <ul style="margin-right:20px; margin-top:5px;">
+            <ul>
                 <li>الخميرة (Saccharomyces cerevisiae)</li>
                 <li>فطر عيش الغراب (Agaricus bisporus)</li>
                 <li>الفطر الأسود (Aspergillus niger)</li>
@@ -61,16 +66,15 @@ th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
         </div>
     </div>
 
+    <!-- البيئة -->
     <div class="section" id="environment">
-        <div class="drag-handle">⇅</div>
+        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
+        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
         <div class="side-heading">بيئة الفطريات</div>
-
         <div class="sub-heading">الرطوبة والتربة</div>
         <p>الفطريات تحتاج إلى بيئات رطبة وغنية بالمواد العضوية لتزدهر. التربة الغنية بالمواد المتحللة هي المكان الأمثل لنموها.</p>
-
         <div class="sub-heading">درجة الحرارة</div>
         <p>تنمو معظم الفطريات في درجات حرارة معتدلة، بينما توجد أنواع تتحمل درجات حرارة منخفضة أو مرتفعة حسب طبيعة بيئتها.</p>
-
         <div class="sub-heading">العلاقة مع الكائنات الأخرى</div>
         <p>بعض الفطريات تعيش بشكل تكافلي مع النباتات، مثل الفطريات الجذرية، بينما يمكن أن تكون بعض الأنواع ممرضة للنباتات والحيوانات.</p>
 
@@ -105,8 +109,10 @@ th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
         </div>
     </div>
 
+    <!-- خاتمة -->
     <div class="section" id="conclusion">
-        <div class="drag-handle">⇅</div>
+        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
+        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
         <div class="side-heading">خاتمة</div>
         <p>تنوع الفطريات وبيئتها يعكس أهمية هذه المملكة في دعم الحياة على الأرض، سواء من خلال إعادة تدوير العناصر الغذائية، دعم النباتات، أو الفوائد الاقتصادية والصناعية للبشر. دراسة الفطريات تساعدنا على فهم البيئة بشكل أفضل واستثمار مواردها بشكل مستدام.</p>
     </div>
@@ -114,8 +120,42 @@ th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
 </div>
 
 <div class="no-print" style="position:fixed; bottom:20px; right:20px;">
-    <button onclick="window.print()" style="background:#059669; color:white; padding:10px 20px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ طباعة المشروع</button>
+    <button class="print-btn" onclick="window.print()" style="background:#059669; color:white; padding:10px 20px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ طباعة المشروع</button>
 </div>
+
+<script>
+// Drag & Drop
+let dragItem = null;
+let offsetX, offsetY;
+
+function startDrag(e, item) {
+    dragItem = item;
+    offsetX = e.clientX - item.getBoundingClientRect().left;
+    offsetY = e.clientY - item.getBoundingClientRect().top;
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDrag);
+}
+
+function drag(e) {
+    if (!dragItem) return;
+    dragItem.style.position = 'relative';
+    dragItem.style.top = (e.clientY - offsetY - dragItem.parentNode.getBoundingClientRect().top) + 'px';
+    dragItem.style.left = (e.clientX - offsetX - dragItem.parentNode.getBoundingClientRect().left) + 'px';
+}
+
+function stopDrag() {
+    dragItem = null;
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', stopDrag);
+}
+
+// Resize
+function resizeSection(section) {
+    let currentHeight = section.offsetHeight;
+    let newHeight = prompt("أدخل ارتفاع القسم بالبكسل (مثال: 200)", currentHeight);
+    if(newHeight) section.style.height = newHeight + "px";
+}
+</script>
 
 </body>
 </html>
