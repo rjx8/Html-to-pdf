@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الكيان الإرهابي - دراسة تحليلية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @media print {
             @page {
                 size: A4;
-                margin: 1.2cm;
+                margin: 1.5cm;
             }
             
             body {
-                font-size: 11pt;
+                font-size: 12pt;
                 line-height: 1.4;
                 font-family: 'Amiri', serif;
+                color: #000;
             }
             
             .page-break {
@@ -29,23 +30,26 @@
             }
             
             h1 {
-                font-size: 20pt;
+                font-size: 18pt;
                 margin-bottom: 0.8cm;
                 text-align: center;
+                color: #000;
             }
             
             .side-heading {
                 font-size: 14pt;
-                margin: 0.4cm 0 0.3cm 0;
-                border-right: 4px solid #DC2626;
-                padding-right: 0.4cm;
+                margin: 0.5cm 0 0.3cm 0;
+                border-right: 4px solid #991B1B;
+                padding-right: 0.5cm;
                 font-weight: bold;
                 color: #991B1B;
+                background: #FEF2F2;
+                padding: 0.3cm 0.5cm;
             }
             
             .sub-heading {
-                font-size: 12pt;
-                margin: 0.3cm 0 0.2cm 0;
+                font-size: 13pt;
+                margin: 0.4cm 0 0.2cm 0;
                 font-weight: 600;
                 color: #374151;
             }
@@ -56,466 +60,326 @@
             }
             
             table {
-                font-size: 9pt;
-                margin: 0.3cm 0;
+                font-size: 11pt;
+                margin: 0.4cm 0;
+                width: 100%;
+                border-collapse: collapse;
             }
             
             .info-box {
-                margin: 0.2cm 0;
+                margin: 0.3cm 0;
                 padding: 0.4cm;
                 page-break-inside: avoid;
+                border: 1px solid #D1D5DB;
+                background: #F9FAFB;
             }
             
             ul, ol {
-                margin: 0.15cm 0;
+                margin: 0.2cm 0;
             }
             
             li {
-                margin-bottom: 0.1cm;
+                margin-bottom: 0.15cm;
             }
         }
         
         body {
-            font-family: 'Tajawal', 'Amiri', 'Noto Sans Arabic', serif;
-            line-height: 1.7;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            line-height: 1.6;
+            background: white;
+            color: #1F2937;
         }
         
         .main-title {
             text-align: center;
-            background: linear-gradient(135deg, #991B1B 0%, #DC2626 50%, #EF4444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #991B1B;
             font-weight: 700;
-            margin-bottom: 35px;
-            position: relative;
-        }
-        
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, #DC2626, #EF4444, #DC2626);
-            border-radius: 2px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #DC2626;
+            padding-bottom: 15px;
         }
         
         .side-heading {
-            background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 100%);
-            border-right: 5px solid;
-            border-image: linear-gradient(135deg, #DC2626, #EF4444) 1;
-            padding: 12px 20px;
-            margin: 25px 0 15px 0;
+            border-right: 4px solid #991B1B;
+            padding: 10px 15px;
+            margin: 20px 0 15px 0;
             font-weight: 600;
             color: #991B1B;
-            font-size: 20px;
-            border-radius: 0 12px 12px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .side-heading::before {
-            content: '🔍';
-            position: absolute;
-            right: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #DC2626;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
+            font-size: 18px;
+            background: #FEF2F2;
         }
         
         .sub-heading {
             font-weight: 600;
             color: #374151;
-            margin: 18px 0 10px 0;
-            padding-right: 15px;
-            border-right: 3px solid #60A5FA;
-            background: linear-gradient(90deg, #EFF6FF 0%, transparent 100%);
-            padding: 8px 15px;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .danger-box {
-            background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 30%, #FEF2F2 100%);
-            padding: 20px;
-            margin: 15px 0;
-            border-right: 4px solid #DC2626;
-            border-radius: 12px 0 0 12px;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
-            position: relative;
-        }
-        
-        .danger-box::before {
-            content: '⚠️';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #DC2626;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            margin: 15px 0 8px 0;
+            padding-right: 10px;
+            border-right: 3px solid #6B7280;
         }
         
         .info-box {
-            background: linear-gradient(135deg, #F0F9FF 0%, #DBEAFE 30%, #F0F9FF 100%);
-            padding: 20px;
+            background: #F9FAFB;
+            padding: 15px;
             margin: 15px 0;
+            border: 1px solid #D1D5DB;
             border-right: 4px solid #3B82F6;
-            border-radius: 12px 0 0 12px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
-            position: relative;
         }
         
-        .info-box::before {
-            content: 'ℹ️';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #3B82F6;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+        .danger-box {
+            background: #FEF2F2;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #FECACA;
+            border-right: 4px solid #DC2626;
         }
         
         .analysis-box {
-            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 30%, #F3E8FF 100%);
-            padding: 20px;
+            background: #FFFBEB;
+            padding: 15px;
             margin: 15px 0;
-            border-right: 4px solid #8B5CF6;
-            border-radius: 12px 0 0 12px;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
-            position: relative;
-        }
-        
-        .analysis-box::before {
-            content: '📊';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #8B5CF6;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            border: 1px solid #FEF3C7;
+            border-right: 4px solid #D97706;
         }
         
         .solution-box {
-            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 30%, #F0FDF4 100%);
-            padding: 20px;
+            background: #F0FDF4;
+            padding: 15px;
             margin: 15px 0;
-            border-right: 4px solid #10B981;
-            border-radius: 12px 0 0 12px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-            position: relative;
+            border: 1px solid #DCFCE7;
+            border-right: 4px solid #059669;
         }
         
-        .solution-box::before {
-            content: '💡';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #10B981;
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        table th {
+            background: #991B1B;
             color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-        
-        .gradient-table {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .gradient-table th {
-            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
-            color: white;
-            padding: 12px;
+            padding: 10px;
+            border: 1px solid #DC2626;
             font-weight: 600;
         }
         
-        .gradient-table td {
-            padding: 10px;
-            border-bottom: 1px solid #e5e7eb;
+        table td {
+            padding: 8px;
+            border: 1px solid #D1D5DB;
         }
         
-        .main-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
+        table tr:nth-child(even) {
+            background: #F9FAFB;
         }
     </style>
 </head>
-<body class="text-black" dir="rtl">
+<body class="bg-white text-black" dir="rtl">
 
     <!-- زر الطباعة -->
     <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <button onclick="window.print()" style="background: linear-gradient(135deg, #DC2626, #EF4444); color: white; padding: 15px 25px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); transition: all 0.3s;">
-            🖨️ طباعة المشروع
+        <button onclick="window.print()" style="background: #DC2626; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            طباعة المشروع
         </button>
     </div>
 
-    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
-        <div class="main-container">
+    <div style="max-width: 21cm; margin: 0 auto; padding: 1.5cm;">
 
-            <!-- الصفحة الأولى -->
-            <div>
-                <h1 class="main-title" style="font-size: 36px;">
-                    الكيان الإرهابي
-                    <br>
-                    <span style="font-size: 22px; background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                        تشريح الظاهرة وآليات المواجهة
-                    </span>
-                </h1>
+        <!-- الصفحة الأولى -->
+        <div>
+            <h1 class="main-title" style="font-size: 24px;">
+                الكيان الإرهابي: دراسة تحليلية شاملة
+            </h1>
 
-                <div class="side-heading">🔍 ماهية الكيان الإرهابي</div>
-                
-                <p>الكيان الإرهابي هو تنظيم أو جماعة منظمة تتبنى العنف والإرهاب كوسيلة لتحقيق أهدافها السياسية أو الأيديولوجية أو الدينية. يتميز هذا الكيان بوجود هيكل تنظيمي محدد، وقيادة واضحة، واستراتيجية شاملة لتنفيذ أعماله الإرهابية.</p>
-                
-                <p>يختلف الكيان الإرهابي عن الجماعات الإجرامية العادية في كونه يستهدف تحقيق تغيير جذري في النظام القائم أو فرض أيديولوجية معينة، وليس مجرد تحقيق مكاسب مالية أو شخصية. كما يتميز باستخدام العنف العشوائي ضد المدنيين كوسيلة للضغط النفسي وإثارة الرعب.</p>
+            <div class="side-heading">تعريف الكيان الإرهابي وخصائصه</div>
+            
+            <p>يُعرف الكيان الإرهابي بأنه تنظيم أو جماعة منظمة تتبنى العنف والإرهاب كوسيلة أساسية لتحقيق أهدافها السياسية أو الأيديولوجية أو الدينية. يتميز هذا الكيان بوجود هيكل تنظيمي محدد، وقيادة واضحة، واستراتيجية شاملة لتنفيذ عملياته الإرهابية ضد الأهداف المدنية والعسكرية.</p>
+            
+            <p>يختلف الكيان الإرهابي عن الجماعات الإجرامية العادية في طبيعة أهدافه ووسائله، حيث يسعى إلى إحداث تغيير جذري في النظام السياسي أو الاجتماعي القائم، ويستخدم العنف العشوائي ضد المدنيين كوسيلة للضغط النفسي وإثارة الرعب في المجتمع.</p>
 
-                <div class="danger-box">
-                    <strong>🚨 الخصائص المميزة للكيان الإرهابي:</strong>
-                    <ul style="margin-right: 20px; margin-top: 10px;">
-                        <li><strong>التنظيم الهرمي:</strong> وجود قيادة مركزية وخلايا فرعية</li>
-                        <li><strong>الأيديولوجية المتطرفة:</strong> تبني فكر راديكالي يبرر العنف</li>
-                        <li><strong>استهداف المدنيين:</strong> عدم التمييز بين الأهداف العسكرية والمدنية</li>
-                        <li><strong>الهدف السياسي:</strong> السعي لتحقيق تغيير جذري في النظام</li>
-                        <li><strong>الشبكية العابرة للحدود:</strong> تجاوز الحدود الجغرافية والوطنية</li>
-                        <li><strong>استخدام التكنولوجيا:</strong> توظيف وسائل الاتصال الحديثة</li>
-                    </ul>
-                </div>
-
-                <div class="side-heading">📊 التركيب التنظيمي</div>
-                
-                <div class="sub-heading">🎯 القيادة المركزية</div>
-                <p>تتألف من مجموعة صغيرة من القادة الذين يضعون الاستراتيجية العامة ويتخذون القرارات المصيرية. هؤلاء القادة عادة ما يكونون محاطين بطبقات أمنية متعددة لحمايتهم من الكشف أو الاغتيال.</p>
-                
-                <div class="sub-heading">🕸️ الخلايا الفرعية</div>
-                <p>تنتشر في مناطق جغرافية مختلفة وتعمل بشكل شبه مستقل تحت التوجيه العام للقيادة المركزية. هذا النموذج يوفر مرونة تشغيلية ويقلل من المخاطر الأمنية.</p>
-                
-                <div class="sub-heading">💰 شبكات التمويل</div>
-                <p>تعتمد على مصادر متنوعة للتمويل تشمل الأنشطة الإجرامية، التجارة غير المشروعة، التبرعات، واستغلال الموارد الطبيعية في المناطق التي تسيطر عليها.</p>
-
-                <div class="analysis-box">
-                    <strong>📋 النموذج التنظيمي للكيان الإرهابي:</strong>
-                    <table class="gradient-table" border="0" cellpadding="12" cellspacing="0" width="100%" style="margin: 10px 0;">
-                        <thead>
-                            <tr>
-                                <th width="25%">المستوى</th>
-                                <th width="35%">الوظائف</th>
-                                <th width="40%">الخصائص</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>القيادة العليا</strong></td>
-                                <td>وضع الاستراتيجية، اتخاذ القرارات</td>
-                                <td>سرية تامة، حماية أمنية مشددة</td>
-                            </tr>
-                            <tr style="background: #f9fafb;">
-                                <td><strong>القيادة الوسطى</strong></td>
-                                <td>تنفيذ الأوامر، التنسيق الإقليمي</td>
-                                <td>مرونة تشغيلية، اتصال محدود</td>
-                            </tr>
-                            <tr>
-                                <td><strong>الخلايا التنفيذية</strong></td>
-                                <td>تنفيذ العمليات الإرهابية</td>
-                                <td>استقلالية نسبية، تخصص محدد</td>
-                            </tr>
-                            <tr style="background: #f9fafb;">
-                                <td><strong>شبكات الدعم</strong></td>
-                                <td>اللوجستيات، التمويل، الإعلام</td>
-                                <td>متنوعة الأنشطة، منتشرة جغرافياً</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="side-heading">⚔️ آليات العمل والتكتيكات</div>
-                
-                <div class="sub-heading">🎭 التخفي والسرية</div>
-                <p>يعتمد الكيان الإرهابي على التخفي والعمل في الظل، ويستخدم أساليب متطورة للتواصل المشفر وإخفاء الهويات. كما يلجأ إلى استخدام أسماء مستعارة وجوازات سفر مزورة.</p>
-                
-                <div class="sub-heading">📢 الدعاية والتجنيد</div>
-                <p>يستغل وسائل الإعلام الحديثة ومنصات التواصل الاجتماعي لنشر دعايته وتجنيد أعضاء جدد. يركز على استهداف الشباب المحبط والمهمش اجتماعياً أو اقتصادياً.</p>
-
-                <div class="info-box">
-                    <strong>🔧 التكتيكات الرئيسية المستخدمة:</strong>
-                    <ul style="margin-right: 20px; margin-top: 10px;">
-                        <li><strong>العمليات الانتحارية:</strong> لتحقيق أقصى تأثير نفسي ومادي</li>
-                        <li><strong>الخطف والاحتجاز:</strong> للحصول على فدية أو تحقيق مطالب سياسية</li>
-                        <li><strong>التفجيرات العشوائية:</strong> لإثارة الذعر في المجتمع</li>
-                        <li><strong>الهجمات الإلكترونية:</strong> لتعطيل البنية التحتية الرقمية</li>
-                        <li><strong>حرب الشوارع:</strong> في المناطق التي يسيطر عليها</li>
-                        <li><strong>الاغتيالات المستهدفة:</strong> لإضعاف خصومه</li>
-                    </ul>
-                </div>
+            <div class="danger-box">
+                <strong>الخصائص المميزة للكيان الإرهابي:</strong>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>التنظيم الهرمي: وجود قيادة مركزية وخلايا فرعية منتشرة</li>
+                    <li>الأيديولوجية المتطرفة: تبني فكر راديكالي يبرر استخدام العنف</li>
+                    <li>استهداف المدنيين: عدم التمييز بين الأهداف العسكرية والمدنية</li>
+                    <li>الهدف السياسي: السعي لتحقيق تغيير جذري في النظام الحاكم</li>
+                    <li>الطابع العابر للحدود: تجاوز الحدود الجغرافية والوطنية</li>
+                    <li>استخدام التكنولوجيا: توظيف وسائل الاتصال الحديثة للدعاية والتنسيق</li>
+                </ul>
             </div>
 
-            <!-- الصفحة الثانية -->
-            <div class="page-break">
-                <div class="side-heading">🌐 التهديدات والتأثيرات</div>
-                
-                <div class="sub-heading">🏛️ التهديد الأمني</div>
-                <p>يشكل الكيان الإرهابي تهديداً مباشراً للأمن القومي والإقليمي والدولي. فقدرته على تنفيذ عمليات إرهابية منسقة ومعقدة تجعله خطراً دائماً على استقرار المجتمعات والدول.</p>
-                
-                <div class="sub-heading">💰 التأثير الاقتصادي</div>
-                <p>يكلف مكافحة الكيانات الإرهابية مليارات الدولارات سنوياً، كما تؤثر أنشطتها على الاستثمار والسياحة والتجارة الدولية. بالإضافة إلى تكلفة إعادة الإعمار في المناطق المتضررة.</p>
-                
-                <div class="sub-heading">👥 التأثير الاجتماعي</div>
-                <p>يؤدي إلى تفكك النسيج الاجتماعي، زيادة التوتر الطائفي والعرقي، وتراجع الثقة في المؤسسات الحكومية. كما يؤثر على الصحة النفسية للمجتمع ككل.</p>
+            <div class="side-heading">البنية التنظيمية للكيان الإرهابي</div>
+            
+            <div class="sub-heading">القيادة المركزية</div>
+            <p>تتكون من مجموعة محدودة من القادة الذين يضعون الاستراتيجية العامة ويتخذون القرارات المصيرية للتنظيم. هؤلاء القادة عادة ما يكونون محاطين بطبقات أمنية متعددة لحمايتهم من الكشف أو الاستهداف من قبل الأجهزة الأمنية.</p>
+            
+            <div class="sub-heading">الخلايا التنفيذية</div>
+            <p>تنتشر في مناطق جغرافية مختلفة وتعمل بشكل شبه مستقل تحت التوجيه العام للقيادة المركزية. هذا النموذج التنظيمي يوفر مرونة تشغيلية عالية ويقلل من المخاطر الأمنية التي قد تواجه التنظيم ككل.</p>
+            
+            <div class="sub-heading">شبكات الدعم والتمويل</div>
+            <p>تعتمد على مصادر متنوعة للتمويل تشمل الأنشطة الإجرامية مثل تجارة المخدرات والسلاح، والتجارة غير المشروعة، والتبرعات من الجهات المتعاطفة، واستغلال الموارد الطبيعية في المناطق التي تسيطر عليها.</p>
 
-                <div class="danger-box">
-                    <strong>⚡ مستويات التهديد:</strong>
-                    <ul style="margin-right: 20px; margin-top: 10px;">
-                        <li><strong>محلي:</strong> تهديد الأمن الداخلي وزعزعة الاستقرار</li>
-                        <li><strong>إقليمي:</strong> نشر الفوضى عبر الحدود الوطنية</li>
-                        <li><strong>دولي:</strong> التأثير على الأمن العالمي والعلاقات الدولية</li>
-                        <li><strong>إلكتروني:</strong> مهاجمة البنية التحتية الرقمية</li>
-                        <li><strong>اقتصادي:</strong> تعطيل الأنشطة الاقتصادية والتجارية</li>
-                        <li><strong>نفسي:</strong> خلق مناخ من الخوف والقلق المستمر</li>
-                    </ul>
-                </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">المستوى التنظيمي</th>
+                        <th style="width: 35%;">الوظائف الأساسية</th>
+                        <th style="width: 40%;">الخصائص المميزة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>القيادة العليا</td>
+                        <td>وضع الاستراتيجية العامة واتخاذ القرارات الكبرى</td>
+                        <td>سرية تامة وحماية أمنية مشددة</td>
+                    </tr>
+                    <tr>
+                        <td>القيادة الوسطى</td>
+                        <td>تنفيذ التوجيهات والتنسيق الإقليمي</td>
+                        <td>مرونة تشغيلية واتصال محدود مع القيادة</td>
+                    </tr>
+                    <tr>
+                        <td>الخلايا التنفيذية</td>
+                        <td>تنفيذ العمليات الإرهابية الميدانية</td>
+                        <td>استقلالية نسبية وتخصص محدد</td>
+                    </tr>
+                    <tr>
+                        <td>شبكات الدعم</td>
+                        <td>توفير اللوجستيات والتمويل والإعلام</td>
+                        <td>تنوع الأنشطة وانتشار جغرافي واسع</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <div class="side-heading">🛡️ استراتيجيات المواجهة</div>
-                
-                <div class="sub-heading">🔍 الاستخبارات والمعلومات</div>
-                <p>تطوير شبكات استخباراتية متقدمة لرصد أنشطة الكيانات الإرهابية ومنع عملياتها قبل تنفيذها. يشمل ذلك التعاون الدولي في تبادل المعلومات والاستخبارات.</p>
-                
-                <div class="sub-heading">⚖️ الإجراءات القانونية</div>
-                <p>سن قوانين صارمة لمكافحة الإرهاب وتجريم الأنشطة المرتبطة به، مع ضمان عدم انتهاك حقوق الإنسان والحريات المدنية الأساسية.</p>
-                
-                <div class="sub-heading">🤝 التعاون الدولي</div>
-                <p>تنسيق الجهود الدولية من خلال المنظمات الإقليمية والدولية لمكافحة الكيانات الإرهابية العابرة للحدود ومنع انتشارها.</p>
+            <div class="side-heading">التكتيكات والأساليب العملياتية</div>
+            
+            <div class="sub-heading">أساليب التخفي والسرية</div>
+            <p>يعتمد الكيان الإرهابي على التخفي والعمل في الظل، ويستخدم أساليب متطورة للتواصل المشفر وإخفاء الهويات الحقيقية للأعضاء. كما يلجأ إلى استخدام أسماء مستعارة وجوازات سفر مزورة ووثائق هوية مختلقة.</p>
+            
+            <div class="sub-heading">استراتيجيات الدعاية والتجنيد</div>
+            <p>يستغل وسائل الإعلام الحديثة ومنصات التواصل الاجتماعي لنشر دعايته وتجنيد أعضاء جدد. يركز بشكل خاص على استهداف الشباب المحبط والمهمش اجتماعياً أو اقتصادياً، ويستخدم خطاباً عاطفياً يستغل المظالم الحقيقية أو المتصورة.</p>
 
-                <div class="solution-box">
-                    <strong>🎯 الاستراتيجية الشاملة للمواجهة:</strong>
-                    <ul style="margin-right: 20px; margin-top: 10px;">
-                        <li><strong>الوقاية:</strong> معالجة الأسباب الجذرية للتطرف والإرهاب</li>
-                        <li><strong>الحماية:</strong> تأمين الأهداف الحيوية والحساسة</li>
-                        <li><strong>المتابعة:</strong> رصد الأنشطة المشبوهة وجمع المعلومات</li>
-                        <li><strong>الاستجابة:</strong> التعامل السريع مع التهديدات والحوادث</li>
-                        <li><strong>التعافي:</strong> إعادة البناء وعلاج آثار الإرهاب</li>
-                        <li><strong>التقييم:</strong> مراجعة وتطوير الاستراتيجيات المستمر</li>
-                    </ul>
-                </div>
-
-                <div class="side-heading">🔬 مكافحة التجنيد والدعاية</div>
-                
-                <div class="sub-heading">📚 الحرب الفكرية</div>
-                <p>تطوير خطاب مضاد يفند الأيديولوجية المتطرفة ويقدم بديلاً فكرياً معتدلاً. يشمل ذلك إشراك العلماء والمفكرين في مواجهة الفكر المتطرف بالحجة والدليل.</p>
-                
-                <div class="sub-heading">🌐 مكافحة الدعاية الرقمية</div>
-                <p>مراقبة وإزالة المحتوى الإرهابي من منصات التواصل الاجتماعي، وتطوير تقنيات متقدمة لكشف ومنع انتشار الدعاية الإرهابية عبر الإنترنت.</p>
-
-                <div class="analysis-box">
-                    <strong>📊 مقارنة بين أساليب المواجهة:</strong>
-                    <table class="gradient-table" border="0" cellpadding="10" cellspacing="0" width="100%" style="margin: 10px 0; font-size: 10pt;">
-                        <thead>
-                            <tr>
-                                <th width="25%">النوع</th>
-                                <th width="35%">الأساليب</th>
-                                <th width="40%">التقييم</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>أمنية</strong></td>
-                                <td>عمليات عسكرية، اعتقالات</td>
-                                <td>فعالة قصيرة المدى، قد تخلق ردود فعل</td>
-                            </tr>
-                            <tr style="background: #f9fafb;">
-                                <td><strong>اقتصادية</strong></td>
-                                <td>تجميد الأصول، منع التمويل</td>
-                                <td>مؤثرة على المدى المتوسط</td>
-                            </tr>
-                            <tr>
-                                <td><strong>فكرية</strong></td>
-                                <td>مناقشة الأفكار، إعادة التأهيل</td>
-                                <td>حل جذري طويل المدى</td>
-                            </tr>
-                            <tr style="background: #f9fafb;">
-                                <td><strong>اجتماعية</strong></td>
-                                <td>برامج الإدماج، التنمية</td>
-                                <td>وقائية وعلاجية شاملة</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="side-heading">🌟 الرؤية المستقبلية</div>
-                
-                <div class="sub-heading">🔮 التحديات المستقبلية</div>
-                <p>مع تطور التكنولوجيا، تواجه جهود مكافحة الكيانات الإرهابية تحديات جديدة مثل الذكاء الاصطناعي، العملات المشفرة، والهجمات الإلكترونية المتطورة. هذا يتطلب تطوير استراتيجيات مبتكرة للمواجهة.</p>
-                
-                <div class="sub-heading">🤖 الحلول التقنية</div>
-                <p>استخدام الذكاء الاصطناعي وتحليل البيانات الضخمة لتحسين قدرات الكشف المبكر والتنبؤ بالتهديدات. كما يمكن استخدام التكنولوجيا لتطوير أساليب جديدة لمكافحة الدعاية الإرهابية.</p>
-
-                <div class="info-box">
-                    <strong>🚀 الاتجاهات المستقبلية في مكافحة الكيانات الإرهابية:</strong>
-                    <ul style="margin-right: 20px; margin-top: 10px;">
-                        <li><strong>الذكاء الاصطناعي:</strong> لتحليل الأنماط والتنبؤ بالتهديدات</li>
-                        <li><strong>تحليل البيانات الضخمة:</strong> لفهم شبكات التمويل والتجنيد</li>
-                        <li><strong>التعاون الرقمي:</strong> منصات دولية لتبادل المعلومات</li>
-                        <li><strong>التأهيل النفسي:</strong> برامج متطورة لإعادة دمج المتطرفين</li>
-                        <li><strong>الوقاية المجتمعية:</strong> إشراك أوسع للمجتمع المدني</li>
-                        <li><strong>التقنيات الحيوية:</strong> للكشف عن الهويات المزيفة</li>
-                    </ul>
-                </div>
-
-                <div class="solution-box">
-                    <strong>📋 خلاصة وتوصيات:</strong>
-                    <p>مكافحة الكيان الإرهابي تتطلب نهجاً شاملاً ومتكاملاً يجمع بين الحلول الأمنية والسياسية والاقتصادية والاجتماعية. لا يمكن القضاء على هذا التهديد بالقوة العسكرية وحدها، بل يجب معالجة الأسباب الجذرية ومكافحة الفكر المتطرف بالتعليم والحوار والتنمية المستدامة.</p>
-                    <br>
-                    <p><strong>الهدف النهائي:</strong> بناء مجتمعات قادرة على مقاومة التطرف والإرهاب من خلال تعزيز قيم التسامح والعدالة والتنمية الشاملة، مع الحفاظ على الحريات والحقوق الأساسية للإنسان.</p>
-                </div>
+            <div class="analysis-box">
+                <strong>التكتيكات الرئيسية المستخدمة:</strong>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>العمليات الانتحارية: لتحقيق أقصى تأثير نفسي ومادي بأقل التكاليف</li>
+                    <li>عمليات الخطف والاحتجاز: للحصول على فدية أو تحقيق مطالب سياسية</li>
+                    <li>التفجيرات العشوائية: لإثارة الذعر والخوف في أوساط المجتمع المدني</li>
+                    <li>الهجمات الإلكترونية: لتعطيل البنية التحتية الرقمية والحكومية</li>
+                    <li>حرب الشوارع والعصابات: في المناطق التي يسيطر عليها التنظيم</li>
+                    <li>الاغتيالات المستهدفة: لإضعاف خصومه وترهيب المعارضين</li>
+                </ul>
             </div>
-
         </div>
+
+        <!-- الصفحة الثانية -->
+        <div class="page-break">
+            <div class="side-heading">التهديدات والتأثيرات على المجتمع</div>
+            
+            <div class="sub-heading">التهديد الأمني المباشر</div>
+            <p>يشكل الكيان الإرهابي تهديداً مباشراً ومستمراً للأمن القومي والإقليمي والدولي. قدرته على تنفيذ عمليات إرهابية منسقة ومعقدة تجعله خطراً دائماً على استقرار المجتمعات والدول، خاصة مع تطور أساليبه وتقنياته.</p>
+            
+            <div class="sub-heading">التأثيرات الاقتصادية</div>
+            <p>تكلف مكافحة الكيانات الإرهابية الحكومات مليارات الدولارات سنوياً في مجالات الأمن والاستخبارات والعمليات العسكرية. كما تؤثر أنشطتها سلبياً على الاستثمار الأجنبي والسياحة والتجارة الدولية، بالإضافة إلى التكاليف الباهظة لإعادة الإعمار في المناطق المتضررة.</p>
+            
+            <div class="sub-heading">التداعيات الاجتماعية والنفسية</div>
+            <p>يؤدي وجود الكيانات الإرهابية إلى تفكك النسيج الاجتماعي، وزيادة التوتر الطائفي والعرقي، وتراجع الثقة في المؤسسات الحكومية والأمنية. كما يترك آثاراً نفسية عميقة على ضحاياه والمجتمع ككل، تشمل اضطرابات ما بعد الصدمة والقلق المزمن.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">نوع التأثير</th>
+                        <th style="width: 40%;">الوصف</th>
+                        <th style="width: 30%;">العواقب طويلة المدى</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>أمني</td>
+                        <td>تهديد مباشر للأمن والاستقرار</td>
+                        <td>تآكل الثقة في الأجهزة الأمنية</td>
+                    </tr>
+                    <tr>
+                        <td>اقتصادي</td>
+                        <td>خسائر مالية ضخمة وتراجع الاستثمار</td>
+                        <td>تباطؤ النمو الاقتصادي</td>
+                    </tr>
+                    <tr>
+                        <td>اجتماعي</td>
+                        <td>تفكك النسيج الاجتماعي وزيادة التوترات</td>
+                        <td>انقسامات مجتمعية عميقة</td>
+                    </tr>
+                    <tr>
+                        <td>نفسي</td>
+                        <td>خلق مناخ من الخوف والقلق المستمر</td>
+                        <td>اضطرابات نفسية جماعية</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="side-heading">استراتيجيات المواجهة والمكافحة</div>
+            
+            <div class="sub-heading">النهج الأمني والاستخباراتي</div>
+            <p>يتضمن تطوير قدرات الاستخبارات والمراقبة لرصد أنشطة الكيانات الإرهابية ومنع عملياتها قبل تنفيذها. هذا يشمل التعاون الدولي في تبادل المعلومات الاستخباراتية، وتطوير تقنيات المراقبة الإلكترونية، وتعزيز الحدود والمنافذ.</p>
+            
+            <div class="sub-heading">الإطار القانوني والتشريعي</div>
+            <p>سن قوانين صارمة ومتخصصة لمكافحة الإرهاب وتجريم جميع الأنشطة المرتبطة به، مع ضمان عدم انتهاك حقوق الإنسان والحريات المدنية الأساسية. هذا يتطلب توازناً دقيقاً بين متطلبات الأمن واحترام سيادة القانون.</p>
+            
+            <div class="sub-heading">التعاون الدولي والإقليمي</div>
+            <p>تنسيق الجهود على المستوى الدولي والإقليمي من خلال المنظمات المتخصصة لمكافحة الكيانات الإرهابية العابرة للحدود ومنع انتشارها. هذا يشمل تبادل المعلومات، والعمليات المشتركة، وتجميد الأصول المالية.</p>
+
+            <div class="solution-box">
+                <strong>عناصر الاستراتيجية الشاملة للمواجهة:</strong>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>الوقاية: معالجة الأسباب الجذرية للتطرف والإرهاب في المجتمع</li>
+                    <li>الحماية: تأمين الأهداف الحيوية والحساسة في الدولة</li>
+                    <li>المتابعة والرصد: جمع المعلومات ورصد الأنشطة المشبوهة</li>
+                    <li>الاستجابة السريعة: التعامل الفوري والفعال مع التهديدات والحوادث</li>
+                    <li>التعافي وإعادة البناء: علاج آثار الإرهاب وإعادة تأهيل المتضررين</li>
+                    <li>التقييم المستمر: مراجعة وتطوير الاستراتيجيات بشكل دوري</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">مكافحة التطرف والدعاية</div>
+            
+            <div class="sub-heading">الحرب الفكرية والثقافية</div>
+            <p>تطوير خطاب مضاد يفند الأيديولوجية المتطرفة ويقدم بديلاً فكرياً معتدلاً ومتوازناً. يشمل ذلك إشراك العلماء والمفكرين والمثقفين في مواجهة الفكر المتطرف بالحجة والدليل، وتعزيز قيم التسامح والوسطية.</p>
+            
+            <div class="sub-heading">مكافحة الدعاية الرقمية</div>
+            <p>مراقبة وإزالة المحتوى الإرهابي من منصات التواصل الاجتماعي والمواقع الإلكترونية، وتطوير تقنيات متقدمة لكشف ومنع انتشار الدعاية الإرهابية عبر الإنترنت، مع احترام حرية التعبير والخصوصية.</p>
+
+            <div class="info-box">
+                <strong>برامج إعادة التأهيل والإدماج:</strong>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>برامج نفسية لعلاج آثار التطرف والعنف</li>
+                    <li>برامج تعليمية لتصحيح المفاهيم الخاطئة</li>
+                    <li>برامج مهنية لإعادة دمج المتطرفين في سوق العمل</li>
+                    <li>برامج اجتماعية لإعادة ربطهم بالمجتمع</li>
+                    <li>متابعة طويلة المدى لضمان عدم العودة للتطرف</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">التحديات المستقبلية والحلول</div>
+            
+            <div class="sub-heading">التحديات التقنية الناشئة</div>
+            <p>مع تطور التكنولوجيا، تواجه جهود مكافحة الكيانات الإرهابية تحديات جديدة مثل استخدام الذكاء الاصطناعي، والعملات المشفرة، والهجمات الإلكترونية المتطورة. هذا يتطلب تطوير استراتيجيات مبتكرة ومتقدمة للمواجهة.</p>
+            
+            <div class="sub-heading">الحلول التقنية المتقدمة</div>
+            <p>استخدام تقنيات الذكاء الاصطناعي وتحليل البيانات الضخمة لتحسين قدرات الكشف المبكر والتنبؤ بالتهديدات. كما يمكن استخدام التكنولوجيا المتقدمة لتطوير أساليب جديدة وفعالة لمكافحة الدعاية الإرهابية.</p>
+
+            <div class="danger-box">
+                <strong>خلاصة وتوصيات استراتيجية:</strong>
+                <p>مكافحة الكيان الإرهابي تتطلب نهجاً شاملاً ومتكاملاً يجمع بين الحلول الأمنية والسياسية والاقتصادية والاجتماعية والثقافية. لا يمكن القضاء على هذا التهديد الخطير بالقوة العسكرية والأمنية وحدها، بل يجب معالجة الأسباب الجذرية للتطرف ومكافحة الفكر المتطرف بالتعليم والحوار والتنمية المستدامة والعدالة الاجتماعية.</p>
+                <p><strong>الهدف الاستراتيجي:</strong> بناء مجتمعات قادرة على مقاومة التطرف والإرهاب من خلال تعزيز قيم التسامح والعدالة والحوار والتنمية الشاملة، مع الحفاظ على الحريات الأساسية وحقوق الإنسان وسيادة القانون.</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // تحسين الطباعة
         window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '11pt';
+            document.body.style.fontSize = '12pt';
             document.body.style.background = 'white';
-            document.querySelectorAll('.main-container').forEach(el => {
-                el.style.background = 'white';
-                el.style.boxShadow = 'none';
-            });
         });
     </script>
 </body>
