@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منهج بناء الأمة في سورة البقرة</title>
+    <title>الكتب السبعة للحديث النبوي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -143,236 +144,190 @@
             border-right: 3px solid #F59E0B;
             border-radius: 8px 0 0 8px;
         }
+        
+        .book-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-right: 4px solid #059669;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #059669;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: -37px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #059669;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px #059669;
+        }
     </style>
 </head>
-<body class="bg-white text-black" dir="rtl">
+<body class="bg-gray-50 text-gray-800" dir="rtl">
 
     <!-- زر الطباعة -->
-    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-            🖨️ طباعة المشروع
+    <div class="no-print fixed top-4 left-4 z-50">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white py-3 px-5 rounded-lg font-bold shadow-lg transition duration-300 flex items-center">
+            <i class="fas fa-print ml-2"></i>
+            طباعة المشروع
         </button>
     </div>
 
-    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg my-8 rounded-lg">
 
         <!-- الصفحة الأولى -->
         <div>
-            <h1 class="main-title" style="font-size: 28px;">
-                منهج بناء الأمة في سورة البقرة
+            <h1 class="main-title text-3xl">
+                الكتب السبعة للحديث النبوي
                 <br>
-                <span style="font-size: 20px; color: #6B7280;">دراسة تحليلية لأساسيات بناء المجتمع المسلم</span>
+                <span class="text-xl text-gray-600">ومؤلفوها</span>
             </h1>
 
-            <div class="side-heading">مقدمة: سورة البقرة وأهميتها</div>
+            <div class="side-heading text-xl">مقدمة</div>
             
-            <p>تعد سورة البقرة أطول سور القرآن الكريم، وهي السورة الثانية في ترتيب المصحف بعد سورة الفاتحة. وتتميز هذه السورة بأنها تضمنت منهجاً متكاملاً لبناء الأمة المسلمة من جميع النواحي: العقائدية، والتشريعية، والاجتماعية، والأخلاقية.</p>
-            
-            <p>سورة البقرة هي أول سورة نزلت بالمدينة بعد الهجرة، مما يجعلها ذات طابع تشريعي وتنظيمي للمجتمع المسلم الناشئ. وقد اشتملت على تشريعات متعددة تنظم حياة الفرد والمجتمع، وتضع الأسس المتينة لبناء أمة قوية متماسكة.</p>
+            <p class="text-lg leading-8">الكتب السبعة هي مجموعة من أهم كتب الحديث النبوي التي جمعها علماء الحديث، وتعتبر مصادر أساسية للسنة النبوية. هذه الكتب حظيت باهتمام العلماء، وكتبت حولها العديد من الشروح والمختصرات، مما ساهم في حفظ السنة النبوية ونقلها عبر الأجيال.</p>
 
-            <div class="side-heading">أسس بناء الأمة في سورة البقرة</div>
+            <div class="side-heading text-xl mt-8">الكتب السبعة ومؤلفوها</div>
             
-            <div class="sub-heading">التأسيس العقدي: الإيمان بالغيب</div>
-            <p>تبدأ السورة بتأسيس المنهج العقدي للأمة من خلال الحديث عن صفات المتقين الذين يؤمنون بالغيب، ويقيمون الصلاة، وينفقون مما رزقهم الله.</p>
-            
-            <div class="verse">
-                "الم ۝ ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ ۝ الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ"
+            <!-- صحيح البخاري -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-green-100 text-green-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-book text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-green-700">1. صحيح البخاري</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو عبد الله محمد بن إسماعيل البخاري (194 هـ - 256 هـ)</p>
+                        <p class="text-lg"><strong>عدد الأحاديث:</strong> 2602 حديثاً (بدون المكرر)</p>
+                        <p class="text-lg mt-2">يُعتبر أصح كتب الحديث، وقد بلغ عدد أحاديثه دون المكرر 2602 حديثاً.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="sub-heading">الأمة الوسط: منهج الاعتدال</div>
-            <p>تؤسس السورة لمفهوم الأمة الوسط، التي تجمع بين الثبات على المبادئ والمرونة في التعامل مع المستجدات، وتكون شاهدة على الأمم الأخرى بالقسط.</p>
-            
-            <div class="verse">
-                "وَكَذَٰلِكَ جَعَلْنَاكُمْ أُمَّةً وَسَطًا لِّتَكُونُوا شُهَدَاءَ عَلَى النَّاسِ وَيَكُونَ الرَّسُولُ عَلَيْكُمْ شَهِيدًا"
+            <!-- صحيح مسلم -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 text-blue-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-book-open text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-blue-700">2. صحيح مسلم</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو الحسين مسلم بن الحجاج القشيري (206 هـ - 261 هـ)</p>
+                        <p class="text-lg"><strong>عدد الأحاديث:</strong> 3033 حديثاً (بدون المكرر)</p>
+                        <p class="text-lg mt-2">يأتي في المرتبة الثانية بعد صحيح البخاري من حيث الصحة، وبلغ عدد أحاديثه دون المكرر 3033 حديثاً.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="sub-heading">التكليف بحسب الاستطاعة</div>
-            <p>من أهم أسس بناء الأمة في السورة مراعاة طاقة الإنسان وقدرته، وعدم تكليفه بما لا يطيق، مما يجعل التشريعات واقعية وقابلة للتطبيق.</p>
-            
-            <div class="verse">
-                "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ"
-            </div>
-
-            <div class="side-heading">نماذج بناء الأمة في السورة</div>
-            
-            <p>تقدم سورة البقرة نماذج عملية لبناء الأمة من خلال قصص الأنبياء والأمم السابقة، لتكون عبرة وهدى للمسلمين في بناء مجتمعهم.</p>
-            
-            <div class="highlight-box">
-                <strong>نماذج البناء في سورة البقرة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>نموذج آدم:</strong> المسؤولية والاستخلاف في الأرض</li>
-                    <li><strong>نموذج إبراهيم:</strong> التجديد العقدي وبناء الكعبة</li>
-                    <li><strong>نموذج موسى:</strong> التحرر من الطغيان وبناء الدولة</li>
-                    <li><strong>نموذج طالوت:</strong> القيادة والامتحان والطاعة</li>
-                </ul>
-            </div>
-
-            <div class="sub-heading">نموذج إبراهيم: التجديد والبناء</div>
-            <p>يقدم قصة إبراهيم عليه السلام نموذجاً للتجديد العقدي وبناء الأمة على التوحيد الخالص، حيث حطم الأصنام وبنى الكعبة مع ابنه إسماعيل.</p>
-            
-            <div class="verse">
-                "وَإِذْ يَرْفَعُ إِبْرَاهِيمُ الْقَوَاعِدَ مِنَ الْبَيْتِ وَإِسْمَاعِيلُ رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ"
+            <!-- سنن أبي داود -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-purple-100 text-purple-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-scroll text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-purple-700">3. سنن أبي داود</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو داود سليمان بن الأشعث السجستاني (202 هـ - 275 هـ)</p>
+                        <p class="text-lg mt-2">انتقى أحاديثه من بين 500,000 حديثاً.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- الصفحة الثانية -->
-        <div class="page-break">
-            <div class="side-heading">التشريعات المنظمة للمجتمع</div>
+        <div class="page-break mt-12">
+            <!-- سنن الترمذي -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-yellow-100 text-yellow-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-pen-fancy text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-yellow-700">4. سنن الترمذي</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو عيسى محمد بن عيسى الترمذي (209 هـ - 279 هـ)</p>
+                        <p class="text-lg mt-2">امتاز بذكره للأحاديث مع بيان درجاتها، وذكر أقوال العلماء في المسائل الفقهية المتعلقة بها.</p>
+                    </div>
+                </div>
+            </div>
             
-            <p>تضمنت سورة البقرة تشريعات متعددة تنظم حياة المجتمع المسلم في مختلف المجالات، مما يجعلها دستوراً شاملاً للأمة.</p>
+            <!-- سنن النسائي -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-red-100 text-red-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-star text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-red-700">5. سنن النسائي</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو عبد الرحمن أحمد بن شعيب النسائي (215 هـ - 303 هـ)</p>
+                        <p class="text-lg mt-2">امتاز بشدة تحريه في الرجال، وغالب أحاديثه صحيحة.</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="sub-heading">التشريعات المالية والاقتصادية</div>
+            <!-- سنن ابن ماجه -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-indigo-100 text-indigo-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-feather text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-indigo-700">6. سنن ابن ماجه</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام أبو عبد الله محمد بن يزيد بن ماجه القزويني (209 هـ - 273 هـ)</p>
+                        <p class="text-lg"><strong>عدد الأحاديث:</strong> 4341 حديثاً</p>
+                        <p class="text-lg mt-2">يحتوي على 4341 حديثاً، ويفرد عن بقية الكتب ببعض الأحاديث التي لم تذكر فيها.</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="info-box">
-                <strong>أهم التشريعات المالية في السورة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>تحريم الربا:</strong> "يَمْحَقُ اللَّهُ الرِّبَا وَيُرْبِي الصَّدَقَاتِ"</li>
-                    <li><strong>تشريع البيع:</strong> "وَأَحَلَّ اللَّهُ الْبَيْعَ وَحَرَّمَ الرِّبَا"</li>
-                    <li><strong>الوصية والديون:</strong> تنظيم المعاملات المالية بعد الوفاة</li>
-                    <li><strong>الإنفاق في سبيل الله:</strong> تشجيع الصدقة والإنفاق</li>
-                </ul>
+            <!-- موطأ مالك -->
+            <div class="book-card bg-white p-6 rounded-lg shadow-md my-6">
+                <div class="flex items-start">
+                    <div class="bg-teal-100 text-teal-800 p-3 rounded-full mr-4">
+                        <i class="fas fa-monument text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="sub-heading text-xl text-teal-700">7. موطأ مالك</h3>
+                        <p class="text-lg"><strong>المؤلف:</strong> الإمام مالك بن أنس (93 هـ - 179 هـ)</p>
+                        <p class="text-lg mt-2">يُعتبر من أوائل كتب الحديث والفقه، واحتوى على أحاديث مرفوعة وموقوفة ومقطوعة.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="sub-heading">التشريعات الاجتماعية والأسرية</div>
-            <p>نظمت السورة العلاقات الأسرية والاجتماعية من خلال أحكام الزواج والطلاق والعدة والرضاع، مما يحفظ كيان الأسرة كخلية أساسية في بناء الأمة.</p>
+            <div class="side-heading text-xl mt-8">الخاتمة</div>
             
-            <div class="verse">
-                "وَالْوَالِدَاتُ يُرْضِعْنَ أَوْلَادَهُنَّ حَوْلَيْنِ كَامِلَيْنِ ۖ لِمَنْ أَرَادَ أَن يُتِمَّ الرَّضَاعَةَ ۚ وَعَلَى الْمَوْلُودِ لَهُ رِزْقُهُنَّ وَكِسْوَتُهُنَّ بِالْمَعْرُوفِ"
+            <div class="bg-green-50 p-6 rounded-lg border-r-4 border-green-500 mt-4">
+                <p class="text-lg leading-8">هذه الكتب حظيت باهتمام العلماء، وكتبت حولها العديد من الشروح والمختصرات، مما ساهم في حفظ السنة النبوية ونقلها عبر الأجيال.</p>
             </div>
             
-            <div class="sub-heading">تشريعات الجهاد والدفاع</div>
-            <p>شرعت السورة الجهاد للدفاع عن الأمة وحماية وجودها، مع وضع ضوابط أخلاقية صارمة له.</p>
-            
-            <div class="verse">
-                "وَقَاتِلُوا فِي سَبِيلِ اللَّهِ الَّذِينَ يُقَاتِلُونَكُمْ وَلَا تَعْتَدُوا ۚ إِنَّ اللَّهُ لَا يُحِبُّ الْمُعْتَدِينَ"
-            </div>
-
-            <div class="side-heading">الأخلاق والقيم في بناء الأمة</div>
-            
-            <div class="sub-heading">الصبر والاستعانة بالصلاة</div>
-            <p>تؤكد السورة على أهمية الصبر والاستعانة بالصلاة في مواجهة التحديات والصعوبات التي تواجه الأمة في طريق بنائها.</p>
-            
-            <div class="verse">
-                "يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ"
-            </div>
-            
-            <div class="sub-heading">التعاون على البر والتقوى</div>
-            <p>تحث السورة على التعاون بين أفراد الأمة في فعل الخيرات وترك المنكرات، مما يقوي أواصر المجتمع.</p>
-            
-            <div class="verse">
-                "وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ ۖ وَلَا تَعَاوَنُوا عَلَى الْإِثْمِ وَالْعُدْوَانِ"
-            </div>
-
-            <div class="comparison-box">
-                <strong>مقارنة بين منهج بناء الأمة في السورة والواقع المعاصر:</strong>
-                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
-                    <thead>
-                        <tr style="background: #FEF3C7;">
-                            <th width="33%">المجال</th>
-                            <th width="33%">منهج سورة البقرة</th>
-                            <th width="34%">التطبيق المعاصر</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>الأسس العقدية</td>
-                            <td>الإيمان بالغيب والتوحيد الخالص</td>
-                            <td>الحاجة لتجديد الخطاب الديني</td>
-                        </tr>
-                        <tr style="background: #FFFBEB;">
-                            <td>النظام الاقتصادي</td>
-                            <td>تحريم الربا وإحلال البيع</td>
-                            <td>الصيرفة الإسلامية والاقتصاد الأخلاقي</td>
-                        </tr>
-                        <tr>
-                            <td>النسيج الاجتماعي</td>
-                            <td>الأسرة أساس المجتمع</td>
-                            <td>حماية كيان الأسرة من التحديات</td>
-                        </tr>
-                        <tr style="background: #FFFBEB;">
-                            <td>القيم الأخلاقية</td>
-                            <td>الصبر والتعاون والوسطية</td>
-                            <td>مواجهة تحديات العولمة والقيم</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="side-heading">آيات البناء والعمران في السورة</div>
-            
-            <div class="sub-heading">استخلاف الإنسان في الأرض</div>
-            <p>تؤكد السورة على مفهوم الاستخلاف، حيث جعل الله الإنسان خليفة في الأرض ليعمرها ويبنيها وفق منهجه.</p>
-            
-            <div class="verse">
-                "وَإِذْ قَالَ رَبُّكَ لِلْمَلَائِكَةِ إِنِّي جَاعِلٌ فِي الْأَرْضِ خَلِيفَةً"
-            </div>
-            
-            <div class="sub-heading">بناء المساجد وعمارتها</div>
-            <p>تحث السورة على بناء المساجد وعمارتها، باعتبارها مراكز إشعاع روحي واجتماعي في الأمة.</p>
-            
-            <div class="verse">
-                "إِنَّمَا يَعْمُرُ مَسَاجِدَ اللَّهِ مَنْ آمَنَ بِاللَّهِ وَالْيَوْمِ الْآخِرِ وَأَقَامَ الصَّلَاةَ وَآتَى الزَّكَاةَ وَلَمْ يَخْشَ إِلَّا اللَّهَ"
-            </div>
-        </div>
-
-        <!-- الصفحة الثالثة -->
-        <div class="page-break">
-            <div class="side-heading">خاتمة: دروس وعبر لبناء الأمة المعاصرة</div>
-            
-            <p>تقدم سورة البقرة منهجاً متكاملاً لبناء الأمة المسلمة يمكن الاستفادة منه في عصرنا الحاضر لمواجهة التحديات المعاصرة.</p>
-            
-            <div class="sub-heading">الدروس المستفادة</div>
-            
-            <div class="highlight-box">
-                <strong>الدروس الرئيسية لبناء الأمة المعاصرة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>البدء بالتأسيس العقدي السليم</li>
-                    <li>الاعتدال والوسطية في المنهج</li>
-                    <li>التكامل بين التشريعات المختلفة</li>
-                    <li>الربط بين العبادة والعمران</li>
-                    <li>الاستفادة من تجارب الأمم السابقة</li>
-                    <li>مراعاة طاقة الإنسان وقدرته</li>
-                </ul>
-            </div>
-
-            <div class="sub-heading">التحديات المعاصرة ومواجهتها</div>
-            <p>يمكن للأمة الإسلامية المعاصرة أن تواجه تحدياتها من خلال العودة إلى منهج سورة البقرة في البناء، مع مراعاة متطلبات العصر ومستجداته.</p>
-            
-            <div class="info-box">
-                <strong>تحديات البناء المعاصرة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>التحدي الفكري والعقدي</li>
-                    <li>التحدي الاقتصادي والمالي</li>
-                    <li>التحدي الاجتماعي والأسري</li>
-                    <li>التحدي الحضاري والثقافي</li>
-                </ul>
-            </div>
-
-            <div class="side-heading">توصيات عملية</div>
-            
-            <p>بناءً على دراسة منهج سورة البقرة في بناء الأمة، يمكن تقديم التوصيات التالية:</p>
-            
-            <div class="comparison-box">
-                <strong>التوصيات العملية لبناء الأمة المعاصرة:</strong>
-                <ol style="margin-right: 20px; margin-top: 8px;">
-                    <li>العناية بتربية النشء على المنهج القرآني المتكامل</li>
-                    <li>إحياء مفهوم الأمة الوسط والشهادة على الأمم</li>
-                    <li>تطوير أنظمة اقتصادية بديلة عن النظام الربوي</li>
-                    <li>الحفاظ على كيان الأسرة وتقويتها</li>
-                    <li>تعزيز قيم التعاون والتضامن الاجتماعي</li>
-                    <li>الاهتمام بالعلم والبحث العلمي كوسيلة للعمران</li>
-                </ol>
-            </div>
-
-            <div class="side-heading">خاتمة نهائية</div>
-            
-            <p>تمثل سورة البقرة منهجاً متكاملاً لبناء الأمة المسلمة، يجمع بين الثبات على المبادئ والمرونة في الوسائل، وبين العبادة والعمران، وبين الفردية والجماعية.</p>
-            
-            <p>إن استلهام هذا المنهج في عصرنا الحاضر يمكن أن يسهم في نهضة الأمة الإسلامية وبناء مجتمعها على أسس متينة، تجمع بين الأصالة والمعاصرة، وبين الروحانية والمادية، وبين الفردية والجماعية.</p>
-            
-            <div class="info-box">
-                <strong>رسالة الختام:</strong>
-                <p>إن سورة البقرة تقدم للأمة الإسلامية منهجاً شاملاً لبناء حضارتها، يجمع بين متطلبات الروح والجسد، والفرد والمجتمع، والدين والدولة. والاستفادة من هذا المنهج في عصرنا الحاضر هو الطريق الأمثل لنهضة الأمة واستعادة دورها الحضاري.</p>
+            <div class="text-center mt-8 pt-6 border-t border-gray-200">
+                <p class="text-lg font-semibold">إعداد: دنيا حسن محابلي</p>
+                <p class="text-gray-600">الصف الأول الثانوي</p>
             </div>
         </div>
 
