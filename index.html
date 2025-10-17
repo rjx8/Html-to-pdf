@@ -1,333 +1,101 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تنوع الفطريات وبيئاتها</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        @media print {
-            @page {
-                size: A4;
-                margin: 1.2cm;
-            }
-            
-            body {
-                font-size: 11pt;
-                line-height: 1.4;
-                font-family: 'Amiri', serif;
-            }
-            
-            .page-break {
-                page-break-before: always;
-                padding-top: 0.5cm;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            h1 {
-                font-size: 20pt;
-                margin-bottom: 0.8cm;
-                text-align: center;
-            }
-            
-            .side-heading {
-                font-size: 14pt;
-                margin: 0.4cm 0 0.3cm 0;
-                border-right: 4px solid #059669;
-                padding-right: 0.4cm;
-                font-weight: bold;
-                color: #047857;
-            }
-            
-            .sub-heading {
-                font-size: 12pt;
-                margin: 0.3cm 0 0.2cm 0;
-                font-weight: 600;
-                color: #374151;
-            }
-            
-            p {
-                margin-bottom: 0.3cm;
-                text-align: justify;
-            }
-            
-            .verse {
-                font-size: 11pt;
-                margin: 0.3cm 0;
-                padding: 0.3cm;
-                background: #F0FDF4;
-                border-right: 3px solid #059669;
-                font-style: italic;
-            }
-            
-            .info-box {
-                margin: 0.2cm 0;
-                padding: 0.4cm;
-                page-break-inside: avoid;
-            }
-            
-            ul, ol {
-                margin: 0.15cm 0;
-            }
-            
-            li {
-                margin-bottom: 0.1cm;
-            }
-        }
-        
-        body {
-            font-family: 'Amiri', 'Noto Sans Arabic', serif;
-            line-height: 1.6;
-        }
-        
-        .main-title {
-            text-align: center;
-            color: #047857;
-            font-weight: 700;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #059669;
-            padding-bottom: 15px;
-            display: inline-block;
-            width: 100%;
-        }
-        
-        .side-heading {
-            border-right: 4px solid #059669;
-            padding-right: 15px;
-            margin: 20px 0 10px 0;
-            font-weight: 600;
-            color: #047857;
-            font-size: 18px;
-        }
-        
-        .sub-heading {
-            font-weight: 600;
-            color: #374151;
-            margin: 15px 0 8px 0;
-        }
-        
-        .verse {
-            background: #F0FDF4;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #059669;
-            border-radius: 8px 0 0 8px;
-            font-style: italic;
-            font-size: 16px;
-        }
-        
-        .info-box {
-            background: #FEF7FF;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #8B5CF6;
-            border-radius: 8px 0 0 8px;
-        }
-        
-        .highlight-box {
-            background: #F0F9FF;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #3B82F6;
-            border-radius: 8px 0 0 8px;
-        }
-        
-        .comparison-box {
-            background: #FFFBEB;
-            padding: 15px;
-            margin: 12px 0;
-            border-right: 3px solid #F59E0B;
-            border-radius: 8px 0 0 8px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الفضاء</title>
+<style>
+  html, body {
+    margin:0; padding:0; width:100vw; height:100vh; overflow:hidden;
+    font-family: 'Tajawal', sans-serif; background:#000; color:#fff;
+  }
+  .slides {
+    display:flex;
+    width:700%;
+    height:100%;
+    transition: transform 0.6s ease;
+  }
+  .slide {
+    width:100vw;
+    height:100vh;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:50px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+  h1,h2,p { margin:10px; }
+  button {
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:2em; background:none; border:none; color:#fff; cursor:pointer;
+    user-select:none;
+  }
+  #prev { left:10px; } #next { right:10px; }
+</style>
 </head>
-<body class="bg-white text-black" dir="rtl">
+<body>
 
-    <!-- زر الطباعة -->
-    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-            🖨️ طباعة المشروع
-        </button>
-    </div>
+<div class="slides" id="slides">
+  <div class="slide" style="background:#0b0c28;">
+    <h1>رحلة إلى الفضاء</h1>
+    <p>اكتشف أسرار الكون والنجوم والكواكب</p>
+  </div>
+  <div class="slide" style="background:#1a1a40;">
+    <h2>ما هو الفضاء؟</h2>
+    <p>الفضاء هو المنطقة الواسعة خارج الغلاف الجوي للأرض ويحتوي على كواكب، نجوم، أقمار، ومجرات.</p>
+  </div>
+  <div class="slide" style="background:#2b2b60;">
+    <h2>الكواكب في المجموعة الشمسية</h2>
+    <p>عطارد، الزهرة، الأرض، المريخ، المشتري، زحل، أورانوس، نبتون</p>
+  </div>
+  <div class="slide" style="background:#3c3c80;">
+    <h2>النجوم والمجرات</h2>
+    <p>الشمس هي أقرب نجم لنا. مجرتنا هي درب التبانة، تحتوي على مليارات النجوم.</p>
+  </div>
+  <div class="slide" style="background:#4d4da0;">
+    <h2>رحلات الفضاء والتكنولوجيا</h2>
+    <p>أول إنسان في الفضاء: يوري غاغارين. هبوط الإنسان على القمر: نيل آرمسترونج 1969.</p>
+  </div>
+  <div class="slide" style="background:#5e5ebf;">
+    <h2>أهمية دراسة الفضاء</h2>
+    <p>لفهم الكون، تطوير التكنولوجيا، والتنبؤ بالكوارث الطبيعية.</p>
+  </div>
+  <div class="slide" style="background:#6f6fdf;">
+    <h2>الخاتمة</h2>
+    <p>إلى النجوم نرتقي 🌟</p>
+  </div>
+</div>
 
-    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
+<button id="prev">◀</button>
+<button id="next">▶</button>
 
-        <!-- الصفحة الأولى -->
-        <div>
-            <h1 class="main-title" style="font-size: 28px;">
-                تنوع الفطريات وبيئاتها
-                <br>
-                <span style="font-size: 20px; color: #6B7280;">دراسة في عالم الكائنات الحية الدقيقة</span>
-            </h1>
+<script>
+  const slides = document.getElementById('slides');
+  let current = 0;
+  const total = slides.children.length;
 
-            <div class="side-heading">مقدمة: عالم الفطريات المذهل</div>
-            
-            <p>تشكل الفطريات مملكة بيولوجية مستقلة تضم أكثر من 144,000 نوع معروف، وتقدر الدراسات الحديثة أن العدد الفعلي قد يصل إلى 3.8 مليون نوع. تعيش الفطريات في جميع البيئات تقريباً، من القطب الشمالي إلى الصحاري الحارة، ومن قمم الجبال إلى أعماق المحيطات.</p>
-            
-            <p>تلعب الفطريات أدواراً حيوية في النظم البيئية، فهي المسؤولة عن تحليل المواد العضوية وإعادة تدوير المغذيات إلى التربة، كما تشكل علاقات تكافلية مع النباتات تساعدها على امتصاص الماء والمعادن.</p>
+  document.getElementById('next').onclick = () => {
+    current = (current+1)%total;
+    slides.style.transform = `translateX(-${current*100}vw)`;
+  }
+  document.getElementById('prev').onclick = () => {
+    current = (current-1+total)%total;
+    slides.style.transform = `translateX(-${current*100}vw)`;
+  }
 
-            <div class="side-heading">التصنيف العلمي للفطريات</div>
-            
-            <div class="sub-heading">مملكة مستقلة</div>
-            <p>كانت الفطريات تُصنف سابقاً ضمن المملكة النباتية، لكن الدراسات الحديثة أثبتت أنها تشكل مملكة مستقلة تماماً. تتميز الفطريات بجدران خلوية تحتوي على الكيتين، وتفتقر إلى البلاستيدات الخضراء، مما يجعلها غير قادرة على القيام بعملية البناء الضوئي.</p>
-            
-            <div class="info-box">
-                <strong>خصائص الفطريات العامة:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>كائنات حقيقية النواة</li>
-                    <li>تتكاثر بالأبواغ</li>
-                    <li>غير ذاتية التغذية (هتروتروفية)</li>
-                    <li>جدرانها الخلوية تحتوي على الكيتين</li>
-                    <li>تخزن الطاقة على شكل جليكوجين</li>
-                </ul>
-            </div>
-            
-            <div class="sub-heading">الشعب الرئيسية للفطريات</div>
-            <p>تنقسم مملكة الفطريات إلى عدة شعب رئيسية، لكل منها خصائصها المميزة وبيئاتها الخاصة:</p>
-            
-            <div class="highlight-box">
-                <strong>الشعب الرئيسية للفطريات:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>الفطريات الزقية (Ascomycota):</strong> أكبر شعب الفطريات، تضم حوالي 64,000 نوع</li>
-                    <li><strong>الفطريات الدعامية (Basidiomycota):</strong> تضم الفطريات المشروم والصدأ</li>
-                    <li><strong>الفطريات الكيسية (Zygomycota):</strong> تضم فطريات العفن الأسود</li>
-                    <li><strong>الفطريات اللزجة المختلطة (Myxomycota):</strong> تجمع بين خصائص الفطريات والطلائعيات</li>
-                    <li><strong>الفطريات المختزلة (Chytridiomycota):</strong> تعيش غالباً في البيئات المائية</li>
-                </ul>
-            </div>
+  // للسحب على الجوال (Swipe)
+  let startX = 0;
+  slides.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  slides.addEventListener('touchend', e => {
+    let endX = e.changedTouches[0].clientX;
+    if(endX < startX - 50) { current = (current+1)%total; }
+    if(endX > startX + 50) { current = (current-1+total)%total; }
+    slides.style.transform = `translateX(-${current*100}vw)`;
+  });
+</script>
 
-            <div class="side-heading">تنوع الفطريات من حيث الشكل والتركيب</div>
-            
-            <div class="sub-heading">الفطريات الخيطية (الرشيقة)</div>
-            <p>معظم الفطريات تتكون من خيوط دقيقة تسمى الهيفات، والتي تتشابك معاً لتشكل الغزل الفطري. هذا التركيب يزيد من مساحة السطح المعرض للبيئة المحيطة، مما يسهل امتصاص المواد الغذائية.</p>
-            
-            <div class="sub-heading">الفطريات وحيدة الخلية</div>
-            <p>بعض الفطريات مثل الخمائر هي كائنات وحيدة الخلية، تتكاثر بالتبرعم. هذه الفطريات تلعب أدواراً مهمة في الصناعات الغذائية مثل صناعة الخبز والمشروبات الكحولية.</p>
-            
-            <div class="sub-heading">الفطريات الكبيرة</div>
-            <p>تضم مملكة الفطريات بعضاً من أكبر الكائنات الحية على الأرض. في ولاية أوريغون الأمريكية، تم اكتشاف فطر عسلي يغطي مساحة 8.9 كيلومتر مربع، ويقدر عمره بـ 2,400 عام.</p>
-        </div>
-
-        <!-- الصفحة الثانية -->
-        <div class="page-break">
-            <div class="side-heading">بيئات الفطريات المختلفة</div>
-            
-            <p>تتميز الفطريات بقدرة مذهلة على التكيف مع مختلف البيئات، مما يمكنها من العيش في ظروف قاسية لا تستطيع معظم الكائنات الحية تحملها.</p>
-            
-            <div class="sub-heading">الفطريات الأرضية</div>
-            
-            <div class="info-box">
-                <strong>أنواع الفطريات الأرضية:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li><strong>الفطريات المتكافلة:</strong> تعيش مع جذور النباتات في علاقة تبادل منفعة</li>
-                    <li><strong>الفطريات الرمية:</strong> تحلل المواد العضوية الميتة</li>
-                    <li><strong>الفطريات المتطفلة:</strong> تعيش على كائنات حية أخرى وتسبب لها الأمراض</li>
-                </ul>
-            </div>
-
-            <div class="sub-heading">الفطريات المائية</div>
-            <p>تعيش بعض الفطريات في البيئات المائية، سواء في المياه العذبة أو المالحة. تلعب هذه الفطريات دوراً مهماً في تحليل المواد العضوية في النظم البيئية المائية.</p>
-            
-            <div class="sub-heading">الفطريات في البيئات القاسية</div>
-            <p>تستطيع بعض الفطريات العيش في بيئات قاسية مثل الصحاري الحارة والمناطق القطبية الباردة. بعض الفطريات تطور آليات خاصة للبقاء في هذه الظروف، مثل إنتاج أصباغ واقية من الأشعة فوق البنفسجية.</p>
-
-            <div class="comparison-box">
-                <strong>مقارنة بين بيئات الفطريات المختلفة:</strong>
-                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
-                    <thead>
-                        <tr style="background: #FEF3C7;">
-                            <th width="25%">البيئة</th>
-                            <th width="25%">أمثلة على الفطريات</th>
-                            <th width="25%">التكيفات الخاصة</th>
-                            <th width="25%">الدور البيئي</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>التربة</td>
-                            <td>فطر البنسيليوم، فطر الأسبرجلس</td>
-                            <td>إنتاج إنزيمات محللة</td>
-                            <td>تحليل المواد العضوية</td>
-                        </tr>
-                        <tr style="background: #FFFBEB;">
-                            <td>المياه العذبة</td>
-                            <td>الفطريات الكيتريدية</td>
-                            <td>أبواغ سوطية للحركة</td>
-                            <td>تحليل الأوراق الميتة</td>
-                        </tr>
-                        <tr>
-                            <td>المحيطات</td>
-                            <td>فطريات الخمائر البحرية</td>
-                            <td>تحمل الملوحة العالية</td>
-                            <td>تحليل الكائنات البحرية</td>
-                        </tr>
-                        <tr style="background: #FFFBEB;">
-                            <td>المناطق القطبية</td>
-                            <td>الفطريات النفسية</td>
-                            <td>نشاط إنزيمي في درجات حرارة منخفضة</td>
-                            <td>تحلل المواد في التربة المتجمدة</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="side-heading">الأهمية البيئية والاقتصادية للفطريات</div>
-            
-            <div class="sub-heading">دور الفطريات في النظم البيئية</div>
-            <p>تلعب الفطريات أدواراً حيوية في النظم البيئية، أهمها تحليل المواد العضوية وإعادة تدوير العناصر الغذائية إلى التربة. بدون الفطريات، ستتراكم المواد العضوية الميتة ولن تتوفر المغذيات اللازمة لنمو النباتات.</p>
-            
-            <div class="sub-heading">الفطريات والعلاقات التكافلية</div>
-            <p>تشكل العديد من الفطريات علاقات تكافلية مع النباتات، حيث تساعدها على امتصاص الماء والمعادن من التربة. هذه العلاقة تسمى "الميكوريزا"، وتوجد في حوالي 90% من النباتات البرية.</p>
-            
-            <div class="sub-heading">الاستخدامات الاقتصادية للفطريات</div>
-            <p>تستخدم الفطريات في العديد من الصناعات، مثل صناعة الأدوية (البنسلين)، والصناعات الغذائية (الخبز، الجبن، المشروبات الكحولية)، وإنتاج الإنزيمات والأحماض العضوية.</p>
-
-            <div class="highlight-box">
-                <strong>الاستخدامات الصناعية للفطريات:</strong>
-                <ul style="margin-right: 20px; margin-top: 8px;">
-                    <li>إنتاج المضادات الحيوية مثل البنسلين</li>
-                    <li>صناعة الخبز والمشروبات الكحولية باستخدام الخميرة</li>
-                    <li>إنتاج إنزيمات تستخدم في الصناعات الغذائية والمنظفات</li>
-                    <li>إنتاج الأحماض العضوية مثل حامض الستريك</li>
-                    <li>المكافحة البيولوجية للآفات الزراعية</li>
-                    <li>معالجة النفايات العضوية</li>
-                </ul>
-            </div>
-
-            <div class="side-heading">الفطريات الممرضة والمفيدة</div>
-            
-            <div class="sub-heading">الفطريات الممرضة</div>
-            <p>بعض الفطريات تسبب أمراضاً خطيرة للإنسان والحيوان والنبات. تشمل الأمراض الفطرية البشرية القوباء الحلقية ومرض القدم الرياضي والعدوى الجهازية الخطيرة للأشخاص ذوي المناعة الضعيفة.</p>
-            
-            <div class="sub-heading">الفطريات المفيدة</div>
-            <p>إلى جانب الاستخدامات الصناعية، تقدم الفطريات فوائد عديدة للبيئة وللإنسان. بعض الفطريات تستخدم في المعالجة الحيوية لتنظيف التربة والمياه الملوثة بالمواد السامة.</p>
-            
-            <div class="sub-heading">الفطريات الصالحة للأكل</div>
-            <p>يستهلك البشر العديد من أنواع الفطريات الصالحة للأكل، مثل عيش الغراب والكمأة. هذه الفطريات غنية بالبروتينات والفيتامينات والمعادن، وتستخدم في العديد من المطابخ حول العالم.</p>
-
-            <div class="side-heading">خاتمة: مستقبل دراسة الفطريات</div>
-            
-            <p>على الرغم من التقدم الكبير في دراسة الفطريات، لا يزال هناك الكثير لنتعلمه عن هذا العالم المدهش. تشير التقديرات إلى أننا لم نكتشف سوى 5% من أنواع الفطريات الموجودة على الأرض.</p>
-            
-            <p>مع تطور التقنيات الجزيئية وأدوات التسلسل الجيني، أصبح من الممكن دراسة التنوع الفطري بشكل أعمق، واكتشاف أنواع جديدة وفهم العلاقات التطورية بينها بشكل أفضل.</p>
-            
-            <div class="info-box">
-                <strong>اتجاهات البحث المستقبلية:</strong>
-                <p>يركز البحث العلمي حالياً على استكشاف التنوع الفطري في البيئات القاسية، وفهم الآليات الجزيئية لتكيف الفطريات مع مختلف الظروف، واستغلال الفطريات في التطبيقات البيوتكنولوجية الجديدة مثل إنتاج الوقود الحيوي والمواد البلاستيكية القابلة للتحلل.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        // تحسين الطباعة
-        window.addEventListener('beforeprint', function() {
-            document.body.style.fontSize = '11pt';
-        });
-    </script>
 </body>
 </html>
