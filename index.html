@@ -3,151 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تنوع الفطريات وبيئتها</title>
+<title>تنوع الفطريات وبيئتها - قالب A4</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-/* عام */
-body {
-    font-family: 'Amiri', 'Noto Sans Arabic', serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-/* طباعة */
+body { font-family: 'Amiri','Noto Sans Arabic', serif; margin:0; padding:0; line-height:1.6; background:#f4f4f4; }
+.container { max-width: 21cm; margin: 20px auto; padding: 1cm; background:white; box-shadow:0 0 8px rgba(0,0,0,0.1);}
+.section { border:1px dashed #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff; position:relative; }
+.section .drag-handle { cursor: move; position:absolute; top:5px; left:5px; color:#999; font-size:12px; }
+h1 { text-align:center; color:#047857; font-weight:700; margin-bottom:15px; border-bottom:3px solid #059669; padding-bottom:10px; }
+.side-heading { font-size:18px; font-weight:600; color:#047857; border-right:4px solid #059669; padding-right:10px; margin:10px 0; }
+.sub-heading { font-weight:600; color:#374151; margin:8px 0; }
+p { margin-bottom:5px; text-align:justify; }
+.info-box { background:#FEF7FF; padding:10px; margin:8px 0; border-right:3px solid #8B5CF6; border-radius:5px; page-break-inside:avoid; }
+.highlight-box { background:#F0F9FF; padding:10px; margin:8px 0; border-right:3px solid #3B82F6; border-radius:5px; page-break-inside:avoid; }
+.comparison-box { background:#FFFBEB; padding:10px; margin:8px 0; border-right:3px solid #F59E0B; border-radius:5px; page-break-inside:avoid; }
+table { width:100%; border-collapse:collapse; page-break-inside:avoid; }
+th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
 @media print {
-    @page { size: A4; margin: 1.2cm; }
-
-    body { font-size: 11pt; line-height: 1.4; }
-    .no-print { display: none !important; }
-
-    h1 { font-size: 20pt; text-align: center; margin-bottom: 0.8cm; page-break-after: avoid; }
-    .side-heading { font-size: 14pt; border-right: 4px solid #059669; padding-right: 0.4cm; font-weight: bold; color: #047857; margin: 0.4cm 0 0.3cm 0; page-break-after: avoid; }
-    .sub-heading { font-size: 12pt; font-weight: 600; color: #374151; margin: 0.3cm 0 0.2cm 0; page-break-after: avoid; }
-    p { margin-bottom: 0.2cm; text-align: justify; }
-    ul, ol { margin: 0.15cm 0; padding-right: 0; }
-    li { margin-bottom: 0.1cm; }
-    
-    .page-break { page-break-before: always; padding-top: 0.5cm; }
-
-    .info-box, .highlight-box, .comparison-box, table {
-        page-break-inside: avoid;
-    }
-    
-    table { width: 100%; border-collapse: collapse; }
-    thead { display: table-header-group; }
-    tbody { display: table-row-group; }
+    body { background:white; font-size:11pt; line-height:1.4; }
+    .container { box-shadow:none; margin:0; padding:1.2cm; }
+    .section { border:none; }
 }
-
-/* صفحة */
-.main-title {
-    text-align: center;
-    color: #047857;
-    font-weight: 700;
-    margin-bottom: 30px;
-    border-bottom: 3px solid #059669;
-    padding-bottom: 15px;
-    display: inline-block;
-    width: 100%;
-}
-.side-heading { border-right: 4px solid #059669; padding-right: 15px; margin: 20px 0 10px 0; font-weight: 600; color: #047857; font-size: 18px; }
-.sub-heading { font-weight: 600; color: #374151; margin: 15px 0 8px 0; }
-.info-box { background: #FEF7FF; padding: 15px; margin: 12px 0; border-right: 3px solid #8B5CF6; border-radius: 8px 0 0 8px; }
-.highlight-box { background: #F0F9FF; padding: 15px; margin: 12px 0; border-right: 3px solid #3B82F6; border-radius: 8px 0 0 8px; }
-.comparison-box { background: #FFFBEB; padding: 15px; margin: 12px 0; border-right: 3px solid #F59E0B; border-radius: 8px 0 0 8px; }
 </style>
 </head>
-<body class="bg-white text-black" dir="rtl">
+<body>
 
-<!-- زر الطباعة -->
-<div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-    <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-        🖨️ طباعة المشروع
-    </button>
-</div>
+<div class="container">
 
-<div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
-
-<!-- الصفحة الأولى -->
-<div>
-    <h1 class="main-title">تنوع الفطريات وبيئتها</h1>
-
-    <div class="side-heading">مقدمة عن الفطريات</div>
-    <p>الفطريات هي مملكة مستقلة من الكائنات الحية، تتميز بقدرتها على التحلل وامتصاص المواد العضوية من البيئة المحيطة. تلعب دوراً أساسياً في التوازن البيئي وإعادة تدوير العناصر الغذائية.</p>
-    
-    <div class="side-heading">تنوع الفطريات</div>
-
-    <div class="sub-heading">الفطريات الميكروسكوبية</div>
-    <p>تشمل الخمائر والفطريات الغروية، وهي غير مرئية بالعين المجردة. تستخدم هذه الفطريات في الصناعات الغذائية مثل إنتاج الخبز والمشروبات الكحولية.</p>
-
-    <div class="sub-heading">الفطريات الكبيرة</div>
-    <p>مثل الفطر الأبيض والفطر البري، ويمكن رؤيتها بسهولة. تلعب هذه الفطريات دوراً مهماً في النظام البيئي كمحللات للنفايات النباتية.</p>
-
-    <div class="highlight-box">
-        <strong>أمثلة شائعة:</strong>
-        <ul style="margin-right: 20px; margin-top: 8px;">
-            <li>الخميرة (Saccharomyces cerevisiae)</li>
-            <li>فطر عيش الغراب (Agaricus bisporus)</li>
-            <li>الفطر الأسود (Aspergillus niger)</li>
-        </ul>
-    </div>
-</div>
-
-<!-- الصفحة الثانية -->
-<div class="page-break">
-    <div class="side-heading">بيئة الفطريات</div>
-
-    <div class="sub-heading">الرطوبة والتربة</div>
-    <p>الفطريات تحتاج إلى بيئات رطبة وغنية بالمواد العضوية لتزدهر. التربة الغنية بالمواد المتحللة هي المكان الأمثل لنموها.</p>
-
-    <div class="sub-heading">درجة الحرارة</div>
-    <p>تنمو معظم الفطريات في درجات حرارة معتدلة، بينما توجد أنواع تتحمل درجات حرارة منخفضة أو مرتفعة حسب طبيعة بيئتها.</p>
-
-    <div class="sub-heading">العلاقة مع الكائنات الأخرى</div>
-    <p>بعض الفطريات تعيش بشكل تكافلي مع النباتات، مثل الفطريات الجذرية، بينما يمكن أن تكون بعض الأنواع ممرضة للنباتات والحيوانات.</p>
-
-    <div class="comparison-box">
-        <strong>مقارنة بين أنواع الفطريات وبيئاتها:</strong>
-        <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; font-size: 10pt;">
-            <thead>
-                <tr style="background: #FEF3C7;">
-                    <th width="30%">النوع</th>
-                    <th width="35%">البيئة</th>
-                    <th width="35%">الاستخدام أو الدور البيئي</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>الخميرة</td>
-                    <td>رطوبة عالية، مواد سكرية</td>
-                    <td>صناعة الخبز والمشروبات الكحولية</td>
-                </tr>
-                <tr style="background: #FFFBEB;">
-                    <td>الفطر الأبيض</td>
-                    <td>تربة غنية بالرطوبة</td>
-                    <td>مصدر غذائي وتحلل المواد النباتية</td>
-                </tr>
-                <tr>
-                    <td>الفطر الأسود</td>
-                    <td>مواد عضوية متحللة، رطوبة معتدلة</td>
-                    <td>إنتاج أحماض عضوية، بعضه ممرض</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="section" id="title">
+        <div class="drag-handle">⇅</div>
+        <h1>تنوع الفطريات وبيئتها</h1>
     </div>
 
-    <div class="side-heading">خاتمة</div>
-    <p>تنوع الفطريات وبيئتها يعكس أهمية هذه المملكة في دعم الحياة على الأرض، سواء من خلال إعادة تدوير العناصر الغذائية، دعم النباتات، أو الفوائد الاقتصادية والصناعية للبشر. دراسة الفطريات تساعدنا على فهم البيئة بشكل أفضل واستثمار مواردها بشكل مستدام.</p>
-</div>
+    <div class="section" id="introduction">
+        <div class="drag-handle">⇅</div>
+        <div class="side-heading">مقدمة عن الفطريات</div>
+        <p>الفطريات هي مملكة مستقلة من الكائنات الحية، تتميز بقدرتها على التحلل وامتصاص المواد العضوية من البيئة المحيطة. تلعب دوراً أساسياً في التوازن البيئي وإعادة تدوير العناصر الغذائية.</p>
+    </div>
+
+    <div class="section" id="diversity">
+        <div class="drag-handle">⇅</div>
+        <div class="side-heading">تنوع الفطريات</div>
+        <div class="sub-heading">الفطريات الميكروسكوبية</div>
+        <p>تشمل الخمائر والفطريات الغروية، وهي غير مرئية بالعين المجردة. تستخدم هذه الفطريات في الصناعات الغذائية مثل إنتاج الخبز والمشروبات الكحولية.</p>
+
+        <div class="sub-heading">الفطريات الكبيرة</div>
+        <p>مثل الفطر الأبيض والفطر البري، ويمكن رؤيتها بسهولة. تلعب هذه الفطريات دوراً مهماً في النظام البيئي كمحللات للنفايات النباتية.</p>
+
+        <div class="highlight-box">
+            <strong>أمثلة شائعة:</strong>
+            <ul style="margin-right:20px; margin-top:5px;">
+                <li>الخميرة (Saccharomyces cerevisiae)</li>
+                <li>فطر عيش الغراب (Agaricus bisporus)</li>
+                <li>الفطر الأسود (Aspergillus niger)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section" id="environment">
+        <div class="drag-handle">⇅</div>
+        <div class="side-heading">بيئة الفطريات</div>
+
+        <div class="sub-heading">الرطوبة والتربة</div>
+        <p>الفطريات تحتاج إلى بيئات رطبة وغنية بالمواد العضوية لتزدهر. التربة الغنية بالمواد المتحللة هي المكان الأمثل لنموها.</p>
+
+        <div class="sub-heading">درجة الحرارة</div>
+        <p>تنمو معظم الفطريات في درجات حرارة معتدلة، بينما توجد أنواع تتحمل درجات حرارة منخفضة أو مرتفعة حسب طبيعة بيئتها.</p>
+
+        <div class="sub-heading">العلاقة مع الكائنات الأخرى</div>
+        <p>بعض الفطريات تعيش بشكل تكافلي مع النباتات، مثل الفطريات الجذرية، بينما يمكن أن تكون بعض الأنواع ممرضة للنباتات والحيوانات.</p>
+
+        <div class="comparison-box">
+            <strong>مقارنة بين أنواع الفطريات وبيئاتها:</strong>
+            <table>
+                <thead>
+                    <tr style="background:#FEF3C7;">
+                        <th>النوع</th>
+                        <th>البيئة</th>
+                        <th>الاستخدام أو الدور البيئي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>الخميرة</td>
+                        <td>رطوبة عالية، مواد سكرية</td>
+                        <td>صناعة الخبز والمشروبات الكحولية</td>
+                    </tr>
+                    <tr style="background:#FFFBEB;">
+                        <td>الفطر الأبيض</td>
+                        <td>تربة غنية بالرطوبة</td>
+                        <td>مصدر غذائي وتحلل المواد النباتية</td>
+                    </tr>
+                    <tr>
+                        <td>الفطر الأسود</td>
+                        <td>مواد عضوية متحللة، رطوبة معتدلة</td>
+                        <td>إنتاج أحماض عضوية، بعضه ممرض</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="conclusion">
+        <div class="drag-handle">⇅</div>
+        <div class="side-heading">خاتمة</div>
+        <p>تنوع الفطريات وبيئتها يعكس أهمية هذه المملكة في دعم الحياة على الأرض، سواء من خلال إعادة تدوير العناصر الغذائية، دعم النباتات، أو الفوائد الاقتصادية والصناعية للبشر. دراسة الفطريات تساعدنا على فهم البيئة بشكل أفضل واستثمار مواردها بشكل مستدام.</p>
+    </div>
 
 </div>
 
-<script>
-window.addEventListener('beforeprint', function() {
-    document.body.style.fontSize = '11pt';
-});
-</script>
+<div class="no-print" style="position:fixed; bottom:20px; right:20px;">
+    <button onclick="window.print()" style="background:#059669; color:white; padding:10px 20px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ طباعة المشروع</button>
+</div>
 
 </body>
 </html>
