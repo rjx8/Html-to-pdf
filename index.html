@@ -3,377 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة تقسيم ملفات PDF</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <title>الكيان الإرهابي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
-        
         * {
-            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .drag-over {
-            border-color: #5D5CDE !important;
-            background-color: rgba(93, 92, 222, 0.1) !important;
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* تصميم الهيدر */
+        .page-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* تصميم المحتوى */
+        .page-content {
+            padding: 50px 40px;
+            background: #f8fafc;
+        }
+        
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            border-right: 6px solid #dc2626;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-left: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .section-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #475569;
+        }
+        
+        /* تصميم البطاقات */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #dc2626;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-left: 10px;
+            color: #dc2626;
+        }
+        
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #64748b;
+        }
+        
+        /* تصميم الفوتر */
+        .page-footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        /* زر الطباعة */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(220, 38, 38, 0.5);
+        }
+        
+        .print-btn i {
+            margin-right: 8px;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-content {
+                padding: 30px 20px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+        }
+        
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .page-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .info-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#5D5CDE'
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-white dark:bg-gray-900 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-                أداة تقسيم ملفات PDF
-            </h1>
-            <p class="text-gray-600 dark:text-gray-300">
-                قم بتقسيم ملفات PDF حسب نطاقات الصفحات أو إلى ملفات متساوية
-            </p>
+<body>
+    <div class="page-container">
+        <!-- الهيدر -->
+        <div class="page-header">
+            <h1 class="page-title">الكيان الإرهابي</h1>
+            <p class="page-subtitle">دراسة تحليلية للظاهرة الإرهابية وأبعادها</p>
         </div>
-
-        <!-- Upload Area -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 mb-6">
-            <div id="dropZone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer transition-colors">
-                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    اسحب ملف PDF هنا أو انقر للاختيار
+        
+        <!-- المحتوى الرئيسي -->
+        <div class="page-content">
+            <!-- القسم الأول -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-bomb"></i>
+                    مفهوم الكيان الإرهابي
+                </h2>
+                <p class="section-content">
+                    الكيان الإرهابي هو تنظيم أو جماعة تمارس العنف المنظم بهدف إثارة الرعب وتحقيق أهداف سياسية أو أيديولوجية. يتميز هذا الكيان باستخدامه لأساليب غير مشروعة تستهدف المدنيين الأبرياء وتخلق حالة من عدم الاستقرار في المجتمعات.
                 </p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                    يدعم ملفات PDF فقط
-                </p>
-                <input type="file" id="pdfFile" accept=".pdf" class="hidden">
             </div>
-        </div>
-
-        <!-- PDF Info -->
-        <div id="pdfInfo" class="hidden bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
-            <div class="flex items-center">
-                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 ml-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                </svg>
-                <div>
-                    <p class="text-blue-800 dark:text-blue-300 font-medium">تم تحميل الملف بنجاح</p>
-                    <p class="text-blue-600 dark:text-blue-400 text-sm" id="pdfDetails"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Split Options -->
-        <div id="splitOptions" class="hidden space-y-6">
-            <!-- Split Method Selection -->
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">اختر طريقة التقسيم</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center">
-                        <input type="radio" name="splitMethod" value="equal" class="ml-3 text-primary focus:ring-primary">
-                        <span class="text-gray-700 dark:text-gray-300">تقسيم متساو إلى 5 ملفات</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="splitMethod" value="custom" class="ml-3 text-primary focus:ring-primary" checked>
-                        <span class="text-gray-700 dark:text-gray-300">تقسيم مخصص حسب نطاقات الصفحات</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Custom Ranges -->
-            <div id="customRanges" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">نطاقات الصفحات</h3>
-                <div id="rangeInputs" class="space-y-3">
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <input type="number" placeholder="من صفحة" min="1" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-primary focus:border-primary">
-                        <span class="text-gray-500 dark:text-gray-400">إلى</span>
-                        <input type="number" placeholder="إلى صفحة" min="1" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-primary focus:border-primary">
-                        <button type="button" class="remove-range px-3 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
+            
+            <!-- القسم الثاني -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    خصائص الكيانات الإرهابية
+                </h2>
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-users"></i>
+                            التنظيم الهرمي
+                        </h3>
+                        <p class="card-content">
+                            تمتلك هيكلاً تنظيمياً محكماً يتضمن قيادة مركزية وخلايا متفرعة تعمل بتنسيق كامل لتنفيذ العمليات الإرهابية.
+                        </p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-brainwashing"></i>
+                            التلاعب الفكري
+                        </h3>
+                        <p class="card-content">
+                            تستخدم أساليب متطورة لغسل الأدمغة وتجنيد الأفراد عبر استغلال الظروف الاجتماعية والاقتصادية والدينية.
+                        </p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-globe"></i>
+                            العابرة للحدود
+                        </h3>
+                        <p class="card-content">
+                            تعمل عبر حدود دولية متعددة مستفيدة من التكنولوجيا الحديثة في التخطيط والتمويل والتواصل.
+                        </p>
                     </div>
                 </div>
-                <button id="addRange" class="mt-3 px-4 py-2 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition-colors">
-                    + إضافة نطاق جديد
-                </button>
             </div>
-
-            <!-- Split Button -->
-            <div class="text-center">
-                <button id="splitButton" class="px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                    تقسيم الملف
-                </button>
+            
+            <!-- القسم الثالث -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-fighter-jet"></i>
+                    أساليب عمل الكيانات الإرهابية
+                </h2>
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-bullseye"></i>
+                            استهداف المدنيين
+                        </h3>
+                        <p class="card-content">
+                            التركيز على الأماكن العامة والمكتظة بالسكان لتحقيق أقصى قدر من الدعاية والإرهاب النفسي.
+                        </p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-network-wired"></i>
+                            التمويل الخفي
+                        </h3>
+                        <p class="card-content">
+                            الاعتماد على مصادر تمويل متعددة تشمل الابتزاز والتهريب والتبرعات المشبوهة والغسيل.
+                        </p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-radiation"></i>
+                            الحرب النفسية
+                        </h3>
+                        <p class="card-content">
+                            استخدام التهديد والإرهاب النفسي كأداة رئيسية لفرض السيطرة وإضعاف الروح المعنوية للمجتمعات.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Progress -->
-        <div id="progressContainer" class="hidden mb-6">
-            <div class="bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
-            <p id="progressText" class="text-center text-gray-600 dark:text-gray-400 mt-2"></p>
-        </div>
-
-        <!-- Results -->
-        <div id="results" class="hidden">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">الملفات المقسمة</h3>
-            <div id="downloadLinks" class="space-y-2"></div>
+        
+        <!-- الفوتر -->
+        <div class="page-footer">
+            <p class="footer-text">مكافحة الإرهاب مسؤولية جماعية</p>
         </div>
     </div>
+    
+    <!-- زر الطباعة -->
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-print"></i> طباعة الصفحة
+    </button>
 
     <script>
-        // Dark mode detection
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-
-        let currentPdf = null;
-        let totalPages = 0;
-
-        // DOM elements
-        const dropZone = document.getElementById('dropZone');
-        const pdfFileInput = document.getElementById('pdfFile');
-        const pdfInfo = document.getElementById('pdfInfo');
-        const pdfDetails = document.getElementById('pdfDetails');
-        const splitOptions = document.getElementById('splitOptions');
-        const customRanges = document.getElementById('customRanges');
-        const rangeInputs = document.getElementById('rangeInputs');
-        const addRangeBtn = document.getElementById('addRange');
-        const splitButton = document.getElementById('splitButton');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const results = document.getElementById('results');
-        const downloadLinks = document.getElementById('downloadLinks');
-
-        // File handling
-        dropZone.addEventListener('click', () => pdfFileInput.click());
-        dropZone.addEventListener('dragover', handleDragOver);
-        dropZone.addEventListener('drop', handleDrop);
-        pdfFileInput.addEventListener('change', handleFileSelect);
-
-        // Split method change
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'splitMethod') {
-                customRanges.style.display = e.target.value === 'custom' ? 'block' : 'none';
-            }
-        });
-
-        // Add range functionality
-        addRangeBtn.addEventListener('click', addRange);
-
-        // Split button
-        splitButton.addEventListener('click', splitPDF);
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        }
-
-        function handleFileSelect(e) {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
-        }
-
-        async function handleFile(file) {
-            if (file.type !== 'application/pdf') {
-                showAlert('يرجى اختيار ملف PDF صحيح');
-                return;
-            }
-
-            try {
-                const arrayBuffer = await file.arrayBuffer();
-                currentPdf = await PDFLib.PDFDocument.load(arrayBuffer);
-                totalPages = currentPdf.getPageCount();
-
-                pdfDetails.textContent = `اسم الملف: ${file.name} | عدد الصفحات: ${totalPages}`;
-                pdfInfo.classList.remove('hidden');
-                splitOptions.classList.remove('hidden');
-
-                // Update max values for inputs
-                updateRangeInputs();
-            } catch (error) {
-                console.error('Error loading PDF:', error);
-                showAlert('حدث خطأ في تحميل الملف. يرجى التأكد من أن الملف صحيح.');
-            }
-        }
-
-        function updateRangeInputs() {
-            const inputs = rangeInputs.querySelectorAll('input[type="number"]');
-            inputs.forEach(input => {
-                input.max = totalPages;
-            });
-        }
-
-        function addRange() {
-            const rangeDiv = document.createElement('div');
-            rangeDiv.className = 'flex items-center space-x-2 space-x-reverse';
-            rangeDiv.innerHTML = `
-                <input type="number" placeholder="من صفحة" min="1" max="${totalPages}" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-primary focus:border-primary">
-                <span class="text-gray-500 dark:text-gray-400">إلى</span>
-                <input type="number" placeholder="إلى صفحة" min="1" max="${totalPages}" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-primary focus:border-primary">
-                <button type="button" class="remove-range px-3 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            `;
-
-            rangeDiv.querySelector('.remove-range').addEventListener('click', () => {
-                if (rangeInputs.children.length > 1) {
-                    rangeDiv.remove();
-                }
-            });
-
-            rangeInputs.appendChild(rangeDiv);
-        }
-
-        async function splitPDF() {
-            if (!currentPdf) {
-                showAlert('يرجى تحميل ملف PDF أولاً');
-                return;
-            }
-
-            const splitMethod = document.querySelector('input[name="splitMethod"]:checked').value;
-            let ranges = [];
-
-            if (splitMethod === 'equal') {
-                // Split into 5 equal parts
-                const pagesPerFile = Math.ceil(totalPages / 5);
-                for (let i = 0; i < 5; i++) {
-                    const start = i * pagesPerFile + 1;
-                    const end = Math.min((i + 1) * pagesPerFile, totalPages);
-                    if (start <= totalPages) {
-                        ranges.push({ start, end });
-                    }
-                }
-            } else {
-                // Custom ranges
-                const rangeElements = rangeInputs.querySelectorAll('div');
-                for (const rangeElement of rangeElements) {
-                    const inputs = rangeElement.querySelectorAll('input[type="number"]');
-                    const start = parseInt(inputs[0].value);
-                    const end = parseInt(inputs[1].value);
-
-                    if (start && end && start <= end && start <= totalPages && end <= totalPages) {
-                        ranges.push({ start, end });
-                    }
-                }
-            }
-
-            if (ranges.length === 0) {
-                showAlert('يرجى إدخال نطاقات صفحات صحيحة');
-                return;
-            }
-
-            // Show progress
-            progressContainer.classList.remove('hidden');
-            results.classList.add('hidden');
-            downloadLinks.innerHTML = '';
-
-            try {
-                for (let i = 0; i < ranges.length; i++) {
-                    const range = ranges[i];
-                    const progress = ((i + 1) / ranges.length) * 100;
-                    
-                    progressBar.style.width = `${progress}%`;
-                    progressText.textContent = `جاري تقسيم الملف ${i + 1} من ${ranges.length}...`;
-
-                    // Create new PDF document
-                    const newPdf = await PDFLib.PDFDocument.create();
-                    const pageIndices = [];
-                    
-                    for (let pageNum = range.start; pageNum <= range.end; pageNum++) {
-                        pageIndices.push(pageNum - 1); // Convert to 0-based index
-                    }
-
-                    const copiedPages = await newPdf.copyPages(currentPdf, pageIndices);
-                    copiedPages.forEach(page => newPdf.addPage(page));
-
-                    // Generate PDF bytes
-                    const pdfBytes = await newPdf.save();
-                    
-                    // Create download link
-                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                    const url = URL.createObjectURL(blob);
-                    
-                    const downloadDiv = document.createElement('div');
-                    downloadDiv.className = 'flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg p-4';
-                    downloadDiv.innerHTML = `
-                        <div>
-                            <p class="font-medium text-gray-800 dark:text-white">الجزء ${i + 1}</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">الصفحات ${range.start} - ${range.end}</p>
-                        </div>
-                        <a href="${url}" download="part-${i + 1}-pages-${range.start}-${range.end}.pdf" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
-                            تحميل
-                        </a>
-                    `;
-                    
-                    downloadLinks.appendChild(downloadDiv);
-                }
-
-                progressText.textContent = 'تم تقسيم الملف بنجاح!';
-                results.classList.remove('hidden');
-
-            } catch (error) {
-                console.error('Error splitting PDF:', error);
-                showAlert('حدث خطأ أثناء تقسيم الملف');
-            }
-        }
-
-        function showAlert(message) {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-                    <p class="text-gray-700 dark:text-gray-300 mb-4 text-center">${message}</p>
-                    <div class="text-center">
-                        <button class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90" onclick="this.closest('.fixed').remove()">حسناً</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        // Initialize with one range
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set up remove button for initial range
-            const initialRemoveBtn = rangeInputs.querySelector('.remove-range');
-            if (initialRemoveBtn) {
-                initialRemoveBtn.addEventListener('click', (e) => {
-                    if (rangeInputs.children.length > 1) {
-                        e.target.closest('div').remove();
-                    }
+        // تحسينات لمتصفح سفاري
+        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const cards = document.querySelectorAll('.info-card');
+                cards.forEach(card => {
+                    card.style.backdropFilter = 'blur(10px)';
                 });
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
