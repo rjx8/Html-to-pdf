@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تنوع الفطريات وبيئتها - مشروع أكاديمي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -20,33 +20,56 @@
         .page-container {
             background: white;
             box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
         }
 
-        .section-item {
-            transition: all 0.3s ease;
-            border-right: 4px solid transparent;
-        }
-
-        .section-item:hover {
-            border-right-color: #667eea;
-            background-color: #f9fafb;
-        }
-
-        .dragging {
-            opacity: 0.5;
-            border: 2px dashed #667eea;
+        @media screen and (max-width: 768px) {
+            .page-container {
+                width: 100%;
+                min-height: auto;
+                padding: 15mm;
+            }
         }
 
         .control-panel {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .control-btn {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            min-height: 44px;
+            font-size: 16px;
+        }
+
+        .select-control {
+            font-size: 16px;
+            min-height: 44px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 0.5rem center;
+            background-size: 1.5em 1.5em;
+            padding-left: 2.5rem;
         }
 
         /* Print Styles */
         @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
             body {
                 background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
 
             .no-print {
@@ -55,568 +78,354 @@
 
             .page-container {
                 box-shadow: none !important;
-                max-width: 100% !important;
+                width: 210mm !important;
+                min-height: 297mm !important;
+                max-height: 297mm !important;
                 margin: 0 !important;
                 padding: 20mm !important;
+                page-break-after: avoid;
+                overflow: hidden;
             }
 
-            .section-item {
-                page-break-inside: avoid;
-                border: none !important;
+            .print-content {
+                width: 100%;
+                height: 100%;
             }
 
-            .page-break {
-                page-break-before: always;
+            h1, h2, h3, p, ul, li {
+                color: black !important;
             }
 
-            h1 {
-                color: #1f2937 !important;
-            }
-
-            .cover-page {
-                page-break-after: always;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            @page {
-                margin: 20mm;
-                size: A4;
+            .decorative-line {
+                background: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
         }
 
-        /* Size classes */
-        .size-small { font-size: 0.875rem; }
-        .size-medium { font-size: 1rem; }
-        .size-large { font-size: 1.125rem; }
-        .size-xlarge { font-size: 1.25rem; }
-
-        .title-small h2 { font-size: 1.25rem; }
-        .title-medium h2 { font-size: 1.5rem; }
-        .title-large h2 { font-size: 1.875rem; }
-        .title-xlarge h2 { font-size: 2.25rem; }
-
-        /* Custom styles */
         .decorative-line {
             height: 3px;
             background: linear-gradient(90deg, #667eea, #764ba2);
             border-radius: 2px;
         }
 
-        .fungi-icon {
-            width: 80px;
-            height: 80px;
+        .header-logo {
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        .preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .preview-modal.active {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2rem;
-            margin: 0 auto;
+            padding: 20px;
         }
+
+        .preview-content {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+
+        @media screen and (max-width: 768px) {
+            .preview-content {
+                width: 100%;
+                padding: 15mm;
+            }
+        }
+
+        .close-preview {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            background: white;
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .size-small { font-size: 0.875rem; line-height: 1.5; }
+        .size-medium { font-size: 1rem; line-height: 1.6; }
+        .size-large { font-size: 1.125rem; line-height: 1.7; }
+
+        .title-small h1 { font-size: 1.5rem; }
+        .title-small h2 { font-size: 1.125rem; }
+        .title-small h3 { font-size: 1rem; }
+
+        .title-medium h1 { font-size: 1.875rem; }
+        .title-medium h2 { font-size: 1.25rem; }
+        .title-medium h3 { font-size: 1.125rem; }
+
+        .title-large h1 { font-size: 2.25rem; }
+        .title-large h2 { font-size: 1.5rem; }
+        .title-large h3 { font-size: 1.25rem; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <!-- Control Panel -->
-    <div class="no-print mb-6 control-panel p-6 max-w-7xl mx-auto">
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">🎨 لوحة التحكم في الطباعة</h3>
+    <div class="no-print mb-6 control-panel p-4 md:p-6 max-w-4xl mx-auto">
+        <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4">لوحة التحكم في الطباعة</h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">حجم النص الأساسي</label>
-                <select id="textSize" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        <div class="grid grid-cols-1 gap-3 mb-4">
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <label class="block text-base font-semibold text-gray-700 mb-2">حجم النص الأساسي</label>
+                <select id="textSize" class="select-control w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                     <option value="small">صغير</option>
                     <option value="medium" selected>متوسط</option>
                     <option value="large">كبير</option>
-                    <option value="xlarge">كبير جداً</option>
                 </select>
             </div>
 
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">حجم العناوين</label>
-                <select id="titleSize" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <label class="block text-base font-semibold text-gray-700 mb-2">حجم العناوين</label>
+                <select id="titleSize" class="select-control w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                     <option value="small">صغير</option>
-                    <option value="medium">متوسط</option>
-                    <option value="large" selected>كبير</option>
-                    <option value="xlarge">كبير جداً</option>
-                </select>
-            </div>
-
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">المسافات بين الأقسام</label>
-                <select id="spacing" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                    <option value="2">ضيقة</option>
-                    <option value="4">متوسطة</option>
-                    <option value="6" selected>واسعة</option>
-                    <option value="8">واسعة جداً</option>
+                    <option value="medium" selected>متوسط</option>
+                    <option value="large">كبير</option>
                 </select>
             </div>
         </div>
 
-        <div class="bg-blue-50 border-r-4 border-blue-500 p-4 rounded-lg mb-4">
-            <p class="text-blue-800 font-semibold">💡 نصيحة: اسحب الأقسام لإعادة ترتيبها، وانقر على "إخفاء" لإزالة أي قسم من الطباعة</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <button onclick="showPreview()" class="control-btn w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg font-bold text-base hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg">
+                معاينة الطباعة
+            </button>
+            <button onclick="printDocument()" class="control-btn w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-bold text-base hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg">
+                طباعة المشروع
+            </button>
         </div>
 
-        <button onclick="window.print()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg">
-            🖨️ طباعة المشروع
-        </button>
+        <div class="bg-blue-50 border-r-4 border-blue-500 p-3 rounded-lg mt-4">
+            <p class="text-blue-800 text-sm md:text-base">يمكنك تعديل أحجام النص والعناوين قبل الطباعة للحصول على أفضل نتيجة</p>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="preview-modal">
+        <button onclick="closePreview()" class="close-preview">×</button>
+        <div class="preview-content" id="previewContent">
+            <!-- Content will be cloned here -->
+        </div>
     </div>
 
     <!-- Main Document -->
-    <div class="page-container max-w-4xl mx-auto">
-        <!-- Cover Page -->
-        <div id="coverPage" class="cover-page p-12 text-center">
-            <div class="fungi-icon mb-8">🍄</div>
-            <h1 class="text-5xl font-bold text-gray-800 mb-4">تنوع الفطريات وبيئتها</h1>
-            <div class="decorative-line w-32 mx-auto mb-8"></div>
-            <p class="text-xl text-gray-600 mb-12">دراسة شاملة عن مملكة الفطريات وتنوعها البيولوجي والبيئي</p>
-
-            <div class="mt-20 text-gray-600">
-                <p class="mb-2 text-lg">إعداد الطالب/ة: _________________</p>
-                <p class="mb-2">الصف: _________________</p>
-                <p class="mb-2">المادة: الأحياء</p>
-                <p class="mb-8">العام الدراسي: ١٤٤٦هـ</p>
-            </div>
-        </div>
-
-        <!-- Content Sections -->
-        <div id="sectionsContainer" class="p-8 md:p-12">
-            <!-- Section 1: Introduction -->
-            <div class="section-item mb-6 p-6" draggable="true" data-section="1">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">مقدمة عن الفطريات</h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    الفطريات (Fungi) هي مملكة حيوية واسعة من الكائنات الحية حقيقية النواة، تضم أكثر من ١٤٤ ألف نوع معروف، ويقدر العلماء وجود ما يزيد عن مليون نوع لم يتم اكتشافها بعد. تتميز الفطريات بخصائص فريدة تجعلها مختلفة عن النباتات والحيوانات، فهي كائنات غير ذاتية التغذية، تعتمد على امتصاص المواد العضوية من البيئة المحيطة بها.
-                </p>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    تلعب الفطريات دوراً محورياً في النظم البيئية المختلفة، فهي المحللات الرئيسية التي تفكك المواد العضوية الميتة وتعيد العناصر الغذائية إلى التربة. كما ترتبط بعض أنواعها بعلاقات تكافلية مع النباتات والأشجار، مما يساعد في نمو الغابات وازدهارها.
-                </p>
-                <div class="bg-purple-50 p-4 rounded-lg border-r-4 border-purple-400">
-                    <p class="text-gray-700 font-semibold">🔬 حقيقة علمية:</p>
-                    <p class="text-gray-600">تمتلك الفطريات جدار خلوي يتكون من مادة الكيتين (Chitin)، نفس المادة الموجودة في الهيكل الخارجي للحشرات، وهذا يميزها عن النباتات التي تحتوي على السليلوز.</p>
-                </div>
+    <div class="page-container" id="mainContent">
+        <div class="print-content">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="header-logo mx-auto mb-4"></div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-3">تنوع الفطريات وبيئتها</h1>
+                <div class="decorative-line w-32 mx-auto mb-4"></div>
+                <p class="text-lg text-gray-600 mb-6">دراسة شاملة عن مملكة الفطريات وتنوعها البيولوجي والبيئي</p>
             </div>
 
-            <!-- Section 2: Classification -->
-            <div class="section-item mb-6 p-6" draggable="true" data-section="2">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">تصنيف الفطريات</h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    تُصنف الفطريات إلى عدة أقسام رئيسية بناءً على خصائصها التركيبية وطرق تكاثرها:
+            <!-- Introduction -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 border-r-4 border-purple-600 pr-3">مقدمة</h2>
+                <p class="text-gray-700 leading-relaxed mb-3">
+                    الفطريات مملكة حيوية واسعة من الكائنات الحية حقيقية النواة، تضم أكثر من 144 ألف نوع معروف. تتميز بخصائص فريدة تجعلها مختلفة عن النباتات والحيوانات، فهي كائنات غير ذاتية التغذية تعتمد على امتصاص المواد العضوية من البيئة. تلعب دوراً محورياً كمحللات رئيسية تفكك المواد العضوية وتعيد العناصر الغذائية إلى التربة.
                 </p>
+            </div>
 
-                <div class="space-y-4">
-                    <div class="bg-gradient-to-l from-blue-50 to-white p-4 rounded-lg border-r-4 border-blue-500">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">١. الفطريات الزقية (Ascomycota)</h3>
-                        <p class="text-gray-700 mb-2">
-                            تُعرف بـ"الفطريات الكيسية"، وهي أكبر شعبة في مملكة الفطريات بأكثر من ٦٤,٠٠٠ نوع. تتكاثر جنسياً عبر تكوين أكياس زقية تحتوي على الأبواغ.
-                        </p>
-                        <p class="text-gray-600 text-sm"><strong>أمثلة:</strong> الكمأة (الفقع)، فطر البنسيليوم، خميرة الخبز</p>
+            <!-- Classification -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 border-r-4 border-purple-600 pr-3">تصنيف الفطريات</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-blue-50 p-3 rounded-lg border-r-4 border-blue-500">
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">الفطريات الزقية</h3>
+                        <p class="text-gray-700 text-sm">أكبر شعبة بأكثر من 64,000 نوع. أمثلة: الكمأة، البنسيليوم، خميرة الخبز.</p>
                     </div>
-
-                    <div class="bg-gradient-to-l from-green-50 to-white p-4 rounded-lg border-r-4 border-green-500">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">٢. الفطريات البازيدية (Basidiomycota)</h3>
-                        <p class="text-gray-700 mb-2">
-                            تضم حوالي ٣١,٥٠٠ نوع، وتشمل معظم الفطريات الكبيرة ذات الأجسام الثمرية الواضحة. تتكاثر عبر تكوين بازيديا تحمل الأبواغ.
-                        </p>
-                        <p class="text-gray-600 text-sm"><strong>أمثلة:</strong> عيش الغراب (المشروم)، فطر العفن، الصدأ والتفحم</p>
+                    <div class="bg-green-50 p-3 rounded-lg border-r-4 border-green-500">
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">الفطريات البازيدية</h3>
+                        <p class="text-gray-700 text-sm">حوالي 31,500 نوع. أمثلة: عيش الغراب، فطر العفن، الصدأ والتفحم.</p>
                     </div>
-
-                    <div class="bg-gradient-to-l from-yellow-50 to-white p-4 rounded-lg border-r-4 border-yellow-500">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">٣. الفطريات الاقترانية (Zygomycota)</h3>
-                        <p class="text-gray-700 mb-2">
-                            تضم حوالي ١,٠٠٠ نوع، تتكاثر جنسياً عبر تكوين أبواغ اقترانية سميكة الجدار.
-                        </p>
-                        <p class="text-gray-600 text-sm"><strong>أمثلة:</strong> فطر عفن الخبز الأسود (Rhizopus)</p>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-r-4 border-yellow-500">
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">الفطريات الاقترانية</h3>
+                        <p class="text-gray-700 text-sm">حوالي 1,000 نوع. أمثلة: فطر عفن الخبز الأسود.</p>
                     </div>
-
-                    <div class="bg-gradient-to-l from-red-50 to-white p-4 rounded-lg border-r-4 border-red-500">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">٤. الفطريات الناقصة (Deuteromycota)</h3>
-                        <p class="text-gray-700 mb-2">
-                            مجموعة تضم الفطريات التي لم يُكتشف لها طور تكاثر جنسي، وتتكاثر لاجنسياً فقط.
-                        </p>
-                        <p class="text-gray-600 text-sm"><strong>أمثلة:</strong> بعض أنواع البنسيليوم، فطريات الأمراض الجلدية</p>
+                    <div class="bg-red-50 p-3 rounded-lg border-r-4 border-red-500">
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">الفطريات الناقصة</h3>
+                        <p class="text-gray-700 text-sm">فطريات لم يُكتشف لها طور تكاثر جنسي، تتكاثر لاجنسياً فقط.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 3: Environment -->
-            <div class="section-item mb-6 p-6 page-break" draggable="true" data-section="3">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">البيئات التي تعيش فيها الفطريات</h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    تتواجد الفطريات في جميع البيئات تقريباً على وجه الأرض، من القطبين المتجمدين إلى الصحاري الحارة، ومن أعماق المحيطات إلى قمم الجبال العالية. تتكيف الفطريات مع ظروف بيئية متنوعة بفضل قدرتها الفريدة على إفراز إنزيمات هاضمة وامتصاص العناصر الغذائية.
+            <!-- Environment -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 border-r-4 border-purple-600 pr-3">البيئات</h2>
+                <p class="text-gray-700 text-sm mb-3 leading-relaxed">
+                    تتواجد الفطريات في جميع البيئات على الأرض، من القطبين المتجمدين إلى الصحاري الحارة. تتكيف مع ظروف بيئية متنوعة:
                 </p>
-
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-green-50 p-4 rounded-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2">🌳 البيئات الحرجية</h3>
-                            <p class="text-gray-700 text-sm leading-relaxed">
-                                الغابات هي الموطن الأغنى للفطريات، حيث تنمو على جذوع الأشجار الميتة، أوراق الأشجار المتساقطة، والتربة الغنية بالمواد العضوية. تكوّن العديد من الفطريات علاقات تكافلية مع جذور الأشجار (الميكوريزا).
-                            </p>
-                        </div>
-
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2">💧 البيئات المائية</h3>
-                            <p class="text-gray-700 text-sm leading-relaxed">
-                                تعيش بعض الفطريات في المياه العذبة والمالحة، حيث تتغذى على المواد العضوية المتحللة. وتلعب دوراً مهماً في تحليل الأخشاب الغارقة والنباتات المائية الميتة.
-                            </p>
-                        </div>
-
-                        <div class="bg-yellow-50 p-4 rounded-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2">🏜️ البيئات الجافة</h3>
-                            <p class="text-gray-700 text-sm leading-relaxed">
-                                تتكيف بعض الفطريات مع البيئات الصحراوية القاسية من خلال تكوين أبواغ مقاومة للجفاف، وتنشط فقط عند توفر الرطوبة المؤقتة بعد هطول الأمطار.
-                            </p>
-                        </div>
-
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2">🏔️ البيئات القطبية</h3>
-                            <p class="text-gray-700 text-sm leading-relaxed">
-                                حتى في المناطق القطبية المتجمدة، توجد فطريات متخصصة تستطيع النمو في درجات حرارة منخفضة للغاية، وتساهم في تحليل المواد العضوية في هذه البيئات القاسية.
-                            </p>
-                        </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                    <div class="bg-green-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">البيئات الحرجية</p>
                     </div>
-
-                    <div class="bg-indigo-50 p-4 rounded-lg border-r-4 border-indigo-400">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🏠 البيئات البشرية</h3>
-                        <p class="text-gray-700 leading-relaxed">
-                            تعيش الفطريات أيضاً في البيئات التي أنشأها الإنسان، مثل المنازل والمخازن والمزارع. بعضها نافع كالخميرة المستخدمة في الخبز، وبعضها ضار كفطريات عفن الجدران والأطعمة.
-                        </p>
+                    <div class="bg-blue-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">البيئات المائية</p>
+                    </div>
+                    <div class="bg-yellow-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">البيئات الجافة</p>
+                    </div>
+                    <div class="bg-purple-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">البيئات القطبية</p>
+                    </div>
+                    <div class="bg-indigo-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">البيئات البشرية</p>
+                    </div>
+                    <div class="bg-pink-50 p-2 rounded text-center">
+                        <p class="font-bold text-gray-800">التربة الزراعية</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 4: Ecological Importance -->
-            <div class="section-item mb-6 p-6" draggable="true" data-section="4">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">الأهمية البيئية للفطريات</h2>
-
-                <div class="space-y-4">
-                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg shadow-sm">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
-                            <span class="text-2xl ml-3">♻️</span>
-                            المحللات الطبيعية
-                        </h3>
-                        <p class="text-gray-700 leading-relaxed">
-                            تُعد الفطريات من أهم المحللات في النظام البيئي، حيث تفكك الأخشاب الميتة، الأوراق المتساقطة، وجثث الكائنات الحية. تُطلق إنزيمات خارجية قوية تحلل المركبات المعقدة مثل السليلوز واللجنين، وتحول المواد العضوية إلى عناصر بسيطة يمكن للنباتات امتصاصها مرة أخرى.
-                        </p>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-5 rounded-lg shadow-sm">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
-                            <span class="text-2xl ml-3">🤝</span>
-                            العلاقات التكافلية
-                        </h3>
-                        <p class="text-gray-700 leading-relaxed mb-3">
-                            ترتبط الفطريات بعلاقات تكافلية مهمة مع كائنات أخرى:
-                        </p>
-                        <ul class="list-disc list-inside text-gray-700 space-y-2 mr-4">
-                            <li><strong>الميكوريزا:</strong> علاقة تكافلية بين الفطريات وجذور النباتات، حيث تساعد الفطريات النبات في امتصاص الماء والعناصر الغذائية، وبالمقابل تحصل على السكريات من النبات.</li>
-                            <li><strong>الأشنات:</strong> علاقة تكافلية بين الفطريات والطحالب أو البكتيريا الزرقاء، تمكنها من العيش في بيئات قاسية.</li>
+            <!-- Importance -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 border-r-4 border-purple-600 pr-3">الأهمية والفوائد</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="bg-pink-50 p-3 rounded-lg">
+                        <h3 class="text-base font-bold text-gray-800 mb-2">الطب والصحة</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1 mr-3">
+                            <li>المضادات الحيوية</li>
+                            <li>أدوية الكوليسترول</li>
+                            <li>مثبطات المناعة</li>
                         </ul>
                     </div>
-
-                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg shadow-sm">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
-                            <span class="text-2xl ml-3">🌱</span>
-                            دورة المغذيات
-                        </h3>
-                        <p class="text-gray-700 leading-relaxed">
-                            تلعب الفطريات دوراً حيوياً في دورة العناصر الغذائية، خاصة النيتروجين والفوسفور والكربون. بدون الفطريات، ستتراكم المواد العضوية الميتة وتتوقف دورة العناصر الغذائية، مما يؤدي إلى انهيار النظم البيئية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 5: Benefits and Applications -->
-            <div class="section-item mb-6 p-6 page-break" draggable="true" data-section="5">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">فوائد الفطريات وتطبيقاتها</h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="bg-pink-50 p-4 rounded-lg border-r-4 border-pink-400">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">💊 الطب والصحة</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm mr-4">
-                            <li>المضادات الحيوية (البنسلين)</li>
-                            <li>أدوية خفض الكوليسترول (الستاتينات)</li>
-                            <li>أدوية مثبطة للمناعة</li>
-                            <li>مكملات غذائية طبية</li>
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <h3 class="text-base font-bold text-gray-800 mb-2">الصناعات الغذائية</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1 mr-3">
+                            <li>خميرة الخبز</li>
+                            <li>صناعة الجبن</li>
+                            <li>الفطر الصالح للأكل</li>
                         </ul>
                     </div>
-
-                    <div class="bg-orange-50 p-4 rounded-lg border-r-4 border-orange-400">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🍞 الصناعات الغذائية</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm mr-4">
-                            <li>خميرة الخبز والمعجنات</li>
-                            <li>صناعة الجبن (روكفور، كم��بر)</li>
-                            <li>صناعة المشروبات (النبيذ، البيرة)</li>
-                            <li>الفطر الصالح للأكل (مصدر بروتين)</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-teal-50 p-4 rounded-lg border-r-4 border-teal-400">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🧪 التكنولوجيا الحيوية</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm mr-4">
-                            <li>إنتاج الإنزيمات الصناعية</li>
-                            <li>معالجة النفايات البيئية</li>
-                            <li>إنتاج الوقود الحيوي</li>
-                            <li>الهندسة الوراثية والبحث العلمي</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-violet-50 p-4 rounded-lg border-r-4 border-violet-400">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🌾 الزراعة</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm mr-4">
+                    <div class="bg-teal-50 p-3 rounded-lg">
+                        <h3 class="text-base font-bold text-gray-800 mb-2">الزراعة والبيئة</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1 mr-3">
                             <li>تحسين خصوبة التربة</li>
-                            <li>المكافحة البيولوجية للآفات</li>
-                            <li>تحليل المخلفات الزراعية</li>
-                            <li>زيادة نمو المحاصيل</li>
+                            <li>تحليل المواد العضوية</li>
+                            <li>العلاقات التكافلية</li>
                         </ul>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-5 rounded-lg mt-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">🏆 إنجاز تاريخي</h3>
-                    <p class="text-gray-700">
-                        في عام ١٩٢٨، اكتشف العالم ألكسندر فلمنج المضاد الحيوي البنسلين من فطر البنسيليوم بالصدفة، وهو اكتشاف أنقذ ملايين الأرواح وأحدث ثورة في الطب الحديث. حصل فلمنج على جائزة نوبل في الطب عام ١٩٤٥ تقديراً لهذا الاكتشاف العظيم.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Section 6: Harmful Fungi -->
-            <div class="section-item mb-6 p-6" draggable="true" data-section="6">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">الفطريات الضارة</h2>
-
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    على الرغم من الفوائد العديدة للفطريات، إلا أن بعض أنواعها يمكن أن تكون ضارة للإنسان والحيوان والنبات:
-                </p>
-
-                <div class="space-y-4">
-                    <div class="bg-red-50 p-4 rounded-lg border-r-4 border-red-500">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">⚕️ الأمراض البشرية</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed mb-2">
-                            تسبب بعض الفطريات أمراضاً للإنسان مثل:
-                        </p>
-                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1 mr-4">
-                            <li>القدم الرياضي والأمراض الجلدية</li>
-                            <li>التهابات الأظافر والشعر (السعفة)</li>
-                            <li>التهابات الجهاز التنفسي (خاصة لضعيفي المناعة)</li>
-                            <li>عدوى الخمائر (الكانديدا)</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-yellow-50 p-4 rounded-lg border-r-4 border-yellow-500">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🌾 أمراض النباتات</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed mb-2">
-                            تدمر الفطريات المحاصيل الزراعية وتسبب خسائر اقتصادية كبيرة:
-                        </p>
-                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1 mr-4">
-                            <li>مرض صدأ القمح والحبوب</li>
-                            <li>اللفحة المتأخرة في البطاطس</li>
-                            <li>البياض الدقيقي على العنب</li>
-                            <li>التفحم في الذرة</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-orange-50 p-4 rounded-lg border-r-4 border-orange-500">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">🍞 فساد الأغذية</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            تنمو الفطريات على الأطعمة المخزنة وتسبب فسادها، وبعضها ينتج سموماً فطرية (مثل الأفلاتوكسين) خطيرة على الصحة. يجب التخلص من الأطعمة المتعفنة فوراً وعدم تناولها.
-                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 7: Conclusion -->
-            <div class="section-item mb-6 p-6" draggable="true" data-section="7">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">الخاتمة</h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    تُعد الفطريات من أكثر الكائنات الحية تنوعاً وأهمية في النظم البيئية على كوكب الأرض. فهي تلعب أدواراً حيوية لا يمكن الاستغناء عنها، من تحليل المواد العضوية وإعادة تدوير العناصر الغذائية، إلى تكوين علاقات تكافلية تدعم نمو النباتات والغابات.
+            <!-- Conclusion -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 border-r-4 border-purple-600 pr-3">الخاتمة</h2>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    تُعد الفطريات من أكثر الكائنات الحية تنوعاً وأهمية في النظم البيئية. تلعب أدواراً حيوية لا غنى عنها في تحليل المواد العضوية وإعادة تدوير العناصر الغذائية، كما أثبتت قيمتها في الطب والصناعة والزراعة. دراسة تنوعها البيولوجي يفتح آفاقاً واسعة للبحث العلمي والتطبيقات المستقبلية.
                 </p>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    كما أثبتت الفطريات قيمتها الكبيرة في مجالات الطب والصناعة والزراعة، من خلال إنتاج المضادات الحيوية والإنزيمات والأغذية المتنوعة. ومع ذلك، يجب علينا أن نكون حذرين من أنواعها الضارة التي تسبب الأمراض وتفسد المحاصيل والأطعمة.
-                </p>
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    إن دراسة الفطريات وفهم تنوعها البيولوجي والبيئي يفتح آفاقاً واسعة للبحث العلمي والتطبيقات المستقبلية. فمع اكتشاف أنواع جديدة باستمرار، قد نجد حلولاً لمشاكل بيئية وطبية معقدة، ونكتشف موارد ط��يعية جديدة تفيد البشرية.
-                </p>
-
-                <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-lg text-center mt-6">
-                    <p class="text-gray-800 font-bold text-lg mb-2">
-                        "في عالم الفطريات، يكمن سر استمرارية الحياة على الأرض"
-                    </p>
-                    <div class="decorative-line w-24 mx-auto mt-4"></div>
-                </div>
             </div>
 
-            <!-- Section 8: References -->
-            <div class="section-item mb-6 p-6 page-break" draggable="true" data-section="8">
-                <div class="no-print flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 cursor-move">☰ اسحب لإعادة الترتيب</span>
-                    <button onclick="toggleSection(this)" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">إخفاء</button>
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-r-4 border-purple-600 pr-4">المراجع</h2>
-
-                <div class="space-y-3 text-gray-700">
-                    <div class="bg-gray-50 p-3 rounded">
-                        <p class="text-sm">١. كامبل، نيل أ. وريس، جين ب. (٢٠١٩). <em>علم الأحياء</em>. الطبعة العاشرة.</p>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <p class="text-sm">٢. مجلة Nature Microbiology - أبحاث الفطريات وتنوعها البيولوجي.</p>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <p class="text-sm">٣. Alexopoulos, C.J., Mims, C.W., & Blackwell, M. (1996). <em>Introductory Mycology</em>. 4th Edition.</p>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <p class="text-sm">٤. موسوعة علم الفطريات - الجمعية الدولية لعلم الفطريات (IMA).</p>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <p class="text-sm">٥. Webster, J., & Weber, R. (2007). <em>Introduction to Fungi</em>. Cambridge University Press.</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 text-center text-gray-500 text-sm">
-                    <div class="decorative-line w-16 mx-auto mb-3"></div>
-                    <p>تم إعداد هذا المشروع بعناية لأغراض تعليمية</p>
-                    <p class="mt-1">١٤٤٦ هـ</p>
-                </div>
+            <!-- Footer -->
+            <div class="mt-8 pt-4 border-t border-gray-300 text-center">
+                <div class="decorative-line w-16 mx-auto mb-3"></div>
+                <p class="text-gray-600 text-sm">إعداد: _______________</p>
+                <p class="text-gray-600 text-sm">المادة: الأحياء | العام الدراسي: 1446هـ</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Drag and Drop functionality
-        const container = document.getElementById('sectionsContainer');
-        let draggedElement = null;
-
-        container.addEventListener('dragstart', (e) => {
-            if (e.target.classList.contains('section-item')) {
-                draggedElement = e.target;
-                e.target.classList.add('dragging');
-            }
-        });
-
-        container.addEventListener('dragend', (e) => {
-            if (e.target.classList.contains('section-item')) {
-                e.target.classList.remove('dragging');
-            }
-        });
-
-        container.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            const afterElement = getDragAfterElement(container, e.clientY);
-            if (afterElement == null) {
-                container.appendChild(draggedElement);
-            } else {
-                container.insertBefore(draggedElement, afterElement);
-            }
-        });
-
-        function getDragAfterElement(container, y) {
-            const draggableElements = [...container.querySelectorAll('.section-item:not(.dragging)')];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
-
-        // Toggle section visibility
-        function toggleSection(button) {
-            const section = button.closest('.section-item');
-            if (section.style.display === 'none') {
-                section.style.display = 'block';
-                button.textContent = 'إخفاء';
-                button.classList.remove('bg-green-100', 'text-green-600');
-                button.classList.add('bg-red-100', 'text-red-600');
-            } else {
-                section.style.display = 'none';
-                button.textContent = 'إظهار';
-                button.classList.remove('bg-red-100', 'text-red-600');
-                button.classList.add('bg-green-100', 'text-green-600');
-            }
-        }
-
         // Text size control
-        document.getElementById('textSize').addEventListener('change', (e) => {
-            const sections = document.querySelectorAll('.section-item p, .section-item li');
-            sections.forEach(section => {
-                section.classList.remove('size-small', 'size-medium', 'size-large', 'size-xlarge');
-                section.classList.add(`size-${e.target.value}`);
-            });
+        document.getElementById('textSize').addEventListener('change', function(e) {
+            const content = document.getElementById('mainContent');
+            content.classList.remove('size-small', 'size-medium', 'size-large');
+            content.classList.add('size-' + e.target.value);
         });
 
         // Title size control
-        document.getElementById('titleSize').addEventListener('change', (e) => {
-            const sections = document.querySelectorAll('.section-item');
-            sections.forEach(section => {
-                section.classList.remove('title-small', 'title-medium', 'title-large', 'title-xlarge');
-                section.classList.add(`title-${e.target.value}`);
-            });
+        document.getElementById('titleSize').addEventListener('change', function(e) {
+            const content = document.getElementById('mainContent');
+            content.classList.remove('title-small', 'title-medium', 'title-large');
+            content.classList.add('title-' + e.target.value);
         });
 
-        // Spacing control
-        document.getElementById('spacing').addEventListener('change', (e) => {
-            const sections = document.querySelectorAll('.section-item');
-            sections.forEach(section => {
-                section.classList.remove('mb-2', 'mb-4', 'mb-6', 'mb-8');
-                section.classList.add(`mb-${e.target.value}`);
-            });
-        });
+        // Show preview
+        function showPreview() {
+            const modal = document.getElementById('previewModal');
+            const previewContent = document.getElementById('previewContent');
+            const mainContent = document.getElementById('mainContent');
 
-        // Dark mode support
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
+            // Clone content
+            previewContent.innerHTML = mainContent.innerHTML;
+
+            // Copy classes
+            previewContent.className = 'preview-content ' + mainContent.className.replace('page-container', '');
+
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
+
+        // Close preview
+        function closePreview() {
+            const modal = document.getElementById('previewModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Print function for Safari compatibility
+        function printDocument() {
+            // For Safari on iOS
+            if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+                // Give Safari time to render before printing
+                setTimeout(function() {
+                    window.print();
+                }, 100);
             } else {
-                document.documentElement.classList.remove('dark');
+                window.print();
+            }
+        }
+
+        // Close preview on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePreview();
             }
         });
+
+        // Close preview on click outside
+        document.getElementById('previewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+
+        // Prevent zoom on double tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
