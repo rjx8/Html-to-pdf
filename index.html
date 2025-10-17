@@ -1,394 +1,434 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>تنوع الفطريات وبيئتها — مشروع</title>
-
-<style>
-/* ---------- Reset بسيط ---------- */
-* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-html,body { height:100%; margin:0; padding:0; }
-
-/* ---------- قواعد عامة (Mobile-first) ---------- */
-/* عدم تصغير النص في Safari iOS: font-size أساسي 16px */
-body{
-  font-family: Tahoma, Arial, "Helvetica Neue", sans-serif;
-  font-size:16px; /* يمنع auto-zoom على iOS */
-  color:#000;
-  background:#fff;
-  line-height:1.5;
-  -webkit-text-size-adjust:100%;
-  padding:1rem;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-
-/* ---------- تخطيط قابل للطباعة: صفحة A4 مُقسمة صراحة ---------- */
-/* نُنشئ حاويات صفحات ثابتة لتضمن عدد صفحات محدد وتنسيق الطباعة الصحيح */
-.paper-wrapper{
-  width:100%;
-  max-width:900px; /* شاشة: مرن */
-  margin:0 auto;
-}
-
-/* A4 size for print: width auto, height exact for print layout.
-   نضبط كل صفحة كحاوية لها أبعاد مطابقة تقريباً لمساحة A4 داخل الهوامش المطلوبة. */
-.a4page{
-  /* مساحة الشاشة: تملأ طول المحتوى، لكن عند الطباعة يتم التعامل عبر @page والـ page-break */
-  width:100%;
-  background: #fff;
-  margin: 0 auto 10px;
-  padding: 1.2cm 2cm 1.2cm 2.5cm; /* هامش: يمين 2.5cm، باقي الجهات ~2cm */
-  box-shadow: none;
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  page-break-after: always;
-  min-height: 25.7cm; /* تقريبياً A4 minus margins، يضمن ملء الصفحة */
-  position: relative;
-}
-
-/* ---------- الطباعة (Paged Media) ---------- */
-@page {
-  size: A4;
-  margin: 1.5cm; /* طلبك: @page margin محدد */
-}
-
-/* تأكيد لخيارات الطباعة على WebKit */
-@media print {
-  html,body { background: #fff; padding:0; margin:0; }
-  .paper-wrapper { max-width: 100%; margin:0; }
-  .a4page { page-break-after: always; margin: 0; padding: 1.5cm 2cm 1.5cm 2.5cm; min-height: auto; }
-  /* زر الطباعة يختفي عند الطباعة */
-  .print-btn { display:none !important; }
-  /* منع تقطيع العناصر المهمة */
-  .avoid-break, h1, h2, h3, table, img { page-break-inside: avoid !important; -webkit-page-break-inside: avoid !important; }
-  /* إزالة أي ظلال أو ألوان غير مطلوبة */
-  * { box-shadow:none !important; text-shadow:none !important; background:transparent !important; }
-  /* تأكد من طباعة ألوان الخلفية البسيطة */
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-/* ---------- نصوص وعناوين حسب المتطلبات ---------- */
-.header-title{
-  text-align:center;
-  font-weight:700;
-  font-size:28px; /* 24-28px مطلوب */
-  line-height:1.2;
-  margin: 0 0 0.4rem 0;
-  color:#000;
-}
-
-.side-title{
-  text-align:right;
-  font-size:20px; /* 18-20px */
-  font-weight:700;
-  line-height:1.2;
-  color:#111;
-  margin:0 0 0.3rem 0;
-}
-
-.sub-title{
-  font-size:17px; /* 16-18px */
-  font-weight:700;
-  line-height:1.2;
-  color:#333;
-  margin:0 0 0.3rem 0;
-}
-
-p.normal{
-  font-size:16px; /* 14-16px المطلوب => ختارنا 16 */
-  color:#333;
-  line-height:1.5;
-  margin:0 0 0.8rem 0;
-  text-align:justify;
-  orphans:3;
-  widows:3;
-}
-
-/* ---------- القوائم ---------- */
-ul, ol {
-  margin:0 0 0.8rem 0;
-  padding-right:1.2rem;
-}
-li { margin:0.25rem 0; font-size:16px; color:#333; }
-
-/* ---------- الجداول ---------- */
-.table-slim{
-  width:100%;
-  border-collapse:collapse;
-  table-layout: fixed; /* ثابت */
-  font-size:16px;
-  color:#111;
-}
-.table-slim th, .table-slim td{
-  border: 1px solid #333;
-  padding: 6px 8px;
-  word-wrap: break-word;
-}
-.table-slim th{
-  background:#f5f5f5;
-  font-weight:700;
-  text-align:right;
-}
-
-/* منع تقسيم الصفوف بين صفحات */
-.table-slim tr { page-break-inside: avoid; -webkit-page-break-inside: avoid; }
-
-/* ---------- الصور (SVG داخلية أو inline) ---------- */
-.figure {
-  display:block;
-  width:100%;
-  max-width:100%;
-  margin: 0 0 0.6rem 0;
-  text-align:center;
-}
-.figure svg{ max-width:100%; height:auto; }
-
-/* توضيحي: مربعات */
-.info-box {
-  border:1px solid #666;
-  background:#fafafa;
-  padding:0.6rem;
-  margin:0.5rem 0;
-  font-size:15.5px;
-  color:#333;
-  border-left:4px solid #333;
-}
-
-/* ---------- الفوتر: رقم الصفحة أسفل الوسط داخل كل صفحة ثابتة ---------- */
-.page-footer{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:8px;
-  text-align:center;
-  font-size:14px;
-  color:#666;
-  -webkit-print-color-adjust: exact;
-}
-.page-footer .pnum{
-  font-weight:600;
-  color:#333;
-}
-
-/* ---------- زر الطباعة (لمس 44px) ---------- */
-.print-btn {
-  position: fixed;
-  left: 12px; /* لأن RTL: نخلي الزر على اليسار لكي لا يغطي العنوان يمين */
-  top: 12px;
-  z-index:9999;
-  background:#111;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  padding:10px 14px;
-  min-height:44px;
-  min-width:44px;
-  font-size:16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  -webkit-tap-highlight-color: transparent;
-}
-.print-btn:active { transform: translateY(1px); }
-
-/* ---------- تحسينات للطباعة/عرض على الشاشات الصغيرة ---------- */
-@media (max-width:420px) {
-  .paper-wrapper { padding: 0 6px; }
-  .header-title { font-size:26px; }
-  .side-title { font-size:18px; }
-}
-
-/* ---------- helpers ---------- */
-.center { text-align:center; }
-
-/* تأكد من أن العناوين لا تبقى وحدها في آخر الصفحة */
-h1,h2,h3 { break-after: avoid; page-break-after: avoid; }
-
-/* تقليل المسافات الكبيرة بين الفقرات لتعبئة الصفحة */
-p, ul, ol, table { margin-bottom: 0.6rem; }
-
-/* ensure RTL reading */
-[dir="rtl"] { direction:rtl; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تنوع الفطريات وبيئتها</title>
+    <style>
+        /* تنسيقات عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #000;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        /* تنسيقات الطباعة */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm;
+                margin-right: 2.5cm;
+                margin-left: 2cm;
+                margin-top: 2cm;
+                margin-bottom: 2cm;
+            }
+            
+            body {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .print-button {
+                display: none !important;
+            }
+            
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+            
+            p, ul, ol, table, img {
+                page-break-inside: avoid;
+            }
+            
+            table, img {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            
+            h2 {
+                page-break-before: auto;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+            
+            .no-break {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* تنسيقات الشاشة */
+        @media screen {
+            body {
+                padding: 20px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            
+            .print-button {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background-color: #333;
+                color: white;
+                border: none;
+                padding: 15px 25px;
+                font-size: 18px;
+                border-radius: 5px;
+                cursor: pointer;
+                z-index: 1000;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            }
+            
+            .print-button:hover {
+                background-color: #000;
+            }
+        }
+        
+        /* تنسيقات النصوص */
+        h1 {
+            font-size: 28px;
+            text-align: center;
+            margin: 30px 0;
+            color: #000;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 20px;
+            text-align: right;
+            margin: 25px 0 15px;
+            color: #333;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        h3 {
+            font-size: 18px;
+            text-align: right;
+            margin: 20px 0 10px;
+            color: #333;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        h4 {
+            font-size: 16px;
+            text-align: right;
+            margin: 15px 0 8px;
+            color: #666;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 16px;
+        }
+        
+        /* تنسيقات الجداول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            table-layout: fixed;
+            page-break-inside: avoid;
+        }
+        
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+        
+        /* تنسيقات القوائم */
+        ul, ol {
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            text-align: right;
+        }
+        
+        /* تنسيقات الصور */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            page-break-inside: avoid;
+        }
+        
+        /* تنسيقات المربعات التوضيحية */
+        .info-box {
+            border: 1px solid #666;
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+        
+        /* تنسيقات أرقام الصفحات */
+        .page-number {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* تنسيقات صفحة الغلاف */
+        .cover-page {
+            text-align: center;
+            padding: 50px 0;
+            page-break-after: always;
+        }
+        
+        .cover-page h1 {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        
+        .student-info {
+            margin-top: 100px;
+            font-size: 18px;
+        }
+        
+        /* تنسيقات المراجع */
+        .references {
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        
+        .references h3 {
+            margin-bottom: 15px;
+        }
+        
+        .references ul {
+            list-style-type: none;
+        }
+    </style>
 </head>
 <body>
+    <!-- زر الطباعة -->
+    <button class="print-button" onclick="window.print()" title="طباعة">
+        🖨️
+    </button>
 
-<!-- زر طباعة واضح وكبير -->
-<button class="print-btn" id="printBtn" title="طباعة">طباعة</button>
+    <!-- صفحة الغلاف -->
+    <div class="cover-page">
+        <h1>تنوع الفطريات وبيئتها</h1>
+        <div class="student-info">
+            <p>إعداد: [اسم الطالب]</p>
+            <p>التاريخ: [التاريخ]</p>
+        </div>
+    </div>
 
-<div class="paper-wrapper">
+    <!-- المحتوى الرئيسي -->
+    <div class="content">
+        <!-- المقدمة -->
+        <h2>مقدمة</h2>
+        <p>الفطريات هي كائنات حية حقيقية النواة، تشكل مملكة مستقلة تسمى مملكة الفطريات (Fungi). تتميز بعدم قدرتها على صنع غذائها بنفسها، لذا فهي إما مترممة أو متكافلة أو متطفلة. تلعب الفطريات دوراً حيوياً في النظم البيئية كمعيدات للمواد العضوية، كما أن لها أهمية اقتصادية كبيرة في الصناعات الغذائية والدوائية.</p>
+        
+        <div class="info-box">
+            <h4>حقائق سريعة عن الفطريات:</h4>
+            <ul>
+                <li>يوجد أكثر من 144,000 نوع معروف من الفطريات</li>
+                <li>تشير التقديرات إلى وجود 2.2-3.8 مليون نوع في الطبيعة</li>
+                <li>أكبر كائن حي على الأرض هو فطر عيش الغراب في ولاية أوريغون الأمريكية</li>
+                <li>بعض الفطريات تستخدم في إنتاج المضادات الحيوية مثل البنسلين</li>
+            </ul>
+        </div>
 
-  <!-- صفحة 1: غلاف + بداية -->
-  <section class="a4page" id="page1" aria-label="صفحة الغلاف">
-    <header class="avoid-break">
-      <h1 class="header-title">تنـــوع الفطــريات وبيئتها</h1>
-      <p class="center" style="margin-top:0.2rem; font-size:15px; color:#666;">
-        مشروع دراسي — اسم الطالب: <strong>ايمن</strong> — التاريخ: <strong id="dateField"></strong>
-      </p>
-    </header>
+        <!-- تنوع الفطريات -->
+        <h2>تنوع الفطريات</h2>
+        <p>تنقسم الفطريات إلى عدة شعب رئيسية بناءً على تركيبها وطريقة تكاثرها:</p>
+        
+        <h3>الفطريات البيضية (Oomycota)</h3>
+        <p>تتميز بوجود أبواغ سوطية، وتعيش غالباً في البيئات المائية أو الرطبة. بعضها يسبب أمراضاً للنباتات مثل مرض اللفحة المتأخرة في البطاطس والطماطم.</p>
+        
+        <h3>الفطريات الكيتريدية (Chytridiomycota)</h3>
+        <p>هي أبسط الفطريات، وتتميز بوجود أبواغ سوطية. بعضها يعيش مترمماً في الماء والتربة، والبعض الآخر متطفل على النباتات والحيوانات.</p>
+        
+        <h3>الفطريات الزيجوتية (Zygomycota)</h3>
+        <p>تعيش في التربة وعلى المواد العضوية المتحللة. من أمثلتها فطر العفن الأسود (Rhizopus) الذي ينمو على الخبز والفواكه.</p>
+        
+        <h3>الفطريات الكيسية (Ascomycota)</h3>
+        <p>تشكل أكبر مجموعة من الفطريات، وتشمل الخمائر، وفطريات الكأس، وبعض أنواع عيش الغراب. تنتج أبواغاً داخل أكياس تسمى الأكياس الزقية.</p>
+        
+        <h3>الفطريات الدعامية (Basidiomycota)</h3>
+        <p>تشمل معظم فطريات عيش الغراب المعروفة، وفطريات الصدأ، وفطريات التفحم. تنتج أبواغاً على تركيب خاص يسمى الدعامة.</p>
+        
+        <!-- جدول مقارنة بين شعب الفطريات -->
+        <h3>مقارنة بين الشعب الرئيسية للفطريات</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">الشعبة</th>
+                    <th style="width: 25%;">الخصائص</th>
+                    <th style="width: 25%;">طريقة التكاثر</th>
+                    <th style="width: 30%;">أمثلة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>الفطريات البيضية</td>
+                    <td>جدران خلوية من السليلوز، أبواغ سوطية</td>
+                    <td>تكاثر جنسي ولا جنسي</td>
+                    <td>فطر اللفحة المتأخرة</td>
+                </tr>
+                <tr>
+                    <td>الفطريات الكيتريدية</td>
+                    <td>أبسط الفطريات، أبواغ سوطية</td>
+                    <td>تكاثر جنسي ولا جنسي</td>
+                    <td>فطر الكيتريد</td>
+                </tr>
+                <tr>
+                    <td>الفطريات الزيجوتية</td>
+                    <td>خيوط فطرية غير مقسمة، لا حواجز</td>
+                    <td>تكاثر جنسي بتكوين الزيجوسبور</td>
+                    <td>العفن الأسود</td>
+                </tr>
+                <tr>
+                    <td>الفطريات الكيسية</td>
+                    <td>خيوط فطرية مقسمة بحواجز</td>
+                    <td>تكاثر جنسي بالأكياس الزقية</td>
+                    <td>الخميرة، فطر الكمأة</td>
+                </tr>
+                <tr>
+                    <td>الفطريات الدعامية</td>
+                    <td>خيوط فطرية مقسمة بحواجز</td>
+                    <td>تكاثر جنسي بالدعامات</td>
+                    <td>عيش الغراب، فطر الصدأ</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <hr style="border:none;border-top:1px solid #ddd;margin:0.8rem 0;">
+        <!-- بيئة الفطريات -->
+        <h2>بيئة الفطريات</h2>
+        <p>تعيش الفطريات في مختلف البيئات وتلعب أدواراً بيئية متنوعة:</p>
+        
+        <h3>الفطريات المترممة (Saprophytic Fungi)</h3>
+        <p>تعيش على المواد العضوية الميتة وتحللها، مما يساهم في إعادة تدوير العناصر الغذائية في النظم البيئية. تعتبر هذه الفطريات من أهم الكائنات المحللة في الطبيعة.</p>
+        
+        <h3>الفطريات المتكافلة (Symbiotic Fungi)</h3>
+        <p>تعيش في علاقة تكافلية مع كائنات أخرى، مثل:</p>
+        <ul>
+            <li>الأشنات: علاقة تكافلية بين الفطريات والطحالب</li>
+            <li>الفطريات الجذرية: علاقة تكافلية مع جذور النباتات</li>
+        </ul>
+        
+        <h3>الفطريات المتطفلة (Parasitic Fungi)</h3>
+        <p>تعيش على حساب كائنات حية أخرى، مسببة لها الأمراض. بعضها يتطفل على النباتات مسبباً خسائر اقتصادية كبيرة في المحاصيل الزراعية.</p>
+        
+        <!-- أهمية الفطريات -->
+        <h2>أهمية الفطريات</h2>
+        <p>للفطريات أهمية كبيرة في مختلف المجالات:</p>
+        
+        <h3>الأهمية البيئية</h3>
+        <ul>
+            <li>تحليل المواد العضوية وإعادة تدوير العناصر الغذائية</li>
+            <li>المساهمة في تكوين التربة وتحسين خواصها</li>
+            <li>المشاركة في الدورات البيوجيوكيميائية</li>
+        </ul>
+        
+        <h3>الأهمية الاقتصادية</h3>
+        <ul>
+            <li>استخدامها في الصناعات الغذائية (الخبز، الجبن، المشروبات)</li>
+            <li>إنتاج المضادات الحيوية (البنسلين)</li>
+            <li>إنتاج الإنزيمات والأحماض العضوية</li>
+            <li>المكافحة الحيوية للآفات</li>
+        </ul>
+        
+        <h3>الأهمية الطبية</h3>
+        <ul>
+            <li>إنتاج الأدوية والمضادات الحيوية</li>
+            <li>بعض الفطريات مصدر للفيتامينات والهرمونات</li>
+            <li>البحث في استخدام الفطريات لعلاج الأمراض</li>
+        </ul>
+        
+        <!-- الخاتمة -->
+        <h2>خاتمة</h2>
+        <p>تشكل الفطريات مملكة حيوية ومتنوعة تلعب أدواراً أساسية في النظم البيئية. يتجلى تنوعها في تركيبها وطرق تكاثرها وبيئاتها المختلفة. تعتبر الفطريات من أهم الكائنات المحللة التي تساهم في إعادة تدوير العناصر الغذائية، كما أن لها أهمية اقتصادية وطبية كبيرة. يبقى فهم تنوع الفطريات وبيئاتها أمراً حاسماً للحفاظ على التوازن البيئي والاستفادة من إمكاناتها في مختلف المجالات.</p>
+        
+        <!-- المراجع -->
+        <div class="references">
+            <h3>المراجع</h3>
+            <ul>
+                <li>Alexopoulos, C. J., Mims, C. W., & Blackwell, M. (1996). Introductory Mycology. John Wiley & Sons.</li>
+                <li>Webster, J., & Weber, R. (2007). Introduction to Fungi. Cambridge University Press.</li>
+                <li>Kendrick, B. (2000). The Fifth Kingdom. Focus Publishing.</li>
+            </ul>
+        </div>
+    </div>
 
-    <article class="avoid-break">
-      <h2 class="side-title">مقدمة</h2>
-      <p class="normal">
-        الفطريات Kingdom Fungi تشكل مجموعة واسعة ومتنوعة من الكائنات الحية التي تختلف عن النباتات والحيوانات من حيث التركيب والتغذية. هذا المشروع يقدم نظرة عامة على تنوع الفطريات وأنواعها وبيئاتها، مع أمثلة عملية، جداول مقارنة، وصور توضيحية. يركز على جوانب بيئية وعلمية وتطبيقية.
-      </p>
+    <!-- أرقام الصفحات -->
+    <div class="page-number"></div>
 
-      <div class="info-box">
-        <strong>نقطة مهمة:</strong> الفطريات ليست نباتات — فهي تتغذى عن طريق امتصاص المواد العضوية ولا تقوم بالتركيب الضوئي.
-      </div>
-
-      <!-- SVG توضيحي مبسط (بدون موارد خارجية) -->
-      <figure class="figure" aria-hidden="false">
-        <svg width="480" height="120" viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم توضيحي لفطر">
-          <rect width="100%" height="100%" fill="white"/>
-          <g transform="translate(30,10)" fill="#000">
-            <ellipse cx="80" cy="70" rx="30" ry="12" fill="#666"></ellipse>
-            <path d="M70 12 C60 40 100 40 90 12 Z" fill="#000"></path>
-            <rect x="76" y="40" width="8" height="32" fill="#111"></rect>
-            <text x="140" y="60" font-family="Tahoma,Arial" font-size="14" fill="#333">مخطط توضيحي: فطر نموذجي</text>
-          </g>
-        </svg>
-      </figure>
-    </article>
-
-    <footer class="page-footer">الصفحة <span class="pnum">1</span></footer>
-  </section>
-
-  <!-- صفحة 2: تصنيف وتنوع + جدول مقارنة -->
-  <section class="a4page" id="page2" aria-label="تصنيف وتنوع الفطريات">
-    <h2 class="side-title">التصنيف والتنوع</h2>
-
-    <p class="normal">
-      تقسم الفطريات إلى مجموعات رئيسية مثل: Ascomycota (الفطريات الكيسية)، Basidiomycota (الفطريات القاعدية)، Zygomycota وغيرها. لكل مجموعة خصائص تشريحية ووظيفية تميزها.
-    </p>
-
-    <h3 class="sub-title">أمثلة شائعة</h3>
-    <ul>
-      <li>الفطر الأبيض ( تجارب مخبرية )</li>
-      <li>المشروم (Basidiomycota)</li>
-      <li>الخمائر (Ascomycota) — مهمة في الغذاء وصناعة المشروبات</li>
-    </ul>
-
-    <h3 class="sub-title">جدول مقارنة مبسّط</h3>
-
-    <table class="table-slim" role="table" aria-label="جدول مقارنة بين مجموعات الفطريات">
-      <thead>
-        <tr>
-          <th>المجموعة</th>
-          <th>الخصائص الرئيسية</th>
-          <th>أمثلة</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Ascomycota</td>
-          <td>خلايا منتجة لأكياس جراثيم (ascospores)</td>
-          <td>خمائر، فطريات عفن</td>
-        </tr>
-        <tr>
-          <td>Basidiomycota</td>
-          <td>تكون أجسام قاعدية (basidia) ومشرومات</td>
-          <td>مشروم، أبيوضية</td>
-        </tr>
-        <tr>
-          <td>Zygomycota</td>
-          <td>تكون زيغوسبورز في ظروف تناسلية</td>
-          <td>عفن الخبز</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <footer class="page-footer">الصفحة <span class="pnum">2</span></footer>
-  </section>
-
-  <!-- صفحة 3: بيئات الفطريات + دورها + خاتمة ومراجع -->
-  <section class="a4page" id="page3" aria-label="بيئات الفطريات وخاتمة">
-    <h2 class="side-title">بيئات الفطريات</h2>
-
-    <p class="normal">
-      الفطريات تتواجد في بيئات متعددة: تربة، عناصر متحللة، على النباتات، داخل الكائنات الأخرى (طفيليات أو متعايشة). العوامل المؤثرة: الرطوبة، الحرارة، وكمية المواد العضوية.
-    </p>
-
-    <h3 class="sub-title">دور الفطريات في البيئة</h3>
-    <ul>
-      <li>تحلل المواد العضوية وإعادة تدوير العناصر الغذائية</li>
-      <li>علاقات تكافلية مع النباتات (micorrhizae)</li>
-      <li>بعضها ممرض للنباتات والحيوانات</li>
-    </ul>
-
-    <h3 class="sub-title">تطبيقات عملية</h3>
-    <p class="normal">
-      تستخدم الخمائر في صناعة الخبز والمشروبات، وبعض الفطريات تستخدم في إنتاج أدوية (مثل المضادات الحيوية)، كما تُستخدم في تقنيات التحلل الحيوي.
-    </p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:0.6rem 0;">
-
-    <h3 class="sub-title">خاتمة</h3>
-    <p class="normal">
-      الفطريات مكون بيئي أساسي، ومعرفتها تفيد في الزراعة والصناعة والبيئة. فهم التنوع والبيئات يساعدنا على إدارة الموارد الطبيعية والاستفادة من خصائصها.
-    </p>
-
-    <h3 class="sub-title">مراجع ومصادر مختصرة</h3>
-    <ol>
-      <li>كتب ومراجع مدرسية عن علم الفطريات</li>
-      <li>مقالات مراجعة علمية مبسطة</li>
-      <li>ملاحظات مختبرية ومصادر تعليمية مفتوحة</li>
-    </ol>
-
-    <footer class="page-footer">الصفحة <span class="pnum">3</span></footer>
-  </section>
-
-</div>
-
-<script>
-/* ---------- تاريخ تلقائي بسيط ---------- */
-(function(){
-  var d = new Date();
-  var days = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  var months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  var formatted = days[d.getDay()] + '، ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-  document.getElementById('dateField').textContent = formatted;
-})();
-
-/* ---------- زر الطباعة مع error handling ---------- */
-document.getElementById('printBtn').addEventListener('click', function(){
-  // Hide the button quickly for print render (just in case)
-  var btn = this;
-  try {
-    btn.style.display = 'none';
-    // small delay to allow reflow so button hidden when print preview generates
-    setTimeout(function(){
-      try {
-        window.print();
-      } catch (e) {
-        alert('حدث خطأ أثناء الطباعة: ' + (e && e.message ? e.message : 'غير معروف'));
-      } finally {
-        // إعادة ظهور الزر بعد الطباعة/إلغاء الطباعة
-        setTimeout(function(){ btn.style.display = ''; }, 600);
-      }
-    }, 120);
-  } catch (err) {
-    alert('تعذر بدء الطباعة: ' + err.message);
-    btn.style.display = '';
-  }
-});
-
-/* ---------- تهيئة أرقام الصفحات (fallback visual) ----------
-   بما أننا جعلنا المحتوى داخل صفحات ثابتة (.a4page) نعرض رقم كل صفحة مباشرة داخل الفوتر.
-   إذا أردت تحديث الأرقام ديناميكياً يمكن إضافة هنا، لكن التصميم الحالي ثابت: 1..2..3.
-*/
-(function(){
-  var pages = document.querySelectorAll('.a4page');
-  pages.forEach(function(p, idx){
-    var numEl = p.querySelector('.pnum');
-    if(numEl) numEl.textContent = (idx+1);
-  });
-})();
-</script>
-
+    <script>
+        // إضافة أرقام الصفحات تلقائياً
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageNumbers = document.querySelectorAll('.page-number');
+            let pageCount = 1;
+            
+            pageNumbers.forEach(function(pageNumber) {
+                pageNumber.textContent = 'صفحة ' + pageCount;
+                pageCount++;
+            });
+            
+            // معالجة أخطاء الطباعة
+            window.onbeforeprint = function() {
+                console.log('بدء عملية الطباعة');
+            };
+            
+            window.onafterprint = function() {
+                console.log('انتهت عملية الطباعة');
+            };
+        });
+        
+        // معالجة أخطاء الطباعة
+        function handlePrint() {
+            try {
+                window.print();
+            } catch (error) {
+                alert('حدث خطأ أثناء الطباعة: ' + error.message);
+            }
+        }
+        
+        // تحديث زر الطباعة
+        document.querySelector('.print-button').onclick = handlePrint;
+    </script>
 </body>
 </html>
