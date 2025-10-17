@@ -1,161 +1,827 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تنوع الفطريات وبيئتها - قالب عملي</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body { font-family:'Amiri','Noto Sans Arabic', serif; margin:0; padding:0; background:#f4f4f4; line-height:1.6; }
-.container { max-width:21cm; margin:20px auto; padding:1cm; background:white; box-shadow:0 0 8px rgba(0,0,0,0.1);}
-.section { border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff; position:relative; touch-action: none;}
-.section h1,h2,h3,p,ul,li,table { margin:5px 0; }
-.side-heading { font-size:18px; font-weight:600; color:#047857; border-right:4px solid #059669; padding-right:10px; margin:10px 0; }
-.sub-heading { font-weight:600; color:#374151; margin:8px 0; }
-.info-box { background:#FEF7FF; padding:10px; margin:8px 0; border-right:3px solid #8B5CF6; border-radius:5px; page-break-inside:avoid; }
-.highlight-box { background:#F0F9FF; padding:10px; margin:8px 0; border-right:3px solid #3B82F6; border-radius:5px; page-break-inside:avoid; }
-.comparison-box { background:#FFFBEB; padding:10px; margin:8px 0; border-right:3px solid #F59E0B; border-radius:5px; page-break-inside:avoid; }
-table { width:100%; border-collapse:collapse; page-break-inside:avoid; }
-th, td { border:1px solid #ccc; padding:5px; font-size:10pt; text-align:right; }
-.drag-btn { position:absolute; top:5px; left:5px; background:#059669; color:white; font-size:12px; padding:2px 5px; border-radius:3px; cursor:pointer; }
-.resize-btn { position:absolute; top:5px; right:5px; background:#3B82F6; color:white; font-size:12px; padding:2px 5px; border-radius:3px; cursor:pointer; }
-@media print {
-    body { background:white; font-size:11pt; }
-    .container { box-shadow:none; margin:0; padding:1.2cm; }
-    .drag-btn, .resize-btn, .print-btn { display:none; }
-    .section { border:none; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنوع الفطريات وبيئتها</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2d5a27;
+            --secondary-color: #4a7c59;
+            --accent-color: #7fad4a;
+            --light-bg: #f8fffe;
+            --text-dark: #2c3e50;
+            --border-color: #e1e8e1;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark {
+            --primary-color: #4a7c59;
+            --secondary-color: #7fad4a;
+            --accent-color: #a3c585;
+            --light-bg: #1a1a1a;
+            --text-dark: #e1e8e1;
+            --border-color: #2d4a2d;
+            --shadow-light: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', 'Amiri', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 100%);
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 297mm;
+            background: var(--light-bg);
+            box-shadow: 0 0 20px var(--shadow-light);
+            border-radius: 8px;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            position: relative;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 25px var(--shadow-light);
+            transform: translateY(-2px);
+        }
+
+        .section.dragging {
+            opacity: 0.7;
+            z-index: 1000;
+            transform: rotate(3deg);
+        }
+
+        .section-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section:hover .section-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .control-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .editable {
+            outline: none;
+            border-radius: 4px;
+            padding: 2px 4px;
+            transition: all 0.2s ease;
+        }
+
+        .editable:focus {
+            background: rgba(125, 173, 74, 0.1);
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+
+        .main-title {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .section-title {
+            font-family: 'Amiri', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 8px;
+        }
+
+        .subsection-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 20px 0 10px;
+            border-right: 4px solid var(--accent-color);
+            padding-right: 15px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .highlight-box {
+            background: rgba(125, 173, 74, 0.15);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .comparison-box {
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 8px var(--shadow-light);
+        }
+
+        .fungi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .fungi-card {
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px var(--shadow-light);
+            transition: transform 0.3s ease;
+        }
+
+        .fungi-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .fungi-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--light-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(125, 173, 74, 0.05);
+        }
+
+        .environment-factor {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(125, 173, 74, 0.1);
+            border-radius: 8px;
+        }
+
+        .factor-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-panel button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .control-panel button:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                margin: 10px;
+            }
+
+            .main-title {
+                font-size: 2em;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            .fungi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-panel {
+                position: relative;
+                margin-bottom: 20px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .comparison-table {
+                font-size: 14px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px;
+            }
+        }
+
+        @media print {
+            .container {
+                max-width: none;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+                background: white;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                margin: 15px 0;
+                padding: 15px;
+                border: 1px solid #ccc;
+                box-shadow: none;
+                background: white;
+            }
+
+            .section-controls,
+            .control-panel {
+                display: none !important;
+            }
+
+            .main-title {
+                font-size: 24px;
+                color: #2d5a27;
+            }
+
+            .section-title {
+                font-size: 18px;
+                color: #2d5a27;
+            }
+
+            .info-box {
+                background: #f0f8f0 !important;
+                color: #2d5a27 !important;
+            }
+
+            .comparison-table th {
+                background: #2d5a27 !important;
+                color: white !important;
+            }
+        }
+    </style>
 </head>
 <body>
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
 
-<div class="container">
-
-    <!-- العنوان -->
-    <div class="section" id="title">
-        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
-        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
-        <h1>تنوع الفطريات وبيئتها</h1>
+    <div class="control-panel">
+        <button onclick="printProject()">طباعة</button>
+        <button onclick="toggleEdit()">تحرير</button>
+        <button onclick="resetLayout()">إعادة تعيين</button>
+        <button onclick="addSection()">إضافة قسم</button>
     </div>
 
-    <!-- مقدمة -->
-    <div class="section" id="introduction">
-        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
-        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
-        <div class="side-heading">مقدمة عن الفطريات</div>
-        <p>الفطريات هي مملكة مستقلة من الكائنات الحية، تتميز بقدرتها على التحلل وامتصاص المواد العضوية من البيئة المحيطة. تلعب دوراً أساسياً في التوازن البيئي وإعادة تدوير العناصر الغذائية.</p>
-    </div>
+    <div class="container" id="container">
+        <!-- العنوان -->
+        <div class="section" draggable="true" data-section="title">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h1 class="main-title editable" contenteditable="false">تنوع الفطريات وبيئتها</h1>
+            <div class="info-box">
+                <p class="editable" contenteditable="false">دراسة شاملة عن أنواع الفطريات المختلفة والبيئات التي تعيش فيها</p>
+            </div>
+        </div>
 
-    <!-- تنوع الفطريات -->
-    <div class="section" id="diversity">
-        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
-        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
-        <div class="side-heading">تنوع الفطريات</div>
-        <div class="sub-heading">الفطريات الميكروسكوبية</div>
-        <p>تشمل الخمائر والفطريات الغروية، وهي غير مرئية بالعين المجردة. تستخدم هذه الفطريات في الصناعات الغذائية مثل إنتاج الخبز والمشروبات الكحولية.</p>
-        <div class="sub-heading">الفطريات الكبيرة</div>
-        <p>مثل الفطر الأبيض والفطر البري، ويمكن رؤيتها بسهولة. تلعب هذه الفطريات دوراً مهماً في النظام البيئي كمحللات للنفايات النباتية.</p>
-        <div class="highlight-box">
-            <strong>أمثلة شائعة:</strong>
-            <ul>
-                <li>الخميرة (Saccharomyces cerevisiae)</li>
-                <li>فطر عيش الغراب (Agaricus bisporus)</li>
-                <li>الفطر الأسود (Aspergillus niger)</li>
-            </ul>
+        <!-- المقدمة -->
+        <div class="section" draggable="true" data-section="introduction">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h2 class="section-title editable" contenteditable="false">مقدمة عن الفطريات</h2>
+            <p class="editable" contenteditable="false">الفطريات هي كائنات حية تنتمي إلى مملكة منفصلة تختلف عن النباتات والحيوانات. تتغذى الفطريات عن طريق امتصاص المواد من البيئة المحيطة بها.</p>
+            
+            <div class="highlight-box">
+                <h3 class="subsection-title editable" contenteditable="false">خصائص الفطريات:</h3>
+                <ul>
+                    <li class="editable" contenteditable="false">لها جدار خلوي مكون من الكيتين</li>
+                    <li class="editable" contenteditable="false">تتكاثر بالجراثيم</li>
+                    <li class="editable" contenteditable="false">لا تحتوي على الكلوروفيل</li>
+                    <li class="editable" contenteditable="false">تحصل على الغذاء من المواد العضوية</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- تنوع الفطريات -->
+        <div class="section" draggable="true" data-section="diversity">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h2 class="section-title editable" contenteditable="false">تنوع الفطريات</h2>
+            
+            <div class="fungi-grid">
+                <div class="fungi-card">
+                    <div class="fungi-icon">صغير</div>
+                    <h3 class="subsection-title editable" contenteditable="false">الفطريات الميكروسكوبية</h3>
+                    <div class="comparison-box">
+                        <p class="editable" contenteditable="false"><strong>الخمائر:</strong> فطريات وحيدة الخلية مثل خميرة الخبز</p>
+                        <p class="editable" contenteditable="false"><strong>العفن:</strong> فطريات خيطية صغيرة تظهر على الطعام</p>
+                        <p class="editable" contenteditable="false"><strong>فطريات التربة:</strong> تعيش في التربة وتحلل المواد العضوية</p>
+                    </div>
+                </div>
+
+                <div class="fungi-card">
+                    <div class="fungi-icon">كبير</div>
+                    <h3 class="subsection-title editable" contenteditable="false">الفطريات الكبيرة</h3>
+                    <div class="comparison-box">
+                        <p class="editable" contenteditable="false"><strong>عيش الغراب:</strong> فطريات كبيرة لها شكل مظلة</p>
+                        <p class="editable" contenteditable="false"><strong>الفطريات السامة:</strong> فطريات خطيرة يجب تجنبها</p>
+                        <p class="editable" contenteditable="false"><strong>الفطريات الصالحة للأكل:</strong> مثل الشامبنيون والمحار</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بيئة الفطريات -->
+        <div class="section" draggable="true" data-section="environment">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h2 class="section-title editable" contenteditable="false">بيئة الفطريات</h2>
+
+            <div class="highlight-box">
+                <h3 class="subsection-title editable" contenteditable="false">العوامل المؤثرة على نمو الفطريات:</h3>
+                
+                <div class="environment-factor">
+                    <div class="factor-icon">رطوبة</div>
+                    <div>
+                        <h4 class="editable" contenteditable="false">الرطوبة</h4>
+                        <p class="editable" contenteditable="false">تحتاج الفطريات إلى رطوبة عالية للنمو. معظم الفطريات تنمو في بيئة رطبة بنسبة 70-90%.</p>
+                    </div>
+                </div>
+
+                <div class="environment-factor">
+                    <div class="factor-icon">حرارة</div>
+                    <div>
+                        <h4 class="editable" contenteditable="false">درجة الحرارة</h4>
+                        <p class="editable" contenteditable="false">تنمو معظم الفطريات في درجات حرارة معتدلة بين 15-30 درجة مئوية.</p>
+                    </div>
+                </div>
+
+                <div class="environment-factor">
+                    <div class="factor-icon">تربة</div>
+                    <div>
+                        <h4 class="editable" contenteditable="false">التربة</h4>
+                        <p class="editable" contenteditable="false">تفضل الفطريات التربة الغنية بالمواد العضوية والرطبة.</p>
+                    </div>
+                </div>
+
+                <div class="environment-factor">
+                    <div class="factor-icon">علاقة</div>
+                    <div>
+                        <h4 class="editable" contenteditable="false">العلاقة مع الكائنات الأخرى</h4>
+                        <p class="editable" contenteditable="false">تكون الفطريات علاقات مختلفة مع النباتات والحيوانات، بعضها مفيد وبعضها ضار.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- جداول المقارنة -->
+        <div class="section" draggable="true" data-section="comparison">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h2 class="section-title editable" contenteditable="false">جداول المقارنة</h2>
+
+            <div class="comparison-box">
+                <h3 class="subsection-title editable" contenteditable="false">مقارنة أنواع الفطريات وبيئاتها</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="editable" contenteditable="false">نوع الفطر</th>
+                            <th class="editable" contenteditable="false">البيئة</th>
+                            <th class="editable" contenteditable="false">الحرارة المناسبة</th>
+                            <th class="editable" contenteditable="false">الرطوبة</th>
+                            <th class="editable" contenteditable="false">الدور</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="editable" contenteditable="false">خميرة الخبز</td>
+                            <td class="editable" contenteditable="false">العجين والسكريات</td>
+                            <td class="editable" contenteditable="false">25-30°م</td>
+                            <td class="editable" contenteditable="false">متوسطة</td>
+                            <td class="editable" contenteditable="false">التخمر</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">عيش الغراب</td>
+                            <td class="editable" contenteditable="false">التربة الرطبة</td>
+                            <td class="editable" contenteditable="false">15-25°م</td>
+                            <td class="editable" contenteditable="false">عالية</td>
+                            <td class="editable" contenteditable="false">تحليل المواد</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">العفن</td>
+                            <td class="editable" contenteditable="false">الطعام الفاسد</td>
+                            <td class="editable" contenteditable="false">20-25°م</td>
+                            <td class="editable" contenteditable="false">عالية</td>
+                            <td class="editable" contenteditable="false">التحلل</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">فطريات الجذور</td>
+                            <td class="editable" contenteditable="false">جذور النباتات</td>
+                            <td class="editable" contenteditable="false">10-25°م</td>
+                            <td class="editable" contenteditable="false">متوسطة</td>
+                            <td class="editable" contenteditable="false">مساعدة النباتات</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="comparison-box">
+                <h3 class="subsection-title editable" contenteditable="false">فوائد وأضرار الفطريات</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="editable" contenteditable="false">المجال</th>
+                            <th class="editable" contenteditable="false">الفوائد</th>
+                            <th class="editable" contenteditable="false">الأضرار</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="editable" contenteditable="false">الطعام</td>
+                            <td class="editable" contenteditable="false">صنع الخبز والجبن</td>
+                            <td class="editable" contenteditable="false">تلف الطعام</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">الطب</td>
+                            <td class="editable" contenteditable="false">المضادات الحيوية</td>
+                            <td class="editable" contenteditable="false">الأمراض الجلدية</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">البيئة</td>
+                            <td class="editable" contenteditable="false">تنظيف البيئة</td>
+                            <td class="editable" contenteditable="false">تلف المباني</td>
+                        </tr>
+                        <tr>
+                            <td class="editable" contenteditable="false">الزراعة</td>
+                            <td class="editable" contenteditable="false">مساعدة النباتات</td>
+                            <td class="editable" contenteditable="false">أمراض المحاصيل</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- الخاتمة -->
+        <div class="section" draggable="true" data-section="conclusion">
+            <div class="section-controls">
+                <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                <button class="control-btn" onclick="deleteSection(this)">×</button>
+            </div>
+            <h2 class="section-title editable" contenteditable="false">الخاتمة</h2>
+
+            <div class="info-box">
+                <h3 class="subsection-title editable" contenteditable="false">أهمية الفطريات:</h3>
+                <p class="editable" contenteditable="false">الفطريات لها دور مهم في الطبيعة والحياة. تساعد في تحليل المواد الميتة وإعادة تدوير العناصر في البيئة.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="subsection-title editable" contenteditable="false">فوائد الفطريات:</h3>
+                <ul>
+                    <li class="editable" contenteditable="false">تساعد في صنع الخبز والأطعمة المتخمرة</li>
+                    <li class="editable" contenteditable="false">تنتج الأدوية والمضادات الحيوية</li>
+                    <li class="editable" contenteditable="false">تحلل المواد العضوية وتنظف البيئة</li>
+                    <li class="editable" contenteditable="false">تساعد النباتات على النمو</li>
+                    <li class="editable" contenteditable="false">مصدر غذاء مهم للإنسان</li>
+                </ul>
+            </div>
+
+            <div class="comparison-box">
+                <p class="editable" contenteditable="false">في الختام، الفطريات كائنات مهمة جداً في النظام البيئي. فهمها ودراستها يساعدنا في الاستفادة منها وتجنب أضرارها. يجب علينا الحفاظ على التوازن البيئي الذي تساهم فيه الفطريات بشكل كبير.</p>
+            </div>
         </div>
     </div>
 
-    <!-- البيئة -->
-    <div class="section" id="environment">
-        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
-        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
-        <div class="side-heading">بيئة الفطريات</div>
-        <div class="sub-heading">الرطوبة والتربة</div>
-        <p>الفطريات تحتاج إلى بيئات رطبة وغنية بالمواد العضوية لتزدهر. التربة الغنية بالمواد المتحللة هي المكان الأمثل لنموها.</p>
-        <div class="sub-heading">درجة الحرارة</div>
-        <p>تنمو معظم الفطريات في درجات حرارة معتدلة، بينما توجد أنواع تتحمل درجات حرارة منخفضة أو مرتفعة حسب طبيعة بيئتها.</p>
-        <div class="sub-heading">العلاقة مع الكائنات الأخرى</div>
-        <p>بعض الفطريات تعيش بشكل تكافلي مع النباتات، مثل الفطريات الجذرية، بينما يمكن أن تكون بعض الأنواع ممرضة للنباتات والحيوانات.</p>
+    <script>
+        let isEditing = false;
+        let draggedElement = null;
+        let sectionCount = 6;
 
-        <div class="comparison-box">
-            <strong>مقارنة بين أنواع الفطريات وبيئاتها:</strong>
-            <table>
-                <thead>
-                    <tr style="background:#FEF3C7;">
-                        <th>النوع</th>
-                        <th>البيئة</th>
-                        <th>الاستخدام أو الدور البيئي</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>الخميرة</td>
-                        <td>رطوبة عالية، مواد سكرية</td>
-                        <td>صناعة الخبز والمشروبات الكحولية</td>
-                    </tr>
-                    <tr style="background:#FFFBEB;">
-                        <td>الفطر الأبيض</td>
-                        <td>تربة غنية بالرطوبة</td>
-                        <td>مصدر غذائي وتحلل المواد النباتية</td>
-                    </tr>
-                    <tr>
-                        <td>الفطر الأسود</td>
-                        <td>مواد عضوية متحللة، رطوبة معتدلة</td>
-                        <td>إنتاج أحماض عضوية، بعضه ممرض</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        // Dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
 
-    <!-- خاتمة -->
-    <div class="section" id="conclusion">
-        <div class="drag-btn" onmousedown="startDrag(event,this.parentNode)">حرّك</div>
-        <div class="resize-btn" onclick="resizeSection(this.parentNode)">تكبير/تصغير</div>
-        <div class="side-heading">خاتمة</div>
-        <p>تنوع الفطريات وبيئتها يعكس أهمية هذه المملكة في دعم الحياة على الأرض، سواء من خلال إعادة تدوير العناصر الغذائية، دعم النباتات، أو الفوائد الاقتصادية والصناعية للبشر. دراسة الفطريات تساعدنا على فهم البيئة بشكل أفضل واستثمار مواردها بشكل مستدام.</p>
-    </div>
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
 
-</div>
+        // Drag and Drop
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                section.addEventListener('dragstart', handleDragStart);
+                section.addEventListener('dragover', handleDragOver);
+                section.addEventListener('drop', handleDrop);
+                section.addEventListener('dragend', handleDragEnd);
+            });
+        });
 
-<div class="no-print" style="position:fixed; bottom:20px; right:20px;">
-    <button class="print-btn" onclick="window.print()" style="background:#059669; color:white; padding:10px 20px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ طباعة المشروع</button>
-</div>
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
 
-<script>
-// Drag & Drop
-let dragItem = null;
-let offsetX, offsetY;
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
 
-function startDrag(e, item) {
-    dragItem = item;
-    offsetX = e.clientX - item.getBoundingClientRect().left;
-    offsetY = e.clientY - item.getBoundingClientRect().top;
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', stopDrag);
-}
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
 
-function drag(e) {
-    if (!dragItem) return;
-    dragItem.style.position = 'relative';
-    dragItem.style.top = (e.clientY - offsetY - dragItem.parentNode.getBoundingClientRect().top) + 'px';
-    dragItem.style.left = (e.clientX - offsetX - dragItem.parentNode.getBoundingClientRect().left) + 'px';
-}
+            if (draggedElement !== this) {
+                const container = document.getElementById('container');
+                const sections = [...container.children];
+                const draggedIndex = sections.indexOf(draggedElement);
+                const targetIndex = sections.indexOf(this);
 
-function stopDrag() {
-    dragItem = null;
-    document.removeEventListener('mousemove', drag);
-    document.removeEventListener('mouseup', stopDrag);
-}
+                if (draggedIndex < targetIndex) {
+                    container.insertBefore(draggedElement, this.nextSibling);
+                } else {
+                    container.insertBefore(draggedElement, this);
+                }
+            }
 
-// Resize
-function resizeSection(section) {
-    let currentHeight = section.offsetHeight;
-    let newHeight = prompt("أدخل ارتفاع القسم بالبكسل (مثال: 200)", currentHeight);
-    if(newHeight) section.style.height = newHeight + "px";
-}
-</script>
+            return false;
+        }
 
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedElement = null;
+        }
+
+        // Control functions
+        function printProject() {
+            window.print();
+        }
+
+        function toggleEdit() {
+            isEditing = !isEditing;
+            const editableElements = document.querySelectorAll('.editable');
+            
+            editableElements.forEach(element => {
+                element.contentEditable = isEditing;
+                if (isEditing) {
+                    element.style.backgroundColor = 'rgba(125, 173, 74, 0.1)';
+                } else {
+                    element.style.backgroundColor = '';
+                }
+            });
+
+            const button = event.target;
+            button.textContent = isEditing ? 'حفظ' : 'تحرير';
+        }
+
+        function resizeSection(button, direction) {
+            const section = button.closest('.section');
+            const currentScale = section.style.transform.match(/scale\(([^)]+)\)/);
+            let scale = currentScale ? parseFloat(currentScale[1]) : 1;
+            
+            if (direction === 'up' && scale < 1.5) {
+                scale += 0.1;
+            } else if (direction === 'down' && scale > 0.6) {
+                scale -= 0.1;
+            }
+            
+            section.style.transform = `scale(${scale})`;
+            section.style.transformOrigin = 'top center';
+        }
+
+        function deleteSection(button) {
+            if (showConfirmDialog('هل تريد حذف هذا القسم؟', () => {
+                const section = button.closest('.section');
+                section.remove();
+            })) {}
+        }
+
+        function resetLayout() {
+            const sections = document.querySelectorAll('.section');
+            const container = document.getElementById('container');
+            
+            sections.forEach(section => {
+                section.style.transform = '';
+            });
+
+            const originalOrder = ['title', 'introduction', 'diversity', 'environment', 'comparison', 'conclusion'];
+            originalOrder.forEach(sectionName => {
+                const section = document.querySelector(`[data-section="${sectionName}"]`);
+                if (section) {
+                    container.appendChild(section);
+                }
+            });
+        }
+
+        function addSection() {
+            sectionCount++;
+            const newSection = document.createElement('div');
+            newSection.className = 'section';
+            newSection.draggable = true;
+            newSection.setAttribute('data-section', `custom-${sectionCount}`);
+            
+            newSection.innerHTML = `
+                <div class="section-controls">
+                    <button class="control-btn" onclick="resizeSection(this, 'up')">+</button>
+                    <button class="control-btn" onclick="resizeSection(this, 'down')">-</button>
+                    <button class="control-btn" onclick="deleteSection(this)">×</button>
+                </div>
+                <h2 class="section-title editable" contenteditable="${isEditing}">قسم جديد</h2>
+                <p class="editable" contenteditable="${isEditing}">اكتب محتوى القسم هنا...</p>
+            `;
+
+            newSection.addEventListener('dragstart', handleDragStart);
+            newSection.addEventListener('dragover', handleDragOver);
+            newSection.addEventListener('drop', handleDrop);
+            newSection.addEventListener('dragend', handleDragEnd);
+
+            document.getElementById('container').appendChild(newSection);
+        }
+
+        function showConfirmDialog(message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:2000';
+            
+            modal.innerHTML = `
+                <div style="background:var(--light-bg);padding:30px;border-radius:12px;max-width:400px;width:90%;text-align:center;border:2px solid var(--border-color)">
+                    <p style="color:var(--text-dark);margin-bottom:20px;font-size:16px">${message}</p>
+                    <div style="display:flex;justify-content:center;gap:15px">
+                        <button style="padding:10px 20px;border:2px solid var(--border-color);background:var(--light-bg);color:var(--text-dark);border-radius:6px;cursor:pointer" onclick="this.parentElement.parentElement.parentElement.remove()">إلغاء</button>
+                        <button style="padding:10px 20px;border:none;background:var(--primary-color);color:white;border-radius:6px;cursor:pointer" onclick="this.parentElement.parentElement.parentElement.remove();(${onConfirm.toString()})()">موافق</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            return true;
+        }
+
+        // Touch support
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.closest('.section')) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.section') && draggedElement) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (element && element.closest('.section') && element.closest('.section') !== draggedElement) {
+                    const container = document.getElementById('container');
+                    const targetSection = element.closest('.section');
+                    container.insertBefore(draggedElement, targetSection);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
