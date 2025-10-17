@@ -3,382 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خريطة مفاهيم الطلائعيات</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>الكيان الإرهابي - دراسة تحليلية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.2cm;
+            }
+            
+            body {
+                font-size: 11pt;
+                line-height: 1.4;
+                font-family: 'Amiri', serif;
+            }
+            
+            .page-break {
+                page-break-before: always;
+                padding-top: 0.5cm;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            h1 {
+                font-size: 20pt;
+                margin-bottom: 0.8cm;
+                text-align: center;
+            }
+            
+            .side-heading {
+                font-size: 14pt;
+                margin: 0.4cm 0 0.3cm 0;
+                border-right: 4px solid #DC2626;
+                padding-right: 0.4cm;
+                font-weight: bold;
+                color: #991B1B;
+            }
+            
+            .sub-heading {
+                font-size: 12pt;
+                margin: 0.3cm 0 0.2cm 0;
+                font-weight: 600;
+                color: #374151;
+            }
+            
+            p {
+                margin-bottom: 0.3cm;
+                text-align: justify;
+            }
+            
+            table {
+                font-size: 9pt;
+                margin: 0.3cm 0;
+            }
+            
+            .info-box {
+                margin: 0.2cm 0;
+                padding: 0.4cm;
+                page-break-inside: avoid;
+            }
+            
+            ul, ol {
+                margin: 0.15cm 0;
+            }
+            
+            li {
+                margin-bottom: 0.1cm;
+            }
         }
         
         body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Tajawal', 'Amiri', 'Noto Sans Arabic', serif;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            padding: 30px;
+        .main-title {
             text-align: center;
-            color: white;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 30px;
-            background: #f8fafc;
-        }
-        
-        .mind-map {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .main-category {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border-top: 5px solid;
-        }
-        
-        .category-title {
-            font-size: 1.4rem;
+            background: linear-gradient(135deg, #991B1B 0%, #DC2626 50%, #EF4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
+            margin-bottom: 35px;
+            position: relative;
         }
         
-        .category-title i {
-            margin-left: 10px;
-            font-size: 1.3rem;
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, #DC2626, #EF4444, #DC2626);
+            border-radius: 2px;
         }
         
-        .sub-items {
-            list-style: none;
-            padding-right: 20px;
-        }
-        
-        .sub-items li {
-            padding: 8px 0;
-            border-bottom: 1px dashed #e2e8f0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .sub-items li:last-child {
-            border-bottom: none;
-        }
-        
-        .sub-items li i {
-            margin-left: 8px;
-            color: #10b981;
-            font-size: 0.9rem;
-        }
-        
-        .controls {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            border: 2px dashed #cbd5e1;
-        }
-        
-        .controls-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #374151;
-            text-align: center;
-        }
-        
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .control-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-            border: none;
+        .side-heading {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 100%);
+            border-right: 5px solid;
+            border-image: linear-gradient(135deg, #DC2626, #EF4444) 1;
             padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
+            margin: 25px 0 15px 0;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            color: #991B1B;
+            font-size: 20px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .side-heading::before {
+            content: '🔍';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #DC2626;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 14px;
         }
         
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        .sub-heading {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0 10px 0;
+            padding-right: 15px;
+            border-right: 3px solid #60A5FA;
+            background: linear-gradient(90deg, #EFF6FF 0%, transparent 100%);
+            padding: 8px 15px;
+            border-radius: 0 8px 8px 0;
         }
         
-        .control-btn i {
-            margin-left: 8px;
-        }
-        
-        .footer {
-            background: #1e293b;
-            color: white;
-            text-align: center;
+        .danger-box {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 30%, #FEF2F2 100%);
             padding: 20px;
-            margin-top: 30px;
+            margin: 15px 0;
+            border-right: 4px solid #DC2626;
+            border-radius: 12px 0 0 12px;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+            position: relative;
         }
         
-        /* كلاسات للتحكم في الطباعة */
-        .print-hide {
-            display: block;
+        .danger-box::before {
+            content: '⚠️';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #DC2626;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
         }
         
-        .print-smaller {
-            font-size: 1rem;
+        .info-box {
+            background: linear-gradient(135deg, #F0F9FF 0%, #DBEAFE 30%, #F0F9FF 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-right: 4px solid #3B82F6;
+            border-radius: 12px 0 0 12px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+            position: relative;
         }
         
-        .print-bigger {
-            font-size: 1.1rem;
+        .info-box::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #3B82F6;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
         }
         
-        .print-move-up {
-            order: 0;
+        .analysis-box {
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 30%, #F3E8FF 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-right: 4px solid #8B5CF6;
+            border-radius: 12px 0 0 12px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+            position: relative;
         }
         
-        .print-move-down {
-            order: 999;
+        .analysis-box::before {
+            content: '📊';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #8B5CF6;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
         }
         
-        /* Media Query للطباعة */
-        @media print {
-            body {
-                background: white !important;
-                padding: 0 !important;
-            }
-            
-            .container {
-                box-shadow: none !important;
-                border-radius: 0 !important;
-            }
-            
-            .print-hide {
-                display: none !important;
-            }
-            
-            .print-smaller {
-                font-size: 10pt !important;
-                transform: scale(0.95);
-            }
-            
-            .print-bigger {
-                font-size: 12pt !important;
-                line-height: 1.4;
-            }
-            
-            .print-move-up {
-                order: -1 !important;
-                page-break-before: always !important;
-            }
-            
-            .print-move-down {
-                order: 999 !important;
-                page-break-after: always !important;
-            }
-            
-            .controls {
-                display: none !important;
-            }
-            
-            .header {
-                background: #10b981 !important;
-            }
-            
-            .main-category {
-                break-inside: avoid;
-                page-break-inside: avoid;
-            }
+        .solution-box {
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 30%, #F0FDF4 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-right: 4px solid #10B981;
+            border-radius: 12px 0 0 12px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+            position: relative;
+        }
+        
+        .solution-box::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #10B981;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .gradient-table {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-table th {
+            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+        }
+        
+        .gradient-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>خريطة مفاهيم الطلائعيات</h1>
-            <p>مملكة الكائنات حقيقية النوى وحيدة الخلية</p>
-        </div>
-        
-        <div class="content">
-            <!-- قسم التحكم في الطباعة -->
-            <div class="controls print-hide">
-                <h3 class="controls-title">أدوات التحكم في الطباعة</h3>
-                <div class="controls-grid">
-                    <button class="control-btn" onclick="applyPrintClass('print-smaller')">
-                        <i class="fas fa-search-minus"></i> تصغير النص
-                    </button>
-                    <button class="control-btn" onclick="applyPrintClass('print-bigger')">
-                        <i class="fas fa-search-plus"></i> تكبير النص
-                    </button>
-                    <button class="control-btn" onclick="applyPrintClass('print-move-up')">
-                        <i class="fas fa-arrow-up"></i> رفع للأعلى
-                    </button>
-                    <button class="control-btn" onclick="applyPrintClass('print-move-down')">
-                        <i class="fas fa-arrow-down"></i> خفض للأسفل
-                    </button>
-                    <button class="control-btn" onclick="window.print()">
-                        <i class="fas fa-print"></i> طباعة الصفحة
-                    </button>
-                    <button class="control-btn" onclick="resetPrintClasses()">
-                        <i class="fas fa-redo"></i> إعادة التعيين
-                    </button>
-                </div>
-            </div>
-            
-            <!-- خريطة المفاهيم -->
-            <div class="mind-map">
-                <!-- الفئة الأولى -->
-                <div class="main-category print-move-up" style="border-color: #10b981;">
-                    <h3 class="category-title" style="color: #10b981;">
-                        <i class="fas fa-water"></i>
-                        الطلائعيات الشبيهة بالحيوانات
-                    </h3>
-                    <ul class="sub-items">
-                        <li><i class="fas fa-circle"></i> الأميبيات - تتحرك بالأقدام الكاذبة</li>
-                        <li><i class="fas fa-circle"></i> السوطيات - تتحرك بالأسواط</li>
-                        <li><i class="fas fa-circle"></i> الهدبيات - تتحرك بالأهداب</li>
-                        <li><i class="fas fa-circle"></i> البوغيات - طفيلية غير متحركة</li>
-                        <li><i class="fas fa-circle"></i> مثال: الأميبا، البراميسيوم</li>
+<body class="text-black" dir="rtl">
+
+    <!-- زر الطباعة -->
+    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <button onclick="window.print()" style="background: linear-gradient(135deg, #DC2626, #EF4444); color: white; padding: 15px 25px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); transition: all 0.3s;">
+            🖨️ طباعة المشروع
+        </button>
+    </div>
+
+    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
+        <div class="main-container">
+
+            <!-- الصفحة الأولى -->
+            <div>
+                <h1 class="main-title" style="font-size: 36px;">
+                    الكيان الإرهابي
+                    <br>
+                    <span style="font-size: 22px; background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        تشريح الظاهرة وآليات المواجهة
+                    </span>
+                </h1>
+
+                <div class="side-heading">🔍 ماهية الكيان الإرهابي</div>
+                
+                <p>الكيان الإرهابي هو تنظيم أو جماعة منظمة تتبنى العنف والإرهاب كوسيلة لتحقيق أهدافها السياسية أو الأيديولوجية أو الدينية. يتميز هذا الكيان بوجود هيكل تنظيمي محدد، وقيادة واضحة، واستراتيجية شاملة لتنفيذ أعماله الإرهابية.</p>
+                
+                <p>يختلف الكيان الإرهابي عن الجماعات الإجرامية العادية في كونه يستهدف تحقيق تغيير جذري في النظام القائم أو فرض أيديولوجية معينة، وليس مجرد تحقيق مكاسب مالية أو شخصية. كما يتميز باستخدام العنف العشوائي ضد المدنيين كوسيلة للضغط النفسي وإثارة الرعب.</p>
+
+                <div class="danger-box">
+                    <strong>🚨 الخصائص المميزة للكيان الإرهابي:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>التنظيم الهرمي:</strong> وجود قيادة مركزية وخلايا فرعية</li>
+                        <li><strong>الأيديولوجية المتطرفة:</strong> تبني فكر راديكالي يبرر العنف</li>
+                        <li><strong>استهداف المدنيين:</strong> عدم التمييز بين الأهداف العسكرية والمدنية</li>
+                        <li><strong>الهدف السياسي:</strong> السعي لتحقيق تغيير جذري في النظام</li>
+                        <li><strong>الشبكية العابرة للحدود:</strong> تجاوز الحدود الجغرافية والوطنية</li>
+                        <li><strong>استخدام التكنولوجيا:</strong> توظيف وسائل الاتصال الحديثة</li>
                     </ul>
                 </div>
+
+                <div class="side-heading">📊 التركيب التنظيمي</div>
                 
-                <!-- الفئة الثانية -->
-                <div class="main-category" style="border-color: #3b82f6;">
-                    <h3 class="category-title" style="color: #3b82f6;">
-                        <i class="fas fa-leaf"></i>
-                        الطلائعيات الشبيهة بالنباتات
-                    </h3>
-                    <ul class="sub-items">
-                        <li><i class="fas fa-circle"></i> اليوجلينات - تحتوي على بلاستيدات خضراء</li>
-                        <li><i class="fas fa-circle"></i> الدياتومات - جدارها الخلوي من السليكا</li>
-                        <li><i class="fas fa-circle"></i> السوطيات الدوارة - تسبب المد الأحمر</li>
-                        <li><i class="fas fa-circle"></i> الطحالب الذهبية - صبغة فيوكوزانثين</li>
-                        <li><i class="fas fa-circle"></i> مثال: اليوجلينا، الدياتوم</li>
-                    </ul>
+                <div class="sub-heading">🎯 القيادة المركزية</div>
+                <p>تتألف من مجموعة صغيرة من القادة الذين يضعون الاستراتيجية العامة ويتخذون القرارات المصيرية. هؤلاء القادة عادة ما يكونون محاطين بطبقات أمنية متعددة لحمايتهم من الكشف أو الاغتيال.</p>
+                
+                <div class="sub-heading">🕸️ الخلايا الفرعية</div>
+                <p>تنتشر في مناطق جغرافية مختلفة وتعمل بشكل شبه مستقل تحت التوجيه العام للقيادة المركزية. هذا النموذج يوفر مرونة تشغيلية ويقلل من المخاطر الأمنية.</p>
+                
+                <div class="sub-heading">💰 شبكات التمويل</div>
+                <p>تعتمد على مصادر متنوعة للتمويل تشمل الأنشطة الإجرامية، التجارة غير المشروعة، التبرعات، واستغلال الموارد الطبيعية في المناطق التي تسيطر عليها.</p>
+
+                <div class="analysis-box">
+                    <strong>📋 النموذج التنظيمي للكيان الإرهابي:</strong>
+                    <table class="gradient-table" border="0" cellpadding="12" cellspacing="0" width="100%" style="margin: 10px 0;">
+                        <thead>
+                            <tr>
+                                <th width="25%">المستوى</th>
+                                <th width="35%">الوظائف</th>
+                                <th width="40%">الخصائص</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>القيادة العليا</strong></td>
+                                <td>وضع الاستراتيجية، اتخاذ القرارات</td>
+                                <td>سرية تامة، حماية أمنية مشددة</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td><strong>القيادة الوسطى</strong></td>
+                                <td>تنفيذ الأوامر، التنسيق الإقليمي</td>
+                                <td>مرونة تشغيلية، اتصال محدود</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الخلايا التنفيذية</strong></td>
+                                <td>تنفيذ العمليات الإرهابية</td>
+                                <td>استقلالية نسبية، تخصص محدد</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td><strong>شبكات الدعم</strong></td>
+                                <td>اللوجستيات، التمويل، الإعلام</td>
+                                <td>متنوعة الأنشطة، منتشرة جغرافياً</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
+                <div class="side-heading">⚔️ آليات العمل والتكتيكات</div>
                 
-                <!-- الفئة الثالثة -->
-                <div class="main-category" style="border-color: #8b5cf6;">
-                    <h3 class="category-title" style="color: #8b5cf6;">
-                        <i class="fas fa-mushroom"></i>
-                        الطلائعيات الشبيهة بالفطريات
-                    </h3>
-                    <ul class="sub-items">
-                        <li><i class="fas fa-circle"></i> الفطريات الغروية - تتجمع في ظروف معينة</li>
-                        <li><i class="fas fa-circle"></i> الفطريات المائية - تعيش في المياه العذبة</li>
-                        <li><i class="fas fa-circle"></i> الفطريات البيضية - طفيلية على النباتات</li>
-                        <li><i class="fas fa-circle"></i> مثال: الفطر الغروي، العفن المائي</li>
-                    </ul>
-                </div>
+                <div class="sub-heading">🎭 التخفي والسرية</div>
+                <p>يعتمد الكيان الإرهابي على التخفي والعمل في الظل، ويستخدم أساليب متطورة للتواصل المشفر وإخفاء الهويات. كما يلجأ إلى استخدام أسماء مستعارة وجوازات سفر مزورة.</p>
                 
-                <!-- الفئة الرابعة -->
-                <div class="main-category print-move-down" style="border-color: #f59e0b;">
-                    <h3 class="category-title" style="color: #f59e0b;">
-                        <i class="fas fa-dna"></i>
-                        الخصائص العامة
-                    </h3>
-                    <ul class="sub-items">
-                        <li><i class="fas fa-circle"></i> حقيقية النوى</li>
-                        <li><i class="fas fa-circle"></i> وحيدة الخلية غالباً</li>
-                        <li><i class="fas fa-circle"></i> تعيش في بيئات رطبة</li>
-                        <li><i class="fas fa-circle"></i> بعضها ذاتي التغذية وبعضها غير ذاتي</li>
-                        <li><i class="fas fa-circle"></i> تتكاثر جنسياً ولا جنسياً</li>
-                    </ul>
-                </div>
-                
-                <!-- الفئة الخامسة -->
-                <div class="main-category" style="border-color: #ef4444;">
-                    <h3 class="category-title" style="color: #ef4444;">
-                        <i class="fas fa-heartbeat"></i>
-                        الأهمية البيئية
-                    </h3>
-                    <ul class="sub-items">
-                        <li><i class="fas fa-circle"></i> إنتاج الأكسجين</li>
-                        <li><i class="fas fa-circle"></i> أساس السلسلة الغذائية المائية</li>
-                        <li><i class="fas fa-circle"></i> تدوير المواد العضوية</li>
-                        <li><i class="fas fa-circle"></i> بعضها يسبب أمراضاً للإنسان</li>
-                        <li><i class="fas fa-circle"></i> استخدامات صناعية وعلمية</li>
+                <div class="sub-heading">📢 الدعاية والتجنيد</div>
+                <p>يستغل وسائل الإعلام الحديثة ومنصات التواصل الاجتماعي لنشر دعايته وتجنيد أعضاء جدد. يركز على استهداف الشباب المحبط والمهمش اجتماعياً أو اقتصادياً.</p>
+
+                <div class="info-box">
+                    <strong>🔧 التكتيكات الرئيسية المستخدمة:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>العمليات الانتحارية:</strong> لتحقيق أقصى تأثير نفسي ومادي</li>
+                        <li><strong>الخطف والاحتجاز:</strong> للحصول على فدية أو تحقيق مطالب سياسية</li>
+                        <li><strong>التفجيرات العشوائية:</strong> لإثارة الذعر في المجتمع</li>
+                        <li><strong>الهجمات الإلكترونية:</strong> لتعطيل البنية التحتية الرقمية</li>
+                        <li><strong>حرب الشوارع:</strong> في المناطق التي يسيطر عليها</li>
+                        <li><strong>الاغتيالات المستهدفة:</strong> لإضعاف خصومه</li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="footer">
-                <p>خريطة مفاهيم الطلائعيات - العلوم الأحياء</p>
+
+            <!-- الصفحة الثانية -->
+            <div class="page-break">
+                <div class="side-heading">🌐 التهديدات والتأثيرات</div>
+                
+                <div class="sub-heading">🏛️ التهديد الأمني</div>
+                <p>يشكل الكيان الإرهابي تهديداً مباشراً للأمن القومي والإقليمي والدولي. فقدرته على تنفيذ عمليات إرهابية منسقة ومعقدة تجعله خطراً دائماً على استقرار المجتمعات والدول.</p>
+                
+                <div class="sub-heading">💰 التأثير الاقتصادي</div>
+                <p>يكلف مكافحة الكيانات الإرهابية مليارات الدولارات سنوياً، كما تؤثر أنشطتها على الاستثمار والسياحة والتجارة الدولية. بالإضافة إلى تكلفة إعادة الإعمار في المناطق المتضررة.</p>
+                
+                <div class="sub-heading">👥 التأثير الاجتماعي</div>
+                <p>يؤدي إلى تفكك النسيج الاجتماعي، زيادة التوتر الطائفي والعرقي، وتراجع الثقة في المؤسسات الحكومية. كما يؤثر على الصحة النفسية للمجتمع ككل.</p>
+
+                <div class="danger-box">
+                    <strong>⚡ مستويات التهديد:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>محلي:</strong> تهديد الأمن الداخلي وزعزعة الاستقرار</li>
+                        <li><strong>إقليمي:</strong> نشر الفوضى عبر الحدود الوطنية</li>
+                        <li><strong>دولي:</strong> التأثير على الأمن العالمي والعلاقات الدولية</li>
+                        <li><strong>إلكتروني:</strong> مهاجمة البنية التحتية الرقمية</li>
+                        <li><strong>اقتصادي:</strong> تعطيل الأنشطة الاقتصادية والتجارية</li>
+                        <li><strong>نفسي:</strong> خلق مناخ من الخوف والقلق المستمر</li>
+                    </ul>
+                </div>
+
+                <div class="side-heading">🛡️ استراتيجيات المواجهة</div>
+                
+                <div class="sub-heading">🔍 الاستخبارات والمعلومات</div>
+                <p>تطوير شبكات استخباراتية متقدمة لرصد أنشطة الكيانات الإرهابية ومنع عملياتها قبل تنفيذها. يشمل ذلك التعاون الدولي في تبادل المعلومات والاستخبارات.</p>
+                
+                <div class="sub-heading">⚖️ الإجراءات القانونية</div>
+                <p>سن قوانين صارمة لمكافحة الإرهاب وتجريم الأنشطة المرتبطة به، مع ضمان عدم انتهاك حقوق الإنسان والحريات المدنية الأساسية.</p>
+                
+                <div class="sub-heading">🤝 التعاون الدولي</div>
+                <p>تنسيق الجهود الدولية من خلال المنظمات الإقليمية والدولية لمكافحة الكيانات الإرهابية العابرة للحدود ومنع انتشارها.</p>
+
+                <div class="solution-box">
+                    <strong>🎯 الاستراتيجية الشاملة للمواجهة:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>الوقاية:</strong> معالجة الأسباب الجذرية للتطرف والإرهاب</li>
+                        <li><strong>الحماية:</strong> تأمين الأهداف الحيوية والحساسة</li>
+                        <li><strong>المتابعة:</strong> رصد الأنشطة المشبوهة وجمع المعلومات</li>
+                        <li><strong>الاستجابة:</strong> التعامل السريع مع التهديدات والحوادث</li>
+                        <li><strong>التعافي:</strong> إعادة البناء وعلاج آثار الإرهاب</li>
+                        <li><strong>التقييم:</strong> مراجعة وتطوير الاستراتيجيات المستمر</li>
+                    </ul>
+                </div>
+
+                <div class="side-heading">🔬 مكافحة التجنيد والدعاية</div>
+                
+                <div class="sub-heading">📚 الحرب الفكرية</div>
+                <p>تطوير خطاب مضاد يفند الأيديولوجية المتطرفة ويقدم بديلاً فكرياً معتدلاً. يشمل ذلك إشراك العلماء والمفكرين في مواجهة الفكر المتطرف بالحجة والدليل.</p>
+                
+                <div class="sub-heading">🌐 مكافحة الدعاية الرقمية</div>
+                <p>مراقبة وإزالة المحتوى الإرهابي من منصات التواصل الاجتماعي، وتطوير تقنيات متقدمة لكشف ومنع انتشار الدعاية الإرهابية عبر الإنترنت.</p>
+
+                <div class="analysis-box">
+                    <strong>📊 مقارنة بين أساليب المواجهة:</strong>
+                    <table class="gradient-table" border="0" cellpadding="10" cellspacing="0" width="100%" style="margin: 10px 0; font-size: 10pt;">
+                        <thead>
+                            <tr>
+                                <th width="25%">النوع</th>
+                                <th width="35%">الأساليب</th>
+                                <th width="40%">التقييم</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>أمنية</strong></td>
+                                <td>عمليات عسكرية، اعتقالات</td>
+                                <td>فعالة قصيرة المدى، قد تخلق ردود فعل</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td><strong>اقتصادية</strong></td>
+                                <td>تجميد الأصول، منع التمويل</td>
+                                <td>مؤثرة على المدى المتوسط</td>
+                            </tr>
+                            <tr>
+                                <td><strong>فكرية</strong></td>
+                                <td>مناقشة الأفكار، إعادة التأهيل</td>
+                                <td>حل جذري طويل المدى</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td><strong>اجتماعية</strong></td>
+                                <td>برامج الإدماج، التنمية</td>
+                                <td>وقائية وعلاجية شاملة</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="side-heading">🌟 الرؤية المستقبلية</div>
+                
+                <div class="sub-heading">🔮 التحديات المستقبلية</div>
+                <p>مع تطور التكنولوجيا، تواجه جهود مكافحة الكيانات الإرهابية تحديات جديدة مثل الذكاء الاصطناعي، العملات المشفرة، والهجمات الإلكترونية المتطورة. هذا يتطلب تطوير استراتيجيات مبتكرة للمواجهة.</p>
+                
+                <div class="sub-heading">🤖 الحلول التقنية</div>
+                <p>استخدام الذكاء الاصطناعي وتحليل البيانات الضخمة لتحسين قدرات الكشف المبكر والتنبؤ بالتهديدات. كما يمكن استخدام التكنولوجيا لتطوير أساليب جديدة لمكافحة الدعاية الإرهابية.</p>
+
+                <div class="info-box">
+                    <strong>🚀 الاتجاهات المستقبلية في مكافحة الكيانات الإرهابية:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>الذكاء الاصطناعي:</strong> لتحليل الأنماط والتنبؤ بالتهديدات</li>
+                        <li><strong>تحليل البيانات الضخمة:</strong> لفهم شبكات التمويل والتجنيد</li>
+                        <li><strong>التعاون الرقمي:</strong> منصات دولية لتبادل المعلومات</li>
+                        <li><strong>التأهيل النفسي:</strong> برامج متطورة لإعادة دمج المتطرفين</li>
+                        <li><strong>الوقاية المجتمعية:</strong> إشراك أوسع للمجتمع المدني</li>
+                        <li><strong>التقنيات الحيوية:</strong> للكشف عن الهويات المزيفة</li>
+                    </ul>
+                </div>
+
+                <div class="solution-box">
+                    <strong>📋 خلاصة وتوصيات:</strong>
+                    <p>مكافحة الكيان الإرهابي تتطلب نهجاً شاملاً ومتكاملاً يجمع بين الحلول الأمنية والسياسية والاقتصادية والاجتماعية. لا يمكن القضاء على هذا التهديد بالقوة العسكرية وحدها، بل يجب معالجة الأسباب الجذرية ومكافحة الفكر المتطرف بالتعليم والحوار والتنمية المستدامة.</p>
+                    <br>
+                    <p><strong>الهدف النهائي:</strong> بناء مجتمعات قادرة على مقاومة التطرف والإرهاب من خلال تعزيز قيم التسامح والعدالة والتنمية الشاملة، مع الحفاظ على الحريات والحقوق الأساسية للإنسان.</p>
+                </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        // دالة لتطبيق كلاسات الطباعة
-        function applyPrintClass(className) {
-            // إزالة كلاسات الطباعة السابقة
-            const elements = document.querySelectorAll('.main-category');
-            elements.forEach(element => {
-                element.classList.remove('print-smaller', 'print-bigger', 'print-move-up', 'print-move-down');
-            });
-            
-            // تطبيق الكلاس الجديد على العناصر المحددة
-            const targetElements = document.querySelectorAll('.' + className);
-            targetElements.forEach(element => {
-                element.classList.add(className);
-            });
-            
-            // فتح نافذة الطباعة
-            setTimeout(() => {
-                window.print();
-            }, 500);
-        }
-        
-        // دالة لإعادة التعيين
-        function resetPrintClasses() {
-            const elements = document.querySelectorAll('.main-category');
-            elements.forEach(element => {
-                element.classList.remove('print-smaller', 'print-bigger', 'print-move-up', 'print-move-down');
-            });
-            alert('تم إعادة تعيين إعدادات الطباعة');
-        }
-        
-        // تطبيق تلقائي عند فتح معاينة الطباعة
+        // تحسين الطباعة
         window.addEventListener('beforeprint', function() {
-            // يمكن إضافة إعدادات تلقائية هنا
+            document.body.style.fontSize = '11pt';
+            document.body.style.background = 'white';
+            document.querySelectorAll('.main-container').forEach(el => {
+                el.style.background = 'white';
+                el.style.boxShadow = 'none';
+            });
         });
     </script>
 </body>
