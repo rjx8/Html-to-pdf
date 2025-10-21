@@ -1,101 +1,497 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>عرض الفضاء</title>
-<style>
-  html, body {
-    margin:0; padding:0; width:100vw; height:100vh; overflow:hidden;
-    font-family: 'Tajawal', sans-serif; background:#000; color:#fff;
-  }
-  .slides {
-    display:flex;
-    width:700%;
-    height:100%;
-    transition: transform 0.6s ease;
-  }
-  .slide {
-    width:100vw;
-    height:100vh;
-    flex-shrink:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:50px;
-    box-sizing:border-box;
-    text-align:center;
-  }
-  h1,h2,p { margin:10px; }
-  button {
-    position:absolute; top:50%; transform:translateY(-50%);
-    font-size:2em; background:none; border:none; color:#fff; cursor:pointer;
-    user-select:none;
-  }
-  #prev { left:10px; } #next { right:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الوحدة الأولى: Big Changes - ملخص شامل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.2cm;
+            }
+            
+            body {
+                font-size: 11pt;
+                line-height: 1.4;
+                font-family: 'Amiri', serif;
+            }
+            
+            .page-break {
+                page-break-before: always;
+                padding-top: 0.5cm;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            h1 {
+                font-size: 20pt;
+                margin-bottom: 0.8cm;
+                text-align: center;
+            }
+            
+            .side-heading {
+                font-size: 14pt;
+                margin: 0.4cm 0 0.3cm 0;
+                border-right: 4px solid #059669;
+                padding-right: 0.4cm;
+                font-weight: bold;
+                color: #047857;
+            }
+            
+            .sub-heading {
+                font-size: 12pt;
+                margin: 0.3cm 0 0.2cm 0;
+                font-weight: 600;
+                color: #374151;
+            }
+            
+            p {
+                margin-bottom: 0.3cm;
+                text-align: justify;
+            }
+            
+            .verse {
+                font-size: 11pt;
+                margin: 0.3cm 0;
+                padding: 0.3cm;
+                background: #F0FDF4;
+                border-right: 3px solid #059669;
+                font-style: italic;
+            }
+            
+            .info-box {
+                margin: 0.2cm 0;
+                padding: 0.4cm;
+                page-break-inside: avoid;
+            }
+            
+            ul, ol {
+                margin: 0.15cm 0;
+            }
+            
+            li {
+                margin-bottom: 0.1cm;
+            }
+        }
+        
+        body {
+            font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            line-height: 1.6;
+        }
+        
+        .main-title {
+            text-align: center;
+            color: #047857;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #059669;
+            padding-bottom: 15px;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .side-heading {
+            border-right: 4px solid #059669;
+            padding-right: 15px;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+            color: #047857;
+            font-size: 18px;
+        }
+        
+        .sub-heading {
+            font-weight: 600;
+            color: #374151;
+            margin: 15px 0 8px 0;
+        }
+        
+        .verse {
+            background: #F0FDF4;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #059669;
+            border-radius: 8px 0 0 8px;
+            font-style: italic;
+            font-size: 16px;
+        }
+        
+        .info-box {
+            background: #FEF7FF;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #8B5CF6;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .highlight-box {
+            background: #F0F9FF;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #3B82F6;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .comparison-box {
+            background: #FFFBEB;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #F59E0B;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .vocabulary-box {
+            background: #FEF3F3;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #EF4444;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .grammar-box {
+            background: #F0FDFA;
+            padding: 15px;
+            margin: 12px 0;
+            border-right: 3px solid #0D9488;
+            border-radius: 8px 0 0 8px;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-white text-black" dir="rtl">
 
-<div class="slides" id="slides">
-  <div class="slide" style="background:#0b0c28;">
-    <h1>رحلة إلى الفضاء</h1>
-    <p>اكتشف أسرار الكون والنجوم والكواكب</p>
-  </div>
-  <div class="slide" style="background:#1a1a40;">
-    <h2>ما هو الفضاء؟</h2>
-    <p>الفضاء هو المنطقة الواسعة خارج الغلاف الجوي للأرض ويحتوي على كواكب، نجوم، أقمار، ومجرات.</p>
-  </div>
-  <div class="slide" style="background:#2b2b60;">
-    <h2>الكواكب في المجموعة الشمسية</h2>
-    <p>عطارد، الزهرة، الأرض، المريخ، المشتري، زحل، أورانوس، نبتون</p>
-  </div>
-  <div class="slide" style="background:#3c3c80;">
-    <h2>النجوم والمجرات</h2>
-    <p>الشمس هي أقرب نجم لنا. مجرتنا هي درب التبانة، تحتوي على مليارات النجوم.</p>
-  </div>
-  <div class="slide" style="background:#4d4da0;">
-    <h2>رحلات الفضاء والتكنولوجيا</h2>
-    <p>أول إنسان في الفضاء: يوري غاغارين. هبوط الإنسان على القمر: نيل آرمسترونج 1969.</p>
-  </div>
-  <div class="slide" style="background:#5e5ebf;">
-    <h2>أهمية دراسة الفضاء</h2>
-    <p>لفهم الكون، تطوير التكنولوجيا، والتنبؤ بالكوارث الطبيعية.</p>
-  </div>
-  <div class="slide" style="background:#6f6fdf;">
-    <h2>الخاتمة</h2>
-    <p>إلى النجوم نرتقي 🌟</p>
-  </div>
-</div>
+    <!-- زر الطباعة -->
+    <div class="no-print" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <button onclick="window.print()" style="background: #059669; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            🖨️ طباعة الملخص
+        </button>
+    </div>
 
-<button id="prev">◀</button>
-<button id="next">▶</button>
+    <div style="max-width: 21cm; margin: 0 auto; padding: 1cm;">
 
-<script>
-  const slides = document.getElementById('slides');
-  let current = 0;
-  const total = slides.children.length;
+        <!-- الصفحة الأولى -->
+        <div>
+            <h1 class="main-title" style="font-size: 28px;">
+                الوحدة الأولى: Big Changes
+                <br>
+                <span style="font-size: 20px; color: #6B7280;">ملخص شامل - Mega Goal 1</span>
+            </h1>
 
-  document.getElementById('next').onclick = () => {
-    current = (current+1)%total;
-    slides.style.transform = `translateX(-${current*100}vw)`;
-  }
-  document.getElementById('prev').onclick = () => {
-    current = (current-1+total)%total;
-    slides.style.transform = `translateX(-${current*100}vw)`;
-  }
+            <div class="side-heading">مقدمة الوحدة</div>
+            
+            <p>تركز الوحدة الأولى "Big Changes" على التغيرات العالمية الكبرى التي شكلت عالمنا المعاصر، وكيف أثرت هذه التغيرات على حياة الناس والمجتمعات. تقدم الوحدة نظرة شاملة لأهم الأحداث التاريخية والتطورات التكنولوجية التي غيرت مسار البشرية.</p>
+            
+            <p>من خلال هذه الوحدة، يتعلم الطلاب التعبير عن الآراء، ومناقشة القضايا العالمية، واستخدام القواعد النحوية المختلفة لوصف الأحداث الماضية والحالية.</p>
 
-  // للسحب على الجوال (Swipe)
-  let startX = 0;
-  slides.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-  slides.addEventListener('touchend', e => {
-    let endX = e.changedTouches[0].clientX;
-    if(endX < startX - 50) { current = (current+1)%total; }
-    if(endX > startX + 50) { current = (current-1+total)%total; }
-    slides.style.transform = `translateX(-${current*100}vw)`;
-  });
-</script>
+            <div class="side-heading">الموضوعات الرئيسية</div>
+            
+            <div class="highlight-box">
+                <strong>المحاور الأساسية للوحدة:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>التغيرات التاريخية الكبرى:</strong> توحيد المملكة العربية السعودية، تأسيس الإمارات، سباق الفضاء</li>
+                    <li><strong>ثورة الاتصالات:</strong> التطور التكنولوجي وتأثيره على المجتمع</li>
+                    <li><strong>القضايا العالمية:</strong> الاحتباس الحراري، الفقر، البطالة، وغيرها</li>
+                    <li><strong>قواعد اللغة:</strong> الأزمنة المختلفة واستخداماتها</li>
+                    <li><strong>المهارات اللغوية:</strong> الاستماع، المحادثة، القراءة، الكتابة</li>
+                </ul>
+            </div>
 
+            <div class="side-heading">التغيرات العالمية الكبرى</div>
+            
+            <div class="sub-heading">توحيد المملكة العربية السعودية</div>
+            <p>في عام 1902، استعاد الملك عبد العزيز الرياض ووسع نفوذه ليشمل الحجاز ومكة والمدينة. تم الإعلان الرسمي عن تأسيس المملكة العربية السعودية في 23 سبتمبر 1932، وبدأت مسيرة التحديث والبناء.</p>
+            
+            <div class="sub-heading">تأسيس دولة الإمارات العربية المتحدة</div>
+            <p>تأسست الإمارات عام 1971 بعد اكتشاف احتياطيات النفط في أبوظبي عام 1958. ساهمت عائدات النفط في تطوير اقتصاد مزدهر وبنية تحتية متطورة.</p>
+            
+            <div class="sub-heading">سباق الفضاء</div>
+            <p>بدأ السباق بإطلاق القمر الصناعي سبوتنيك 1 عام 1957، ثم هبوط أبولو 11 على القمر عام 1969. شارك الأمير سلطان بن سلمان في رحلة فضائية عام 1985 كممثل للعربسات.</p>
+
+            <div class="sub-heading">ثورة الاتصالات</div>
+            <p>بدأت بإطلاق القمر الصناعي تيلستار عام 1962، مما مهد الطريق للبث التلفزيوني الفضائي والهواتف الخلوية والإنترنت. أصبحت المعلومات الرقمية جزءاً طبيعياً من حياة الأجيال الجديدة.</p>
+
+            <div class="info-box">
+                <strong>أهم التواريخ في الوحدة:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>1902:</strong> استعادة الرياض</li>
+                    <li><strong>1932:</strong> تأسيس المملكة العربية السعودية</li>
+                    <li><strong>1957:</strong> إطلاق سبوتنيك 1</li>
+                    <li><strong>1958:</strong> اكتشاف النفط في أبوظبي</li>
+                    <li><strong>1962:</strong> إطلاق تيلستار</li>
+                    <li><strong>1969:</strong> هبوط أبولو 11 على القمر</li>
+                    <li><strong>1971:</strong> تأسيس الإمارات العربية المتحدة</li>
+                    <li><strong>1985:</strong> رحلة الأمير سلطان بن سلمان الفضائية</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- الصفحة الثانية -->
+        <div class="page-break">
+            <div class="side-heading">المفردات الأساسية</div>
+            
+            <div class="vocabulary-box">
+                <strong>الكلمات المهمة في الوحدة:</strong>
+                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
+                    <thead>
+                        <tr style="background: #FECACA;">
+                            <th width="40%">الكلمة</th>
+                            <th width="30%">المعنى</th>
+                            <th width="30%">المثال</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>affect</td>
+                            <td>يؤثر</td>
+                            <td>Technology affects our daily life</td>
+                        </tr>
+                        <tr style="background: #FEE2E2;">
+                            <td>establish</td>
+                            <td>يؤسس</td>
+                            <td>King Abdulaziz established Saudi Arabia</td>
+                        </tr>
+                        <tr>
+                            <td>launch</td>
+                            <td>يطلق</td>
+                            <td>They launched a new satellite</td>
+                        </tr>
+                        <tr style="background: #FEE2E2;">
+                            <td>take for granted</td>
+                            <td>يعتبر أمراً مسلماً به</td>
+                            <td>We take the internet for granted</td>
+                        </tr>
+                        <tr>
+                            <td>host</td>
+                            <td>يستضيف</td>
+                            <td>Abu Dhabi hosts the Grand Prix</td>
+                        </tr>
+                        <tr style="background: #FEE2E2;">
+                            <td>transform</td>
+                            <td>يحول</td>
+                            <td>Technology transformed communication</td>
+                        </tr>
+                        <tr>
+                            <td>vibrant</td>
+                            <td>نابض بالحياة</td>
+                            <td>a vibrant society</td>
+                        </tr>
+                        <tr style="background: #FEE2E2;">
+                            <td>thriving</td>
+                            <td>مزدهر</td>
+                            <td>thriving economy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="side-heading">القواعد النحوية</div>
+            
+            <div class="grammar-box">
+                <strong>المضارع البسيط (Simple Present)</strong>
+                <p><strong>الاستخدام:</strong> للحقائق، العادات، والمواقف الدائمة</p>
+                <p><strong>أمثلة:</strong></p>
+                <ul style="margin-right: 20px;">
+                    <li>The earth goes around the sun</li>
+                    <li>I work in an office</li>
+                    <li>Water boils at 100°C</li>
+                </ul>
+            </div>
+
+            <div class="grammar-box">
+                <strong>المضارع المستمر (Present Progressive)</strong>
+                <p><strong>الاستخدام:</strong> للأحداث الجارية الآن أو المؤقتة</p>
+                <p><strong>أمثلة:</strong></p>
+                <ul style="margin-right: 20px;">
+                    <li>I am studying English now</li>
+                    <li>She is working in Dubai this year</li>
+                    <li>They are watching TV at the moment</li>
+                </ul>
+            </div>
+
+            <div class="grammar-box">
+                <strong>الماضي البسيط (Simple Past)</strong>
+                <p><strong>الاستخدام:</strong> لأحداث بدأت وانتهت في الماضي</p>
+                <p><strong>أمثلة:</strong></p>
+                <ul style="margin-right: 20px;">
+                    <li>I visited Paris last year</li>
+                    <li>She worked in a bank in 2020</li>
+                    <li>They launched the satellite in 1957</li>
+                </ul>
+            </div>
+
+            <div class="grammar-box">
+                <strong>المضارع التام (Present Perfect)</strong>
+                <p><strong>الاستخدام:</strong> لأحداث بدأت في الماضي ولا تزال مستمرة</p>
+                <p><strong>أمثلة:</strong></p>
+                <ul style="margin-right: 20px;">
+                    <li>I have lived here for five years</li>
+                    <li>She has worked here since 2020</li>
+                    <li>They have known each other for a long time</li>
+                </ul>
+            </div>
+
+            <div class="comparison-box">
+                <strong>مقارنة بين الأزمنة:</strong>
+                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
+                    <thead>
+                        <tr style="background: #FEF3C7;">
+                            <th width="25%">الزمن</th>
+                            <th width="35%">الاستخدام</th>
+                            <th width="40%">المثال</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>المضارع البسيط</td>
+                            <td>حقائق وعادات دائمة</td>
+                            <td>I work every day</td>
+                        </tr>
+                        <tr style="background: #FEF7CD;">
+                            <td>المضارع المستمر</td>
+                            <td>أحداث جارية الآن</td>
+                            <td>I am working now</td>
+                        </tr>
+                        <tr>
+                            <td>الماضي البسيط</td>
+                            <td>أحداث انتهت في الماضي</td>
+                            <td>I worked yesterday</td>
+                        </tr>
+                        <tr style="background: #FEF7CD;">
+                            <td>المضارع التام</td>
+                            <td>أحداث مستمرة من الماضي</td>
+                            <td>I have worked here for 2 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- الصفحة الثالثة -->
+        <div class="page-break">
+            <div class="side-heading">الماضي المستمر (Past Progressive)</div>
+            
+            <div class="grammar-box">
+                <strong>الاستخدام:</strong>
+                <ul style="margin-right: 20px;">
+                    <li>لوصف فعل كان مستمراً في وقت محدد في الماضي</li>
+                    <li>لوصف فعلين حدثا في نفس الوقت في الماضي</li>
+                    <li>مع when لوصف فعل مستمر قاطعه فعل آخر</li>
+                </ul>
+                
+                <strong>أمثلة:</strong>
+                <ul style="margin-right: 20px;">
+                    <li>I was studying when you called</li>
+                    <li>They were watching TV at 8 PM yesterday</li>
+                    <li>While I was cooking, he was cleaning</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">القراءة: التقدم نحو المستقبل</div>
+            
+            <p>يتناول النص القرائي رؤية المملكة العربية السعودية 2030 وأهدافها الاستراتيجية. ترتكز الرؤية على ثلاثة ركائز أساسية:</p>
+            
+            <div class="info-box">
+                <strong>ركائز رؤية 2030:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>الركيزة الأولى:</strong> مكانة المملكة كقلب للعالمين العربي والإسلامي</li>
+                    <li><strong>الركيزة الثانية:</strong> التصميم لتصبح مركزاً للأعمال العالمية</li>
+                    <li><strong>الركيزة الثالثة:</strong> تحويل الموقع الجغرافي إلى مركز عالمي يربط ثلاث قارات</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <strong>محاور الرؤية الثلاثة:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>مجتمع حيوي:</strong> يعيش أفراده وفق مبدأ الاعتدال الإسلامي</li>
+                    <li><strong>اقتصاد مزدهر:</strong> يوفر فرصاً للجميع من خلال نظام تعليمي يلبي احتياجات السوق</li>
+                    <li><strong>وطن طموح:</strong> مبني على حكومة مسؤولة وشفافة وعالية الأداء</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">الكتابة: كيف غير الإنترنت العالم</div>
+            
+            <p>بدأ الإنترنت في عام 1969 كمشروع اتصال بين الحواسيب، وتطور ليصبح شبكة عالمية يستخدمها أكثر من 4.5 مليار شخص. أحدث الإنترنت تغييرات جذرية في:</p>
+            
+            <div class="info-box">
+                <strong>مجالات تأثير الإنترنت:</strong>
+                <ul style="margin-right: 20px; margin-top: 8px;">
+                    <li><strong>الاتصالات:</strong> البريد الإلكتروني، المراسلة الفورية، المكالمات المرئية</li>
+                    <li><strong>المعلومات:</strong> سهولة الوصول للمعلومات عبر محركات البحث</li>
+                    <li><strong>التعليم:</strong> التعلم عبر الإنترنت والحصول على شهادات أكاديمية</li>
+                    <li><strong>الشبكات الاجتماعية:</strong> التواصل مع الأصدقاء ومشاركة الصور والفيديوهات</li>
+                </ul>
+            </div>
+
+            <div class="side-heading">المشروع: مقابلة شخصية</div>
+            
+            <p>يهدف المشروع إلى إجراء مقابلة مع شخص عاش أو يعيش في بلد آخر، وتوثيق تجربته. يشمل المشروع:</p>
+            
+            <div class="highlight-box">
+                <strong>خطوات المشروع:</strong>
+                <ol style="margin-right: 20px; margin-top: 8px;">
+                    <li>إيجاد شخص مناسب للمقابلة (قريب أو صديق)</li>
+                    <li>تحضير الأسئلة المناسبة</li>
+                    <li>إجراء المقابلة وتسجيل الإجابات</li>
+                    <li>تنظيم المعلومات في جدول</li>
+                    <li>تقديم النتائج في الصف</li>
+                </ol>
+            </div>
+
+            <div class="side-heading">التقييم الذاتي</div>
+            
+            <p>في نهاية الوحدة، يقوم الطلاب بتقييم أنفسهم في المجالات التالية:</p>
+            
+            <div class="comparison-box">
+                <strong>مجالات التقييم:</strong>
+                <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 10px 0; font-size: 10pt;">
+                    <thead>
+                        <tr style="background: #FEF3C7;">
+                            <th width="60%">المهارة</th>
+                            <th width="40%">مستوى الإتقان</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>مناقشة الأحداث العالمية الماضية وأثرها الحالي</td>
+                            <td>□ ممتاز □ جيد □ يحتاج تحسين</td>
+                        </tr>
+                        <tr style="background: #FEF7CD;">
+                            <td>التحدث عن القضايا العالمية</td>
+                            <td>□ ممتاز □ جيد □ يحتاج تحسين</td>
+                        </tr>
+                        <tr>
+                            <td>استخدام المضارع البسيط والمستمر</td>
+                            <td>□ ممتاز □ جيد □ يحتاج تحسين</td>
+                        </tr>
+                        <tr style="background: #FEF7CD;">
+                            <td>استخدام الماضي البسيط والمضارع التام</td>
+                            <td>□ ممتاز □ جيد □ يحتاج تحسين</td>
+                        </tr>
+                        <tr>
+                            <td>استخدام الماضي المستمر</td>
+                            <td>□ ممتاز □ جيد □ يحتاج تحسين</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="side-heading">خاتمة</div>
+            
+            <p>تمثل الوحدة الأولى "Big Changes" مدخلاً شاملاً لفهم التغيرات العالمية الكبرى وتأثيرها على حياتنا. من خلال دراسة الأحداث التاريخية والتطورات التكنولوجية، يطور الطلاب وعياً أعمق بالعالم من حولهم وقدرة أفضل على التعبير عن آرائهم باللغة الإنجليزية.</p>
+            
+            <p>تساعد القواعد النحوية المقدمة في هذه الوحدة الطلاب على وصف الأحداث الماضية والحالية بدقة، مما يمهد الطريق لاستخدام أكثر تطوراً للغة في الوحدات القادمة.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // تحسين الطباعة
+        window.addEventListener('beforeprint', function() {
+            document.body.style.fontSize = '11pt';
+        });
+    </script>
 </body>
 </html>
