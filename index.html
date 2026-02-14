@@ -1,1501 +1,258 @@
-برسل لك  كود مع مسمياته ابغاك ترتبه وتتاكد اذا هو مكتوب بشكل صحيح او لا
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>مشروع التنمية المستدامة</title>
+    <style>
+        /* --- الأساسيات ودعم iOS Safari --- */
+        :root {
+            --primary-black: #000000;
+            --dark-gray: #333333;
+            --light-gray: #666666;
+            --border-color: #999999;
+            --bg-box: #f9f9f9;
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 16px; /* منع الـ Auto-zoom في Safari */
+            line-height: 1.5;
+            color: var(--primary-black);
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* --- تنسيق الصفحة (العرض على الشاشة) --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- زر الطباعة المحسن --- */
+        .print-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            min-height: 44px; /* معيار Apple للمس */
+            margin: 20px auto;
+            background-color: var(--dark-gray);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        /* --- تنسيقات المحتوى --- */
+        h1 { font-size: 28px; text-align: center; margin-bottom: 30px; line-height: 1.2; }
+        h2 { font-size: 20px; color: var(--dark-gray); border-right: 4px solid var(--primary-black); padding-right: 10px; margin-top: 30px; }
+        h3 { font-size: 18px; color: var(--light-gray); margin-top: 20px; }
+        p { font-size: 16px; margin-bottom: 15px; text-align: justify; }
+
+        .info-box {
+            background-color: var(--bg-box);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th { background-color: #eee; font-weight: bold; }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .page-footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--light-gray);
+            margin-top: 20px;
+        }
+
+        /* --- تحسينات الطباعة المتقدمة --- */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+
+            body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                width: 100%;
+                max-width: none;
+                padding: 0;
+                margin-right: 2.5cm; /* الهامش الأيمن المطلوب */
+                margin-left: 2cm;
+                margin-top: 2cm;
+                margin-bottom: 2cm;
+            }
+
+            .print-btn { display: none !important; }
+
+            h1, h2, h3 { 
+                page-break-after: avoid; 
+                page-break-inside: avoid;
+            }
+
+            section {
+                page-break-after: auto;
+            }
+
+            .cover-page {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                page-break-after: always;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            table, img, .info-box {
+                page-break-inside: avoid;
+            }
+
+            /* ترقيم الصفحات التلقائي في بعض الطابعات */
+            .page-number::after {
+                content: "صفحة " counter(page);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="print-btn" onclick="tryPrint()">طباعة التقرير</button>
+
+    <section class="cover-page">
+        <br><br><br><br>
+        <h1>مشروع التنمية المستدامة: رؤية 2030</h1>
+        <div style="text-align: center; margin-top: 50px;">
+            <h3>إعداد الطالب: [اسم الطالب هنا]</h3>
+            <p>التاريخ: 14 فبراير 2026</p>
+            <p>المادة: الدراسات البيئية</p>
+        </div>
+    </section>
+
+    <section class="page-break">
+        <h2>أولاً: مفهوم التنمية المستدامة</h2>
+        <p>
+            التنمية المستدامة هي عملية تطوير الأرض والمدن والمجتمعات وكذلك الأعمال التجارية بشرط أن تلبي احتياجات الحاضر دون المساس بقدرة الأجيال القادمة على تلبية احتياجاتها. تهدف إلى تحقيق التوازن بين النمو الاقتصادي، والحفاظ على البيئة، والعدالة الاجتماعية.
+        </p>
 
-الصحيح تقول لي تراه صحيح
-
-والخطا تقول لي انه خطا
-
-قبل ماتبدا بالتعديل تعلمني ايش فهمت
-
-واذا قلت لك ابدا تبدا
-
-
-الكود مع مسميات الهيكل وماتحته
-
-config/constants.py
-
-import os
-from typing import List, Final
-
-# Tokens and IDs
-TOKEN: Final[str] = os.getenv("TELEGRAM_BOT_TOKEN", "8456614647:AAHvj0QnIYz6jAy4gshVlc2ZMDqFj6tA-gQ")
-DEV_ID: Final[int] = int(os.getenv("DEV_ID", "6687103961"))
-DEV_ID_2: Final[int] = 6551087410
-AYMAN_ID: Final[int] = 8145086924
-
-# Webhook settings
-WEBHOOK_BASE: Final[str] = os.getenv("WEBHOOK_BASE", "https://ro-h7yi.onrender.com")
-WEBHOOK_URL: Final[str] = f"{WEBHOOK_BASE}/{TOKEN}"
-WEBAPP_HOST: Final[str] = "0.0.0.0"
-WEBAPP_PORT: Final[int] = int(os.getenv("PORT", "10000"))
-
-# Channels
-REQUIRED_CHANNEL_1: Final[str] = "@SaQimmah"
-CHANNEL_1_LINK: Final[str] = "https://t.me/SaQimmah"
-REQUIRED_CHANNEL_2: Final[str] = "@SaQimmah2"
-CHANNEL_2_LINK: Final[str] = "https://t.me/SaQimmah2"
-
-# Groups
-ALLOWED_GROUP_USERNAME: Final[str] = "SaQimmah1"
-ALLOWED_GROUP_LINK: Final[str] = "https://t.me/SaQimmah1"
-ALLOWED_GROUP_IDS: Final[List[int]] = [
-    -1002666275220,
-    -1003603582646
-]
-
-# Commands
-RORY_COMMAND: Final[str] = "روري قولي"
-MAX_HOURLY_MESSAGES: Final[int] = 3
-
-# Images
-HOURLY_IMAGES: Final[List[str]] = [
-    "IMG_8197.jpeg",
-    "IMG_8198.jpeg",
-    "IMG_8200.jpeg",
-    "IMG_8201.jpeg",
-    "IMG_8202.jpeg"
-]
-
-# Timezone
-RIYADH_TZ: Final[str] = 'Asia/Riyadh'
-SETTINGS_FILE: Final[str] = "settings.json"
-
-
-
-----
-
-
-config/settings.py
-
-
-import json
-import os
-import time
-from datetime import datetime
-from typing import Dict, Any, Optional
-from collections import defaultdict
-import logging
-
-from .constants import SETTINGS_FILE, ALLOWED_GROUP_IDS, DEV_ID_2, AYMAN_ID
-
-logger = logging.getLogger(__name__)
-
-# Default settings structure
-DEFAULT_SETTINGS: Dict[str, Any] = {
-    "group_ids": ALLOWED_GROUP_IDS,
-    "group_title": "مناقشة ملخصات اول ثانوي | قمة",
-    "channel_1_id": None,
-    "channel_2_id": None,
-    "enabled": True,
-    "developers": [DEV_ID_2, AYMAN_ID],
-    "channel_1_access_verified": False,
-    "channel_2_access_verified": False,
-    "group_registered": True,
-    "forward_deleted_messages": True,
-    "auto_check": True,
-    "hourly_messages": {
-        "enabled": True,
-        "message_ids": [],
-        "last_hour": None,
-        "last_check_time": None,
-        "last_was_image": False,
-        "last_image_index": -1,
-        "last_athkar_index": -1,
-        "last_friday_index": -1
-    },
-    "keepalive": {
-        "enabled": True,
-        "last_sent": None,
-        "render_ping_enabled": True,
-        "last_ping": None
-    },
-    "cleanup": {
-        "enabled": True,
-        "last_cleanup": None,
-        "interval_minutes": 30
-    },
-    "stats": {
-        "checks": 0,
-        "passed": 0,
-        "deleted": 0,
-        "forwarded_to_bot": 0,
-        "channel_1_violations": 0,
-        "channel_2_violations": 0,
-        "auto_checks": 0,
-        "manual_checks": 0,
-        "cache_clears": 0,
-        "render_pings": 0,
-        "hourly_messages_sent": 0,
-        "hourly_messages_deleted": 0,
-        "hourly_images_sent": 0,
-        "keepalive_sent": 0,
-        "cleanup_cycles": 0,
-        "memory_cleanups": 0,
-        "rory_commands": 0,
-        "rory_with_media": 0,
-        "private_messages": 0,
-        "group_messages": 0,
-        "webhook_updates": 0
-    },
-    "created_at": None
-}
-
-class SettingsManager:
-    """Manages application settings with caching and periodic saving"""
-    
-    def __init__(self):
-        self._cache: Optional[Dict[str, Any]] = None
-        self._last_save: float = 0
-        self._stats_buffer: Dict[str, int] = defaultdict(int)
-        self._last_stats_flush: float = time.time()
-    
-    def load(self) -> Dict[str, Any]:
-        """Load settings from file with caching"""
-        if self._cache is not None:
-            return self._cache
-        
-        try:
-            if not os.path.exists(SETTINGS_FILE):
-                DEFAULT_SETTINGS["created_at"] = datetime.now().isoformat()
-                self._save_to_file(DEFAULT_SETTINGS)
-                self._cache = DEFAULT_SETTINGS.copy()
-                return self._cache
-            
-            with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            
-            # Merge with defaults
-            merged = DEFAULT_SETTINGS.copy()
-            merged.update(data)
-            
-            # Ensure nested structures are properly merged
-            for section in ["stats", "hourly_messages", "keepalive", "cleanup"]:
-                if section in merged and section in DEFAULT_SETTINGS:
-                    default_section = DEFAULT_SETTINGS[section].copy()
-                    default_section.update(merged.get(section, {}))
-                    merged[section] = default_section
-            
-            # Ensure required fields
-            merged["group_ids"] = ALLOWED_GROUP_IDS
-            merged["group_registered"] = True
-            
-            if DEV_ID_2 not in merged.get("developers", []):
-                merged["developers"].append(DEV_ID_2)
-            if AYMAN_ID not in merged.get("developers", []):
-                merged["developers"].append(AYMAN_ID)
-            
-            if "message_ids" not in merged["hourly_messages"]:
-                merged["hourly_messages"]["message_ids"] = []
-            if "last_athkar_index" not in merged["hourly_messages"]:
-                merged["hourly_messages"]["last_athkar_index"] = -1
-            if "last_friday_index" not in merged["hourly_messages"]:
-                merged["hourly_messages"]["last_friday_index"] = -1
-            
-            self._cache = merged
-            return merged
-            
-        except Exception as e:
-            logger.error(f"Error loading settings: {e}")
-            return DEFAULT_SETTINGS.copy()
-    
-    def save(self, data: Dict[str, Any], force: bool = False) -> None:
-        """Save settings with rate limiting"""
-        self._cache = data.copy()
-        
-        current_time = time.time()
-        if not force and current_time - self._last_save < 5:
-            return
-        
-        try:
-            self._save_to_file(data)
-            self._last_save = current_time
-        except Exception as e:
-            logger.error(f"Error saving settings: {e}")
-    
-    def _save_to_file(self, data: Dict[str, Any]) -> None:
-        """Save settings to file"""
-        with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    def bump_stat(self, key: str) -> None:
-        """Buffer statistics for periodic saving"""
-        self._stats_buffer[key] += 1
-        
-        if time.time() - self._last_stats_flush > 30:  # Flush every 30 seconds
-            self.flush_stats()
-    
-    def flush_stats(self) -> None:
-        """Flush buffered statistics to disk"""
-        if not self._stats_buffer:
-            return
-        
-        settings = self.load()
-        for key, value in self._stats_buffer.items():
-            if key in settings["stats"]:
-                settings["stats"][key] += value
-            else:
-                settings["stats"][key] = value
-        
-        self.save(settings, force=True)
-        self._stats_buffer.clear()
-        self._last_stats_flush = time.time()
-
-# Global instance
-settings_manager = SettingsManager()
-
-
------
-
-handlers/callbacks.py
-
-from aiogram import Router, Bot
-from aiogram.types import CallbackQuery
-from typing import Optional
-
-from config.settings import settings_manager
-from utils.cache import fast_cache
-from utils.text_messages import BOT_RESPONSES
-from utils.helpers import is_dev
-
-callbacks_router = Router(name="callbacks")
-
-@callbacks_router.callback_query()
-async def handle_callbacks(cb: CallbackQuery, bot: Bot):
-    """Handle all callback queries"""
-    if not cb.from_user:
-        return
-    
-    user_id = cb.from_user.id
-    data = cb.data or ""
-    
-    # Channel check callbacks
-    if data.startswith("check_ch1_"):
-        await handle_channel_check(cb, bot, data, "ch1", "قناة الملخصات")
-        return
-    
-    if data.startswith("check_ch2_"):
-        await handle_channel_check(cb, bot, data, "ch2", "قناة الخدمات")
-        return
-    
-    # Developer callbacks
-    if not is_dev(user_id):
-        await cb.answer(BOT_RESPONSES["callback_unauthorized"], show_alert=True)
-        return
-    
-    if data == "toggle_system":
-        settings = settings_manager.load()
-        settings["enabled"] = not settings["enabled"]
-        settings_manager.save(settings)
-        
-        status = "مفعل ✅" if settings["enabled"] else "معطل ❌"
-        await cb.answer(
-            BOT_RESPONSES["system_toggled"].format(status=status),
-            show_alert=True
-        )
-    
-    elif data == "show_stats":
-        settings = settings_manager.load()
-        stats = settings["stats"]
-        message_ids = settings["hourly_messages"].get("message_ids", [])
-        
-        stats_text = (
-            f"<b>إحصائيات</b>\n\n"
-            f"فحوصات: {stats.get('checks', 0)}\n"
-            f"ناجحة: {stats.get('passed', 0)}\n"
-            f"محذوفة: {stats.get('deleted', 0)}\n"
-            f"روري قولي: {stats.get('rory_commands', 0)}\n"
-            f"مع وسائط: {stats.get('rory_with_media', 0)}\n"
-            f"رسائل دورية: {stats.get('hourly_messages_sent', 0)}\n"
-            f"محفوظة: {len(message_ids)}/3"
-        )
-        
-        await cb.message.answer(stats_text)
-        await cb.answer()
-    
-    else:
-        await cb.answer()
-
-async def handle_channel_check(
-    cb: CallbackQuery, 
-    bot: Bot, 
-    data: str, 
-    channel_key: str,
-    channel_name: str
-) -> None:
-    """Handle channel membership check callbacks"""
-    try:
-        # Extract target user ID
-        target_user_id = int(data.split("_")[2])
-        
-        # Verify callback is from the intended user
-        if cb.from_user.id != target_user_id:
-            await cb.answer(BOT_RESPONSES["callback_not_yours"], show_alert=True)
-            return
-        
-        # Clear cache and check membership
-        fast_cache.clear_user_membership(target_user_id)
-        settings_manager.bump_stat("cache_clears")
-        settings_manager.bump_stat("manual_checks")
-        
-        # Check membership (simplified - actual implementation would call the checker)
-        # For now, we'll just acknowledge the button press
-        await cb.answer(
-            BOT_RESPONSES["callback_success"].format(channel_name=channel_name),
-            show_alert=True
-        )
-        
-    except Exception:
-        await cb.answer(BOT_RESPONSES["callback_error"], show_alert=True)
-        
-        
-        -------
-        
-        handlers/subscription.py
-        
-        from aiogram import Router, Bot
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.enums import ChatType
-from typing import Optional, Tuple
-
-from config.constants import RORY_COMMAND, CHANNEL_1_LINK, CHANNEL_2_LINK
-from config.settings import settings_manager
-from utils.cache import fast_cache
-from utils.text_messages import CHANNEL_MESSAGES, BOT_RESPONSES
-from utils.helpers import is_ayman, check_bot_can_delete, get_user_info_cached
-
-subscription_router = Router(name="subscription")
-
-async def send_channel_check_messages(
-    bot: Bot,
-    chat_id: int,
-    user_id: int,
-    is_member_ch1: bool,
-    is_member_ch2: bool
-) -> None:
-    """Send channel check messages based on membership status"""
-    user_info = await get_user_info_cached(bot, user_id)
-    user_mention = f"<a href='tg://user?id={user_id}'>{user_info['first_name']}</a>"
-    
-    if not is_member_ch1:
-        text = CHANNEL_MESSAGES["channel_1_check"].format(user_mention=user_mention)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="قناة الملخصات", url=CHANNEL_1_LINK)],
-            [InlineKeyboardButton(text="تحقق من الاشتراك", callback_data=f"check_ch1_{user_id}")]
-        ])
-        try:
-            await bot.send_message(chat_id=chat_id, text=text, reply_markup=keyboard)
-        except:
-            pass
-    
-    if not is_member_ch2:
-        text = CHANNEL_MESSAGES["channel_2_check"].format(user_mention=user_mention)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="الخدمات الطلابية", url=CHANNEL_2_LINK)],
-            [InlineKeyboardButton(text="تحقق من الاشتراك", callback_data=f"check_ch2_{user_id}")]
-        ])
-        try:
-            await bot.send_message(chat_id=chat_id, text=text, reply_markup=keyboard)
-        except:
-            pass
-
-async def process_rory_command(message: Message, bot: Bot) -> None:
-    """Process rory command using copy_to for media handling"""
-    if not message.from_user:
-        return
-    
-    user_id = message.from_user.id
-    chat_id = message.chat.id
-    
-    # Check if user is Ayman
-    if not is_ayman(user_id):
-        can_delete = await check_bot_can_delete(bot, chat_id)
-        if can_delete:
-            try:
-                await message.delete()
-            except:
-                pass
-        try:
-            await message.answer(BOT_RESPONSES["rory_not_allowed"])
-        except:
-            pass
-        return
-    
-    # Extract text
-    command_text = message.text or message.caption or ""
-    text_to_send = command_text[len(RORY_COMMAND):].strip()
-    
-    # Check if there's content
-    if not text_to_send and not (message.photo or message.video or message.document or 
-                                 message.audio or message.voice or message.animation or 
-                                 message.sticker or message.video_note):
-        try:
-            await message.reply(
-                BOT_RESPONSES["rory_no_content"].format(rory_command=RORY_COMMAND)
-            )
-        except:
-            pass
-        return
-    
-    # Try to delete command message
-    can_delete = await check_bot_can_delete(bot, chat_id)
-    if can_delete:
-        try:
-            await message.delete()
-        except:
-            pass
-    
-    # Prepare reply parameters
-    reply_to_message_id = None
-    if message.reply_to_message:
-        reply_to_message_id = message.reply_to_message.message_id
-    
-    # Use copy_to for media messages
-    try:
-        if message.photo or message.video or message.document or message.audio or message.voice or message.animation:
-            # Handle media with copy_to
-            await message.copy_to(
-                chat_id=chat_id,
-                caption=text_to_send if text_to_send else None,
-                reply_to_message_id=reply_to_message_id
-            )
-            settings_manager.bump_stat("rory_with_media")
-        elif message.sticker or message.video_note:
-            # Handle stickers and video notes separately
-            if message.sticker:
-                await bot.send_sticker(
-                    chat_id=chat_id,
-                    sticker=message.sticker.file_id,
-                    reply_to_message_id=reply_to_message_id
-                )
-            elif message.video_note:
-                await bot.send_video_note(
-                    chat_id=chat_id,
-                    video_note=message.video_note.file_id,
-                    reply_to_message_id=reply_to_message_id
-                )
-            
-            # Send text separately if exists
-            if text_to_send:
-                await bot.send_message(
-                    chat_id=chat_id,
-                    text=text_to_send,
-                    reply_to_message_id=reply_to_message_id
-                )
-                settings_manager.bump_stat("rory_with_media")
-        else:
-            # Handle text only
-            await bot.send_message(
-                chat_id=chat_id,
-                text=text_to_send,
-                reply_to_message_id=reply_to_message_id
-            )
-        
-        settings_manager.bump_stat("rory_commands")
-        
-    except Exception as e:
-        # Log error to developer
-        try:
-            await bot.send_message(
-                chat_id=6687103961,  # DEV_ID
-                text=f"خطأ في روري قولي:\n{e}"
-            )
-        except:
-            pass
-
-@subscription_router.message(F.chat.type == ChatType.PRIVATE)
-async def other_private_messages(message: Message):
-    """Handle unknown private messages"""
-    if not message.from_user:
-        return
-    
-    settings_manager.bump_stat("private_messages")
-    await message.answer(BOT_RESPONSES["private_unknown"])
-    
-    
-    ----
-    
-    
-    middleware/subscription_middleware.py
-    
-    
-    from aiogram import Router, Bot
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.enums import ChatType
-from typing import Optional, Tuple
-
-from config.constants import RORY_COMMAND, CHANNEL_1_LINK, CHANNEL_2_LINK
-from config.settings import settings_manager
-from utils.cache import fast_cache
-from utils.text_messages import CHANNEL_MESSAGES, BOT_RESPONSES
-from utils.helpers import is_ayman, check_bot_can_delete, get_user_info_cached
-
-subscription_router = Router(name="subscription")
-
-async def send_channel_check_messages(
-    bot: Bot,
-    chat_id: int,
-    user_id: int,
-    is_member_ch1: bool,
-    is_member_ch2: bool
-) -> None:
-    """Send channel check messages based on membership status"""
-    user_info = await get_user_info_cached(bot, user_id)
-    user_mention = f"<a href='tg://user?id={user_id}'>{user_info['first_name']}</a>"
-    
-    if not is_member_ch1:
-        text = CHANNEL_MESSAGES["channel_1_check"].format(user_mention=user_mention)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="قناة الملخصات", url=CHANNEL_1_LINK)],
-            [InlineKeyboardButton(text="تحقق من الاشتراك", callback_data=f"check_ch1_{user_id}")]
-        ])
-        try:
-            await bot.send_message(chat_id=chat_id, text=text, reply_markup=keyboard)
-        except:
-            pass
-    
-    if not is_member_ch2:
-        text = CHANNEL_MESSAGES["channel_2_check"].format(user_mention=user_mention)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="الخدمات الطلابية", url=CHANNEL_2_LINK)],
-            [InlineKeyboardButton(text="تحقق من الاشتراك", callback_data=f"check_ch2_{user_id}")]
-        ])
-        try:
-            await bot.send_message(chat_id=chat_id, text=text, reply_markup=keyboard)
-        except:
-            pass
-
-async def process_rory_command(message: Message, bot: Bot) -> None:
-    """Process rory command using copy_to for media handling"""
-    if not message.from_user:
-        return
-    
-    user_id = message.from_user.id
-    chat_id = message.chat.id
-    
-    # Check if user is Ayman
-    if not is_ayman(user_id):
-        can_delete = await check_bot_can_delete(bot, chat_id)
-        if can_delete:
-            try:
-                await message.delete()
-            except:
-                pass
-        try:
-            await message.answer(BOT_RESPONSES["rory_not_allowed"])
-        except:
-            pass
-        return
-    
-    # Extract text
-    command_text = message.text or message.caption or ""
-    text_to_send = command_text[len(RORY_COMMAND):].strip()
-    
-    # Check if there's content
-    if not text_to_send and not (message.photo or message.video or message.document or 
-                                 message.audio or message.voice or message.animation or 
-                                 message.sticker or message.video_note):
-        try:
-            await message.reply(
-                BOT_RESPONSES["rory_no_content"].format(rory_command=RORY_COMMAND)
-            )
-        except:
-            pass
-        return
-    
-    # Try to delete command message
-    can_delete = await check_bot_can_delete(bot, chat_id)
-    if can_delete:
-        try:
-            await message.delete()
-        except:
-            pass
-    
-    # Prepare reply parameters
-    reply_to_message_id = None
-    if message.reply_to_message:
-        reply_to_message_id = message.reply_to_message.message_id
-    
-    # Use copy_to for media messages
-    try:
-        if message.photo or message.video or message.document or message.audio or message.voice or message.animation:
-            # Handle media with copy_to
-            await message.copy_to(
-                chat_id=chat_id,
-                caption=text_to_send if text_to_send else None,
-                reply_to_message_id=reply_to_message_id
-            )
-            settings_manager.bump_stat("rory_with_media")
-        elif message.sticker or message.video_note:
-            # Handle stickers and video notes separately
-            if message.sticker:
-                await bot.send_sticker(
-                    chat_id=chat_id,
-                    sticker=message.sticker.file_id,
-                    reply_to_message_id=reply_to_message_id
-                )
-            elif message.video_note:
-                await bot.send_video_note(
-                    chat_id=chat_id,
-                    video_note=message.video_note.file_id,
-                    reply_to_message_id=reply_to_message_id
-                )
-            
-            # Send text separately if exists
-            if text_to_send:
-                await bot.send_message(
-                    chat_id=chat_id,
-                    text=text_to_send,
-                    reply_to_message_id=reply_to_message_id
-                )
-                settings_manager.bump_stat("rory_with_media")
-        else:
-            # Handle text only
-            await bot.send_message(
-                chat_id=chat_id,
-                text=text_to_send,
-                reply_to_message_id=reply_to_message_id
-            )
-        
-        settings_manager.bump_stat("rory_commands")
-        
-    except Exception as e:
-        # Log error to developer
-        try:
-            await bot.send_message(
-                chat_id=6687103961,  # DEV_ID
-                text=f"خطأ في روري قولي:\n{e}"
-            )
-        except:
-            pass
-
-@subscription_router.message(F.chat.type == ChatType.PRIVATE)
-async def other_private_messages(message: Message):
-    """Handle unknown private messages"""
-    if not message.from_user:
-        return
-    
-    settings_manager.bump_stat("private_messages")
-    await message.answer(BOT_RESPONSES["private_unknown"])
-    
-    
-    -----
-    
-    tasks/background_tasks.py
-    
-    import asyncio
-import gc
-import random
-import logging
-from datetime import datetime
-from typing import List, Tuple, Optional
-
-import psutil
-import aiohttp
-from aiogram import Bot
-from aiogram.types import FSInputFile, InlineKeyboardMarkup, InlineKeyboardButton
-
-from config.constants import (
-    ALLOWED_GROUP_IDS,
-    HOURLY_IMAGES,
-    MAX_HOURLY_MESSAGES,
-    CHANNEL_1_LINK,
-    CHANNEL_2_LINK,
-    WEBHOOK_BASE,
-    DEV_ID,
-    AYMAN_ID
-)
-from config.settings import settings_manager
-from utils.cache import fast_cache
-from utils.helpers import get_riyadh_time, get_image_path, can_send_messages
-from utils.text_messages import get_random_athkar, get_random_friday_message
-
-logger = logging.getLogger(__name__)
-
-
-class BackgroundTaskManager:
-    """Manages all background tasks for the bot"""
-    
-    def __init__(self, bot: Bot):
-        self.bot = bot
-        self._running = False
-        self._tasks: List[asyncio.Task] = []
-    
-    async def start_all(self) -> None:
-        """Start all background tasks"""
-        if self._running:
-            return
-        
-        self._running = True
-        
-        # Create and store all tasks
-        self._tasks = [
-            asyncio.create_task(self.hourly_message_task()),
-            asyncio.create_task(self.keepalive_task()),
-            asyncio.create_task(self.cleanup_task()),
-            asyncio.create_task(self.render_keepalive_task())
-        ]
-        
-        logger.info("All background tasks started")
-    
-    async def stop_all(self) -> None:
-        """Stop all background tasks"""
-        self._running = False
-        
-        # Cancel all tasks
-        for task in self._tasks:
-            if not task.done():
-                task.cancel()
-                try:
-                    await task
-                except asyncio.CancelledError:
-                    pass
-        
-        self._tasks.clear()
-        logger.info("All background tasks stopped")
-    
-    async def hourly_message_task(self) -> None:
-        """Task to send hourly messages"""
-        await asyncio.sleep(60)  # Initial delay
-        
-        while self._running:
-            try:
-                await self.send_hourly_message()
-                
-                riyadh_time = get_riyadh_time()
-                if 55 <= riyadh_time.minute <= 59:
-                    await asyncio.sleep(60)  # Check every minute near hour change
-                else:
-                    await asyncio.sleep(300)  # Check every 5 minutes otherwise
-                    
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in hourly message task: {e}")
-                await asyncio.sleep(60)
-    
-    async def keepalive_task(self) -> None:
-        """Task to send keepalive messages to developer"""
-        await asyncio.sleep(300)  # Initial 5 minute delay
-        
-        while self._running:
-            try:
-                if settings_manager.load()["keepalive"]["enabled"]:
-                    await self.send_keepalive()
-                await asyncio.sleep(600)  # Every 10 minutes
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in keepalive task: {e}")
-                await asyncio.sleep(600)
-    
-    async def cleanup_task(self) -> None:
-        """Task to cleanup memory and cache"""
-        while self._running:
-            try:
-                if settings_manager.load()["cleanup"]["enabled"]:
-                    await self.cleanup_memory()
-                    settings_manager.bump_stat("cleanup_cycles")
-                await asyncio.sleep(30 * 60)  # Every 30 minutes
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in cleanup task: {e}")
-                await asyncio.sleep(30 * 60)
-    
-    async def render_keepalive_task(self) -> None:
-        """Task to ping render server to keep it alive"""
-        await asyncio.sleep(60)  # Initial delay
-        
-        while self._running:
-            try:
-                if settings_manager.load()["keepalive"].get("render_ping_enabled", True):
-                    await self.ping_render_server()
-                await asyncio.sleep(600)  # Every 10 minutes
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in render keepalive task: {e}")
-                await asyncio.sleep(600)
-    
-    async def delete_old_hourly_messages(self, chat_id: int) -> None:
-        """Delete old hourly messages keeping only the latest ones"""
-        settings = settings_manager.load()
-        message_ids = settings["hourly_messages"].get("message_ids", [])
-        
-        if len(message_ids) <= MAX_HOURLY_MESSAGES:
-            return
-        
-        messages_to_delete = message_ids[:-MAX_HOURLY_MESSAGES]
-        remaining_messages = message_ids[-MAX_HOURLY_MESSAGES:]
-        
-        deleted_count = 0
-        for msg_id in messages_to_delete:
-            try:
-                await self.bot.delete_message(chat_id=chat_id, message_id=msg_id)
-                deleted_count += 1
-            except Exception:
-                pass
-        
-        # Update settings
-        settings["hourly_messages"]["message_ids"] = remaining_messages
-        settings["stats"]["hourly_messages_deleted"] = (
-            settings["stats"].get("hourly_messages_deleted", 0) + deleted_count
-        )
-        settings_manager.save(settings)
-    
-    def get_available_images(self) -> List[str]:
-        """Get list of available hourly images"""
-        available = []
-        for img in HOURLY_IMAGES:
-            path = get_image_path(img)
-            if path and path != img:  # Path found and exists
-                available.append(img)
-        return available
-    
-    def get_next_image_index(self) -> int:
-        """Get next image index for hourly messages"""
-        settings = settings_manager.load()
-        last_index = settings["hourly_messages"].get("last_image_index", -1)
-        available_images = self.get_available_images()
-        
-        if not available_images:
-            return -1
-        
-        # Try to find next available image
-        for i in range(len(HOURLY_IMAGES)):
-            next_index = (last_index + i + 1) % len(HOURLY_IMAGES)
-            if HOURLY_IMAGES[next_index] in available_images:
-                return next_index
-        
-        return -1  # No available image found
-    
-    async def send_hourly_message(self) -> None:
-        """Send hourly message to the group"""
-        settings = settings_manager.load()
-        
-        if not settings["hourly_messages"]["enabled"]:
-            return
-        
-        try:
-            riyadh_time = get_riyadh_time()
-            current_hour = riyadh_time.hour
-            current_minute = riyadh_time.minute
-            
-            # Only send between minute 55-59
-            if current_minute < 55:
-                return
-            
-            last_hour = settings["hourly_messages"].get("last_hour")
-            if last_hour == current_hour:
-                return
-            
-            # Use first allowed group for hourly messages
-            target_group = ALLOWED_GROUP_IDS[0]
-            
-            if not await can_send_messages(self.bot, target_group):
-                return
-            
-            # Delete old messages first
-            await self.delete_old_hourly_messages(target_group)
-            
-            # Create inline keyboard
-            inline_keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [
-                    InlineKeyboardButton(text="قناة الملخصات", url=CHANNEL_1_LINK),
-                    InlineKeyboardButton(text="الخدمات الطلابية", url=CHANNEL_2_LINK)
-                ]
-            ])
-            
-            sent_message = None
-            last_was_image = settings["hourly_messages"].get("last_was_image", False)
-            available_images = self.get_available_images()
-            
-            # Try to send image if available and last message wasn't an image
-            if not last_was_image and available_images:
-                next_image_index = self.get_next_image_index()
-                if next_image_index >= 0:
-                    image_name = HOURLY_IMAGES[next_image_index]
-                    image_path = get_image_path(image_name)
-                    
-                    try:
-                        photo = FSInputFile(image_path)
-                        sent_message = await self.bot.send_photo(
-                            chat_id=target_group,
-                            photo=photo,
-                            reply_markup=inline_keyboard
-                        )
-                        
-                        # Update settings
-                        settings["hourly_messages"]["last_was_image"] = True
-                        settings["hourly_messages"]["last_image_index"] = next_image_index
-                        settings_manager.bump_stat("hourly_images_sent")
-                        
-                    except Exception as e:
-                        logger.error(f"Failed to send image: {e}")
-                        sent_message = None
-            
-            # If no image sent, send text message
-            if sent_message is None:
-                if riyadh_time.weekday() == 4:  # Friday
-                    message_text, friday_index = get_random_friday_message(
-                        settings["hourly_messages"].get("last_friday_index", -1)
-                    )
-                    settings["hourly_messages"]["last_friday_index"] = friday_index
-                else:
-                    message_text, athkar_index = get_random_athkar(
-                        settings["hourly_messages"].get("last_athkar_index", -1)
-                    )
-                    settings["hourly_messages"]["last_athkar_index"] = athkar_index
-                
-                sent_message = await self.bot.send_message(
-                    chat_id=target_group,
-                    text=message_text,
-                    reply_markup=inline_keyboard
-                )
-                settings["hourly_messages"]["last_was_image"] = False
-            
-            # Update message tracking
-            if sent_message:
-                message_ids = settings["hourly_messages"].get("message_ids", [])
-                message_ids.append(sent_message.message_id)
-                settings["hourly_messages"]["message_ids"] = message_ids
-                settings["hourly_messages"]["last_hour"] = current_hour
-                settings["hourly_messages"]["last_check_time"] = riyadh_time.isoformat()
-                settings_manager.bump_stat("hourly_messages_sent")
-                settings_manager.save(settings)
-            
-        except Exception as e:
-            logger.error(f"Error sending hourly message: {e}")
-    
-    async def send_keepalive(self) -> None:
-        """Send keepalive status message to developer"""
-        try:
-            riyadh_time = get_riyadh_time()
-            memory_usage = psutil.Process().memory_info().rss / 1024 / 1024
-            settings = settings_manager.load()
-            stats = settings["stats"]
-            message_ids = settings["hourly_messages"].get("message_ids", [])
-            
-            message = (
-                f"<b>نبضة v9.0</b>\n\n"
-                f"الوقت: {riyadh_time.strftime('%H:%M:%S')}\n"
-                f"النظام: {'مفعل' if settings['enabled'] else 'معطل'}\n"
-                f"فحص: {stats.get('checks', 0)} | حذف: {stats.get('deleted', 0)}\n"
-                f"روري قولي: {stats.get('rory_commands', 0)}\n"
-                f"رسائل محفوظة: {len(message_ids)}/{MAX_HOURLY_MESSAGES}\n"
-                f"الذاكرة: {memory_usage:.1f}MB"
-            )
-            
-            await self.bot.send_message(DEV_ID, message)
-            settings_manager.bump_stat("keepalive_sent")
-            
-            # Update last sent time
-            settings["keepalive"]["last_sent"] = datetime.now().isoformat()
-            settings_manager.save(settings)
-            
-        except Exception as e:
-            logger.error(f"Error sending keepalive: {e}")
-    
-    async def ping_render_server(self) -> bool:
-        """Ping render server to keep it alive"""
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(f"{WEBHOOK_BASE}/health", timeout=10) as response:
-                    if response.status == 200:
-                        settings_manager.bump_stat("render_pings")
-                        
-                        # Update last ping time
-                        settings = settings_manager.load()
-                        settings["keepalive"]["last_ping"] = datetime.now().isoformat()
-                        settings_manager.save(settings)
-                        
-                        return True
-        except Exception as e:
-            logger.debug(f"Render ping failed: {e}")
-        
-        return False
-    
-    async def cleanup_memory(self) -> bool:
-        """Cleanup memory and cache"""
-        try:
-            # Run garbage collection
-            gc.collect()
-            
-            # Clear expired cache entries
-            fast_cache.clear_expired()
-            
-            # Flush buffered statistics
-            settings_manager.flush_stats()
-            
-            # Update cleanup statistics
-            settings = settings_manager.load()
-            settings["stats"]["memory_cleanups"] = settings["stats"].get("memory_cleanups", 0) + 1
-            settings["cleanup"]["last_cleanup"] = datetime.now().isoformat()
-            settings_manager.save(settings)
-            
-            return True
-            
-        except Exception as e:
-            logger.error(f"Error in memory cleanup: {e}")
-            return False
-
-
-# Global instance and helper function
-_task_manager: Optional[BackgroundTaskManager] = None
-
-async def start_background_tasks(bot: Bot) -> None:
-    """Start all background tasks (to be called from main)"""
-    global _task_manager
-    
-    if _task_manager is None:
-        _task_manager = BackgroundTaskManager(bot)
-    
-    await _task_manager.start_all()
-
-async def stop_background_tasks() -> None:
-    """Stop all background tasks (to be called on shutdown)"""
-    global _task_manager
-    
-    if _task_manager is not None:
-        await _task_manager.stop_all()
-        _task_manager = None
-        
-        
-        ----
-        
-        tasks/stats_flusher.py
-        
-        import asyncio
-from config.settings import settings_manager
-
-class StatsFlusher:
-    """Periodically flushes statistics to disk"""
-    
-    def __init__(self, interval: int = 30):
-        self.interval = interval
-        self._running = False
-    
-    async def start(self):
-        """Start the stats flusher task"""
-        self._running = True
-        while self._running:
-            await asyncio.sleep(self.interval)
-            settings_manager.flush_stats()
-    
-    def stop(self):
-        """Stop the stats flusher"""
-        self._running = False
-
-# Global instance
-stats_flusher = StatsFlusher()
-
------
-
-
-utils/cache.py
-
-import time
-from typing import Dict, Optional, Any
-import threading
-from collections import defaultdict
-
-class FastCache:
-    """Efficient cache manager with automatic expiration"""
-    
-    def __init__(self):
-        self._membership_cache: Dict[str, bool] = {}
-        self._user_info_cache: Dict[int, Dict[str, Any]] = {}
-        self._admin_cache: Dict[str, bool] = {}
-        self._expiry_times: Dict[str, float] = {}
-        
-        # Cache durations in seconds
-        self._cache_duration: int = 10
-        self._user_info_duration: int = 1800
-        self._admin_cache_duration: int = 300
-        
-        self._lock = threading.RLock()
-    
-    def _get_expiry_key(self, base_key: str) -> str:
-        """Generate expiry key"""
-        return f"exp_{base_key}"
-    
-    def _is_expired(self, key: str) -> bool:
-        """Check if cache entry is expired"""
-        expiry_key = self._get_expiry_key(key)
-        if expiry_key in self._expiry_times:
-            return time.time() > self._expiry_times[expiry_key]
-        return True
-    
-    def _clean_expired(self) -> None:
-        """Clean expired entries"""
-        current_time = time.time()
-        expired_keys = []
-        
-        for key, expiry in self._expiry_times.items():
-            if current_time > expiry:
-                expired_keys.append(key)
-        
-        for key in expired_keys:
-            cache_key = key[4:]  # Remove "exp_" prefix
-            self._expiry_times.pop(key, None)
-            
-            if key.startswith("exp_user_"):
-                user_id = int(cache_key.split("_")[1])
-                self._user_info_cache.pop(user_id, None)
-            elif key.startswith("exp_admin_"):
-                self._admin_cache.pop(cache_key, None)
-            else:
-                self._membership_cache.pop(cache_key, None)
-    
-    def get_membership(self, user_id: int, channel_key: str) -> Optional[bool]:
-        """Get cached membership status"""
-        with self._lock:
-            self._clean_expired()
-            key = f"{user_id}_{channel_key}"
-            
-            if key in self._membership_cache and not self._is_expired(key):
-                return self._membership_cache[key]
-            
-            return None
-    
-    def set_membership(self, user_id: int, channel_key: str, is_member: bool) -> None:
-        """Set membership status in cache"""
-        with self._lock:
-            key = f"{user_id}_{channel_key}"
-            expiry_key = self._get_expiry_key(key)
-            
-            self._membership_cache[key] = is_member
-            self._expiry_times[expiry_key] = time.time() + self._cache_duration
-    
-    def clear_user_membership(self, user_id: int) -> None:
-        """Clear all membership cache for a user"""
-        with self._lock:
-            keys_to_remove = [
-                key for key in self._membership_cache.keys() 
-                if key.startswith(f"{user_id}_")
-            ]
-            
-            for key in keys_to_remove:
-                self._membership_cache.pop(key, None)
-                self._expiry_times.pop(self._get_expiry_key(key), None)
-    
-    def get_user_info(self, user_id: int) -> Optional[Dict[str, Any]]:
-        """Get cached user info"""
-        with self._lock:
-            self._clean_expired()
-            
-            if user_id in self._user_info_cache and not self._is_expired(f"user_{user_id}"):
-                return self._user_info_cache[user_id]
-            
-            return None
-    
-    def set_user_info(self, user_id: int, info: Dict[str, Any]) -> None:
-        """Set user info in cache"""
-        with self._lock:
-            self._user_info_cache[user_id] = info
-            expiry_key = self._get_expiry_key(f"user_{user_id}")
-            self._expiry_times[expiry_key] = time.time() + self._user_info_duration
-    
-    def get_admin_status(self, user_id: int, chat_id: int) -> Optional[bool]:
-        """Get cached admin status"""
-        with self._lock:
-            self._clean_expired()
-            key = f"admin_{user_id}_{chat_id}"
-            expiry_key = self._get_expiry_key(key)
-            
-            if key in self._admin_cache and not self._is_expired(key):
-                return self._admin_cache[key]
-            
-            return None
-    
-    def set_admin_status(self, user_id: int, chat_id: int, is_admin: bool) -> None:
-        """Set admin status in cache"""
-        with self._lock:
-            key = f"admin_{user_id}_{chat_id}"
-            expiry_key = self._get_expiry_key(key)
-            
-            self._admin_cache[key] = is_admin
-            self._expiry_times[expiry_key] = time.time() + self._admin_cache_duration
-    
-    def clear_expired(self) -> None:
-        """Clear all expired entries"""
-        with self._lock:
-            self._clean_expired()
-
-# Global instance
-fast_cache = FastCache()
-
-
----
-
-utils/text_messages.py
-
-from typing import Dict
-
-# Daily Athkar
-DAILY_ATHKAR: Dict[str, list] = {
-    "messages": [
-        "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ",
-        "سُبْحَانَ اللهِ وَالْحَمْدُ للهِ وَلَا إِلَهَ إِلَّا اللهُ وَاللهُ أَكْبَرُ",
-        "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-        "أَسْتَغْفِرُ اللهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ",
-        "سُبْحَانَ اللهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ",
-        "الْحَمْدُ للهِ حَمْدًا كَثِيرًا طَيِّبًا مُبَارَكًا فِيهِ",
-        "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ",
-        "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ",
-        "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
-        "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
-        "اللَّهُمَّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ",
-        "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ",
-        "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي",
-        "اللَّهُمَّ ارْزُقْنِي عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
-        "حَسْبِيَ اللهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ"
-    ]
-}
-
-# Friday Messages
-FRIDAY_MESSAGES: Dict[str, list] = {
-    "messages": [
-        "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
-        "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ\n\nلا تنسوا قراءة سورة الكهف"
-    ]
-}
-
-# Channel Check Messages
-CHANNEL_MESSAGES: Dict[str, str] = {
-    "channel_1_check": "يا {user_mention}\n🔴 <b>اشتراك إجباري</b>\n\nعشان تقدر تكتب بقروب المناقشة لازم تدخل قناة الملخصات\n\nادخل القناة وارجع اكتب🌹",
-    "channel_2_check": "يا {user_mention}\n🔴 <b>اشتراك إجباري</b>\n\nعشان تقدر تكتب بقروب المناقشة لازم تدخل قناة الخدمات الطلابية\n\nادخل القناة وارجع اكتب🌹"
-}
-
-# Bot Responses
-BOT_RESPONSES: Dict[str, str] = {
-    "start_dev": (
-        "<b>لوحة التحكم v9.0</b>\n\n"
-        "مرحباً {first_name}!\n"
-        "ID: <code>{user_id}</code>\n\n"
-        "النظام: {system_status}\n"
-        "فحوصات: {checks_count}\n"
-        "روري قولي: {rory_count}\n"
-        "رسائل محفوظة: {saved_messages}/{max_messages}\n\n"
-        "<b>المجموعات المسموحة:</b>\n"
-        "<code>{allowed_groups}</code>"
-    ),
-    "start_user": (
-        "مرحباً {first_name}!\n\n"
-        "أنا بوت إدارة مجموعة قمة\n\n"
-        "للانضمام:\n"
-        "1- اشترك في <a href='{channel1_link}'>قناة الملخصات</a>\n"
-        "2- اشترك في <a href='{channel2_link}'>قناة الخدمات</a>\n"
-        "3- انضم لـ <a href='{group_link}'>المجموعة</a>"
-    ),
-    "help_dev": (
-        "<b>دليل الأوامر</b>\n\n"
-        "<b>المجموعة:</b>\n"
-        "- <code>{rory_command} نص</code> - إرسال رسالة (أيمن فقط)\n"
-        "- <code>{rory_command}</code> + صورة/فيديو\n\n"
-        "<b>الخاص:</b>\n"
-        "- /start - لوحة التحكم\n"
-        "- /help - المساعدة\n"
-        "- /stats - الإحصائيات"
-    ),
-    "help_user": (
-        "<b>المساعدة</b>\n\n"
-        "للكتابة في المجموعة:\n"
-        "1- اشترك في <a href='{channel1_link}'>قناة الملخصات</a>\n"
-        "2- اشترك في <a href='{channel2_link}'>قناة الخدمات</a>"
-    ),
-    "stats_dev": (
-        "<b>إحصائيات مفصلة</b>\n\n"
-        "<b>الفحوصات:</b>\n"
-        "- إجمالي: {checks_total}\n"
-        "- ناجحة: {checks_passed}\n"
-        "- محذوفة: {checks_deleted}\n\n"
-        "<b>الأوامر:</b>\n"
-        "- روري قولي: {rory_commands}\n"
-        "- مع وسائط: {rory_with_media}\n\n"
-        "<b>الرسائل:</b>\n"
-        "- دورية: {hourly_sent}\n"
-        "- محفوظة: {saved_messages}/{max_messages}"
-    ),
-    "private_unknown": (
-        "لم أفهم رسالتك\n\n"
-        "جرب:\n"
-        "- /start - البداية\n"
-        "- /help - المساعدة"
-    ),
-    "rory_no_content": (
-        "اكتب النص بعد الأمر أو أرفق وسائط\n\n"
-        "مثال: <code>{rory_command} مرحباً</code>"
-    ),
-    "rory_not_allowed": "هذا الأمر خاص بأيمن فقط 💜",
-    "callback_not_yours": "هذا الزر ليس لك",
-    "callback_success": "ممتاز! أنت مشترك في {channel_name} ✅",
-    "callback_failed": "لم تشترك في {channel_name} بعد ❌",
-    "callback_error": "خطأ",
-    "callback_unauthorized": "غير مصرح",
-    "system_toggled": "النظام الآن: {status}"
-}
-
-def get_random_athkar(last_index: int = -1) -> tuple:
-    """Get random athkar avoiding repetition"""
-    from utils.helpers import get_random_item
-    return get_random_item(DAILY_ATHKAR["messages"], last_index)
-
-def get_random_friday_message(last_index: int = -1) -> tuple:
-    """Get random Friday message avoiding repetition"""
-    from utils.helpers import get_random_item
-    return get_random_item(FRIDAY_MESSAGES["messages"], last_index)
-    
-    -----
-    main.py
-    
-    
-    import os
-import logging
-import asyncio
-import sys
-from contextlib import asynccontextmanager
-
-# إضافة المسار الحالي لضمان عثور بايثون على المجلدات الفرعية
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from fastapi import FastAPI, Request, Response
-from aiogram import Bot, Dispatcher, Router, F
-from aiogram.enums import ParseMode
-from aiogram.types import Update
-from aiogram.client.default import DefaultBotProperties
-
-# استيراد الثوابت والإعدادات
-from config.constants import TOKEN, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT
-from config.settings import settings_manager
-
-# --- التعديل هنا ليتناسب مع ملفاتك الحقيقية ---
-from utils.cache import fast_cache
-# بما أن ملف helpers غير موجود في GitHub، نستخدم الملف الموجود لديك فعلياً
-from utils.text_messages import check_channel_membership 
-
-from middleware.subscription_middleware import SubscriptionMiddleware
-from handlers.commands import commands_router
-from handlers.subscription import subscription_router
-from handlers.callbacks import callbacks_router
-from tasks.background_tasks import start_background_tasks
-from tasks.stats_flusher import stats_flusher
-
-# إعداد السجلات (Logging)
-logging.basicConfig(
-    level=logging.INFO, # تم التغيير لـ INFO لمراقبة العمليات بشكل أفضل
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-# تهيئة البوت والموزع
-bot = Bot(TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-dp = Dispatcher()
-
-# إعداد الـ Middleware باستخدام الوظيفة المستوردة من text_messages
-subscription_middleware = SubscriptionMiddleware(bot, check_channel_membership)
-subscription_router.message.middleware(subscription_middleware)
-
-# تضمين الموجهات (Routers)
-dp.include_router(commands_router)
-dp.include_router(callbacks_router)
-dp.include_router(subscription_router)
-
-# تطبيق FastAPI مع Lifespan
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """إدارة Startup و Shutdown"""
-    # التشغيل
-    await setup_webhook()
-    await verify_channels_access()
-    
-    # بدء المهام الخلفية
-    asyncio.create_task(start_background_tasks(bot))
-    asyncio.create_task(stats_flusher.start())
-    
-    yield
-    
-    # الإغلاق
-    stats_flusher.stop()
-    await bot.session.close()
-
-app = FastAPI(title="Rooh Bot v9.0", version="9.0.0", lifespan=lifespan)
-
-@app.get("/")
-async def root():
-    return {"status": "online", "version": "9.0.0"}
-
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "bot": "online", "version": "9.0.0"}
-
-@app.post(f"/{TOKEN}")
-async def telegram_webhook(request: Request):
-    try:
-        data = await request.json()
-        settings_manager.bump_stat("webhook_updates")
-        update = Update(**data)
-        await dp.feed_update(bot=bot, update=update)
-        return Response(content="OK")
-    except Exception as e:
-        logger.error(f"Webhook error: {e}")
-        return Response(content="Error", status_code=500)
-
-async def setup_webhook():
-    """إعداد الويب هوك"""
-    try:
-        await bot.delete_webhook(drop_pending_updates=True)
-        await asyncio.sleep(1)
-        await bot.set_webhook(
-            url=WEBHOOK_URL,
-            drop_pending_updates=True,
-            allowed_updates=["message", "callback_query"]
-        )
-        logger.info("Webhook setup completed successfully")
-    except Exception as e:
-        logger.error(f"Webhook setup error: {e}")
-
-async def verify_channels_access():
-    """التحقق من صلاحيات البوت في القنوات"""
-    try:
-        from config.constants import REQUIRED_CHANNEL_1, REQUIRED_CHANNEL_2
-        
-        settings = settings_manager.load()
-        
-        # قناة 1
-        try:
-            channel_1_info = await bot.get_chat(REQUIRED_CHANNEL_1)
-            settings["channel_1_id"] = channel_1_info.id
-            settings["channel_1_access_verified"] = True
-        except Exception as e:
-            settings["channel_1_access_verified"] = False
-            logger.warning(f"Failed to access channel 1: {e}")
-        
-        # قناة 2
-        try:
-            channel_2_info = await bot.get_chat(REQUIRED_CHANNEL_2)
-            settings["channel_2_id"] = channel_2_info.id
-            settings["channel_2_access_verified"] = True
-        except Exception as e:
-            settings["channel_2_access_verified"] = False
-            logger.warning(f"Failed to access channel 2: {e}")
-        
-        settings_manager.save(settings)
-        logger.info("Channel access verification completed")
-        
-    except Exception as e:
-        logger.error(f"Channel verification error: {e}")
-
-if __name__ == "__main__":
-    import uvicorn
-    # تأكد أن المنفذ (Port) رقم صحيح
-    port = int(os.environ.get("PORT", WEBAPP_PORT))
-    uvicorn.run(app, host=WEBAPP_HOST, port=port)
-    
-    
-    
-    
-        
-    
         
 
+        <h3>الأهداف الرئيسية (SDGs)</h3>
+        <ul>
+            <li>القضاء على الفقر والجوع.</li>
+            <li>العمل المناخي وحماية الحياة البرية والبحرية.</li>
+            <li>طاقة نظيفة وبأسعار معقولة.</li>
+            <li>التعليم الجيد والابتكار في الصناعة.</li>
+        </ul>
 
+        <div class="info-box">
+            <strong>ملاحظة هامة:</strong> الالتزام بالاستدامة ليس خياراً، بل هو ضرورة لبقاء الموارد الطبيعية للأجيال القادمة.
+        </div>
+    </section>
+
+    <section class="page-break">
+        <h2>ثانياً: مقارنة بين الطاقة التقليدية والمتجددة</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>وجه المقارنة</th>
+                    <th>الطاقة الأحفورية</th>
+                    <th>الطاقة المتجددة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>التأثير البيئي</td>
+                    <td>تلوث عالٍ وانبعاثات كربونية</td>
+                    <td>صديقة للبيئة ونظيفة</td>
+                </tr>
+                <tr>
+                    <td>الاستدامة</td>
+                    <td>قابلة للنفاذ (محدودة)</td>
+                    <td>دائمة ولا تنضب</td>
+                </tr>
+                <tr>
+                    <td>التكلفة التشغيلية</td>
+                    <td>متغيرة حسب السوق</td>
+                    <td>منخفضة بعد التأسيس</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>ثالثاً: الخاتمة</h2>
+        <p>
+            إن التحول نحو التنمية المستدامة يتطلب تكاتف الجهود الدولية والفردية. من خلال تقليل الهدر واعتماد تقنيات الطاقة النظيفة، يمكننا ضمان مستقبل أكثر إشراقاً وتوازناً. إن استثمارنا اليوم في البيئة هو استثمار في حياة أطفالنا غداً.
+        </p>
+
+        <div style="margin-top: 50px;">
+            <h3>المراجع:</h3>
+            <ul style="font-size: 14px; color: #666;">
+                <li>تقارير الأمم المتحدة للتنمية المستدامة.</li>
+                <li>رؤية المملكة العربية السعودية 2030 - مبادرة السعودية الخضراء.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="page-footer">
+        <span class="page-number"></span>
+    </div>
+</div>
+
+<script>
+    function tryPrint() {
+        try {
+            window.print();
+        } catch (e) {
+            alert("عذراً، لا يدعم متصفحك الطباعة المباشرة. يرجى استخدام قائمة المشاركة في Safari.");
+        }
+    }
+</script>
+
+</body>
+</html>
