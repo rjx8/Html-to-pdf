@@ -1,257 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>مشروع التنمية المستدامة</title>
-    <style>
-        /* --- الأساسيات ودعم iOS Safari --- */
-        :root {
-            --primary-black: #000000;
-            --dark-gray: #333333;
-            --light-gray: #666666;
-            --border-color: #999999;
-            --bg-box: #f9f9f9;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التنمية المستدامة — مشروع الطالب</title>
 
-        * {
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<!-- أساسي: قاعدة خطوط آمنة -->
+<style>
+/* ====== قاعدة عامة (prevent iOS zoom, minimum readable font-size) ====== */
+html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
+body { font-family: Tahoma, Arial, sans-serif; margin: 0; color: #333; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; direction: rtl; }
 
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 16px; /* منع الـ Auto-zoom في Safari */
-            line-height: 1.5;
-            color: var(--primary-black);
-            margin: 0;
-            padding: 0;
-            background-color: #fff;
-            -webkit-text-size-adjust: 100%;
-        }
+/* ====== Page layout vs @page margin requirement ======
+   User requested: @page { size: A4; margin: 1.5cm; }
+   Also requested visual margins: right 2.5cm, others 2cm.
+   We therefore set @page as requested and apply internal padding to match visual margins. */
+@page {
+  size: A4;
+  margin: 1.5cm;
+}
+@page landscape {
+  size: A4 landscape;
+}
 
-        /* --- تنسيق الصفحة (العرض على الشاشة) --- */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+/* Visual content padding (inside printed page) */
+.container {
+  box-sizing: border-box;
+  padding-right: 2.5cm; /* هام: يمين أكبر كما طُلب */
+  padding-left: 2cm;
+  padding-top: 2cm;
+  padding-bottom: 2cm;
+  max-width: 100%;
+  margin: 0 auto;
+}
 
-        /* --- زر الطباعة المحسن --- */
-        .print-btn {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            min-height: 44px; /* معيار Apple للمس */
-            margin: 20px auto;
-            background-color: var(--dark-gray);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
+/* ====== Page blocks for forcing exactly 3 printed pages ======
+   Each .page will force a printed page; we use page-break-after to create 3 pages. */
+.page {
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+  /* keep visual flow on screen */
+}
 
-        /* --- تنسيقات المحتوى --- */
-        h1 { font-size: 28px; text-align: center; margin-bottom: 30px; line-height: 1.2; }
-        h2 { font-size: 20px; color: var(--dark-gray); border-right: 4px solid var(--primary-black); padding-right: 10px; margin-top: 30px; }
-        h3 { font-size: 18px; color: var(--light-gray); margin-top: 20px; }
-        p { font-size: 16px; margin-bottom: 15px; text-align: justify; }
+/* Cover page (page 1) */
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(297mm - 4cm); /* approximate A4 height minus paddings */
+  text-align: center;
+}
+h1.title {
+  font-size: 26px; /* 24-28px */
+  line-height: 1.2;
+  color: #000;
+  margin: 8mm 0;
+  font-weight: 700;
+}
 
-        .info-box {
-            background-color: var(--bg-box);
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            margin: 20px 0;
-            page-break-inside: avoid;
-        }
+/* Header/side headings and normal headings */
+h2.side {
+  font-size: 19px; /* 18-20px */
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+  text-align: right; /* on right side as requested */
+  color: #000;
+  font-weight: 700;
+}
+h3.sub {
+  font-size: 17px; /* 16-18px */
+  line-height: 1.2;
+  margin: 6px 0;
+  color: #000;
+  font-weight: 600;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            margin: 20px 0;
-            page-break-inside: avoid;
-        }
+/* Body text */
+p, li {
+  font-size: 15px; /* 14-16px */
+  line-height: 1.5; /* body spacing 1.5 */
+  color: #333;
+  margin: 0 0 10px 0;
+}
 
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
+/* Headings spacing slightly tighter */
+h1, h2, h3 { line-height: 1.2; }
 
-        th { background-color: #eee; font-weight: bold; }
+/* Page footer (page numbers) - uses position:fixed so it repeats per printed page in WebKit/Safari */
+.print-footer {
+  display: none;
+}
+@media print {
+  .print-footer { 
+    display: block;
+    position: fixed;
+    bottom: 5mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+  }
+  /* page counter (Safari supports counter(page)) */
+  .print-footer::after {
+    content: "الصفحة " counter(page) ;
+  }
+}
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-            -webkit-print-color-adjust: exact;
-        }
+/* Tables */
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  margin-bottom: 8px;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+}
+.table th, .table td {
+  border: 1px solid #000;
+  padding: 8px;
+  font-size: 15px;
+  color: #333;
+  vertical-align: top;
+  word-wrap: break-word;
+}
 
-        .page-footer {
-            text-align: center;
-            font-size: 12px;
-            color: var(--light-gray);
-            margin-top: 20px;
-        }
+/* Prevent table rows from splitting across pages */
+.table tr { page-break-inside: avoid; }
 
-        /* --- تحسينات الطباعة المتقدمة --- */
-        @media print {
-            @page {
-                size: A4;
-                margin: 1.5cm;
-            }
+/* Figures / Images */
+.figure {
+  display: block;
+  max-width: 100%;
+  margin: 8px 0;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+}
+.figure svg, .figure img { width: 100%; height: auto; max-width: 100%; }
 
-            body {
-                width: 210mm;
-                height: 297mm;
-                margin: 0;
-                padding: 0;
-            }
+/* Boxes / callouts */
+.callout {
+  border: 1px solid #666;
+  background: #f7f7f7; /* light background allowed */
+  padding: 10px;
+  margin: 8px 0;
+  page-break-inside: avoid;
+}
 
-            .container {
-                width: 100%;
-                max-width: none;
-                padding: 0;
-                margin-right: 2.5cm; /* الهامش الأيمن المطلوب */
-                margin-left: 2cm;
-                margin-top: 2cm;
-                margin-bottom: 2cm;
-            }
+/* Lists */
+ul, ol { margin: 6px 0 12px 1.2em; padding: 0 12px; }
 
-            .print-btn { display: none !important; }
+/* Print-color exact + avoid background suppression on webkit */
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-            h1, h2, h3 { 
-                page-break-after: avoid; 
-                page-break-inside: avoid;
-            }
+/* Button (print action) - mobile friendly touch size */
+.print-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  min-height: 44px;
+  line-height: 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  box-shadow: none;
+  border: none;
+  -webkit-appearance: none;
+}
+.print-btn:active { transform: translateY(1px); -webkit-transform: translateY(1px); }
 
-            section {
-                page-break-after: auto;
-            }
+/* Button hides during print */
+@media print {
+  .print-btn { display: none !important; }
+}
 
-            .cover-page {
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                page-break-after: always;
-            }
+/* Misc: avoid orphan headings */
+.section { page-break-inside: avoid; orphans: 2; widows: 2; }
 
-            .page-break {
-                page-break-before: always;
-            }
+/* Responsive for small screens (preview on phone) */
+@media screen and (max-width: 600px) {
+  .container { padding-right: 1.2rem; padding-left: 1.2rem; }
+  h1.title { font-size: 22px; }
+  .print-btn { width: 100%; box-sizing: border-box; }
+}
 
-            table, img, .info-box {
-                page-break-inside: avoid;
-            }
-
-            /* ترقيم الصفحات التلقائي في بعض الطابعات */
-            .page-number::after {
-                content: "صفحة " counter(page);
-            }
-        }
-    </style>
+/* Accessibility: high contrast ensured by color choices above */
+</style>
 </head>
 <body>
 
-<div class="container">
-    <button class="print-btn" onclick="tryPrint()">طباعة التقرير</button>
-
-    <section class="cover-page">
-        <br><br><br><br>
-        <h1>مشروع التنمية المستدامة: رؤية 2030</h1>
-        <div style="text-align: center; margin-top: 50px;">
-            <h3>إعداد الطالب: [اسم الطالب هنا]</h3>
-            <p>التاريخ: 14 فبراير 2026</p>
-            <p>المادة: الدراسات البيئية</p>
-        </div>
-    </section>
-
-    <section class="page-break">
-        <h2>أولاً: مفهوم التنمية المستدامة</h2>
-        <p>
-            التنمية المستدامة هي عملية تطوير الأرض والمدن والمجتمعات وكذلك الأعمال التجارية بشرط أن تلبي احتياجات الحاضر دون المساس بقدرة الأجيال القادمة على تلبية احتياجاتها. تهدف إلى تحقيق التوازن بين النمو الاقتصادي، والحفاظ على البيئة، والعدالة الاجتماعية.
-        </p>
-
-        
-
-        <h3>الأهداف الرئيسية (SDGs)</h3>
-        <ul>
-            <li>القضاء على الفقر والجوع.</li>
-            <li>العمل المناخي وحماية الحياة البرية والبحرية.</li>
-            <li>طاقة نظيفة وبأسعار معقولة.</li>
-            <li>التعليم الجيد والابتكار في الصناعة.</li>
-        </ul>
-
-        <div class="info-box">
-            <strong>ملاحظة هامة:</strong> الالتزام بالاستدامة ليس خياراً، بل هو ضرورة لبقاء الموارد الطبيعية للأجيال القادمة.
-        </div>
-    </section>
-
-    <section class="page-break">
-        <h2>ثانياً: مقارنة بين الطاقة التقليدية والمتجددة</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>وجه المقارنة</th>
-                    <th>الطاقة الأحفورية</th>
-                    <th>الطاقة المتجددة</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>التأثير البيئي</td>
-                    <td>تلوث عالٍ وانبعاثات كربونية</td>
-                    <td>صديقة للبيئة ونظيفة</td>
-                </tr>
-                <tr>
-                    <td>الاستدامة</td>
-                    <td>قابلة للنفاذ (محدودة)</td>
-                    <td>دائمة ولا تنضب</td>
-                </tr>
-                <tr>
-                    <td>التكلفة التشغيلية</td>
-                    <td>متغيرة حسب السوق</td>
-                    <td>منخفضة بعد التأسيس</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>ثالثاً: الخاتمة</h2>
-        <p>
-            إن التحول نحو التنمية المستدامة يتطلب تكاتف الجهود الدولية والفردية. من خلال تقليل الهدر واعتماد تقنيات الطاقة النظيفة، يمكننا ضمان مستقبل أكثر إشراقاً وتوازناً. إن استثمارنا اليوم في البيئة هو استثمار في حياة أطفالنا غداً.
-        </p>
-
-        <div style="margin-top: 50px;">
-            <h3>المراجع:</h3>
-            <ul style="font-size: 14px; color: #666;">
-                <li>تقارير الأمم المتحدة للتنمية المستدامة.</li>
-                <li>رؤية المملكة العربية السعودية 2030 - مبادرة السعودية الخضراء.</li>
-            </ul>
-        </div>
-    </section>
-
-    <div class="page-footer">
-        <span class="page-number"></span>
-    </div>
+<!-- Button area (visible on screen, not when printed) -->
+<div style="padding:12px;background:#fff;position:sticky;top:0;z-index:9999;">
+  <div class="container" style="display:flex;gap:12px;justify-content:flex-start;">
+    <button class="print-btn" id="printBtn" aria-label="طباعة المستند">طباعة المستند</button>
+    <div style="align-self:center;font-size:14px;color:#666;">(جاهز للطباعة من Safari iOS)</div>
+  </div>
 </div>
 
+<!-- CONTENT: we produce exactly 3 printable pages using .page with page-break-after -->
+<main class="container" role="main">
+
+  <!-- PAGE 1: Cover -->
+  <section class="page cover" style="page-break-after: always;">
+    <h1 class="title">التنمية المستدامة</h1>
+    <p style="font-size:15px;color:#333;margin-top:8px;">مشروع دراسي</p>
+    <p style="font-size:15px;color:#333;margin-top:16px;">اسم الطالب: أيمن</p>
+    <p style="font-size:15px;color:#333;margin-top:6px;">التاريخ: <span id="todayDate"></span></p>
+
+    <div style="width:60%;margin-top:18mm;">
+      <!-- inline SVG كصورة توضيحية (لا يحتاج انترنت) -->
+      <figure class="figure" role="img" aria-label="رمز التنمية المستدامة">
+        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <rect x="0" y="0" width="200" height="120" fill="#ffffff"/>
+          <g transform="translate(16,12)" fill="none" stroke="#000" stroke-width="2">
+            <circle cx="40" cy="40" r="30" stroke="#000"/>
+            <path d="M80 20 L120 20 L120 60 L80 60 Z" stroke="#000" fill="#f7f7f7"/>
+            <path d="M40 70 L40 100" stroke="#000"/>
+          </g>
+        </svg>
+        <figcaption style="font-size:12px;color:#666;text-align:center;margin-top:4px;">مخطط رمزي للتناغم بين الإنسان والبيئة</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PAGE 2: Sections 1 & 2 + comparison table -->
+  <section class="page" style="page-break-after: always;">
+    <article class="section">
+      <h2 class="side">المقدمة</h2>
+      <h3 class="sub">ماذا تعني التنمية المستدامة؟</h3>
+      <p>التنمية المستدامة هي نهج يهدف لتلبية احتياجات اليوم دون المساس بقدرة الأجيال القادمة على تلبية احتياجاتها. تركز على التكامل بين البعد البيئي والاقتصادي والاجتماعي.</p>
+    </article>
+
+    <article class="section" style="margin-top:10px;">
+      <h2 class="side">الأهداف</h2>
+      <ul>
+        <li>حماية البيئة والمحافظة على الموارد الطبيعية.</li>
+        <li>تعزيز العدالة والمساواة الاجتماعية.</li>
+        <li>تشجيع اقتصاد مستدام يخلق فرص عمل طويلة الأمد.</li>
+      </ul>
+    </article>
+
+    <article class="section" style="margin-top:8px;">
+      <h2 class="side">مقارنة: استراتيجيات التنمية</h2>
+      <!-- Table: comparison -->
+      <table class="table" role="table" aria-label="جدول مقارنة استراتيجيات التنمية">
+        <thead>
+          <tr>
+            <th>المعيار</th>
+            <th>الاستراتيجية التقليدية</th>
+            <th>الاستراتيجية المستدامة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>استخدام الموارد</td>
+            <td>استخراج عالي مع استنزاف</td>
+            <td>استخدام فعّال وإعادة تدوير</td>
+          </tr>
+          <tr>
+            <td>الأثر البيئي</td>
+            <td>تلوث مرتفع</td>
+            <td>تقليل الانبعاثات والحفاظ على التنوع الحيوي</td>
+          </tr>
+          <tr>
+            <td>الاستدامة الاقتصادية</td>
+            <td>نمو قصير المدى</td>
+            <td>نمو متوازن ومداوم</td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <!-- PAGE 3: Section 3, 4, conclusion, references -->
+  <section class="page" style="page-break-after: auto;">
+    <article class="section">
+      <h2 class="side">دراسة حالة مبسطة</h2>
+      <h3 class="sub">مشروع زراعة حضرية</h3>
+      <p>مثال عملي: مشروع زراعة في أسطح المباني يوفّر خضار طازج ويقلل من استهلاك النقل، ويخلق فرص عمل محلية.</p>
+
+      <div class="callout" role="note">
+        <strong>ملاحظة:</strong> التصميم يضمن أن الصور والجداول لا تقطع بين الصفحات عند الطباعة.
+      </div>
+
+      <!-- Inline illustrative SVG image (بدون موارد خارجية) -->
+      <figure class="figure" role="img" aria-label="رسم توضيحي لزراعة حضرية">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <rect width="100%" height="100%" fill="#fff"/>
+          <g transform="translate(10,10)" stroke="#000" stroke-width="1">
+            <rect x="0" y="60" width="280" height="40" fill="#f7f7f7"/>
+            <rect x="10" y="40" width="40" height="20" fill="#fff"/>
+            <circle cx="80" cy="50" r="10" fill="#fff"/>
+            <path d="M140 60 v-30 q10 -10 20 0 v30" fill="#fff"/>
+          </g>
+        </svg>
+        <figcaption style="font-size:12px;color:#666;text-align:center;margin-top:4px;">مخطط توضيحي لزراعة حضرية</figcaption>
+      </figure>
+    </article>
+
+    <article class="section" style="margin-top:10px;">
+      <h2 class="side">الخاتمة</h2>
+      <p>التنمية المستدامة ليست خياراً بل ضرورة. تحتاج سياسات متكاملة، ووعي مجتمعي، وتعاون بين الجهات الحكومية والخاصة لتحقيق نتائج ملموسة.</p>
+    </article>
+
+    <article class="section" style="margin-top:8px;">
+      <h2 class="side">المراجع والمصادر (اختياري)</h2>
+      <ol>
+        <li>وثائق الأمم المتحدة للتنمية المستدامة (مراجع عامة).</li>
+        <li>أمثلة محلية ومقالات علمية مبسطة.</li>
+      </ol>
+    </article>
+
+    <!-- footer for printed pages -->
+    <div class="print-footer" aria-hidden="true"></div>
+  </section>
+
+</main>
+
 <script>
-    function tryPrint() {
-        try {
-            window.print();
-        } catch (e) {
-            alert("عذراً، لا يدعم متصفحك الطباعة المباشرة. يرجى استخدام قائمة المشاركة في Safari.");
-        }
+/* ====== JavaScript بسيط لزر الطباعة مع error handling ====== */
+(function(){
+  // التاريخ على الغلاف
+  var d = new Date();
+  var dd = d.getDate().toString().padStart(2,'0');
+  var mm = (d.getMonth()+1).toString().padStart(2,'0');
+  var yyyy = d.getFullYear();
+  document.getElementById('todayDate').textContent = dd + '/' + mm + '/' + yyyy;
+
+  var btn = document.getElementById('printBtn');
+  btn.addEventListener('click', function(){
+    try {
+      // محاولة طباعة
+      window.print();
+      // بعض أجهزة iOS قد لا ترمي خطأ لكن طباعة تفشل لأسباب إعدادات الطابعة
+      // نعرض ملاحظة خفيفة إن أردت (لا تعتمد على alert لطباعة سلسة)
+    } catch (err) {
+      // عرض رسالة للمستخدم بطريقة بسيطة
+      alert('حدث خطأ أثناء محاولة الطباعة. تأكد من اتصال الطابعة أو إعادة المحاولة.');
+      console.error('Print error:', err);
     }
+  }, false);
+})();
 </script>
 
 </body>
