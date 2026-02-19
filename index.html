@@ -1,355 +1,1504 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>التنمية المستدامة — مشروع الطالب</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع تخرّج - أثر وسائل التواصل الاجتماعي على التحصيل الدراسي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800;900&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4a4e;
+            --primary-light: #1a7a80;
+            --accent: #c8a96e;
+            --accent-light: #e8d5a8;
+            --bg: #faf8f4;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-muted: #7a7a7a;
+            --border: #e0ddd5;
+            --shadow: 0 4px 24px rgba(12, 74, 78, 0.08);
+            --shadow-lg: 0 12px 48px rgba(12, 74, 78, 0.12);
+            --gradient-hero: linear-gradient(135deg, #0c4a4e 0%, #1a7a80 40%, #2a9a9e 100%);
+            --pattern-opacity: 0.04;
+        }
 
-<!-- أساسي: قاعدة خطوط آمنة -->
-<style>
-/* ====== قاعدة عامة (prevent iOS zoom, minimum readable font-size) ====== */
-html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
-body { font-family: Tahoma, Arial, sans-serif; margin: 0; color: #333; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; direction: rtl; }
+        .dark {
+            --primary: #4ecdc4;
+            --primary-light: #6ee7df;
+            --accent: #d4a855;
+            --accent-light: #3d3525;
+            --bg: #0f1419;
+            --bg-card: #1a2332;
+            --text: #e8e6e1;
+            --text-secondary: #b0ada5;
+            --text-muted: #7a776f;
+            --border: #2a3442;
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --shadow-lg: 0 12px 48px rgba(0,0,0,0.4);
+            --gradient-hero: linear-gradient(135deg, #0a1628 0%, #122338 40%, #1a3550 100%);
+            --pattern-opacity: 0.06;
+        }
 
-/* ====== Page layout vs @page margin requirement ======
-   User requested: @page { size: A4; margin: 1.5cm; }
-   Also requested visual margins: right 2.5cm, others 2cm.
-   We therefore set @page as requested and apply internal padding to match visual margins. */
-@page {
-  size: A4;
-  margin: 1.5cm;
-}
-@page landscape {
-  size: A4 landscape;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Visual content padding (inside printed page) */
-.container {
-  box-sizing: border-box;
-  padding-right: 2.5cm; /* هام: يمين أكبر كما طُلب */
-  padding-left: 2cm;
-  padding-top: 2cm;
-  padding-bottom: 2cm;
-  max-width: 100%;
-  margin: 0 auto;
-}
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 17px;
+            overflow-x: hidden;
+        }
 
-/* ====== Page blocks for forcing exactly 3 printed pages ======
-   Each .page will force a printed page; we use page-break-after to create 3 pages. */
-.page {
-  page-break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  break-inside: avoid;
-  /* keep visual flow on screen */
-}
+        /* ===== GEOMETRIC PATTERN BACKGROUND ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(12,74,78,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(200,169,110,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(12,74,78,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-/* Cover page (page 1) */
-.cover {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(297mm - 4cm); /* approximate A4 height minus paddings */
-  text-align: center;
-}
-h1.title {
-  font-size: 26px; /* 24-28px */
-  line-height: 1.2;
-  color: #000;
-  margin: 8mm 0;
-  font-weight: 700;
-}
+        .dark body::before {
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(78,205,196,0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(212,168,85,0.03) 0%, transparent 50%);
+        }
 
-/* Header/side headings and normal headings */
-h2.side {
-  font-size: 19px; /* 18-20px */
-  line-height: 1.2;
-  margin: 0 0 6px 0;
-  text-align: right; /* on right side as requested */
-  color: #000;
-  font-weight: 700;
-}
-h3.sub {
-  font-size: 17px; /* 16-18px */
-  line-height: 1.2;
-  margin: 6px 0;
-  color: #000;
-  font-weight: 600;
-}
+        /* ===== PRINT BUTTON ===== */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+            background: var(--gradient-hero);
+            color: #fff;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(12,74,78,0.35);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-/* Body text */
-p, li {
-  font-size: 15px; /* 14-16px */
-  line-height: 1.5; /* body spacing 1.5 */
-  color: #333;
-  margin: 0 0 10px 0;
-}
+        .print-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 32px rgba(12,74,78,0.45);
+        }
 
-/* Headings spacing slightly tighter */
-h1, h2, h3 { line-height: 1.2; }
+        .print-btn:active {
+            transform: scale(0.95);
+        }
 
-/* Page footer (page numbers) - uses position:fixed so it repeats per printed page in WebKit/Safari */
-.print-footer {
-  display: none;
-}
-@media print {
-  .print-footer { 
-    display: block;
-    position: fixed;
-    bottom: 5mm;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 12px;
-    color: #333;
-  }
-  /* page counter (Safari supports counter(page)) */
-  .print-footer::after {
-    content: "الصفحة " counter(page) ;
-  }
-}
+        .print-tooltip {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: var(--bg);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Tajawal', sans-serif;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
 
-/* Tables */
-.table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  border: 1px solid #000;
-  margin-bottom: 8px;
-  page-break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  break-inside: avoid;
-}
-.table th, .table td {
-  border: 1px solid #000;
-  padding: 8px;
-  font-size: 15px;
-  color: #333;
-  vertical-align: top;
-  word-wrap: break-word;
-}
+        .print-btn:hover .print-tooltip {
+            opacity: 1;
+        }
 
-/* Prevent table rows from splitting across pages */
-.table tr { page-break-inside: avoid; }
+        /* ===== COVER PAGE ===== */
+        .cover-page {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
 
-/* Figures / Images */
-.figure {
-  display: block;
-  max-width: 100%;
-  margin: 8px 0;
-  page-break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  break-inside: avoid;
-}
-.figure svg, .figure img { width: 100%; height: auto; max-width: 100%; }
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -30%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(200,169,110,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
 
-/* Boxes / callouts */
-.callout {
-  border: 1px solid #666;
-  background: #f7f7f7; /* light background allowed */
-  padding: 10px;
-  margin: 8px 0;
-  page-break-inside: avoid;
-}
+        .cover-page::after {
+            content: '';
+            position: absolute;
+            bottom: -40%; left: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatOrb 15s ease-in-out infinite reverse;
+        }
 
-/* Lists */
-ul, ol { margin: 6px 0 12px 1.2em; padding: 0 12px; }
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(30px, -40px); }
+            66% { transform: translate(-20px, 30px); }
+        }
 
-/* Print-color exact + avoid background suppression on webkit */
-* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .cover-geometric {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            opacity: 0.08;
+        }
 
-/* Button (print action) - mobile friendly touch size */
-.print-btn {
-  display: inline-block;
-  padding: 10px 16px;
-  min-height: 44px;
-  line-height: 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  background: #000;
-  color: #fff;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
-  box-shadow: none;
-  border: none;
-  -webkit-appearance: none;
-}
-.print-btn:active { transform: translateY(1px); -webkit-transform: translateY(1px); }
+        .cover-geometric .line {
+            position: absolute;
+            background: #fff;
+        }
 
-/* Button hides during print */
-@media print {
-  .print-btn { display: none !important; }
-}
+        .cover-geometric .line:nth-child(1) {
+            width: 1px; height: 100%;
+            left: 15%;
+        }
 
-/* Misc: avoid orphan headings */
-.section { page-break-inside: avoid; orphans: 2; widows: 2; }
+        .cover-geometric .line:nth-child(2) {
+            width: 1px; height: 100%;
+            right: 15%;
+        }
 
-/* Responsive for small screens (preview on phone) */
-@media screen and (max-width: 600px) {
-  .container { padding-right: 1.2rem; padding-left: 1.2rem; }
-  h1.title { font-size: 22px; }
-  .print-btn { width: 100%; box-sizing: border-box; }
-}
+        .cover-geometric .line:nth-child(3) {
+            width: 100%; height: 1px;
+            top: 20%;
+        }
 
-/* Accessibility: high contrast ensured by color choices above */
-</style>
+        .cover-geometric .line:nth-child(4) {
+            width: 100%; height: 1px;
+            bottom: 20%;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .cover-header {
+            margin-bottom: 40px;
+        }
+
+        .cover-ministry {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 30px;
+        }
+
+        .cover-ministry-icon {
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(200,169,110,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .cover-ministry-icon i {
+            color: var(--accent);
+            font-size: 24px;
+        }
+
+        .cover-ministry span {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .cover-ministry .ministry-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .cover-divider {
+            width: 80px;
+            height: 2px;
+            background: var(--accent);
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .cover-divider::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .cover-title-label {
+            color: var(--accent);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .cover-title {
+            font-family: 'Amiri', serif;
+            color: #fff;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .cover-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .cover-meta-item {
+            color: rgba(255,255,255,0.85);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cover-meta-item i {
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        .cover-meta-item strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .cover-year {
+            margin-top: 40px;
+            padding: 12px 40px;
+            border: 1px solid rgba(200,169,110,0.4);
+            border-radius: 50px;
+            color: var(--accent);
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            display: inline-block;
+        }
+
+        /* ===== TABLE OF CONTENTS ===== */
+        .toc-section {
+            padding: 60px 20px;
+        }
+
+        .toc-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .toc-title {
+            font-family: 'Amiri', serif;
+            font-size: 30px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .toc-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .toc-list {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc-list li {
+            counter-increment: toc-counter;
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px dashed var(--border);
+            cursor: pointer;
+            transition: padding-right 0.3s;
+        }
+
+        .toc-list li:hover {
+            padding-right: 10px;
+        }
+
+        .toc-list li:last-child {
+            border-bottom: none;
+        }
+
+        .toc-list li::before {
+            content: counter(toc-counter, arabic-indic);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            background: var(--accent-light);
+            color: var(--primary);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            margin-left: 16px;
+        }
+
+        .dark .toc-list li::before {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .toc-list li span {
+            flex: 1;
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .toc-list li:hover span {
+            color: var(--primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px 20px 80px;
+        }
+
+        /* ===== SECTION STYLING ===== */
+        .section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 45px 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 0 20px 20px 0;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            position: relative;
+            padding-bottom: 16px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 16px;
+            text-align: justify;
+            font-size: 16px;
+        }
+
+        .section ul, .section ol {
+            margin: 16px 20px 16px 0;
+            color: var(--text-secondary);
+        }
+
+        .section li {
+            margin-bottom: 10px;
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        .section li::marker {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===== HIGHLIGHT BOXES ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(12,74,78,0.04), rgba(200,169,110,0.06));
+            border-right: 4px solid var(--accent);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .dark .highlight-box {
+            background: linear-gradient(135deg, rgba(78,205,196,0.06), rgba(212,168,85,0.04));
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+
+        /* ===== TABLES ===== */
+        .styled-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .styled-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+
+        .styled-table th {
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: right;
+        }
+
+        .styled-table td {
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .styled-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background: rgba(12,74,78,0.02);
+        }
+
+        .dark .styled-table tbody tr:nth-child(even) {
+            background: rgba(78,205,196,0.03);
+        }
+
+        .styled-table tbody tr:hover {
+            background: rgba(200,169,110,0.06);
+        }
+
+        /* ===== SUB-HEADINGS ===== */
+        .sub-heading {
+            font-family: 'Amiri', serif;
+            font-size: 21px;
+            color: var(--primary);
+            margin: 28px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub-heading i {
+            color: var(--accent);
+            font-size: 16px;
+        }
+
+        /* ===== OBJECTIVES CARDS ===== */
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, rgba(12,74,78,0.03), rgba(200,169,110,0.05));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dark .objective-card {
+            background: linear-gradient(135deg, rgba(78,205,196,0.05), rgba(212,168,85,0.03));
+        }
+
+        .objective-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .objective-card .obj-num {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-hero);
+            color: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .dark .objective-card .obj-num {
+            background: linear-gradient(135deg, var(--primary), #3ab8b0);
+            color: #0f1419;
+        }
+
+        .objective-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        /* ===== RESULTS STATS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 24px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+        }
+
+        .dark .stat-card {
+            background: linear-gradient(135deg, #1a3040, #1e4050);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card .stat-num {
+            font-family: 'Amiri', serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .dark .stat-card .stat-num {
+            color: var(--primary);
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-right: 30px;
+            margin: 24px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 0 30px 28px 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 6px;
+            width: 18px;
+            height: 18px;
+            background: var(--bg-card);
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item .tl-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item .tl-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ===== REFERENCES ===== */
+        .ref-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ref-item:last-child {
+            border-bottom: none;
+        }
+
+        .ref-num {
+            min-width: 32px;
+            height: 32px;
+            background: var(--accent-light);
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .dark .ref-num {
+            color: var(--accent);
+        }
+
+        .ref-text {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            z-index: 999;
+            background: var(--bg-card);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .section {
+                padding: 30px 22px;
+                border-radius: 16px;
+            }
+
+            .toc-container {
+                padding: 35px 22px;
+            }
+
+            .cover-title {
+                font-size: 26px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .styled-table {
+                font-size: 13px;
+            }
+
+            .styled-table th, .styled-table td {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cover-year {
+                padding: 10px 24px;
+                font-size: 15px;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 18px 10px;
+            }
+
+            .stat-card .stat-num {
+                font-size: 28px;
+            }
+
+            .print-btn {
+                bottom: 20px;
+                left: 20px;
+                width: 52px;
+                height: 52px;
+                font-size: 18px;
+            }
+
+            .scroll-top {
+                bottom: 80px;
+                left: 20px;
+                width: 38px;
+                height: 38px;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm 1.5cm;
+            }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                font-size: 13pt;
+                line-height: 1.7;
+            }
+
+            body::before {
+                display: none !important;
+            }
+
+            .print-btn,
+            .scroll-top {
+                display: none !important;
+            }
+
+            .cover-page {
+                min-height: auto;
+                background: none !important;
+                padding: 40px 20px;
+                page-break-after: always;
+                border: 3px double var(--primary);
+                border-radius: 0;
+            }
+
+            .cover-page::before,
+            .cover-page::after,
+            .cover-geometric {
+                display: none !important;
+            }
+
+            .cover-content {
+                color: #000;
+            }
+
+            .cover-title {
+                color: #0c4a4e !important;
+                text-shadow: none;
+            }
+
+            .cover-ministry span,
+            .cover-ministry .ministry-name,
+            .cover-meta-item,
+            .cover-meta-item strong,
+            .cover-title-label {
+                color: #333 !important;
+            }
+
+            .cover-ministry-icon {
+                border-color: #0c4a4e;
+            }
+
+            .cover-ministry-icon i {
+                color: #0c4a4e;
+            }
+
+            .cover-year {
+                border-color: #0c4a4e;
+                color: #0c4a4e;
+            }
+
+            .cover-meta-item i {
+                color: #0c4a4e !important;
+            }
+
+            .toc-section {
+                page-break-after: always;
+            }
+
+            .toc-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .section {
+                box-shadow: none !important;
+                border: 1px solid #ddd;
+                border-radius: 0;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+                padding: 30px;
+            }
+
+            .section::before {
+                background: #0c4a4e;
+            }
+
+            .objective-card {
+                border: 1px solid #ddd;
+                background: #f9f9f9 !important;
+            }
+
+            .stat-card {
+                background: #f0f0f0 !important;
+                color: #000 !important;
+                border: 1px solid #ccc;
+            }
+
+            .stat-card .stat-num {
+                color: #0c4a4e !important;
+            }
+
+            .stat-card .stat-label {
+                color: #333 !important;
+            }
+
+            .section-number {
+                background: #0c4a4e !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .styled-table thead {
+                background: #0c4a4e !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .styled-table th {
+                color: #fff !important;
+            }
+
+            .objective-card .obj-num {
+                background: #0c4a4e !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .timeline::before {
+                background: #0c4a4e;
+            }
+
+            .timeline-item::before {
+                border-color: #0c4a4e;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Button area (visible on screen, not when printed) -->
-<div style="padding:12px;background:#fff;position:sticky;top:0;z-index:9999;">
-  <div class="container" style="display:flex;gap:12px;justify-content:flex-start;">
-    <button class="print-btn" id="printBtn" aria-label="طباعة المستند">طباعة المستند</button>
-    <div style="align-self:center;font-size:14px;color:#666;">(جاهز للطباعة من Safari iOS)</div>
-  </div>
+<!-- Print Button -->
+<button class="print-btn" onclick="window.print()" aria-label="طباعة المشروع">
+    <i class="fas fa-print"></i>
+    <span class="print-tooltip">طباعة المشروع</span>
+</button>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTopBtn" aria-label="العودة للأعلى">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover-page">
+    <div class="cover-geometric">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    <div class="cover-content">
+        <div class="cover-header">
+            <div class="cover-ministry">
+                <div class="cover-ministry-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span>المملكة العربية السعودية</span>
+                <span class="ministry-name">وزارة التعليم</span>
+                <span>الإدارة العامة للتعليم بمنطقة عسير</span>
+                <span>مكتب التعليم شمال الخميس</span>
+                <span>المدرسة الثانوية الحادية والعشرون</span>
+            </div>
+        </div>
+
+        <div class="cover-divider"></div>
+
+        <div class="cover-title-label">مشروع التخرّج</div>
+        <h1 class="cover-title">أثر وسائل التواصل الاجتماعي<br>على التحصيل الدراسي لطالبات المرحلة الثانوية</h1>
+
+        <div class="cover-meta">
+            <div class="cover-meta-item">
+                <i class="fas fa-users"></i>
+                <span>أسماء الطالبات: <strong>نورة العسيري، ريم الشهراني، لمى القحطاني</strong></span>
+            </div>
+            <div class="cover-meta-item">
+                <i class="fas fa-school"></i>
+                <span>الصف الثالث الثانوي — المسار: <strong>العام</strong></span>
+            </div>
+            <div class="cover-meta-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>اسم المشرفة على مشروع التخرّج: <strong>أ. فاطمة الغامدي</strong></span>
+            </div>
+        </div>
+
+        <div class="cover-year">العام الدراسي ١٤٤٧هـ / ٢٠٢٦م</div>
+    </div>
 </div>
 
-<!-- CONTENT: we produce exactly 3 printable pages using .page with page-break-after -->
-<main class="container" role="main">
-
-  <!-- PAGE 1: Cover -->
-  <section class="page cover" style="page-break-after: always;">
-    <h1 class="title">التنمية المستدامة</h1>
-    <p style="font-size:15px;color:#333;margin-top:8px;">مشروع دراسي</p>
-    <p style="font-size:15px;color:#333;margin-top:16px;">اسم الطالب: أيمن</p>
-    <p style="font-size:15px;color:#333;margin-top:6px;">التاريخ: <span id="todayDate"></span></p>
-
-    <div style="width:60%;margin-top:18mm;">
-      <!-- inline SVG كصورة توضيحية (لا يحتاج انترنت) -->
-      <figure class="figure" role="img" aria-label="رمز التنمية المستدامة">
-        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-          <rect x="0" y="0" width="200" height="120" fill="#ffffff"/>
-          <g transform="translate(16,12)" fill="none" stroke="#000" stroke-width="2">
-            <circle cx="40" cy="40" r="30" stroke="#000"/>
-            <path d="M80 20 L120 20 L120 60 L80 60 Z" stroke="#000" fill="#f7f7f7"/>
-            <path d="M40 70 L40 100" stroke="#000"/>
-          </g>
-        </svg>
-        <figcaption style="font-size:12px;color:#666;text-align:center;margin-top:4px;">مخطط رمزي للتناغم بين الإنسان والبيئة</figcaption>
-      </figure>
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="toc-section">
+    <div class="toc-container">
+        <h2 class="toc-title">فهرس المحتويات</h2>
+        <ol class="toc-list" id="tocList">
+            <li onclick="scrollToSection('sec-intro')"><span>مقدّمة مشروع التخرّج</span></li>
+            <li onclick="scrollToSection('sec-summary')"><span>ملخّص مشروع التخرّج</span></li>
+            <li onclick="scrollToSection('sec-problem')"><span>مشكلة مشروع التخرّج</span></li>
+            <li onclick="scrollToSection('sec-objectives')"><span>أهداف المشروع</span></li>
+            <li onclick="scrollToSection('sec-terms')"><span>مصطلحات مشروع التخرّج</span></li>
+            <li onclick="scrollToSection('sec-plan')"><span>الخطة الزمنية</span></li>
+            <li onclick="scrollToSection('sec-theory')"><span>الخلفية النظرية</span></li>
+            <li onclick="scrollToSection('sec-practices')"><span>ممارسات مشروع التخرّج</span></li>
+            <li onclick="scrollToSection('sec-results')"><span>نتائج المشروع</span></li>
+            <li onclick="scrollToSection('sec-conclusion')"><span>خاتمة المشروع</span></li>
+            <li onclick="scrollToSection('sec-refs')"><span>قائمة المصادر والمراجع</span></li>
+        </ol>
     </div>
-  </section>
+</div>
 
-  <!-- PAGE 2: Sections 1 & 2 + comparison table -->
-  <section class="page" style="page-break-after: always;">
-    <article class="section">
-      <h2 class="side">المقدمة</h2>
-      <h3 class="sub">ماذا تعني التنمية المستدامة؟</h3>
-      <p>التنمية المستدامة هي نهج يهدف لتلبية احتياجات اليوم دون المساس بقدرة الأجيال القادمة على تلبية احتياجاتها. تركز على التكامل بين البعد البيئي والاقتصادي والاجتماعي.</p>
-    </article>
+<!-- ==================== MAIN CONTENT ==================== -->
+<div class="main-content">
 
-    <article class="section" style="margin-top:10px;">
-      <h2 class="side">الأهداف</h2>
-      <ul>
-        <li>حماية البيئة والمحافظة على الموارد الطبيعية.</li>
-        <li>تعزيز العدالة والمساواة الاجتماعية.</li>
-        <li>تشجيع اقتصاد مستدام يخلق فرص عمل طويلة الأمد.</li>
-      </ul>
-    </article>
+    <!-- 1. المقدمة -->
+    <div class="section" id="sec-intro">
+        <div class="section-number"><i class="fas fa-feather-alt"></i> أولًا</div>
+        <h2 class="section-title">مقدّمة مشروع التخرّج</h2>
+        <p>
+            الحمد لله رب العالمين، والصلاة والسلام على أشرف الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين. أما بعد:
+        </p>
+        <p>
+            يشهد العالم اليوم ثورة رقمية غير مسبوقة، أصبحت فيها وسائل التواصل الاجتماعي جزءًا لا يتجزأ من الحياة اليومية، ولا سيّما في حياة الشباب والمراهقين. وقد أصبحت هذه المنصات — كتويتر وسناب شات وإنستغرام وتيك توك — تُشكّل مصدرًا رئيسيًّا للمعلومات والتفاعل الاجتماعي والترفيه، مما أثار تساؤلات جوهرية حول تأثيرها على الأداء الأكاديمي والتحصيل الدراسي.
+        </p>
+        <p>
+            من هذا المنطلق، جاء مشروعنا ليسلّط الضوء على العلاقة بين استخدام وسائل التواصل الاجتماعي والتحصيل الدراسي لدى طالبات المرحلة الثانوية، بهدف فهم هذه العلاقة بشكل أعمق، وتقديم توصيات عملية تُساعد الطالبات على تحقيق التوازن بين الاستخدام الرقمي والتفوق الأكاديمي.
+        </p>
+    </div>
 
-    <article class="section" style="margin-top:8px;">
-      <h2 class="side">مقارنة: استراتيجيات التنمية</h2>
-      <!-- Table: comparison -->
-      <table class="table" role="table" aria-label="جدول مقارنة استراتيجيات التنمية">
-        <thead>
-          <tr>
-            <th>المعيار</th>
-            <th>الاستراتيجية التقليدية</th>
-            <th>الاستراتيجية المستدامة</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>استخدام الموارد</td>
-            <td>استخراج عالي مع استنزاف</td>
-            <td>استخدام فعّال وإعادة تدوير</td>
-          </tr>
-          <tr>
-            <td>الأثر البيئي</td>
-            <td>تلوث مرتفع</td>
-            <td>تقليل الانبعاثات والحفاظ على التنوع الحيوي</td>
-          </tr>
-          <tr>
-            <td>الاستدامة الاقتصادية</td>
-            <td>نمو قصير المدى</td>
-            <td>نمو متوازن ومداوم</td>
-          </tr>
-        </tbody>
-      </table>
-    </article>
-  </section>
+    <!-- 2. الملخص -->
+    <div class="section" id="sec-summary">
+        <div class="section-number"><i class="fas fa-file-alt"></i> ثانيًا</div>
+        <h2 class="section-title">ملخّص مشروع التخرّج</h2>
+        <div class="highlight-box">
+            <p>
+                يتناول هذا المشروع دراسة أثر استخدام وسائل التواصل الاجتماعي على التحصيل الدراسي لطالبات المرحلة الثانوية في المدرسة الثانوية الحادية والعشرين بمنطقة عسير. اعتمدت الدراسة على المنهج الوصفي التحليلي، حيث تم تصميم استبانة إلكترونية وُزّعت على عيّنة مكوّنة من (١٢٠) طالبة من مختلف الصفوف الثانوية.
+            </p>
+        </div>
+        <p>
+            أظهرت النتائج أن ٧٨٪ من الطالبات يستخدمن وسائل التواصل الاجتماعي بمعدل يتجاوز ٣ ساعات يوميًّا، وأن هناك علاقة عكسية ذات دلالة بين عدد ساعات الاستخدام ومستوى التحصيل الدراسي. كما كشفت الدراسة أن ٦٥٪ من الطالبات يعترفن بأن وسائل التواصل تُشتّت انتباههن أثناء المذاكرة. وخلص المشروع إلى مجموعة من التوصيات التي تُعزّز الاستخدام الواعي والمتوازن لهذه الوسائل.
+        </p>
+    </div>
 
-  <!-- PAGE 3: Section 3, 4, conclusion, references -->
-  <section class="page" style="page-break-after: auto;">
-    <article class="section">
-      <h2 class="side">دراسة حالة مبسطة</h2>
-      <h3 class="sub">مشروع زراعة حضرية</h3>
-      <p>مثال عملي: مشروع زراعة في أسطح المباني يوفّر خضار طازج ويقلل من استهلاك النقل، ويخلق فرص عمل محلية.</p>
+    <!-- 3. المشكلة -->
+    <div class="section" id="sec-problem">
+        <div class="section-number"><i class="fas fa-exclamation-triangle"></i> ثالثًا</div>
+        <h2 class="section-title">مشكلة مشروع التخرّج</h2>
 
-      <div class="callout" role="note">
-        <strong>ملاحظة:</strong> التصميم يضمن أن الصور والجداول لا تقطع بين الصفحات عند الطباعة.
-      </div>
+        <h3 class="sub-heading"><i class="fas fa-search"></i> تحديد المشكلة</h3>
+        <p>
+            لاحظنا في السنوات الأخيرة تزايدًا ملحوظًا في ساعات استخدام الطالبات لوسائل التواصل الاجتماعي، وهو ما صاحبه انخفاض في مستوى التركيز والتحصيل الدراسي لدى شريحة واسعة منهن. وتتمحور مشكلة الدراسة حول السؤال الرئيس:
+        </p>
+        <div class="highlight-box">
+            <p><strong>ما أثر استخدام وسائل التواصل الاجتماعي على التحصيل الدراسي لطالبات المرحلة الثانوية؟</strong></p>
+        </div>
 
-      <!-- Inline illustrative SVG image (بدون موارد خارجية) -->
-      <figure class="figure" role="img" aria-label="رسم توضيحي لزراعة حضرية">
-        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-          <rect width="100%" height="100%" fill="#fff"/>
-          <g transform="translate(10,10)" stroke="#000" stroke-width="1">
-            <rect x="0" y="60" width="280" height="40" fill="#f7f7f7"/>
-            <rect x="10" y="40" width="40" height="20" fill="#fff"/>
-            <circle cx="80" cy="50" r="10" fill="#fff"/>
-            <path d="M140 60 v-30 q10 -10 20 0 v30" fill="#fff"/>
-          </g>
-        </svg>
-        <figcaption style="font-size:12px;color:#666;text-align:center;margin-top:4px;">مخطط توضيحي لزراعة حضرية</figcaption>
-      </figure>
-    </article>
+        <h3 class="sub-heading"><i class="fas fa-star"></i> أهمية مشروع التخرّج</h3>
+        <ul>
+            <li>يُسهم في فهم طبيعة العلاقة بين الاستخدام الرقمي والأداء الأكاديمي.</li>
+            <li>يُوفّر بيانات واقعية تُساعد المعلمات والمرشدات في توجيه الطالبات.</li>
+            <li>يُعزّز الوعي المجتمعي بأهمية الاستخدام المتوازن للتكنولوجيا.</li>
+            <li>يتّسق مع رؤية المملكة ٢٠٣٠ في تعزيز جودة التعليم والتمكين الرقمي الواعي.</li>
+        </ul>
+    </div>
 
-    <article class="section" style="margin-top:10px;">
-      <h2 class="side">الخاتمة</h2>
-      <p>التنمية المستدامة ليست خياراً بل ضرورة. تحتاج سياسات متكاملة، ووعي مجتمعي، وتعاون بين الجهات الحكومية والخاصة لتحقيق نتائج ملموسة.</p>
-    </article>
+    <!-- 4. الأهداف -->
+    <div class="section" id="sec-objectives">
+        <div class="section-number"><i class="fas fa-bullseye"></i> رابعًا</div>
+        <h2 class="section-title">أهداف المشروع</h2>
+        <div class="objectives-grid">
+            <div class="objective-card">
+                <div class="obj-num">١</div>
+                <p>قياس مدى استخدام طالبات المرحلة الثانوية لوسائل التواصل الاجتماعي</p>
+            </div>
+            <div class="objective-card">
+                <div class="obj-num">٢</div>
+                <p>تحديد أكثر المنصات استخدامًا ومعرفة أنماط الاستخدام</p>
+            </div>
+            <div class="objective-card">
+                <div class="obj-num">٣</div>
+                <p>تحليل العلاقة بين ساعات الاستخدام ومستوى التحصيل الدراسي</p>
+            </div>
+            <div class="objective-card">
+                <div class="obj-num">٤</div>
+                <p>رصد الآثار الإيجابية والسلبية على الأداء الأكاديمي</p>
+            </div>
+            <div class="objective-card">
+                <div class="obj-num">٥</div>
+                <p>تقديم توصيات عملية لتحقيق التوازن بين الاستخدام الرقمي والتعليم</p>
+            </div>
+            <div class="objective-card">
+                <div class="obj-num">٦</div>
+                <p>نشر الوعي بين الطالبات حول الاستخدام الأمثل للتكنولوجيا</p>
+            </div>
+        </div>
+    </div>
 
-    <article class="section" style="margin-top:8px;">
-      <h2 class="side">المراجع والمصادر (اختياري)</h2>
-      <ol>
-        <li>وثائق الأمم المتحدة للتنمية المستدامة (مراجع عامة).</li>
-        <li>أمثلة محلية ومقالات علمية مبسطة.</li>
-      </ol>
-    </article>
+    <!-- 5. المصطلحات -->
+    <div class="section" id="sec-terms">
+        <div class="section-number"><i class="fas fa-book"></i> خامسًا</div>
+        <h2 class="section-title">مصطلحات مشروع التخرّج</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>م</th>
+                    <th>المصطلح</th>
+                    <th>معناه</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>١</td>
+                    <td>وسائل التواصل الاجتماعي</td>
+                    <td>منصات رقمية تتيح للمستخدمين إنشاء محتوى ومشاركته والتفاعل مع الآخرين عبر الإنترنت</td>
+                </tr>
+                <tr>
+                    <td>٢</td>
+                    <td>التحصيل الدراسي</td>
+                    <td>مستوى الإنجاز الأكاديمي الذي تحققه الطالبة مقاسًا بالدرجات والتقديرات في المقررات الدراسية</td>
+                </tr>
+                <tr>
+                    <td>٣</td>
+                    <td>الإدمان الرقمي</td>
+                    <td>الاستخدام المفرط وغير المسيطر عليه للأجهزة الرقمية ومنصات التواصل بشكل يؤثر على الحياة اليومية</td>
+                </tr>
+                <tr>
+                    <td>٤</td>
+                    <td>التشتت المعرفي</td>
+                    <td>عدم القدرة على التركيز في مهمة واحدة بسبب المحفزات والإشعارات الرقمية المستمرة</td>
+                </tr>
+                <tr>
+                    <td>٥</td>
+                    <td>المنهج الوصفي التحليلي</td>
+                    <td>منهج بحثي يقوم على وصف الظاهرة كما هي في الواقع وتحليل بياناتها للوصول إلى استنتاجات</td>
+                </tr>
+                <tr>
+                    <td>٦</td>
+                    <td>العيّنة</td>
+                    <td>مجموعة جزئية من مجتمع الدراسة يتم اختيارها لتمثيله في البحث</td>
+                </tr>
+                <tr>
+                    <td>٧</td>
+                    <td>الاستبانة</td>
+                    <td>أداة لجمع البيانات تتكون من مجموعة أسئلة موجهة لعينة الدراسة للحصول على معلومات محددة</td>
+                </tr>
+                <tr>
+                    <td>٨</td>
+                    <td>التمكين الرقمي</td>
+                    <td>امتلاك المهارات والمعرفة اللازمة لاستخدام التكنولوجيا بفاعلية ووعي</td>
+                </tr>
+                <tr>
+                    <td>٩</td>
+                    <td>إدارة الوقت</td>
+                    <td>القدرة على تنظيم واستثمار الوقت بين الأنشطة المختلفة لتحقيق الأهداف المرجوة</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <!-- footer for printed pages -->
-    <div class="print-footer" aria-hidden="true"></div>
-  </section>
+    <!-- 6. الخطة الزمنية -->
+    <div class="section" id="sec-plan">
+        <div class="section-number"><i class="fas fa-calendar-alt"></i> سادسًا</div>
+        <h2 class="section-title">الخطة الزمنية</h2>
 
-</main>
+        <h3 class="sub-heading"><i class="fas fa-clock"></i> الحدود الزمانية</h3>
+        <p>تم تنفيذ المشروع خلال الفصل الدراسي الثاني من العام الدراسي ١٤٤٧هـ، في الفترة من شهر رجب إلى شهر شعبان ١٤٤٧هـ (يناير — مارس ٢٠٢٦م).</p>
+
+        <h3 class="sub-heading"><i class="fas fa-map-marker-alt"></i> الحدود المكانية</h3>
+        <p>المدرسة الثانوية الحادية والعشرون بمنطقة عسير — مكتب التعليم شمال الخميس.</p>
+
+        <h3 class="sub-heading"><i class="fas fa-layer-group"></i> الحدود الموضوعية</h3>
+        <p>اقتصرت الدراسة على بحث أثر وسائل التواصل الاجتماعي (سناب شات، تيك توك، إنستغرام، تويتر) على التحصيل الدراسي لطالبات المرحلة الثانوية.</p>
+
+        <h3 class="sub-heading"><i class="fas fa-tasks"></i> مراحل التنفيذ</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="tl-title">المرحلة الأولى: التخطيط والإعداد</div>
+                <div class="tl-desc">الأسبوع ١ - ٢ | اختيار الموضوع، مراجعة الأدبيات، تصميم الاستبانة</div>
+            </div>
+            <div class="timeline-item">
+                <div class="tl-title">المرحلة الثانية: جمع البيانات</div>
+                <div class="tl-desc">الأسبوع ٣ - ٤ | توزيع الاستبانة وجمع الاستجابات من ١٢٠ طالبة</div>
+            </div>
+            <div class="timeline-item">
+                <div class="tl-title">المرحلة الثالثة: التحليل والتفسير</div>
+                <div class="tl-desc">الأسبوع ٥ - ٦ | تحليل البيانات إحصائيًّا واستخلاص النتائج</div>
+            </div>
+            <div class="timeline-item">
+                <div class="tl-title">المرحلة الرابعة: الكتابة والمراجعة</div>
+                <div class="tl-desc">الأسبوع ٧ - ٨ | كتابة التقرير النهائي والمراجعة والتدقيق</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. الخلفية النظرية -->
+    <div class="section" id="sec-theory">
+        <div class="section-number"><i class="fas fa-microscope"></i> سابعًا</div>
+        <h2 class="section-title">الخلفية النظرية</h2>
+        <p>
+            تُعرّف وسائل التواصل الاجتماعي بأنها مجموعة من التطبيقات والمنصات الإلكترونية القائمة على تقنيات الويب التفاعلي، والتي تُمكّن المستخدمين من إنشاء محتوى خاص ومشاركته والتفاعل مع محتوى الآخرين. وقد شهدت المملكة العربية السعودية نموًّا هائلًا في استخدام هذه المنصات، حيث تُشير الإحصائيات إلى أن أكثر من ٨٠٪ من السكان يستخدمون منصة واحدة على الأقل.
+        </p>
+        <p>
+            أثبتت دراسات عديدة وجود تأثيرات متباينة لوسائل التواصل الاجتماعي على التحصيل الدراسي. فمن الناحية السلبية، يؤدي الاستخدام المفرط إلى تشتت الانتباه وتقليل ساعات المذاكرة والسهر الطويل، مما ينعكس سلبًا على التركيز في الفصل الدراسي. وأوضحت دراسة (الحربي، ٢٠٢٣) أن الطالبات اللواتي يقضين أكثر من ٤ ساعات يوميًّا على هذه المنصات انخفض معدلهن التراكمي بنسبة ١٥٪ مقارنة بزميلاتهن.
+        </p>
+        <p>
+            من الناحية الإيجابية، يمكن أن تكون وسائل التواصل أداة تعليمية فعّالة عند استخدامها بوعي، حيث تُتيح الوصول إلى مصادر تعليمية متنوعة، والتواصل مع مجموعات دراسية، ومتابعة حسابات تعليمية متخصصة. كما أن بعض المعلمات يستخدمن هذه المنصات كوسيلة تعليمية تفاعلية لتعزيز المشاركة الصفية.
+        </p>
+        <div class="highlight-box">
+            <p>
+                تستند هذه الدراسة إلى نظرية الاستخدامات والإشباعات (Uses and Gratifications Theory) التي تفترض أن الأفراد يستخدمون وسائل الإعلام لتلبية احتياجات نفسية واجتماعية محددة، وأن فهم دوافع الاستخدام يُساعد في التنبؤ بآثاره.
+            </p>
+        </div>
+    </div>
+
+    <!-- 8. الممارسات -->
+    <div class="section" id="sec-practices">
+        <div class="section-number"><i class="fas fa-cogs"></i> ثامنًا</div>
+        <h2 class="section-title">ممارسات مشروع التخرّج</h2>
+
+        <h3 class="sub-heading"><i class="fas fa-clipboard-list"></i> منهجية الدراسة</h3>
+        <p>
+            اعتمد المشروع على المنهج الوصفي التحليلي باعتباره الأنسب لدراسة الظواهر الاجتماعية وتحليلها. وتم اتّباع الخطوات التالية:
+        </p>
+        <ol>
+            <li><strong>تصميم أداة الدراسة:</strong> تم إعداد استبانة إلكترونية مكوّنة من ٢٥ سؤالًا تشمل بيانات شخصية، وأنماط الاستخدام، والأثر على التحصيل الدراسي.</li>
+            <li><strong>تحكيم الأداة:</strong> عُرضت الاستبانة على ٣ محكّمات متخصصات لضمان صدقها وثباتها.</li>
+            <li><strong>اختيار العينة:</strong> تم اختيار عيّنة عشوائية طبقية من ١٢٠ طالبة من الصفوف الأول والثاني والثالث الثانوي.</li>
+            <li><strong>جمع البيانات:</strong> وُزّعت الاستبانة إلكترونيًّا عبر نماذج Google واستُرجعت ١١٢ استجابة صالحة للتحليل.</li>
+            <li><strong>التحليل الإحصائي:</strong> استُخدمت النسب المئوية والمتوسطات الحسابية ومعامل الارتباط لتحليل البيانات.</li>
+        </ol>
+
+        <h3 class="sub-heading"><i class="fas fa-chart-bar"></i> أبرز نتائج الاستبانة</h3>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>المحور</th>
+                    <th>النتيجة</th>
+                    <th>النسبة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>أكثر المنصات استخدامًا</td>
+                    <td>سناب شات</td>
+                    <td>٤٢٪</td>
+                </tr>
+                <tr>
+                    <td>معدل الاستخدام اليومي</td>
+                    <td>أكثر من ٣ ساعات</td>
+                    <td>٧٨٪</td>
+                </tr>
+                <tr>
+                    <td>التشتت أثناء المذاكرة</td>
+                    <td>تأثير مرتفع</td>
+                    <td>٦٥٪</td>
+                </tr>
+                <tr>
+                    <td>السهر بسبب التواصل</td>
+                    <td>تأثير واضح</td>
+                    <td>٧١٪</td>
+                </tr>
+                <tr>
+                    <td>استخدام تعليمي إيجابي</td>
+                    <td>متابعة حسابات تعليمية</td>
+                    <td>٣٤٪</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 9. النتائج -->
+    <div class="section" id="sec-results">
+        <div class="section-number"><i class="fas fa-chart-pie"></i> تاسعًا</div>
+        <h2 class="section-title">نتائج المشروع</h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-num">٧٨٪</div>
+                <div class="stat-label">يستخدمن أكثر من ٣ ساعات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">٦٥٪</div>
+                <div class="stat-label">يعانين من التشتت</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">٧١٪</div>
+                <div class="stat-label">يسهرن بسبب التواصل</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">١٥٪</div>
+                <div class="stat-label">انخفاض المعدل التراكمي</div>
+            </div>
+        </div>
+
+        <p>توصّلت الدراسة إلى النتائج التالية:</p>
+        <ol>
+            <li>وجود علاقة عكسية ذات دلالة إحصائية بين عدد ساعات استخدام وسائل التواصل الاجتماعي ومستوى التحصيل الدراسي.</li>
+            <li>سناب شات هو المنصة الأكثر استخدامًا بين الطالبات بنسبة ٤٢٪، يليه تيك توك بنسبة ٣١٪.</li>
+            <li>٧١٪ من الطالبات يسهرن ليلًا بسبب استخدام وسائل التواصل، مما يؤثر على تركيزهن في اليوم الدراسي التالي.</li>
+            <li>٣٤٪ فقط من الطالبات يستخدمن وسائل التواصل لأغراض تعليمية.</li>
+            <li>أغلب الطالبات (٨٣٪) يرغبن في تنظيم وقتهن بشكل أفضل لكنّهن يجدن صعوبة في التحكم بالاستخدام.</li>
+            <li>وجود فروق ذات دلالة بين طالبات الصف الأول والثالث الثانوي في مستوى الوعي بمخاطر الاستخدام المفرط.</li>
+        </ol>
+    </div>
+
+    <!-- 10. الخاتمة -->
+    <div class="section" id="sec-conclusion">
+        <div class="section-number"><i class="fas fa-flag-checkered"></i> عاشرًا</div>
+        <h2 class="section-title">خاتمة المشروع</h2>
+        <p>
+            في ختام هذا المشروع، نستطيع القول إن وسائل التواصل الاجتماعي سلاح ذو حدّين؛ فهي أداة قيّمة للتعلّم والتواصل إذا أُحسن استخدامها، لكنها قد تتحول إلى عائق حقيقي أمام التحصيل الدراسي عند الإفراط فيها. وقد أكّدت نتائج دراستنا وجود أثر سلبي واضح للاستخدام المفرط على الأداء الأكاديمي لطالبات المرحلة الثانوية.
+        </p>
+
+        <h3 class="sub-heading"><i class="fas fa-exclamation-circle"></i> طبيعة المشاكل التي واجهت المشروع</h3>
+        <ul>
+            <li>صعوبة الحصول على استجابات كافية من بعض الطالبات في البداية.</li>
+            <li>محدودية الوقت المتاح لتنفيذ جميع مراحل المشروع.</li>
+            <li>عدم توفر دراسات محلية كافية حول الموضوع خاصة بمنطقة عسير.</li>
+            <li>تحفّظ بعض الطالبات على الإجابة بصراحة عن عدد ساعات الاستخدام.</li>
+        </ul>
+
+        <h3 class="sub-heading"><i class="fas fa-lightbulb"></i> التوصيات</h3>
+        <ol>
+            <li>تخصيص أوقات محددة لاستخدام وسائل التواصل الاجتماعي وعدم تجاوزها.</li>
+            <li>تفعيل خاصية تحديد وقت الاستخدام المتوفرة في الأجهزة الذكية.</li>
+            <li>توجيه الطالبات نحو المحتوى التعليمي المفيد عبر هذه المنصات.</li>
+            <li>إقامة ورش توعوية في المدارس حول الاستخدام الآمن والواعي للتكنولوجيا.</li>
+            <li>تعاون الأسرة والمدرسة في مراقبة ساعات استخدام الطالبات.</li>
+            <li>إجراء مزيد من الدراسات المعمّقة حول هذا الموضوع على مستوى المنطقة.</li>
+            <li>تشجيع الطالبات على ممارسة أنشطة بديلة كالرياضة والقراءة.</li>
+        </ol>
+    </div>
+
+    <!-- 11. المصادر والمراجع -->
+    <div class="section" id="sec-refs">
+        <div class="section-number"><i class="fas fa-bookmark"></i> حادي عشر</div>
+        <h2 class="section-title">قائمة المصادر والمراجع</h2>
+        <div class="ref-item">
+            <div class="ref-num">١</div>
+            <div class="ref-text">الحربي، سارة. (٢٠٢٣). <em>أثر وسائل التواصل الاجتماعي على التحصيل الدراسي لدى طلاب المرحلة الثانوية</em>. مجلة العلوم التربوية، جامعة الملك سعود.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٢</div>
+            <div class="ref-text">العتيبي، محمد. (٢٠٢٢). <em>الإدمان الرقمي وعلاقته بالتحصيل الأكاديمي</em>. مجلة البحوث النفسية والتربوية، جامعة المنصورة.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٣</div>
+            <div class="ref-text">هيئة الاتصالات وتقنية المعلومات. (٢٠٢٤). <em>تقرير استخدام وسائل التواصل الاجتماعي في المملكة العربية السعودية</em>.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٤</div>
+            <div class="ref-text">الشمري، نورة. (٢٠٢٣). <em>إدارة الوقت الرقمي لدى طالبات المرحلة الثانوية</em>. رسالة ماجستير، جامعة الإمام محمد بن سعود الإسلامية.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٥</div>
+            <div class="ref-text">القحطاني، عبدالله. (٢٠٢١). <em>وسائل التواصل الاجتماعي: الفرص والتحديات التربوية</em>. دار المعرفة للنشر والتوزيع، الرياض.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٦</div>
+            <div class="ref-text">Kross, E., et al. (2021). <em>Social Media and Well-Being: Pitfalls, Progress, and Next Steps</em>. Trends in Cognitive Sciences, 25(1), 55-66.</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-num">٧</div>
+            <div class="ref-text">Twenge, J. M. (2023). <em>Generations: The Real Differences Between Gen Z, Millennials, Gen X, Boomers, and Silents</em>. Atria Books.</div>
+        </div>
+    </div>
+
+</div>
 
 <script>
-/* ====== JavaScript بسيط لزر الطباعة مع error handling ====== */
-(function(){
-  // التاريخ على الغلاف
-  var d = new Date();
-  var dd = d.getDate().toString().padStart(2,'0');
-  var mm = (d.getMonth()+1).toString().padStart(2,'0');
-  var yyyy = d.getFullYear();
-  document.getElementById('todayDate').textContent = dd + '/' + mm + '/' + yyyy;
-
-  var btn = document.getElementById('printBtn');
-  btn.addEventListener('click', function(){
-    try {
-      // محاولة طباعة
-      window.print();
-      // بعض أجهزة iOS قد لا ترمي خطأ لكن طباعة تفشل لأسباب إعدادات الطابعة
-      // نعرض ملاحظة خفيفة إن أردت (لا تعتمد على alert لطباعة سلسة)
-    } catch (err) {
-      // عرض رسالة للمستخدم بطريقة بسيطة
-      alert('حدث خطأ أثناء محاولة الطباعة. تأكد من اتصال الطابعة أو إعادة المحاولة.');
-      console.error('Print error:', err);
+    /* ===== Dark Mode Detection ===== */
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
     }
-  }, false);
-})();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+        if (event.matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+
+    /* ===== Smooth Scroll to Section ===== */
+    function scrollToSection(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    /* ===== Scroll To Top Button ===== */
+    var scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 600) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ===== Intersection Observer for fade-in animation ===== */
+    var observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.section').forEach(function(section) {
+        section.style.animationPlayState = 'paused';
+        observer.observe(section);
+    });
 </script>
 
 </body>
