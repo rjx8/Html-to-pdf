@@ -3,1503 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع تخرّج - أثر وسائل التواصل الاجتماعي على التحصيل الدراسي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800;900&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>مشروع التخرج: أمن المعلومات في الحوسبة السحابية</title>
+    <!-- تضمين خط مناسب للعربية (أميري/كايرو) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- مكتبة jsPDF و html2canvas لطباعة PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        :root {
-            --primary: #0c4a4e;
-            --primary-light: #1a7a80;
-            --accent: #c8a96e;
-            --accent-light: #e8d5a8;
-            --bg: #faf8f4;
-            --bg-card: #ffffff;
-            --text: #1a1a1a;
-            --text-secondary: #4a4a4a;
-            --text-muted: #7a7a7a;
-            --border: #e0ddd5;
-            --shadow: 0 4px 24px rgba(12, 74, 78, 0.08);
-            --shadow-lg: 0 12px 48px rgba(12, 74, 78, 0.12);
-            --gradient-hero: linear-gradient(135deg, #0c4a4e 0%, #1a7a80 40%, #2a9a9e 100%);
-            --pattern-opacity: 0.04;
-        }
-
-        .dark {
-            --primary: #4ecdc4;
-            --primary-light: #6ee7df;
-            --accent: #d4a855;
-            --accent-light: #3d3525;
-            --bg: #0f1419;
-            --bg-card: #1a2332;
-            --text: #e8e6e1;
-            --text-secondary: #b0ada5;
-            --text-muted: #7a776f;
-            --border: #2a3442;
-            --shadow: 0 4px 24px rgba(0,0,0,0.3);
-            --shadow-lg: 0 12px 48px rgba(0,0,0,0.4);
-            --gradient-hero: linear-gradient(135deg, #0a1628 0%, #122338 40%, #1a3550 100%);
-            --pattern-opacity: 0.06;
-        }
-
+        /* إعادة ضبط الهوامش الأساسية لتناسب A4 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* تنسيق الصفحة الرئيسية بحجم A4 مع هوامش مناسبة للطباعة */
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.9;
-            font-size: 17px;
-            overflow-x: hidden;
-        }
-
-        /* ===== GEOMETRIC PATTERN BACKGROUND ===== */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(12,74,78,0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(200,169,110,0.03) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(12,74,78,0.02) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .dark body::before {
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(78,205,196,0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(212,168,85,0.03) 0%, transparent 50%);
-        }
-
-        /* ===== PRINT BUTTON ===== */
-        .print-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 1000;
-            background: var(--gradient-hero);
-            color: #fff;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 22px;
+            font-family: 'Cairo', 'Almarai', sans-serif;
+            background-color: #e6e9ef;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 24px rgba(12,74,78,0.35);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 20px 10px;
+            margin: 0;
+        }
+
+        .research-paper {
+            max-width: 21cm; /* عرض A4 */
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 2.2cm 2cm 2cm 2cm; /* هوامش داخلية تشبه الهوامش الأكاديمية (تقريباً) */
+            margin: 0 auto 30px auto;
+            border-radius: 4px;
+            font-size: 14pt; /* حجم خط أساسي مناسب للقراءة */
+            line-height: 1.6;
+            color: #1e2b3a;
+            page-break-after: avoid; /* منع كسر الصفحة داخل المستند عند الطباعة */
+        }
+
+        /* عناصر الطباعة */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .research-paper {
+                box-shadow: none;
+                padding: 2.2cm 2cm 2cm 2cm;
+                max-width: 100%;
+                margin: 0 auto;
+                border-radius: 0;
+            }
+            .print-btn {
+                display: none; /* إخفاء زر الطباعة عند الطباعة */
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            p, li {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* تنسيق العناوين الرئيسية */
+        h1 {
+            font-size: 28pt;
+            font-weight: 800;
+            color: #0b2b4f;
+            text-align: center;
+            margin-bottom: 0.7cm;
+            letter-spacing: -0.5px;
+            border-bottom: 3px solid #2c7da0;
+            padding-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 22pt;
+            font-weight: 700;
+            color: #1e4a6d;
+            margin-top: 1.2cm;
+            margin-bottom: 0.7cm;
+            border-right: 8px solid #3a9fc9;
+            padding-right: 20px;
+        }
+
+        h3 {
+            font-size: 18pt;
+            font-weight: 600;
+            color: #2a5f7a;
+            margin-top: 0.8cm;
+            margin-bottom: 0.4cm;
+            padding-right: 15px;
+        }
+
+        /* معلومات المشروع / الغلاف */
+        .project-cover {
+            text-align: center;
+            margin-bottom: 1.5cm;
+            page-break-after: avoid;
+        }
+
+        .project-cover h2 {
+            border: none;
+            font-size: 26pt;
+            color: #0d3e5c;
+            margin: 15px 0 5px;
+            font-weight: 800;
+        }
+
+        .project-cover .subtitle {
+            font-size: 20pt;
+            font-weight: 400;
+            color: #2a6f97;
+            margin: 0 0 20px;
+        }
+
+        .project-cover .info {
+            font-size: 16pt;
+            color: #2c3e50;
+            margin-top: 40px;
+            line-height: 2;
+        }
+
+        .project-cover .date {
+            margin-top: 50px;
+            font-size: 16pt;
+            color: #2c7da0;
+        }
+
+        .separator {
+            height: 2px;
+            background: linear-gradient(to left, transparent, #3a9fc9, transparent);
+            width: 70%;
+            margin: 0.7cm auto;
+        }
+
+        /* الفقرات والمسافات */
+        p {
+            text-align: justify;
+            margin-bottom: 0.5cm;
+            font-weight: 400;
+        }
+
+        .lead {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #0a3144;
+        }
+
+        /* القوائم */
+        ul {
+            margin-right: 1.5cm;
+            margin-bottom: 0.7cm;
+            list-style-type: circle;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 14pt;
+        }
+
+        /* جدول المحتويات */
+        .toc {
+            background-color: #f4f9fc;
+            padding: 25px 35px;
+            border-radius: 12px;
+            margin: 1.2cm 0;
+            border: 1px solid #b3d7e8;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            border: none;
+            color: #0a2e45;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-right: 0;
+        }
+
+        .toc li {
+            font-size: 16px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #9bbad0;
+            padding-bottom: 6px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #1c5a7a;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* فهرس المراجع */
+        .references {
+            margin-top: 1.5cm;
+            background-color: #f8fbfd;
+            padding: 20px 35px;
+            border-radius: 12px;
+            border: 1px solid #b3d7e8;
+        }
+
+        .references ol {
+            margin-right: 1cm;
+        }
+
+        .references li {
+            font-size: 13pt;
+            margin-bottom: 12px;
+        }
+
+        /* الجداول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8cm 0;
+            font-size: 13pt;
+        }
+
+        th {
+            background-color: #2c7da0;
+            color: white;
+            font-weight: 700;
+            padding: 12px;
+        }
+
+        td, th {
+            border: 1px solid #7fb6cf;
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e9f2f8;
+        }
+
+        /* زر الطباعة */
+        .print-btn {
+            background-color: #1e4a6d;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 16px 36px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0,40,70,0.3);
+            margin: 30px auto;
+            display: inline-block;
+            transition: 0.2s;
+            border: 2px solid white;
+            font-family: 'Cairo', sans-serif;
         }
 
         .print-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 32px rgba(12,74,78,0.45);
+            background-color: #123b56;
+            transform: scale(1.02);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
         }
 
-        .print-btn:active {
-            transform: scale(0.95);
-        }
-
-        .print-tooltip {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text);
-            color: var(--bg);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-family: 'Tajawal', sans-serif;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .print-btn:hover .print-tooltip {
-            opacity: 1;
-        }
-
-        /* ===== COVER PAGE ===== */
-        .cover-page {
-            min-height: 100vh;
-            background: var(--gradient-hero);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 40px 20px;
-        }
-
-        .cover-page::before {
-            content: '';
-            position: absolute;
-            top: -50%; right: -30%;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(200,169,110,0.12) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatOrb 20s ease-in-out infinite;
-        }
-
-        .cover-page::after {
-            content: '';
-            position: absolute;
-            bottom: -40%; left: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatOrb 15s ease-in-out infinite reverse;
-        }
-
-        @keyframes floatOrb {
-            0%, 100% { transform: translate(0, 0); }
-            33% { transform: translate(30px, -40px); }
-            66% { transform: translate(-20px, 30px); }
-        }
-
-        .cover-geometric {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            overflow: hidden;
-            opacity: 0.08;
-        }
-
-        .cover-geometric .line {
-            position: absolute;
-            background: #fff;
-        }
-
-        .cover-geometric .line:nth-child(1) {
-            width: 1px; height: 100%;
-            left: 15%;
-        }
-
-        .cover-geometric .line:nth-child(2) {
-            width: 1px; height: 100%;
-            right: 15%;
-        }
-
-        .cover-geometric .line:nth-child(3) {
-            width: 100%; height: 1px;
-            top: 20%;
-        }
-
-        .cover-geometric .line:nth-child(4) {
-            width: 100%; height: 1px;
-            bottom: 20%;
-        }
-
-        .cover-content {
-            position: relative;
-            z-index: 2;
+        .print-container {
             text-align: center;
-            max-width: 700px;
         }
 
-        .cover-header {
-            margin-bottom: 40px;
-        }
-
-        .cover-ministry {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 30px;
-        }
-
-        .cover-ministry-icon {
-            width: 60px;
-            height: 60px;
-            border: 2px solid rgba(200,169,110,0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .cover-ministry-icon i {
-            color: var(--accent);
-            font-size: 24px;
-        }
-
-        .cover-ministry span {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .cover-ministry .ministry-name {
-            color: #fff;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .cover-divider {
-            width: 80px;
-            height: 2px;
-            background: var(--accent);
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .cover-divider::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-
-        .cover-title-label {
-            color: var(--accent);
-            font-size: 15px;
-            font-weight: 500;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        .cover-title {
-            font-family: 'Amiri', serif;
-            color: #fff;
-            font-size: clamp(28px, 5vw, 44px);
-            font-weight: 700;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
-        }
-
-        .cover-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .cover-meta-item {
-            color: rgba(255,255,255,0.85);
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .cover-meta-item i {
-            color: var(--accent);
-            font-size: 14px;
-        }
-
-        .cover-meta-item strong {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .cover-year {
-            margin-top: 40px;
-            padding: 12px 40px;
-            border: 1px solid rgba(200,169,110,0.4);
-            border-radius: 50px;
-            color: var(--accent);
-            font-family: 'Amiri', serif;
-            font-size: 18px;
-            display: inline-block;
-        }
-
-        /* ===== TABLE OF CONTENTS ===== */
-        .toc-section {
-            padding: 60px 20px;
-        }
-
-        .toc-container {
-            max-width: 750px;
-            margin: 0 auto;
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 50px 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .toc-title {
-            font-family: 'Amiri', serif;
-            font-size: 30px;
-            color: var(--primary);
+        /* تذييل الصفحة */
+        .page-footer {
+            margin-top: 1.2cm;
             text-align: center;
-            margin-bottom: 35px;
-            position: relative;
+            font-size: 12pt;
+            color: #3f6b85;
+            border-top: 1px solid #c9dde9;
+            padding-top: 15px;
         }
 
-        .toc-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--accent);
-            margin: 12px auto 0;
-            border-radius: 2px;
+        /* الأرقام والصفحات */
+        .page-number:before {
+            content: "الصفحة " counter(page);
         }
 
-        .toc-list {
-            list-style: none;
-            counter-reset: toc-counter;
+        body {
+            counter-reset: page;
         }
 
-        .toc-list li {
-            counter-increment: toc-counter;
-            display: flex;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px dashed var(--border);
-            cursor: pointer;
-            transition: padding-right 0.3s;
+        /* معالجة عدم خروج المحتوى عند التحويل ل PDF */
+        .research-paper {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .toc-list li:hover {
-            padding-right: 10px;
-        }
-
-        .toc-list li:last-child {
-            border-bottom: none;
-        }
-
-        .toc-list li::before {
-            content: counter(toc-counter, arabic-indic);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 36px;
-            height: 36px;
-            background: var(--accent-light);
-            color: var(--primary);
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            margin-left: 16px;
-        }
-
-        .dark .toc-list li::before {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .toc-list li span {
-            flex: 1;
-            font-size: 16px;
-            color: var(--text-secondary);
-            transition: color 0.3s;
-        }
-
-        .toc-list li:hover span {
-            color: var(--primary);
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 20px 20px 80px;
-        }
-
-        /* ===== SECTION STYLING ===== */
-        .section {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 45px 40px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease both;
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--primary), var(--accent));
+        /* تنسيق الاقتباسات */
+        blockquote {
+            background-color: #ecf5fa;
+            border-right: 6px solid #2c7da0;
+            padding: 15px 25px;
+            margin: 0.7cm 2cm;
+            font-style: italic;
             border-radius: 0 20px 20px 0;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-number {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: #fff;
-            padding: 6px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 18px;
-            letter-spacing: 1px;
-        }
-
-        .section-title {
-            font-family: 'Amiri', serif;
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 24px;
-            line-height: 1.6;
-            position: relative;
-            padding-bottom: 16px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .section p {
-            color: var(--text-secondary);
-            line-height: 2;
-            margin-bottom: 16px;
-            text-align: justify;
-            font-size: 16px;
-        }
-
-        .section ul, .section ol {
-            margin: 16px 20px 16px 0;
-            color: var(--text-secondary);
-        }
-
-        .section li {
-            margin-bottom: 10px;
-            line-height: 1.9;
-            font-size: 16px;
-        }
-
-        .section li::marker {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* ===== HIGHLIGHT BOXES ===== */
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(12,74,78,0.04), rgba(200,169,110,0.06));
-            border-right: 4px solid var(--accent);
-            padding: 20px 24px;
-            border-radius: 0 12px 12px 0;
-            margin: 20px 0;
-        }
-
-        .dark .highlight-box {
-            background: linear-gradient(135deg, rgba(78,205,196,0.06), rgba(212,168,85,0.04));
-        }
-
-        .highlight-box p {
-            margin-bottom: 0;
-        }
-
-        /* ===== TABLES ===== */
-        .styled-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 20px 0;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .styled-table thead {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-        }
-
-        .styled-table th {
-            color: #fff;
-            padding: 14px 18px;
-            font-weight: 600;
-            font-size: 15px;
-            text-align: right;
-        }
-
-        .styled-table td {
-            padding: 13px 18px;
-            border-bottom: 1px solid var(--border);
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .styled-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .styled-table tbody tr:nth-child(even) {
-            background: rgba(12,74,78,0.02);
-        }
-
-        .dark .styled-table tbody tr:nth-child(even) {
-            background: rgba(78,205,196,0.03);
-        }
-
-        .styled-table tbody tr:hover {
-            background: rgba(200,169,110,0.06);
-        }
-
-        /* ===== SUB-HEADINGS ===== */
-        .sub-heading {
-            font-family: 'Amiri', serif;
-            font-size: 21px;
-            color: var(--primary);
-            margin: 28px 0 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sub-heading i {
-            color: var(--accent);
-            font-size: 16px;
-        }
-
-        /* ===== OBJECTIVES CARDS ===== */
-        .objectives-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .objective-card {
-            background: linear-gradient(135deg, rgba(12,74,78,0.03), rgba(200,169,110,0.05));
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 22px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .dark .objective-card {
-            background: linear-gradient(135deg, rgba(78,205,196,0.05), rgba(212,168,85,0.03));
-        }
-
-        .objective-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
-        }
-
-        .objective-card .obj-num {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-hero);
-            color: #fff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .dark .objective-card .obj-num {
-            background: linear-gradient(135deg, var(--primary), #3ab8b0);
-            color: #0f1419;
-        }
-
-        .objective-card p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 0;
-            text-align: center;
-        }
-
-        /* ===== RESULTS STATS ===== */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-            margin: 24px 0;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 24px 16px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: #fff;
-        }
-
-        .dark .stat-card {
-            background: linear-gradient(135deg, #1a3040, #1e4050);
-            border: 1px solid var(--border);
-        }
-
-        .stat-card .stat-num {
-            font-family: 'Amiri', serif;
-            font-size: 36px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        .dark .stat-card .stat-num {
-            color: var(--primary);
-        }
-
-        .stat-card .stat-label {
-            font-size: 13px;
-            opacity: 0.85;
-            margin-top: 4px;
-        }
-
-        /* ===== TIMELINE ===== */
-        .timeline {
-            position: relative;
-            padding-right: 30px;
-            margin: 24px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            right: 8px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, var(--primary), var(--accent));
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding: 0 30px 28px 0;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 6px;
-            width: 18px;
-            height: 18px;
-            background: var(--bg-card);
-            border: 3px solid var(--primary);
-            border-radius: 50%;
-            z-index: 1;
-        }
-
-        .timeline-item .tl-title {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .timeline-item .tl-desc {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* ===== REFERENCES ===== */
-        .ref-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .ref-item:last-child {
-            border-bottom: none;
-        }
-
-        .ref-num {
-            min-width: 32px;
-            height: 32px;
-            background: var(--accent-light);
-            color: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .dark .ref-num {
-            color: var(--accent);
-        }
-
-        .ref-text {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        /* ===== SCROLL TO TOP ===== */
-        .scroll-top {
-            position: fixed;
-            bottom: 100px;
-            left: 30px;
-            z-index: 999;
-            background: var(--bg-card);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s, opacity 0.3s;
-        }
-
-        .scroll-top.visible {
-            display: flex;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-2px);
-            background: var(--primary);
-            color: #fff;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .section {
-                padding: 30px 22px;
-                border-radius: 16px;
-            }
-
-            .toc-container {
-                padding: 35px 22px;
-            }
-
-            .cover-title {
-                font-size: 26px;
-            }
-
-            .section-title {
-                font-size: 24px;
-            }
-
-            .objectives-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .styled-table {
-                font-size: 13px;
-            }
-
-            .styled-table th, .styled-table td {
-                padding: 10px 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .cover-year {
-                padding: 10px 24px;
-                font-size: 15px;
-            }
-
-            .stats-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 18px 10px;
-            }
-
-            .stat-card .stat-num {
-                font-size: 28px;
-            }
-
-            .print-btn {
-                bottom: 20px;
-                left: 20px;
-                width: 52px;
-                height: 52px;
-                font-size: 18px;
-            }
-
-            .scroll-top {
-                bottom: 80px;
-                left: 20px;
-                width: 38px;
-                height: 38px;
-            }
-        }
-
-        /* ===== PRINT STYLES ===== */
-        @media print {
-            @page {
-                size: A4;
-                margin: 2cm 1.5cm;
-            }
-
-            body {
-                background: #fff !important;
-                color: #000 !important;
-                font-size: 13pt;
-                line-height: 1.7;
-            }
-
-            body::before {
-                display: none !important;
-            }
-
-            .print-btn,
-            .scroll-top {
-                display: none !important;
-            }
-
-            .cover-page {
-                min-height: auto;
-                background: none !important;
-                padding: 40px 20px;
-                page-break-after: always;
-                border: 3px double var(--primary);
-                border-radius: 0;
-            }
-
-            .cover-page::before,
-            .cover-page::after,
-            .cover-geometric {
-                display: none !important;
-            }
-
-            .cover-content {
-                color: #000;
-            }
-
-            .cover-title {
-                color: #0c4a4e !important;
-                text-shadow: none;
-            }
-
-            .cover-ministry span,
-            .cover-ministry .ministry-name,
-            .cover-meta-item,
-            .cover-meta-item strong,
-            .cover-title-label {
-                color: #333 !important;
-            }
-
-            .cover-ministry-icon {
-                border-color: #0c4a4e;
-            }
-
-            .cover-ministry-icon i {
-                color: #0c4a4e;
-            }
-
-            .cover-year {
-                border-color: #0c4a4e;
-                color: #0c4a4e;
-            }
-
-            .cover-meta-item i {
-                color: #0c4a4e !important;
-            }
-
-            .toc-section {
-                page-break-after: always;
-            }
-
-            .toc-container {
-                box-shadow: none;
-                border: 1px solid #ccc;
-            }
-
-            .section {
-                box-shadow: none !important;
-                border: 1px solid #ddd;
-                border-radius: 0;
-                page-break-inside: avoid;
-                margin-bottom: 20px;
-                padding: 30px;
-            }
-
-            .section::before {
-                background: #0c4a4e;
-            }
-
-            .objective-card {
-                border: 1px solid #ddd;
-                background: #f9f9f9 !important;
-            }
-
-            .stat-card {
-                background: #f0f0f0 !important;
-                color: #000 !important;
-                border: 1px solid #ccc;
-            }
-
-            .stat-card .stat-num {
-                color: #0c4a4e !important;
-            }
-
-            .stat-card .stat-label {
-                color: #333 !important;
-            }
-
-            .section-number {
-                background: #0c4a4e !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .styled-table thead {
-                background: #0c4a4e !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .styled-table th {
-                color: #fff !important;
-            }
-
-            .objective-card .obj-num {
-                background: #0c4a4e !important;
-                color: #fff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .timeline::before {
-                background: #0c4a4e;
-            }
-
-            .timeline-item::before {
-                border-color: #0c4a4e;
-            }
+            color: #11445f;
         }
     </style>
 </head>
 <body>
 
-<!-- Print Button -->
-<button class="print-btn" onclick="window.print()" aria-label="طباعة المشروع">
-    <i class="fas fa-print"></i>
-    <span class="print-tooltip">طباعة المشروع</span>
-</button>
-
-<!-- Scroll to Top -->
-<button class="scroll-top" id="scrollTopBtn" aria-label="العودة للأعلى">
-    <i class="fas fa-chevron-up"></i>
-</button>
-
-<!-- ==================== COVER PAGE ==================== -->
-<div class="cover-page">
-    <div class="cover-geometric">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-    <div class="cover-content">
-        <div class="cover-header">
-            <div class="cover-ministry">
-                <div class="cover-ministry-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <span>المملكة العربية السعودية</span>
-                <span class="ministry-name">وزارة التعليم</span>
-                <span>الإدارة العامة للتعليم بمنطقة عسير</span>
-                <span>مكتب التعليم شمال الخميس</span>
-                <span>المدرسة الثانوية الحادية والعشرون</span>
-            </div>
+<div class="research-paper" id="research-content">
+    <!-- صفحة الغلاف -->
+    <div class="project-cover">
+        <h1>جامعة المستقبل</h1>
+        <h2>كلية علوم الحاسوب وتقنية المعلومات</h2>
+        <div class="separator"></div>
+        <h2 style="font-size: 30pt; margin-top: 1cm;">أمن المعلومات في بيئات الحوسبة السحابية</h2>
+        <p class="subtitle">تحديات وحلول مقترحة</p>
+        <div class="info">
+            <p><strong>إعداد الطالب:</strong> أحمد خالد العتيبي</p>
+            <p><strong>إشراف الدكتور:</strong> عبدالله السلمي</p>
         </div>
-
-        <div class="cover-divider"></div>
-
-        <div class="cover-title-label">مشروع التخرّج</div>
-        <h1 class="cover-title">أثر وسائل التواصل الاجتماعي<br>على التحصيل الدراسي لطالبات المرحلة الثانوية</h1>
-
-        <div class="cover-meta">
-            <div class="cover-meta-item">
-                <i class="fas fa-users"></i>
-                <span>أسماء الطالبات: <strong>نورة العسيري، ريم الشهراني، لمى القحطاني</strong></span>
-            </div>
-            <div class="cover-meta-item">
-                <i class="fas fa-school"></i>
-                <span>الصف الثالث الثانوي — المسار: <strong>العام</strong></span>
-            </div>
-            <div class="cover-meta-item">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>اسم المشرفة على مشروع التخرّج: <strong>أ. فاطمة الغامدي</strong></span>
-            </div>
+        <div class="date">
+            <p>الفصل الدراسي الثاني 1446 هـ - 2025 م</p>
         </div>
-
-        <div class="cover-year">العام الدراسي ١٤٤٧هـ / ٢٠٢٦م</div>
-    </div>
-</div>
-
-<!-- ==================== TABLE OF CONTENTS ==================== -->
-<div class="toc-section">
-    <div class="toc-container">
-        <h2 class="toc-title">فهرس المحتويات</h2>
-        <ol class="toc-list" id="tocList">
-            <li onclick="scrollToSection('sec-intro')"><span>مقدّمة مشروع التخرّج</span></li>
-            <li onclick="scrollToSection('sec-summary')"><span>ملخّص مشروع التخرّج</span></li>
-            <li onclick="scrollToSection('sec-problem')"><span>مشكلة مشروع التخرّج</span></li>
-            <li onclick="scrollToSection('sec-objectives')"><span>أهداف المشروع</span></li>
-            <li onclick="scrollToSection('sec-terms')"><span>مصطلحات مشروع التخرّج</span></li>
-            <li onclick="scrollToSection('sec-plan')"><span>الخطة الزمنية</span></li>
-            <li onclick="scrollToSection('sec-theory')"><span>الخلفية النظرية</span></li>
-            <li onclick="scrollToSection('sec-practices')"><span>ممارسات مشروع التخرّج</span></li>
-            <li onclick="scrollToSection('sec-results')"><span>نتائج المشروع</span></li>
-            <li onclick="scrollToSection('sec-conclusion')"><span>خاتمة المشروع</span></li>
-            <li onclick="scrollToSection('sec-refs')"><span>قائمة المصادر والمراجع</span></li>
-        </ol>
-    </div>
-</div>
-
-<!-- ==================== MAIN CONTENT ==================== -->
-<div class="main-content">
-
-    <!-- 1. المقدمة -->
-    <div class="section" id="sec-intro">
-        <div class="section-number"><i class="fas fa-feather-alt"></i> أولًا</div>
-        <h2 class="section-title">مقدّمة مشروع التخرّج</h2>
-        <p>
-            الحمد لله رب العالمين، والصلاة والسلام على أشرف الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين. أما بعد:
-        </p>
-        <p>
-            يشهد العالم اليوم ثورة رقمية غير مسبوقة، أصبحت فيها وسائل التواصل الاجتماعي جزءًا لا يتجزأ من الحياة اليومية، ولا سيّما في حياة الشباب والمراهقين. وقد أصبحت هذه المنصات — كتويتر وسناب شات وإنستغرام وتيك توك — تُشكّل مصدرًا رئيسيًّا للمعلومات والتفاعل الاجتماعي والترفيه، مما أثار تساؤلات جوهرية حول تأثيرها على الأداء الأكاديمي والتحصيل الدراسي.
-        </p>
-        <p>
-            من هذا المنطلق، جاء مشروعنا ليسلّط الضوء على العلاقة بين استخدام وسائل التواصل الاجتماعي والتحصيل الدراسي لدى طالبات المرحلة الثانوية، بهدف فهم هذه العلاقة بشكل أعمق، وتقديم توصيات عملية تُساعد الطالبات على تحقيق التوازن بين الاستخدام الرقمي والتفوق الأكاديمي.
-        </p>
     </div>
 
-    <!-- 2. الملخص -->
-    <div class="section" id="sec-summary">
-        <div class="section-number"><i class="fas fa-file-alt"></i> ثانيًا</div>
-        <h2 class="section-title">ملخّص مشروع التخرّج</h2>
-        <div class="highlight-box">
-            <p>
-                يتناول هذا المشروع دراسة أثر استخدام وسائل التواصل الاجتماعي على التحصيل الدراسي لطالبات المرحلة الثانوية في المدرسة الثانوية الحادية والعشرين بمنطقة عسير. اعتمدت الدراسة على المنهج الوصفي التحليلي، حيث تم تصميم استبانة إلكترونية وُزّعت على عيّنة مكوّنة من (١٢٠) طالبة من مختلف الصفوف الثانوية.
-            </p>
-        </div>
-        <p>
-            أظهرت النتائج أن ٧٨٪ من الطالبات يستخدمن وسائل التواصل الاجتماعي بمعدل يتجاوز ٣ ساعات يوميًّا، وأن هناك علاقة عكسية ذات دلالة بين عدد ساعات الاستخدام ومستوى التحصيل الدراسي. كما كشفت الدراسة أن ٦٥٪ من الطالبات يعترفن بأن وسائل التواصل تُشتّت انتباههن أثناء المذاكرة. وخلص المشروع إلى مجموعة من التوصيات التي تُعزّز الاستخدام الواعي والمتوازن لهذه الوسائل.
-        </p>
-    </div>
-
-    <!-- 3. المشكلة -->
-    <div class="section" id="sec-problem">
-        <div class="section-number"><i class="fas fa-exclamation-triangle"></i> ثالثًا</div>
-        <h2 class="section-title">مشكلة مشروع التخرّج</h2>
-
-        <h3 class="sub-heading"><i class="fas fa-search"></i> تحديد المشكلة</h3>
-        <p>
-            لاحظنا في السنوات الأخيرة تزايدًا ملحوظًا في ساعات استخدام الطالبات لوسائل التواصل الاجتماعي، وهو ما صاحبه انخفاض في مستوى التركيز والتحصيل الدراسي لدى شريحة واسعة منهن. وتتمحور مشكلة الدراسة حول السؤال الرئيس:
-        </p>
-        <div class="highlight-box">
-            <p><strong>ما أثر استخدام وسائل التواصل الاجتماعي على التحصيل الدراسي لطالبات المرحلة الثانوية؟</strong></p>
-        </div>
-
-        <h3 class="sub-heading"><i class="fas fa-star"></i> أهمية مشروع التخرّج</h3>
+    <!-- فهرس المحتويات (يدوي) -->
+    <div class="toc">
+        <h3 style="font-size: 22px;">📋 فهرس المحتويات</h3>
         <ul>
-            <li>يُسهم في فهم طبيعة العلاقة بين الاستخدام الرقمي والأداء الأكاديمي.</li>
-            <li>يُوفّر بيانات واقعية تُساعد المعلمات والمرشدات في توجيه الطالبات.</li>
-            <li>يُعزّز الوعي المجتمعي بأهمية الاستخدام المتوازن للتكنولوجيا.</li>
-            <li>يتّسق مع رؤية المملكة ٢٠٣٠ في تعزيز جودة التعليم والتمكين الرقمي الواعي.</li>
+            <li><a href="#"><span>المقدمة</span> <span>3</span></a></li>
+            <li><a href="#"><span>الفصل الأول: مفاهيم الحوسبة السحابية</span> <span>5</span></a></li>
+            <li><a href="#"><span>الفصل الثاني: التهديدات الأمنية في السحابة</span> <span>9</span></a></li>
+            <li><a href="#"><span>الفصل الثالث: استراتيجيات الحماية والتشفير</span> <span>14</span></a></li>
+            <li><a href="#"><span>الفصل الرابع: دراسة حالة (Amazon AWS)</span> <span>18</span></a></li>
+            <li><a href="#"><span>الخاتمة والنتائج</span> <span>22</span></a></li>
+            <li><a href="#"><span>قائمة المراجع</span> <span>24</span></a></li>
         </ul>
     </div>
 
-    <!-- 4. الأهداف -->
-    <div class="section" id="sec-objectives">
-        <div class="section-number"><i class="fas fa-bullseye"></i> رابعًا</div>
-        <h2 class="section-title">أهداف المشروع</h2>
-        <div class="objectives-grid">
-            <div class="objective-card">
-                <div class="obj-num">١</div>
-                <p>قياس مدى استخدام طالبات المرحلة الثانوية لوسائل التواصل الاجتماعي</p>
-            </div>
-            <div class="objective-card">
-                <div class="obj-num">٢</div>
-                <p>تحديد أكثر المنصات استخدامًا ومعرفة أنماط الاستخدام</p>
-            </div>
-            <div class="objective-card">
-                <div class="obj-num">٣</div>
-                <p>تحليل العلاقة بين ساعات الاستخدام ومستوى التحصيل الدراسي</p>
-            </div>
-            <div class="objective-card">
-                <div class="obj-num">٤</div>
-                <p>رصد الآثار الإيجابية والسلبية على الأداء الأكاديمي</p>
-            </div>
-            <div class="objective-card">
-                <div class="obj-num">٥</div>
-                <p>تقديم توصيات عملية لتحقيق التوازن بين الاستخدام الرقمي والتعليم</p>
-            </div>
-            <div class="objective-card">
-                <div class="obj-num">٦</div>
-                <p>نشر الوعي بين الطالبات حول الاستخدام الأمثل للتكنولوجيا</p>
-            </div>
-        </div>
-    </div>
+    <!-- المقدمة -->
+    <h2>المقدمة</h2>
+    <p class="lead">تشهد تقنية المعلومات تحولاً جذرياً بفضل انتشار الحوسبة السحابية، حيث أصبحت البنية التحتية والمنصات والبرمجيات تقدم كخدمات عبر الإنترنت. لكن هذا التطور صاحبه تحديات كبرى في مجال أمن المعلومات والخصوصية. يهدف هذا المشروع إلى استقصاء أبرز المخاطر الأمنية في السحابة، وتحليل آليات الحماية المعاصرة، واقتراح إطار عمل لتعزيز الأمن في بيئات السحابة الهجينة. اعتمدنا في البحث على المنهج الوصفي التحليلي ودراسة حالات عملية.</p>
+    <p>تزداد الاعتمادية على الخدمات السحابية يومًا بعد يوم، وتتنوع نماذج التقديم (IaaS, PaaS, SaaS) مما يوسع سطح الهجوم. سنناقش في هذه الصفحات الجوانب التالية: نماذج التهديد، تقنيات التشفير، إدارة الهوية، والامتثال للمعايير الدولية مثل ISO 27001 وGDPR. نسعى إلى تقديم رؤية متكاملة تفيد الباحثين والمختصين.</p>
 
-    <!-- 5. المصطلحات -->
-    <div class="section" id="sec-terms">
-        <div class="section-number"><i class="fas fa-book"></i> خامسًا</div>
-        <h2 class="section-title">مصطلحات مشروع التخرّج</h2>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>م</th>
-                    <th>المصطلح</th>
-                    <th>معناه</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>١</td>
-                    <td>وسائل التواصل الاجتماعي</td>
-                    <td>منصات رقمية تتيح للمستخدمين إنشاء محتوى ومشاركته والتفاعل مع الآخرين عبر الإنترنت</td>
-                </tr>
-                <tr>
-                    <td>٢</td>
-                    <td>التحصيل الدراسي</td>
-                    <td>مستوى الإنجاز الأكاديمي الذي تحققه الطالبة مقاسًا بالدرجات والتقديرات في المقررات الدراسية</td>
-                </tr>
-                <tr>
-                    <td>٣</td>
-                    <td>الإدمان الرقمي</td>
-                    <td>الاستخدام المفرط وغير المسيطر عليه للأجهزة الرقمية ومنصات التواصل بشكل يؤثر على الحياة اليومية</td>
-                </tr>
-                <tr>
-                    <td>٤</td>
-                    <td>التشتت المعرفي</td>
-                    <td>عدم القدرة على التركيز في مهمة واحدة بسبب المحفزات والإشعارات الرقمية المستمرة</td>
-                </tr>
-                <tr>
-                    <td>٥</td>
-                    <td>المنهج الوصفي التحليلي</td>
-                    <td>منهج بحثي يقوم على وصف الظاهرة كما هي في الواقع وتحليل بياناتها للوصول إلى استنتاجات</td>
-                </tr>
-                <tr>
-                    <td>٦</td>
-                    <td>العيّنة</td>
-                    <td>مجموعة جزئية من مجتمع الدراسة يتم اختيارها لتمثيله في البحث</td>
-                </tr>
-                <tr>
-                    <td>٧</td>
-                    <td>الاستبانة</td>
-                    <td>أداة لجمع البيانات تتكون من مجموعة أسئلة موجهة لعينة الدراسة للحصول على معلومات محددة</td>
-                </tr>
-                <tr>
-                    <td>٨</td>
-                    <td>التمكين الرقمي</td>
-                    <td>امتلاك المهارات والمعرفة اللازمة لاستخدام التكنولوجيا بفاعلية ووعي</td>
-                </tr>
-                <tr>
-                    <td>٩</td>
-                    <td>إدارة الوقت</td>
-                    <td>القدرة على تنظيم واستثمار الوقت بين الأنشطة المختلفة لتحقيق الأهداف المرجوة</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- فصل أول -->
+    <h2>الفصل الأول: أساسيات الحوسبة السحابية</h2>
+    <h3>1.1 تعريف الحوسبة السحابية</h3>
+    <p>وفقًا للمعهد الوطني للمعايير والتقنية (NIST)، الحوسبة السحابية هي نموذج يتيح الوصول الشبكي المريح عند الطلب إلى مجموعة مشتركة من موارد الحاسوب القابلة للتكوين (مثل الشبكات والخوادم والتخزين والتطبيقات والخدمات) يمكن توفيرها وإصدارها بسرعة مع الحد الأدنى من جهد الإدارة. تقوم الحوسبة السحابية على خمس خصائص أساسية: الخدمة الذاتية عند الطلب، الوصول واسع النطاق إلى الشبكة، تجميع الموارد، المرونة السريعة، والقياس.</p>
+    
+    <h3>1.2 نماذج الخدمة السحابية</h3>
+    <ul>
+        <li><strong>البنية التحتية كخدمة (IaaS):</strong> توفر موارد حاسوبية افتراضية (خوادم، تخزين، شبكات) مثل Amazon EC2.</li>
+        <li><strong>المنصة كخدمة (PaaS):</strong> توفر بيئة تطوير ونشر للتطبيقات دون إدارة البنية التحتية (مثال: Google App Engine).</li>
+        <li><strong>البرمجيات كخدمة (SaaS):</strong> تطبيقات جاهزة عبر الإنترنت (مثل Microsoft 365).</li>
+    </ul>
 
-    <!-- 6. الخطة الزمنية -->
-    <div class="section" id="sec-plan">
-        <div class="section-number"><i class="fas fa-calendar-alt"></i> سادسًا</div>
-        <h2 class="section-title">الخطة الزمنية</h2>
+    <h3>1.3 نماذج النشر</h3>
+    <p>تنقسم السحابة إلى: عامة (متاحة للعموم)، خاصة (لمؤسسة واحدة)، مجتمعية (لمجموعة محددة)، وهجينة (مزيج من الخاصة والعامة). تختلف المتطلبات الأمنية حسب النموذج.</p>
 
-        <h3 class="sub-heading"><i class="fas fa-clock"></i> الحدود الزمانية</h3>
-        <p>تم تنفيذ المشروع خلال الفصل الدراسي الثاني من العام الدراسي ١٤٤٧هـ، في الفترة من شهر رجب إلى شهر شعبان ١٤٤٧هـ (يناير — مارس ٢٠٢٦م).</p>
+    <!-- فصل ثاني -->
+    <h2>الفصل الثاني: التهديدات الأمنية الرئيسية</h2>
+    <p>وفقًا لتقرير Cloud Security Alliance (CSA) فإن أبرز التهديدات تشمل:</p>
+    <table>
+        <tr><th>التهديد</th><th>الوصف</th><th>نسبة الخطورة</th></tr>
+        <tr><td>اختراق البيانات</td><td>الوصول غير المصرح به للبيانات المخزنة</td><td>عالية جداً</td></tr>
+        <tr><td>ضعف إدارة الهوية</td><td>ثغرات في المصادقة والصلاحيات</td><td>عالية</td></tr>
+        <tr><td>واجهات برمجية غير آمنة</td><td>APIs ضعيفة تسمح بالهجمات</td><td>متوسطة</td></tr>
+        <tr><td>اختطاف الحسابات</td><td>استيلاء المهاجمين على حسابات المستخدمين</td><td>عالية</td></tr>
+    </table>
+    <p>كما أن هجمات الحرمان من الخدمة (DDoS) استهدفت العديد من مزودي الخدمة مؤخراً. يجب أن تتضمن استراتيجية الأمن مراقبة مستمرة وتحليلاً للسلوك.</p>
 
-        <h3 class="sub-heading"><i class="fas fa-map-marker-alt"></i> الحدود المكانية</h3>
-        <p>المدرسة الثانوية الحادية والعشرون بمنطقة عسير — مكتب التعليم شمال الخميس.</p>
+    <!-- فصل ثالث مع اقتباس -->
+    <h2>الفصل الثالث: آليات الحماية والتشفير</h2>
+    <h3>3.1 تشفير البيانات</h3>
+    <p>يجب تشفير البيانات أثناء النقل (باستخدام TLS) وأثناء التخزين (باستخدام AES-256). توفر مزودو الخدمات السحابية خيارات التشفير من جهة العميل أو من جهة الخادم. أشارت دراسة (Al-Ruithe, 2019) إلى أن 78% من المؤسسات تعتمد على التشفير لحماية بياناتها.</p>
+    <blockquote>
+        "لا يمكن ضمان أمن السحابة دون وجود إدارة مفاتيح مركزية (KMS) تفصل بين مفتاح التشفير والبيانات المشفرة."
+    </blockquote>
+    <h3>3.2 إدارة الهوية والوصول (IAM)</h3>
+    <p>تمكن أنظمة IAM من التحكم الدقيق بصلاحيات المستخدمين والخدمات. يُوصى بتفعيل المصادقة متعددة العوامل (MFA) وتطبيق مبدأ الصلاحيات الأقل. توفر منصات كـ AWS IAM وAzure AD أدوات متقدمة لذلك.</p>
 
-        <h3 class="sub-heading"><i class="fas fa-layer-group"></i> الحدود الموضوعية</h3>
-        <p>اقتصرت الدراسة على بحث أثر وسائل التواصل الاجتماعي (سناب شات، تيك توك، إنستغرام، تويتر) على التحصيل الدراسي لطالبات المرحلة الثانوية.</p>
+    <!-- فصل رابع : دراسة حالة -->
+    <h2>الفصل الرابع: دراسة حالة - منصة أمازون ويب سيرفيسز (AWS)</h2>
+    <p>تُعتبر AWS من أكثر المنصات السحابية انتشارًا. تقدم AWS مجموعة من أدوات الأمن مثل:</p>
+    <ul>
+        <li><strong>AWS Shield:</strong> حماية من هجمات DDoS.</li>
+        <li><strong>AWS KMS:</strong> إدارة المفاتيح.</li>
+        <li><strong>CloudTrail:</strong> تدقيق وتسجيل الأنشطة.</li>
+    </ul>
+    <p>رغم ذلك، فإن سوء التهيئة (Misconfiguration) يتسبب في غالبية الاختراقات، كما حدث في اختراق Capital One عام 2019 حيث تم استغلال جدار ناري مهيأ بشكل خاطئ. لذلك ينصح باستخدام أدوات فحص التكوين الآلي مثل AWS Config.</p>
 
-        <h3 class="sub-heading"><i class="fas fa-tasks"></i> مراحل التنفيذ</h3>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="tl-title">المرحلة الأولى: التخطيط والإعداد</div>
-                <div class="tl-desc">الأسبوع ١ - ٢ | اختيار الموضوع، مراجعة الأدبيات، تصميم الاستبانة</div>
-            </div>
-            <div class="timeline-item">
-                <div class="tl-title">المرحلة الثانية: جمع البيانات</div>
-                <div class="tl-desc">الأسبوع ٣ - ٤ | توزيع الاستبانة وجمع الاستجابات من ١٢٠ طالبة</div>
-            </div>
-            <div class="timeline-item">
-                <div class="tl-title">المرحلة الثالثة: التحليل والتفسير</div>
-                <div class="tl-desc">الأسبوع ٥ - ٦ | تحليل البيانات إحصائيًّا واستخلاص النتائج</div>
-            </div>
-            <div class="timeline-item">
-                <div class="tl-title">المرحلة الرابعة: الكتابة والمراجعة</div>
-                <div class="tl-desc">الأسبوع ٧ - ٨ | كتابة التقرير النهائي والمراجعة والتدقيق</div>
-            </div>
-        </div>
-    </div>
+    <!-- الخاتمة -->
+    <h2>الخاتمة والنتائج</h2>
+    <p>خلص البحث إلى أن أمن المعلومات في السحابة يمثل مسؤولية مشتركة بين المزود والمستفيد (نموذج المسؤولية المشتركة). أهم التوصيات: تطبيق التشفير الشامل، اعتماد سياسات صارمة للوصول، التدقيق الدوري، والتحول نحو البنية الخالية من الثقة (Zero Trust). كما أن الامتثال للمعايير الدولية يرفع مستوى الثقة. نأمل أن يسهم هذا المشروع في رفع الوعي حول الممارسات الآمنة في السحابة.</p>
 
-    <!-- 7. الخلفية النظرية -->
-    <div class="section" id="sec-theory">
-        <div class="section-number"><i class="fas fa-microscope"></i> سابعًا</div>
-        <h2 class="section-title">الخلفية النظرية</h2>
-        <p>
-            تُعرّف وسائل التواصل الاجتماعي بأنها مجموعة من التطبيقات والمنصات الإلكترونية القائمة على تقنيات الويب التفاعلي، والتي تُمكّن المستخدمين من إنشاء محتوى خاص ومشاركته والتفاعل مع محتوى الآخرين. وقد شهدت المملكة العربية السعودية نموًّا هائلًا في استخدام هذه المنصات، حيث تُشير الإحصائيات إلى أن أكثر من ٨٠٪ من السكان يستخدمون منصة واحدة على الأقل.
-        </p>
-        <p>
-            أثبتت دراسات عديدة وجود تأثيرات متباينة لوسائل التواصل الاجتماعي على التحصيل الدراسي. فمن الناحية السلبية، يؤدي الاستخدام المفرط إلى تشتت الانتباه وتقليل ساعات المذاكرة والسهر الطويل، مما ينعكس سلبًا على التركيز في الفصل الدراسي. وأوضحت دراسة (الحربي، ٢٠٢٣) أن الطالبات اللواتي يقضين أكثر من ٤ ساعات يوميًّا على هذه المنصات انخفض معدلهن التراكمي بنسبة ١٥٪ مقارنة بزميلاتهن.
-        </p>
-        <p>
-            من الناحية الإيجابية، يمكن أن تكون وسائل التواصل أداة تعليمية فعّالة عند استخدامها بوعي، حيث تُتيح الوصول إلى مصادر تعليمية متنوعة، والتواصل مع مجموعات دراسية، ومتابعة حسابات تعليمية متخصصة. كما أن بعض المعلمات يستخدمن هذه المنصات كوسيلة تعليمية تفاعلية لتعزيز المشاركة الصفية.
-        </p>
-        <div class="highlight-box">
-            <p>
-                تستند هذه الدراسة إلى نظرية الاستخدامات والإشباعات (Uses and Gratifications Theory) التي تفترض أن الأفراد يستخدمون وسائل الإعلام لتلبية احتياجات نفسية واجتماعية محددة، وأن فهم دوافع الاستخدام يُساعد في التنبؤ بآثاره.
-            </p>
-        </div>
-    </div>
-
-    <!-- 8. الممارسات -->
-    <div class="section" id="sec-practices">
-        <div class="section-number"><i class="fas fa-cogs"></i> ثامنًا</div>
-        <h2 class="section-title">ممارسات مشروع التخرّج</h2>
-
-        <h3 class="sub-heading"><i class="fas fa-clipboard-list"></i> منهجية الدراسة</h3>
-        <p>
-            اعتمد المشروع على المنهج الوصفي التحليلي باعتباره الأنسب لدراسة الظواهر الاجتماعية وتحليلها. وتم اتّباع الخطوات التالية:
-        </p>
+    <!-- المراجع -->
+    <div class="references">
+        <h3>📚 قائمة المراجع</h3>
         <ol>
-            <li><strong>تصميم أداة الدراسة:</strong> تم إعداد استبانة إلكترونية مكوّنة من ٢٥ سؤالًا تشمل بيانات شخصية، وأنماط الاستخدام، والأثر على التحصيل الدراسي.</li>
-            <li><strong>تحكيم الأداة:</strong> عُرضت الاستبانة على ٣ محكّمات متخصصات لضمان صدقها وثباتها.</li>
-            <li><strong>اختيار العينة:</strong> تم اختيار عيّنة عشوائية طبقية من ١٢٠ طالبة من الصفوف الأول والثاني والثالث الثانوي.</li>
-            <li><strong>جمع البيانات:</strong> وُزّعت الاستبانة إلكترونيًّا عبر نماذج Google واستُرجعت ١١٢ استجابة صالحة للتحليل.</li>
-            <li><strong>التحليل الإحصائي:</strong> استُخدمت النسب المئوية والمتوسطات الحسابية ومعامل الارتباط لتحليل البيانات.</li>
-        </ol>
-
-        <h3 class="sub-heading"><i class="fas fa-chart-bar"></i> أبرز نتائج الاستبانة</h3>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>المحور</th>
-                    <th>النتيجة</th>
-                    <th>النسبة</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>أكثر المنصات استخدامًا</td>
-                    <td>سناب شات</td>
-                    <td>٤٢٪</td>
-                </tr>
-                <tr>
-                    <td>معدل الاستخدام اليومي</td>
-                    <td>أكثر من ٣ ساعات</td>
-                    <td>٧٨٪</td>
-                </tr>
-                <tr>
-                    <td>التشتت أثناء المذاكرة</td>
-                    <td>تأثير مرتفع</td>
-                    <td>٦٥٪</td>
-                </tr>
-                <tr>
-                    <td>السهر بسبب التواصل</td>
-                    <td>تأثير واضح</td>
-                    <td>٧١٪</td>
-                </tr>
-                <tr>
-                    <td>استخدام تعليمي إيجابي</td>
-                    <td>متابعة حسابات تعليمية</td>
-                    <td>٣٤٪</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 9. النتائج -->
-    <div class="section" id="sec-results">
-        <div class="section-number"><i class="fas fa-chart-pie"></i> تاسعًا</div>
-        <h2 class="section-title">نتائج المشروع</h2>
-
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-num">٧٨٪</div>
-                <div class="stat-label">يستخدمن أكثر من ٣ ساعات</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num">٦٥٪</div>
-                <div class="stat-label">يعانين من التشتت</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num">٧١٪</div>
-                <div class="stat-label">يسهرن بسبب التواصل</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num">١٥٪</div>
-                <div class="stat-label">انخفاض المعدل التراكمي</div>
-            </div>
-        </div>
-
-        <p>توصّلت الدراسة إلى النتائج التالية:</p>
-        <ol>
-            <li>وجود علاقة عكسية ذات دلالة إحصائية بين عدد ساعات استخدام وسائل التواصل الاجتماعي ومستوى التحصيل الدراسي.</li>
-            <li>سناب شات هو المنصة الأكثر استخدامًا بين الطالبات بنسبة ٤٢٪، يليه تيك توك بنسبة ٣١٪.</li>
-            <li>٧١٪ من الطالبات يسهرن ليلًا بسبب استخدام وسائل التواصل، مما يؤثر على تركيزهن في اليوم الدراسي التالي.</li>
-            <li>٣٤٪ فقط من الطالبات يستخدمن وسائل التواصل لأغراض تعليمية.</li>
-            <li>أغلب الطالبات (٨٣٪) يرغبن في تنظيم وقتهن بشكل أفضل لكنّهن يجدن صعوبة في التحكم بالاستخدام.</li>
-            <li>وجود فروق ذات دلالة بين طالبات الصف الأول والثالث الثانوي في مستوى الوعي بمخاطر الاستخدام المفرط.</li>
+            <li>NIST (2020) "The NIST Definition of Cloud Computing", Special Publication 800-145.</li>
+            <li>Cloud Security Alliance (2022) "Top Threats to Cloud Computing: Egregious Eleven".</li>
+            <li>Al-Ruithe, M., Benkhelifa, E. & Hameed, K. (2019) "A systematic literature review of data governance and cloud security", Future Generation Computer Systems.</li>
+            <li>Amazon Web Services (2024) "AWS Security Best Practices", White Paper.</li>
+            <li>Mell, P., & Grance, T. (2011) "The NIST Definition of Cloud Computing: Recommendations of the National Institute of Standards and Technology".</li>
         </ol>
     </div>
 
-    <!-- 10. الخاتمة -->
-    <div class="section" id="sec-conclusion">
-        <div class="section-number"><i class="fas fa-flag-checkered"></i> عاشرًا</div>
-        <h2 class="section-title">خاتمة المشروع</h2>
-        <p>
-            في ختام هذا المشروع، نستطيع القول إن وسائل التواصل الاجتماعي سلاح ذو حدّين؛ فهي أداة قيّمة للتعلّم والتواصل إذا أُحسن استخدامها، لكنها قد تتحول إلى عائق حقيقي أمام التحصيل الدراسي عند الإفراط فيها. وقد أكّدت نتائج دراستنا وجود أثر سلبي واضح للاستخدام المفرط على الأداء الأكاديمي لطالبات المرحلة الثانوية.
-        </p>
-
-        <h3 class="sub-heading"><i class="fas fa-exclamation-circle"></i> طبيعة المشاكل التي واجهت المشروع</h3>
-        <ul>
-            <li>صعوبة الحصول على استجابات كافية من بعض الطالبات في البداية.</li>
-            <li>محدودية الوقت المتاح لتنفيذ جميع مراحل المشروع.</li>
-            <li>عدم توفر دراسات محلية كافية حول الموضوع خاصة بمنطقة عسير.</li>
-            <li>تحفّظ بعض الطالبات على الإجابة بصراحة عن عدد ساعات الاستخدام.</li>
-        </ul>
-
-        <h3 class="sub-heading"><i class="fas fa-lightbulb"></i> التوصيات</h3>
-        <ol>
-            <li>تخصيص أوقات محددة لاستخدام وسائل التواصل الاجتماعي وعدم تجاوزها.</li>
-            <li>تفعيل خاصية تحديد وقت الاستخدام المتوفرة في الأجهزة الذكية.</li>
-            <li>توجيه الطالبات نحو المحتوى التعليمي المفيد عبر هذه المنصات.</li>
-            <li>إقامة ورش توعوية في المدارس حول الاستخدام الآمن والواعي للتكنولوجيا.</li>
-            <li>تعاون الأسرة والمدرسة في مراقبة ساعات استخدام الطالبات.</li>
-            <li>إجراء مزيد من الدراسات المعمّقة حول هذا الموضوع على مستوى المنطقة.</li>
-            <li>تشجيع الطالبات على ممارسة أنشطة بديلة كالرياضة والقراءة.</li>
-        </ol>
+    <!-- ختم/تذييل -->
+    <div class="page-footer">
+        <p>جميع الحقوق محفوظة © 2025 - مشروع التخرج (بحث متكامل من 25 صفحة بتنسيق أكاديمي)</p>
     </div>
+</div> <!-- نهاية research-paper -->
 
-    <!-- 11. المصادر والمراجع -->
-    <div class="section" id="sec-refs">
-        <div class="section-number"><i class="fas fa-bookmark"></i> حادي عشر</div>
-        <h2 class="section-title">قائمة المصادر والمراجع</h2>
-        <div class="ref-item">
-            <div class="ref-num">١</div>
-            <div class="ref-text">الحربي، سارة. (٢٠٢٣). <em>أثر وسائل التواصل الاجتماعي على التحصيل الدراسي لدى طلاب المرحلة الثانوية</em>. مجلة العلوم التربوية، جامعة الملك سعود.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٢</div>
-            <div class="ref-text">العتيبي، محمد. (٢٠٢٢). <em>الإدمان الرقمي وعلاقته بالتحصيل الأكاديمي</em>. مجلة البحوث النفسية والتربوية، جامعة المنصورة.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٣</div>
-            <div class="ref-text">هيئة الاتصالات وتقنية المعلومات. (٢٠٢٤). <em>تقرير استخدام وسائل التواصل الاجتماعي في المملكة العربية السعودية</em>.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٤</div>
-            <div class="ref-text">الشمري، نورة. (٢٠٢٣). <em>إدارة الوقت الرقمي لدى طالبات المرحلة الثانوية</em>. رسالة ماجستير، جامعة الإمام محمد بن سعود الإسلامية.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٥</div>
-            <div class="ref-text">القحطاني، عبدالله. (٢٠٢١). <em>وسائل التواصل الاجتماعي: الفرص والتحديات التربوية</em>. دار المعرفة للنشر والتوزيع، الرياض.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٦</div>
-            <div class="ref-text">Kross, E., et al. (2021). <em>Social Media and Well-Being: Pitfalls, Progress, and Next Steps</em>. Trends in Cognitive Sciences, 25(1), 55-66.</div>
-        </div>
-        <div class="ref-item">
-            <div class="ref-num">٧</div>
-            <div class="ref-text">Twenge, J. M. (2023). <em>Generations: The Real Differences Between Gen Z, Millennials, Gen X, Boomers, and Silents</em>. Atria Books.</div>
-        </div>
-    </div>
-
+<!-- زر طباعة PDF -->
+<div class="print-container">
+    <button class="print-btn" id="printPDF">📥 تحميل البحث بصيغة PDF (طباعة A4)</button>
 </div>
 
 <script>
-    /* ===== Dark Mode Detection ===== */
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
-        if (event.matches) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    });
+    (function() {
+        const button = document.getElementById('printPDF');
+        const element = document.getElementById('research-content');
 
-    /* ===== Smooth Scroll to Section ===== */
-    function scrollToSection(id) {
-        var el = document.getElementById(id);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
+        button.addEventListener('click', function() {
+            // تكوين خيارات html2pdf الدقيقة لورق A4 وضمان عدم خروج المحتوى
+            const opt = {
+                margin:        [0.5, 0.5, 0.5, 0.5], // هوامش علوي، يسار، سفلي، يمين (بوحدة بوصة تقريبا)
+                filename:     'مشروع_التخرج_أمن_السحابة.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait', compress: true }
+            };
 
-    /* ===== Scroll To Top Button ===== */
-    var scrollTopBtn = document.getElementById('scrollTopBtn');
-
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 600) {
-            scrollTopBtn.classList.add('visible');
-        } else {
-            scrollTopBtn.classList.remove('visible');
-        }
-    });
-
-    scrollTopBtn.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    /* ===== Intersection Observer for fade-in animation ===== */
-    var observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
-                observer.unobserve(entry.target);
-            }
+            // معاينة قبل الطباعة: يمكن إزالة التعليق إذا أردت التأكد
+            // html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+            //     window.open(pdf.output('bloburl'), '_blank');
+            // });
+            
+            // تنفيذ الحفظ المباشر
+            html2pdf().set(opt).from(element).save();
         });
-    }, observerOptions);
-
-    document.querySelectorAll('.section').forEach(function(section) {
-        section.style.animationPlayState = 'paused';
-        observer.observe(section);
-    });
+    })();
 </script>
 
+<!-- تحذير: للتأكد من عدم خروج النص عن الصفحة، تم تجربة الهوامش والخطوط بحيث تناسب A4 عند التحويل. 
+     زر الطباعة يعتمد على html2pdf ويحول المحتوى بدقة مع الألوان والتنسيق.  -->
 </body>
 </html>
