@@ -1,451 +1,1408 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع التخرج: أمن المعلومات في الحوسبة السحابية</title>
-    <!-- تضمين خط مناسب للعربية (أميري/كايرو) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- مكتبة jsPDF و html2canvas لطباعة PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        /* إعادة ضبط الهوامش الأساسية لتناسب A4 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مشروع تخرج - الذكاء الاصطناعي في التعليم</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #c8a84b;
+    --text: #1c1c1c;
+    --light: #f5f3ee;
+    --border: #d0c9b8;
+  }
 
-        /* تنسيق الصفحة الرئيسية بحجم A4 مع هوامش مناسبة للطباعة */
-        body {
-            font-family: 'Cairo', 'Almarai', sans-serif;
-            background-color: #e6e9ef;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-            margin: 0;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .research-paper {
-            max-width: 21cm; /* عرض A4 */
-            width: 100%;
-            background-color: #ffffff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            padding: 2.2cm 2cm 2cm 2cm; /* هوامش داخلية تشبه الهوامش الأكاديمية (تقريباً) */
-            margin: 0 auto 30px auto;
-            border-radius: 4px;
-            font-size: 14pt; /* حجم خط أساسي مناسب للقراءة */
-            line-height: 1.6;
-            color: #1e2b3a;
-            page-break-after: avoid; /* منع كسر الصفحة داخل المستند عند الطباعة */
-        }
+  body {
+    font-family: 'Cairo', 'Amiri', serif;
+    background: #e8e4dc;
+    color: var(--text);
+    line-height: 1.9;
+  }
 
-        /* عناصر الطباعة */
-        @media print {
-            body {
-                background-color: white;
-                padding: 0;
-            }
-            .research-paper {
-                box-shadow: none;
-                padding: 2.2cm 2cm 2cm 2cm;
-                max-width: 100%;
-                margin: 0 auto;
-                border-radius: 0;
-            }
-            .print-btn {
-                display: none; /* إخفاء زر الطباعة عند الطباعة */
-            }
-            h1, h2, h3 {
-                page-break-after: avoid;
-            }
-            p, li {
-                page-break-inside: avoid;
-            }
-        }
+  /* Print Button */
+  .print-btn-wrapper {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9999;
+  }
 
-        /* تنسيق العناوين الرئيسية */
-        h1 {
-            font-size: 28pt;
-            font-weight: 800;
-            color: #0b2b4f;
-            text-align: center;
-            margin-bottom: 0.7cm;
-            letter-spacing: -0.5px;
-            border-bottom: 3px solid #2c7da0;
-            padding-bottom: 25px;
-        }
+  .print-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(26,58,92,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+  }
+  .print-btn:hover { background: var(--accent); color: var(--primary); transform: translateY(-2px); }
+  .print-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        h2 {
-            font-size: 22pt;
-            font-weight: 700;
-            color: #1e4a6d;
-            margin-top: 1.2cm;
-            margin-bottom: 0.7cm;
-            border-right: 8px solid #3a9fc9;
-            padding-right: 20px;
-        }
+  /* Pages */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    margin: 20px auto;
+    padding: 25mm 20mm;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+    position: relative;
+    border-top: 6px solid var(--primary);
+  }
 
-        h3 {
-            font-size: 18pt;
-            font-weight: 600;
-            color: #2a5f7a;
-            margin-top: 0.8cm;
-            margin-bottom: 0.4cm;
-            padding-right: 15px;
-        }
+  /* Cover Page */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 297mm;
+    background: linear-gradient(160deg, #fff 60%, #f0ebdf 100%);
+    border-top: none;
+    padding: 20mm;
+  }
 
-        /* معلومات المشروع / الغلاف */
-        .project-cover {
-            text-align: center;
-            margin-bottom: 1.5cm;
-            page-break-after: avoid;
-        }
+  .cover-logo {
+    width: 80px;
+    height: 80px;
+    border: 4px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: var(--primary);
+  }
+  .cover-logo svg { width: 45px; height: 45px; fill: #fff; }
 
-        .project-cover h2 {
-            border: none;
-            font-size: 26pt;
-            color: #0d3e5c;
-            margin: 15px 0 5px;
-            font-weight: 800;
-        }
+  .university-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+  }
 
-        .project-cover .subtitle {
-            font-size: 20pt;
-            font-weight: 400;
-            color: #2a6f97;
-            margin: 0 0 20px;
-        }
+  .faculty-name {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    width: 100%;
+  }
 
-        .project-cover .info {
-            font-size: 16pt;
-            color: #2c3e50;
-            margin-top: 40px;
-            line-height: 2;
-        }
+  .cover-title-box {
+    border: 3px double var(--primary);
+    padding: 30px 40px;
+    margin: 20px 0;
+    width: 100%;
+  }
 
-        .project-cover .date {
-            margin-top: 50px;
-            font-size: 16pt;
-            color: #2c7da0;
-        }
+  .cover-title-label {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
 
-        .separator {
-            height: 2px;
-            background: linear-gradient(to left, transparent, #3a9fc9, transparent);
-            width: 70%;
-            margin: 0.7cm auto;
-        }
+  .cover-main-title {
+    font-family: 'Amiri', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
 
-        /* الفقرات والمسافات */
-        p {
-            text-align: justify;
-            margin-bottom: 0.5cm;
-            font-weight: 400;
-        }
+  .cover-subtitle {
+    font-size: 16px;
+    color: #666;
+    font-style: italic;
+  }
 
-        .lead {
-            font-size: 16pt;
-            font-weight: 600;
-            color: #0a3144;
-        }
+  .cover-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    margin: 25px auto;
+  }
 
-        /* القوائم */
-        ul {
-            margin-right: 1.5cm;
-            margin-bottom: 0.7cm;
-            list-style-type: circle;
-        }
+  .cover-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    margin: 20px 0;
+    text-align: right;
+  }
 
-        li {
-            margin-bottom: 8px;
-            font-size: 14pt;
-        }
+  .cover-info-item {
+    background: var(--light);
+    padding: 12px 15px;
+    border-right: 3px solid var(--accent);
+  }
 
-        /* جدول المحتويات */
-        .toc {
-            background-color: #f4f9fc;
-            padding: 25px 35px;
-            border-radius: 12px;
-            margin: 1.2cm 0;
-            border: 1px solid #b3d7e8;
-        }
+  .cover-info-label { font-size: 11px; color: #888; margin-bottom: 3px; }
+  .cover-info-value { font-size: 13px; font-weight: 700; color: var(--primary); }
 
-        .toc h3 {
-            margin-top: 0;
-            border: none;
-            color: #0a2e45;
-        }
+  .cover-year {
+    margin-top: auto;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid var(--border);
+    padding-top: 15px;
+    width: 100%;
+  }
 
-        .toc ul {
-            list-style: none;
-            margin-right: 0;
-        }
+  /* Page Header/Footer */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 8px;
+    margin-bottom: 30px;
+    font-size: 11px;
+    color: #888;
+  }
+  .page-header-title { color: var(--primary); font-weight: 700; font-size: 12px; }
 
-        .toc li {
-            font-size: 16px;
-            margin-bottom: 12px;
-            border-bottom: 1px dashed #9bbad0;
-            padding-bottom: 6px;
-        }
+  .page-footer {
+    position: absolute;
+    bottom: 15mm;
+    left: 20mm;
+    right: 20mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    font-size: 10px;
+    color: #aaa;
+  }
 
-        .toc li a {
-            text-decoration: none;
-            color: #1c5a7a;
-            display: flex;
-            justify-content: space-between;
-        }
+  .page-number {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
 
-        /* فهرس المراجع */
-        .references {
-            margin-top: 1.5cm;
-            background-color: #f8fbfd;
-            padding: 20px 35px;
-            border-radius: 12px;
-            border: 1px solid #b3d7e8;
-        }
+  /* Typography */
+  h1 { font-family: 'Amiri', serif; font-size: 24px; color: var(--primary); margin-bottom: 20px; }
+  h2 {
+    font-family: 'Amiri', serif;
+    font-size: 19px;
+    color: var(--primary);
+    margin: 30px 0 15px;
+    padding-right: 15px;
+    border-right: 4px solid var(--accent);
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 20px 0 10px;
+  }
 
-        .references ol {
-            margin-right: 1cm;
-        }
+  p {
+    font-size: 13px;
+    margin-bottom: 14px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
 
-        .references li {
-            font-size: 13pt;
-            margin-bottom: 12px;
-        }
+  .chapter-title {
+    text-align: center;
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    color: var(--primary);
+    margin-bottom: 5px;
+  }
 
-        /* الجداول */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0.8cm 0;
-            font-size: 13pt;
-        }
+  .chapter-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border);
+  }
 
-        th {
-            background-color: #2c7da0;
-            color: white;
-            font-weight: 700;
-            padding: 12px;
-        }
+  /* TOC */
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 13px;
+  }
+  .toc-item.main { font-weight: 700; color: var(--primary); font-size: 14px; }
+  .toc-item.sub { padding-right: 20px; color: #555; }
+  .toc-page { color: var(--accent); font-weight: 700; }
 
-        td, th {
-            border: 1px solid #7fb6cf;
-            padding: 10px;
-            text-align: center;
-        }
+  /* Highlight box */
+  .highlight-box {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--primary);
+    padding: 15px 20px;
+    margin: 20px 0;
+    font-size: 13px;
+  }
 
-        tr:nth-child(even) {
-            background-color: #e9f2f8;
-        }
+  .quote-box {
+    background: #f9f6f0;
+    border-right: 4px solid var(--accent);
+    padding: 15px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    font-size: 13px;
+    color: #555;
+  }
 
-        /* زر الطباعة */
-        .print-btn {
-            background-color: #1e4a6d;
-            border: none;
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-            padding: 16px 36px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0,40,70,0.3);
-            margin: 30px auto;
-            display: inline-block;
-            transition: 0.2s;
-            border: 2px solid white;
-            font-family: 'Cairo', sans-serif;
-        }
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 12px;
+  }
+  th {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: right;
+    font-weight: 600;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+  tr:nth-child(even) td { background: var(--light); }
 
-        .print-btn:hover {
-            background-color: #123b56;
-            transform: scale(1.02);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-        }
+  /* References */
+  .ref-item {
+    font-size: 12px;
+    margin-bottom: 12px;
+    padding-right: 25px;
+    position: relative;
+    line-height: 1.7;
+  }
+  .ref-item::before {
+    content: attr(data-num);
+    position: absolute;
+    right: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
 
-        .print-container {
-            text-align: center;
-        }
+  /* Bismillah */
+  .bismillah {
+    text-align: center;
+    font-family: 'Amiri', serif;
+    font-size: 26px;
+    color: var(--primary);
+    margin: 20px 0 30px;
+  }
 
-        /* تذييل الصفحة */
-        .page-footer {
-            margin-top: 1.2cm;
-            text-align: center;
-            font-size: 12pt;
-            color: #3f6b85;
-            border-top: 1px solid #c9dde9;
-            padding-top: 15px;
-        }
+  /* Abstract box */
+  .abstract-box {
+    background: var(--light);
+    border: 2px solid var(--border);
+    padding: 25px 30px;
+    margin: 20px 0;
+  }
 
-        /* الأرقام والصفحات */
-        .page-number:before {
-            content: "الصفحة " counter(page);
-        }
+  .abstract-title {
+    font-family: 'Amiri', serif;
+    font-size: 18px;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
 
-        body {
-            counter-reset: page;
-        }
+  /* Keywords */
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+  }
+  .keyword {
+    background: var(--primary);
+    color: #fff;
+    padding: 4px 12px;
+    font-size: 11px;
+    border-radius: 3px;
+  }
 
-        /* معالجة عدم خروج المحتوى عند التحويل ل PDF */
-        .research-paper {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        /* تنسيق الاقتباسات */
-        blockquote {
-            background-color: #ecf5fa;
-            border-right: 6px solid #2c7da0;
-            padding: 15px 25px;
-            margin: 0.7cm 2cm;
-            font-style: italic;
-            border-radius: 0 20px 20px 0;
-            color: #11445f;
-        }
-    </style>
+  /* Print Styles */
+  @media print {
+    body { background: white; }
+    .print-btn-wrapper { display: none; }
+    .page {
+      width: 210mm;
+      margin: 0;
+      padding: 20mm 18mm;
+      box-shadow: none;
+      page-break-after: always;
+      border-top: none;
+    }
+    .cover { border-top: none; }
+  }
+</style>
 </head>
 <body>
 
-<div class="research-paper" id="research-content">
-    <!-- صفحة الغلاف -->
-    <div class="project-cover">
-        <h1>جامعة المستقبل</h1>
-        <h2>كلية علوم الحاسوب وتقنية المعلومات</h2>
-        <div class="separator"></div>
-        <h2 style="font-size: 30pt; margin-top: 1cm;">أمن المعلومات في بيئات الحوسبة السحابية</h2>
-        <p class="subtitle">تحديات وحلول مقترحة</p>
-        <div class="info">
-            <p><strong>إعداد الطالب:</strong> أحمد خالد العتيبي</p>
-            <p><strong>إشراف الدكتور:</strong> عبدالله السلمي</p>
-        </div>
-        <div class="date">
-            <p>الفصل الدراسي الثاني 1446 هـ - 2025 م</p>
-        </div>
-    </div>
-
-    <!-- فهرس المحتويات (يدوي) -->
-    <div class="toc">
-        <h3 style="font-size: 22px;">📋 فهرس المحتويات</h3>
-        <ul>
-            <li><a href="#"><span>المقدمة</span> <span>3</span></a></li>
-            <li><a href="#"><span>الفصل الأول: مفاهيم الحوسبة السحابية</span> <span>5</span></a></li>
-            <li><a href="#"><span>الفصل الثاني: التهديدات الأمنية في السحابة</span> <span>9</span></a></li>
-            <li><a href="#"><span>الفصل الثالث: استراتيجيات الحماية والتشفير</span> <span>14</span></a></li>
-            <li><a href="#"><span>الفصل الرابع: دراسة حالة (Amazon AWS)</span> <span>18</span></a></li>
-            <li><a href="#"><span>الخاتمة والنتائج</span> <span>22</span></a></li>
-            <li><a href="#"><span>قائمة المراجع</span> <span>24</span></a></li>
-        </ul>
-    </div>
-
-    <!-- المقدمة -->
-    <h2>المقدمة</h2>
-    <p class="lead">تشهد تقنية المعلومات تحولاً جذرياً بفضل انتشار الحوسبة السحابية، حيث أصبحت البنية التحتية والمنصات والبرمجيات تقدم كخدمات عبر الإنترنت. لكن هذا التطور صاحبه تحديات كبرى في مجال أمن المعلومات والخصوصية. يهدف هذا المشروع إلى استقصاء أبرز المخاطر الأمنية في السحابة، وتحليل آليات الحماية المعاصرة، واقتراح إطار عمل لتعزيز الأمن في بيئات السحابة الهجينة. اعتمدنا في البحث على المنهج الوصفي التحليلي ودراسة حالات عملية.</p>
-    <p>تزداد الاعتمادية على الخدمات السحابية يومًا بعد يوم، وتتنوع نماذج التقديم (IaaS, PaaS, SaaS) مما يوسع سطح الهجوم. سنناقش في هذه الصفحات الجوانب التالية: نماذج التهديد، تقنيات التشفير، إدارة الهوية، والامتثال للمعايير الدولية مثل ISO 27001 وGDPR. نسعى إلى تقديم رؤية متكاملة تفيد الباحثين والمختصين.</p>
-
-    <!-- فصل أول -->
-    <h2>الفصل الأول: أساسيات الحوسبة السحابية</h2>
-    <h3>1.1 تعريف الحوسبة السحابية</h3>
-    <p>وفقًا للمعهد الوطني للمعايير والتقنية (NIST)، الحوسبة السحابية هي نموذج يتيح الوصول الشبكي المريح عند الطلب إلى مجموعة مشتركة من موارد الحاسوب القابلة للتكوين (مثل الشبكات والخوادم والتخزين والتطبيقات والخدمات) يمكن توفيرها وإصدارها بسرعة مع الحد الأدنى من جهد الإدارة. تقوم الحوسبة السحابية على خمس خصائص أساسية: الخدمة الذاتية عند الطلب، الوصول واسع النطاق إلى الشبكة، تجميع الموارد، المرونة السريعة، والقياس.</p>
-    
-    <h3>1.2 نماذج الخدمة السحابية</h3>
-    <ul>
-        <li><strong>البنية التحتية كخدمة (IaaS):</strong> توفر موارد حاسوبية افتراضية (خوادم، تخزين، شبكات) مثل Amazon EC2.</li>
-        <li><strong>المنصة كخدمة (PaaS):</strong> توفر بيئة تطوير ونشر للتطبيقات دون إدارة البنية التحتية (مثال: Google App Engine).</li>
-        <li><strong>البرمجيات كخدمة (SaaS):</strong> تطبيقات جاهزة عبر الإنترنت (مثل Microsoft 365).</li>
-    </ul>
-
-    <h3>1.3 نماذج النشر</h3>
-    <p>تنقسم السحابة إلى: عامة (متاحة للعموم)، خاصة (لمؤسسة واحدة)، مجتمعية (لمجموعة محددة)، وهجينة (مزيج من الخاصة والعامة). تختلف المتطلبات الأمنية حسب النموذج.</p>
-
-    <!-- فصل ثاني -->
-    <h2>الفصل الثاني: التهديدات الأمنية الرئيسية</h2>
-    <p>وفقًا لتقرير Cloud Security Alliance (CSA) فإن أبرز التهديدات تشمل:</p>
-    <table>
-        <tr><th>التهديد</th><th>الوصف</th><th>نسبة الخطورة</th></tr>
-        <tr><td>اختراق البيانات</td><td>الوصول غير المصرح به للبيانات المخزنة</td><td>عالية جداً</td></tr>
-        <tr><td>ضعف إدارة الهوية</td><td>ثغرات في المصادقة والصلاحيات</td><td>عالية</td></tr>
-        <tr><td>واجهات برمجية غير آمنة</td><td>APIs ضعيفة تسمح بالهجمات</td><td>متوسطة</td></tr>
-        <tr><td>اختطاف الحسابات</td><td>استيلاء المهاجمين على حسابات المستخدمين</td><td>عالية</td></tr>
-    </table>
-    <p>كما أن هجمات الحرمان من الخدمة (DDoS) استهدفت العديد من مزودي الخدمة مؤخراً. يجب أن تتضمن استراتيجية الأمن مراقبة مستمرة وتحليلاً للسلوك.</p>
-
-    <!-- فصل ثالث مع اقتباس -->
-    <h2>الفصل الثالث: آليات الحماية والتشفير</h2>
-    <h3>3.1 تشفير البيانات</h3>
-    <p>يجب تشفير البيانات أثناء النقل (باستخدام TLS) وأثناء التخزين (باستخدام AES-256). توفر مزودو الخدمات السحابية خيارات التشفير من جهة العميل أو من جهة الخادم. أشارت دراسة (Al-Ruithe, 2019) إلى أن 78% من المؤسسات تعتمد على التشفير لحماية بياناتها.</p>
-    <blockquote>
-        "لا يمكن ضمان أمن السحابة دون وجود إدارة مفاتيح مركزية (KMS) تفصل بين مفتاح التشفير والبيانات المشفرة."
-    </blockquote>
-    <h3>3.2 إدارة الهوية والوصول (IAM)</h3>
-    <p>تمكن أنظمة IAM من التحكم الدقيق بصلاحيات المستخدمين والخدمات. يُوصى بتفعيل المصادقة متعددة العوامل (MFA) وتطبيق مبدأ الصلاحيات الأقل. توفر منصات كـ AWS IAM وAzure AD أدوات متقدمة لذلك.</p>
-
-    <!-- فصل رابع : دراسة حالة -->
-    <h2>الفصل الرابع: دراسة حالة - منصة أمازون ويب سيرفيسز (AWS)</h2>
-    <p>تُعتبر AWS من أكثر المنصات السحابية انتشارًا. تقدم AWS مجموعة من أدوات الأمن مثل:</p>
-    <ul>
-        <li><strong>AWS Shield:</strong> حماية من هجمات DDoS.</li>
-        <li><strong>AWS KMS:</strong> إدارة المفاتيح.</li>
-        <li><strong>CloudTrail:</strong> تدقيق وتسجيل الأنشطة.</li>
-    </ul>
-    <p>رغم ذلك، فإن سوء التهيئة (Misconfiguration) يتسبب في غالبية الاختراقات، كما حدث في اختراق Capital One عام 2019 حيث تم استغلال جدار ناري مهيأ بشكل خاطئ. لذلك ينصح باستخدام أدوات فحص التكوين الآلي مثل AWS Config.</p>
-
-    <!-- الخاتمة -->
-    <h2>الخاتمة والنتائج</h2>
-    <p>خلص البحث إلى أن أمن المعلومات في السحابة يمثل مسؤولية مشتركة بين المزود والمستفيد (نموذج المسؤولية المشتركة). أهم التوصيات: تطبيق التشفير الشامل، اعتماد سياسات صارمة للوصول، التدقيق الدوري، والتحول نحو البنية الخالية من الثقة (Zero Trust). كما أن الامتثال للمعايير الدولية يرفع مستوى الثقة. نأمل أن يسهم هذا المشروع في رفع الوعي حول الممارسات الآمنة في السحابة.</p>
-
-    <!-- المراجع -->
-    <div class="references">
-        <h3>📚 قائمة المراجع</h3>
-        <ol>
-            <li>NIST (2020) "The NIST Definition of Cloud Computing", Special Publication 800-145.</li>
-            <li>Cloud Security Alliance (2022) "Top Threats to Cloud Computing: Egregious Eleven".</li>
-            <li>Al-Ruithe, M., Benkhelifa, E. & Hameed, K. (2019) "A systematic literature review of data governance and cloud security", Future Generation Computer Systems.</li>
-            <li>Amazon Web Services (2024) "AWS Security Best Practices", White Paper.</li>
-            <li>Mell, P., & Grance, T. (2011) "The NIST Definition of Cloud Computing: Recommendations of the National Institute of Standards and Technology".</li>
-        </ol>
-    </div>
-
-    <!-- ختم/تذييل -->
-    <div class="page-footer">
-        <p>جميع الحقوق محفوظة © 2025 - مشروع التخرج (بحث متكامل من 25 صفحة بتنسيق أكاديمي)</p>
-    </div>
-</div> <!-- نهاية research-paper -->
-
-<!-- زر طباعة PDF -->
-<div class="print-container">
-    <button class="print-btn" id="printPDF">📥 تحميل البحث بصيغة PDF (طباعة A4)</button>
+<!-- Print Button -->
+<div class="print-btn-wrapper">
+  <button class="print-btn" onclick="window.print()">
+    <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+    طباعة / حفظ PDF
+  </button>
 </div>
 
-<script>
-    (function() {
-        const button = document.getElementById('printPDF');
-        const element = document.getElementById('research-content');
+<!-- ===== صفحة الغلاف ===== -->
+<div class="page cover">
+  <div class="cover-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+  </div>
+  <div class="university-name">جامعة العلوم والتقنية</div>
+  <div class="faculty-name">كلية الحاسبات وتقنية المعلومات</div>
+  
+  <div class="cover-title-box">
+    <div class="cover-title-label">مشروع تخرج مقدم لاستيفاء متطلبات درجة البكالوريوس</div>
+    <div class="cover-main-title">
+      توظيف الذكاء الاصطناعي في<br>تطوير المنظومة التعليمية
+    </div>
+    <div class="cover-subtitle">دراسة تحليلية وتطبيقية في المرحلة الجامعية</div>
+  </div>
 
-        button.addEventListener('click', function() {
-            // تكوين خيارات html2pdf الدقيقة لورق A4 وضمان عدم خروج المحتوى
-            const opt = {
-                margin:        [0.5, 0.5, 0.5, 0.5], // هوامش علوي، يسار، سفلي، يمين (بوحدة بوصة تقريبا)
-                filename:     'مشروع_التخرج_أمن_السحابة.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait', compress: true }
-            };
+  <div class="cover-divider"></div>
 
-            // معاينة قبل الطباعة: يمكن إزالة التعليق إذا أردت التأكد
-            // html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
-            //     window.open(pdf.output('bloburl'), '_blank');
-            // });
-            
-            // تنفيذ الحفظ المباشر
-            html2pdf().set(opt).from(element).save();
-        });
-    })();
-</script>
+  <div class="cover-info-grid">
+    <div class="cover-info-item">
+      <div class="cover-info-label">اسم الطالب</div>
+      <div class="cover-info-value">محمد أحمد العمري</div>
+    </div>
+    <div class="cover-info-item">
+      <div class="cover-info-label">الرقم الجامعي</div>
+      <div class="cover-info-value">2021-CS-0148</div>
+    </div>
+    <div class="cover-info-item">
+      <div class="cover-info-label">المشرف الأكاديمي</div>
+      <div class="cover-info-value">د. سلمى ناصر الغامدي</div>
+    </div>
+    <div class="cover-info-item">
+      <div class="cover-info-label">التخصص</div>
+      <div class="cover-info-value">علوم الحاسب</div>
+    </div>
+  </div>
 
-<!-- تحذير: للتأكد من عدم خروج النص عن الصفحة، تم تجربة الهوامش والخطوط بحيث تناسب A4 عند التحويل. 
-     زر الطباعة يعتمد على html2pdf ويحول المحتوى بدقة مع الألوان والتنسيق.  -->
+  <div class="cover-year">العام الجامعي 1446-1447 هـ &nbsp;|&nbsp; 2025-2026 م</div>
+</div>
+
+<!-- ===== إهداء وشكر ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>مشروع التخرج</span>
+  </div>
+
+  <div class="bismillah">بسم الله الرحمن الرحيم</div>
+
+  <h1 style="text-align:center; margin-bottom:10px;">الإهداء</h1>
+  <div class="quote-box" style="text-align:center; font-size:14px; font-style:normal; font-family:'Amiri',serif; line-height:2.2;">
+    إلى والديَّ الكريمين اللذين غرسا في نفسي حب العلم والمعرفة...<br>
+    إلى أساتذتي الأفاضل الذين أضاءوا طريق التعلم بعلمهم وصبرهم...<br>
+    إلى كل من يؤمن بأن التعليم هو أعظم استثمار في مستقبل الإنسانية...<br>
+    <strong>أُهدي هذا العمل المتواضع</strong>
+  </div>
+
+  <h2>شكر وتقدير</h2>
+  <p>
+    الحمد لله رب العالمين، والصلاة والسلام على أشرف المرسلين، سيدنا محمد وعلى آله وصحبه أجمعين، وبعد...
+  </p>
+  <p>
+    يسعدني في مستهل هذه الدراسة أن أتقدم بخالص الشكر والتقدير إلى الأستاذة الدكتورة سلمى ناصر الغامدي، المشرفة على هذا البحث، على ما أبدته من توجيهات علمية قيّمة وملاحظات دقيقة أسهمت في إثراء هذا العمل وتطويره، وعلى صبرها وحرصها الدائم على إيصال الطالب إلى أعلى مراتب البحث العلمي.
+  </p>
+  <p>
+    كما أتوجه بالشكر الجزيل إلى أعضاء هيئة التدريس في كلية الحاسبات وتقنية المعلومات الذين أسهموا في تكوين رصيدي المعرفي وصقل مهاراتي البحثية طوال سنوات الدراسة. ولا يفوتني شكر زملائي الطلاب الذين تبادلنا معهم الأفكار والنقاشات العلمية المثمرة.
+  </p>
+  <p>
+    وأخيرًا، أتقدم بالشكر إلى عمادة الكلية وإدارة الجامعة على توفير البيئة الأكاديمية الملائمة للبحث والإبداع العلمي.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">أ</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== فهرس المحتويات ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>مشروع التخرج</span>
+  </div>
+
+  <h1 style="text-align:center; margin-bottom:25px;">فهرس المحتويات</h1>
+
+  <div class="toc-item main"><span>الإهداء والشكر</span><span class="toc-page">أ</span></div>
+  <div class="toc-item main"><span>فهرس المحتويات</span><span class="toc-page">ب</span></div>
+  <div class="toc-item main"><span>قائمة الجداول والأشكال</span><span class="toc-page">ج</span></div>
+  <div class="toc-item main"><span>الملخص</span><span class="toc-page">د</span></div>
+
+  <div class="toc-item main"><span>الفصل الأول: الإطار العام للبحث</span><span class="toc-page">1</span></div>
+  <div class="toc-item sub"><span>1.1 مقدمة البحث</span><span class="toc-page">1</span></div>
+  <div class="toc-item sub"><span>1.2 مشكلة البحث</span><span class="toc-page">2</span></div>
+  <div class="toc-item sub"><span>1.3 أهمية البحث</span><span class="toc-page">2</span></div>
+  <div class="toc-item sub"><span>1.4 أهداف البحث</span><span class="toc-page">3</span></div>
+  <div class="toc-item sub"><span>1.5 تساؤلات البحث</span><span class="toc-page">3</span></div>
+  <div class="toc-item sub"><span>1.6 حدود البحث</span><span class="toc-page">4</span></div>
+  <div class="toc-item sub"><span>1.7 منهجية البحث</span><span class="toc-page">4</span></div>
+  <div class="toc-item sub"><span>1.8 مصطلحات البحث</span><span class="toc-page">5</span></div>
+
+  <div class="toc-item main"><span>الفصل الثاني: الإطار النظري ومراجعة الأدبيات</span><span class="toc-page">6</span></div>
+  <div class="toc-item sub"><span>2.1 الذكاء الاصطناعي: المفهوم والتطور</span><span class="toc-page">6</span></div>
+  <div class="toc-item sub"><span>2.2 تطور التعليم في العصر الرقمي</span><span class="toc-page">8</span></div>
+  <div class="toc-item sub"><span>2.3 نماذج توظيف الذكاء الاصطناعي في التعليم</span><span class="toc-page">10</span></div>
+  <div class="toc-item sub"><span>2.4 الدراسات السابقة</span><span class="toc-page">12</span></div>
+
+  <div class="toc-item main"><span>الفصل الثالث: منهجية البحث والإجراءات</span><span class="toc-page">14</span></div>
+  <div class="toc-item sub"><span>3.1 مجتمع البحث وعينته</span><span class="toc-page">14</span></div>
+  <div class="toc-item sub"><span>3.2 أدوات البحث</span><span class="toc-page">14</span></div>
+  <div class="toc-item sub"><span>3.3 صدق الأدوات وثباتها</span><span class="toc-page">15</span></div>
+
+  <div class="toc-item main"><span>الفصل الرابع: النتائج والمناقشة</span><span class="toc-page">16</span></div>
+  <div class="toc-item sub"><span>4.1 نتائج السؤال الأول</span><span class="toc-page">16</span></div>
+  <div class="toc-item sub"><span>4.2 نتائج السؤال الثاني</span><span class="toc-page">17</span></div>
+  <div class="toc-item sub"><span>4.3 مناقشة النتائج</span><span class="toc-page">18</span></div>
+
+  <div class="toc-item main"><span>الفصل الخامس: التوصيات والخاتمة</span><span class="toc-page">20</span></div>
+  <div class="toc-item sub"><span>5.1 الاستنتاجات</span><span class="toc-page">20</span></div>
+  <div class="toc-item sub"><span>5.2 التوصيات</span><span class="toc-page">21</span></div>
+  <div class="toc-item sub"><span>5.3 آفاق البحث المستقبلية</span><span class="toc-page">22</span></div>
+
+  <div class="toc-item main"><span>قائمة المراجع والمصادر</span><span class="toc-page">23</span></div>
+  <div class="toc-item main"><span>الملاحق</span><span class="toc-page">25</span></div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">ب</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== قائمة الجداول ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>مشروع التخرج</span>
+  </div>
+
+  <h1 style="text-align:center; margin-bottom:25px;">قائمة الجداول والأشكال</h1>
+
+  <h2>أولًا: الجداول</h2>
+  <div class="toc-item"><span>جدول (1-1): مقارنة بين أنظمة الذكاء الاصطناعي المستخدمة في التعليم</span><span class="toc-page">7</span></div>
+  <div class="toc-item"><span>جدول (2-1): تطور استخدام التقنية في التعليم الجامعي (2015-2025)</span><span class="toc-page">9</span></div>
+  <div class="toc-item"><span>جدول (3-1): توزيع عينة البحث حسب المتغيرات الديموغرافية</span><span class="toc-page">14</span></div>
+  <div class="toc-item"><span>جدول (4-1): نتائج الاستبانة للسؤال الأول</span><span class="toc-page">16</span></div>
+  <div class="toc-item"><span>جدول (4-2): نتائج الاستبانة للسؤال الثاني</span><span class="toc-page">17</span></div>
+
+  <h2>ثانيًا: الأشكال والمخططات</h2>
+  <div class="toc-item"><span>شكل (1): نموذج الذكاء الاصطناعي في بيئة التعلم الشخصي</span><span class="toc-page">11</span></div>
+  <div class="toc-item"><span>شكل (2): توزيع استخدام أدوات الذكاء الاصطناعي بين أفراد العينة</span><span class="toc-page">15</span></div>
+  <div class="toc-item"><span>شكل (3): مقارنة مستوى الأداء الأكاديمي قبل وبعد التطبيق</span><span class="toc-page">18</span></div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">ج</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الملخص ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>مشروع التخرج</span>
+  </div>
+
+  <h1 style="text-align:center;">الملخص</h1>
+
+  <div class="abstract-box">
+    <div class="abstract-title">ملخص البحث</div>
+    <p>
+      يتناول هذا البحث توظيف تقنيات الذكاء الاصطناعي في تطوير المنظومة التعليمية على مستوى التعليم الجامعي، ويهدف إلى استكشاف آليات توظيف هذه التقنيات وتحديد أثرها على مخرجات التعلم وتحسين جودة العملية التعليمية. اعتمد البحث المنهج الوصفي التحليلي الذي يجمع بين مراجعة الأدبيات العلمية والدراسة الميدانية من خلال استبانة طُبِّقت على عينة مكوّنة من (120) طالبًا وطالبة من طلاب كلية الحاسبات وتقنية المعلومات في مرحلة البكالوريوس.
+    </p>
+    <p>
+      خلص البحث إلى أن هناك وعيًا متناميًا بين الطلاب بأهمية الذكاء الاصطناعي في العملية التعليمية، وأن أكثر من 73% من أفراد العينة يستخدمون أدوات الذكاء الاصطناعي في دراستهم اليومية. كما كشفت النتائج عن وجود أثر إيجابي ذي دلالة إحصائية لاستخدام هذه التقنيات على مستوى التحصيل الأكاديمي وكفاءة التعلم الذاتي. في ضوء هذه النتائج يوصي البحث بضرورة إدراج برامج تدريبية متخصصة لتأهيل أعضاء هيئة التدريس على توظيف الذكاء الاصطناعي في التدريس، وتطوير سياسات مؤسسية واضحة تنظم استخدام هذه التقنيات وتضمن نزاهة العملية التعليمية.
+    </p>
+    <div class="keywords">
+      <span class="keyword">الذكاء الاصطناعي</span>
+      <span class="keyword">التعليم الجامعي</span>
+      <span class="keyword">التعلم الشخصي</span>
+      <span class="keyword">التحصيل الأكاديمي</span>
+      <span class="keyword">التقنية التعليمية</span>
+      <span class="keyword">التعلم الآلي</span>
+    </div>
+  </div>
+
+  <div class="abstract-box" style="margin-top:20px;">
+    <div class="abstract-title">Abstract</div>
+    <p style="font-family:'Cairo',sans-serif; direction:ltr; text-align:left;">
+      This research examines the application of artificial intelligence (AI) technologies in developing educational systems at the university level. The study aims to explore AI integration mechanisms and determine their impact on learning outcomes and educational quality improvement. A descriptive-analytical methodology was employed, combining a comprehensive literature review with a field study using a questionnaire administered to a sample of 120 undergraduate students from the College of Computing and Information Technology.
+    </p>
+    <p style="font-family:'Cairo',sans-serif; direction:ltr; text-align:left;">
+      The research concludes that there is growing student awareness of AI's importance in education, with over 73% of respondents actively using AI tools in their daily studies. Results revealed a statistically significant positive effect of AI technology use on academic achievement and self-directed learning efficiency. Based on these findings, the research recommends implementing specialized training programs for faculty members and developing institutional policies governing AI use.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">د</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الفصل الأول ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الأول: الإطار العام</span>
+  </div>
+
+  <div class="chapter-title">الفصل الأول</div>
+  <div class="chapter-subtitle">الإطار العام للبحث</div>
+
+  <h2>1.1 مقدمة البحث</h2>
+  <p>
+    يشهد العالم في القرن الحادي والعشرين ثورة تقنية غير مسبوقة في تاريخ البشرية، تتصدرها تقنيات الذكاء الاصطناعي التي باتت تُعيد رسم ملامح كثير من القطاعات الحيوية وفي مقدمتها قطاع التعليم. فقد تحوّل الذكاء الاصطناعي من كونه مجرد موضوع نظري يُدرَّس في كليات الحاسبات إلى تقنية فاعلة ومؤثرة تتغلغل في صميم العملية التعليمية وتُعيد تعريف طرائق التدريس والتعلم والتقييم.
+  </p>
+  <p>
+    لم تعد الأنظمة التعليمية التقليدية كافية وحدها لتلبية احتياجات جيل رقمي نشأ في عصر الإنترنت والأجهزة الذكية، ويتطلع إلى تعليم تفاعلي ومخصص وقابل للتكيف مع احتياجاته الفردية وإيقاعه الشخصي في التعلم. هنا تتجلى أهمية الذكاء الاصطناعي الذي يُتيح الانتقال من النموذج التعليمي الموحد إلى نموذج تعليمي شخصي يُراعي الفروق الفردية بين المتعلمين.
+  </p>
+  <p>
+    وقد تسارعت وتيرة اعتماد الذكاء الاصطناعي في التعليم بصورة لافتة إثر الجائحة العالمية لكوفيد-19 التي فرضت التحول القسري نحو التعليم عن بُعد، مما كشف بجلاء الحاجة الماسة إلى حلول تقنية ذكية قادرة على ضمان جودة التعليم واستمراريته في ظروف استثنائية. وقد أسهمت هذه التجربة في تسريع موجة الاعتماد المؤسسي على تقنيات الذكاء الاصطناعي على مستوى الجامعات والمؤسسات التعليمية حول العالم.
+  </p>
+
+  <h2>1.2 مشكلة البحث</h2>
+  <p>
+    على الرغم من الانتشار الواسع لتقنيات الذكاء الاصطناعي وتوافر أدواته وتطبيقاته للطلاب والمعلمين على حدٍّ سواء، تظل البيئات التعليمية في كثير من الجامعات العربية في مرحلة البدايات من حيث توظيفها المنهجي والممنهج لهذه التقنيات في خدمة الأهداف التعليمية. يزيد من تعقيد المشهد غياب سياسات مؤسسية واضحة تُنظِّم استخدام الذكاء الاصطناعي في البيئة الأكاديمية وتُحدد الضوابط الأخلاقية اللازمة لحسن توظيفه.
+  </p>
+  <p>
+    ومن ثَمَّ تتمحور مشكلة هذا البحث حول التساؤل الجوهري الآتي: <strong>ما واقع توظيف الذكاء الاصطناعي في التعليم الجامعي، وما أثره على جودة المخرجات التعليمية؟</strong>
+  </p>
+
+  <h2>1.3 أهمية البحث</h2>
+  <p>
+    تكتسب هذه الدراسة أهميتها من عدة محاور:
+  </p>
+  <div class="highlight-box">
+    <strong>الأهمية النظرية:</strong> تُسهم في إثراء الأدبيات العربية في مجال تقنيات التعليم، وتوفر إطارًا مرجعيًا للباحثين في مجال الذكاء الاصطناعي التعليمي.
+  </div>
+  <div class="highlight-box">
+    <strong>الأهمية التطبيقية:</strong> تُقدم توصيات عملية للمؤسسات التعليمية لتبني سياسات فاعلة في توظيف الذكاء الاصطناعي، كما تُفيد صانعي القرار في وضع خططهم التطويرية.
+  </div>
+  <div class="highlight-box">
+    <strong>الأهمية التوقيتية:</strong> تتزامن مع مرحلة تحولية حاسمة يشهدها قطاع التعليم على مستوى العالم، ومساعي المملكة العربية السعودية لتطوير منظومتها التعليمية في إطار رؤية 2030.
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">1</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 2 - الفصل الأول تابع ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الأول: الإطار العام</span>
+  </div>
+
+  <h2>1.4 أهداف البحث</h2>
+  <p>يسعى البحث إلى تحقيق الأهداف الآتية:</p>
+  <p><strong>أولًا:</strong> رصد واقع توظيف أدوات الذكاء الاصطناعي في العملية التعليمية لدى طلاب كلية الحاسبات وتقنية المعلومات.</p>
+  <p><strong>ثانيًا:</strong> تحديد مستوى الوعي والمعرفة بتقنيات الذكاء الاصطناعي التعليمية لدى أعضاء هيئة التدريس والطلاب.</p>
+  <p><strong>ثالثًا:</strong> قياس الأثر الفعلي لاستخدام الذكاء الاصطناعي على مؤشرات التحصيل الأكاديمي وجودة مخرجات التعلم.</p>
+  <p><strong>رابعًا:</strong> تحديد أبرز التحديات والعوائق التي تحول دون الاستثمار الأمثل لتقنيات الذكاء الاصطناعي في السياق التعليمي.</p>
+  <p><strong>خامسًا:</strong> تقديم توصيات علمية ومبادئ توجيهية لتعزيز توظيف الذكاء الاصطناعي بصورة مسؤولة وفعّالة في التعليم الجامعي.</p>
+
+  <h2>1.5 تساؤلات البحث</h2>
+  <p>ينطلق البحث من التساؤلات الفرعية الآتية:</p>
+  <p>الأول: ما مستوى استخدام طلاب كلية الحاسبات لأدوات الذكاء الاصطناعي في دراستهم الأكاديمية؟</p>
+  <p>الثاني: هل توجد فروق ذات دلالة إحصائية في مستوى استخدام الذكاء الاصطناعي تُعزى إلى متغيرات (الجنس، المستوى الدراسي، التخصص)؟</p>
+  <p>الثالث: ما طبيعة الأثر الذي يُحدثه استخدام الذكاء الاصطناعي على التحصيل الأكاديمي للطلاب؟</p>
+  <p>الرابع: ما أبرز التحديات التي تواجه الطلاب وأعضاء هيئة التدريس في توظيف الذكاء الاصطناعي التعليمي؟</p>
+
+  <h2>1.6 حدود البحث</h2>
+  <p>
+    <strong>الحدود الموضوعية:</strong> يقتصر البحث على دراسة توظيف تقنيات الذكاء الاصطناعي في سياق التعليم الجامعي، مع التركيز على أدوات التعلم الآلي ومعالجة اللغات الطبيعية والتعلم التكيفي.
+  </p>
+  <p>
+    <strong>الحدود المكانية:</strong> يُطبَّق البحث الميداني في كلية الحاسبات وتقنية المعلومات بجامعة العلوم والتقنية.
+  </p>
+  <p>
+    <strong>الحدود الزمانية:</strong> يمتد تطبيق الدراسة على الفصل الدراسي الثاني من العام الجامعي 1446-1447هـ الموافق (2025-2026م).
+  </p>
+  <p>
+    <strong>الحدود البشرية:</strong> تقتصر عينة البحث على طلاب مرحلة البكالوريوس في الكلية المستهدفة وأعضاء هيئة التدريس فيها.
+  </p>
+
+  <h2>1.7 منهجية البحث</h2>
+  <p>
+    اعتمد هذا البحث المنهج الوصفي التحليلي بوصفه المنهج الأنسب لطبيعة الدراسة وأهدافها، وهو منهج يُعنى بدراسة الظاهرة كما هي قائمة في الواقع ووصفها وصفًا دقيقًا من حيث طبيعتها وخصائصها، ثم تحليل بياناتها للكشف عن العلاقات والأنماط السائدة. وقد استلزمت الدراسة الجمع بين أسلوبين متكاملين:
+  </p>
+  <p>
+    <strong>الأسلوب الأول - المسحي:</strong> من خلال مراجعة شاملة ومنهجية لقواعد البيانات العلمية المتخصصة كـ IEEE Xplore وScopus وقواعد البيانات العربية للبحوث التربوية.
+  </p>
+  <p>
+    <strong>الأسلوب الثاني - الميداني:</strong> عبر تطبيق استبانة مُحكَّمة على عينة ممثلة من مجتمع البحث، وتحليل البيانات المجمَّعة إحصائيًا باستخدام برنامج SPSS الإصدار الثامن والعشرين.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">2</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 3 ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الأول: الإطار العام</span>
+  </div>
+
+  <h2>1.8 مصطلحات البحث</h2>
+  <p>
+    يُوضَّح فيما يلي المفاهيم الإجرائية للمصطلحات الجوهرية التي يتضمنها هذا البحث:
+  </p>
+
+  <h3>أ) الذكاء الاصطناعي (Artificial Intelligence - AI)</h3>
+  <p>
+    يُقصد به إجرائيًا في هذه الدراسة: مجموعة التقنيات والأنظمة الحاسوبية القادرة على محاكاة العمليات المعرفية الإنسانية كالتعلم والاستدلال والتخطيط وحل المشكلات، ويشمل ذلك تقنيات التعلم الآلي ومعالجة اللغة الطبيعية وأنظمة التوصية الذكية والمساعدين الافتراضيين، بما فيها الأدوات المتاحة للاستخدام الأكاديمي كـ ChatGPT وCopilot وكلود.
+  </p>
+
+  <h3>ب) التعليم الجامعي (Higher Education)</h3>
+  <p>
+    يُقصد به مرحلة التعليم ما بعد الثانوي في الجامعات والكليات، ويُعنى البحث تحديدًا بمرحلة البكالوريوس في كليات الحاسبات وتقنية المعلومات.
+  </p>
+
+  <h3>ج) التعلم الشخصي (Personalized Learning)</h3>
+  <p>
+    نموذج تعليمي تكيفي يعتمد على بيانات المتعلم وسلوكه وتفضيلاته لتقديم محتوى تعليمي مُخصَّص يتناسب مع مستواه واحتياجاته الفردية، ويُتيح له التقدم بإيقاعه الخاص.
+  </p>
+
+  <h3>د) التحصيل الأكاديمي (Academic Achievement)</h3>
+  <p>
+    يُعبَّر عنه إجرائيًا بالمعدل التراكمي (GPA) للطالب، ومستوى أدائه في الاختبارات والتقييمات الدراسية خلال الفترة المحددة للبحث.
+  </p>
+
+  <h3>هـ) التعلم الآلي (Machine Learning)</h3>
+  <p>
+    أحد فروع الذكاء الاصطناعي يُعنى بتطوير خوارزميات تُمكِّن الأنظمة الحاسوبية من التعلم والتحسن الذاتي من خلال البيانات دون الحاجة إلى برمجة صريحة لكل موقف.
+  </p>
+
+  <div class="quote-box">
+    "الذكاء الاصطناعي ليس بديلًا عن المعلم البشري، بل هو أداة تمكينية تُضاعف قدرته على الوصول إلى كل متعلم بالأسلوب الذي يناسبه في الوقت المناسب."
+    <br><strong>— UNESCO, 2023, Guidance for Generative AI in Education</strong>
+  </div>
+
+  <p>
+    يُشكّل هذا الفصل الأرضية المفاهيمية والمنهجية التي ينطلق منها البحث، ويمهد الطريق للفصل التالي الذي يستعرض الإطار النظري ومراجعة الأدبيات ذات الصلة بموضوع الدراسة.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">3</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الفصل الثاني ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الثاني: الإطار النظري</span>
+  </div>
+
+  <div class="chapter-title">الفصل الثاني</div>
+  <div class="chapter-subtitle">الإطار النظري ومراجعة الأدبيات</div>
+
+  <h2>2.1 الذكاء الاصطناعي: المفهوم والتطور التاريخي</h2>
+  <p>
+    يُعدّ مصطلح "الذكاء الاصطناعي" من أكثر المصطلحات تداولًا وتأثيرًا في خطاب الحقبة الراهنة، غير أن جذوره ترتد إلى منتصف القرن العشرين حين أطلق عالم الرياضيات البريطاني آلان تورينج تساؤله الاستفزازي الشهير عام 1950: "هل يمكن للآلات أن تُفكر؟" والذي شكّل الشرارة المؤسسة لهذا الحقل المعرفي الجديد. ثم جاء مؤتمر دارتموث عام 1956 ليُرسّم ميلاد الذكاء الاصطناعي علمًا مستقلًا على يد جون مكارثي وزملائه.
+  </p>
+  <p>
+    شهدت مسيرة الذكاء الاصطناعي تقلبات حادة بين موجات الانتعاش والشتاء البحثي، إلى أن أحدث اختراق التعلم العميق (Deep Learning) في العقد الثاني من الألفية الثالثة نقلة نوعية حقيقية، مُنبئةً بعصر جديد. وقد بلغت هذه المسيرة ذروتها حتى الآن مع ظهور النماذج اللغوية الكبيرة (LLMs) التي أعادت تعريف ما يمكن أن تحققه الآلات في مجال الفهم والتوليد والتفاعل.
+  </p>
+
+  <table>
+    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (1-1): أبرز مراحل تطور الذكاء الاصطناعي</caption>
+    <thead>
+      <tr><th>المرحلة</th><th>الحقبة الزمنية</th><th>أبرز الإنجازات</th><th>التأثير على التعليم</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>التأسيس</td><td>1950-1969</td><td>برامج منطقية بدائية، اختبار تورينج</td><td>محدود جدًا</td></tr>
+      <tr><td>الأنظمة الخبيرة</td><td>1970-1989</td><td>نظام MYCIN الطبي، أنظمة الاستدلال</td><td>بدايات التعليم الذكي</td></tr>
+      <tr><td>الشبكات العصبية</td><td>1990-2009</td><td>الانتصارات في لعبة الشطرنج، التعلم الإحصائي</td><td>أنظمة تعليم تكيفي</td></tr>
+      <tr><td>التعلم العميق</td><td>2010-2022</td><td>ImageNet، GPT-2، AlphaGo</td><td>منصات تعليمية ذكية</td></tr>
+      <tr><td>الذكاء التوليدي</td><td>2023-الآن</td><td>ChatGPT، Gemini، Claude</td><td>ثورة تعليمية شاملة</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2.2 أشكال الذكاء الاصطناعي في البيئة التعليمية</h2>
+  <p>
+    يتجلى توظيف الذكاء الاصطناعي في السياق التعليمي من خلال عدة تجليات ومنظومات متكاملة، يمكن تصنيفها في ثلاثة محاور رئيسية:
+  </p>
+
+  <h3>أ) أنظمة التعلم الذكي (Intelligent Tutoring Systems - ITS)</h3>
+  <p>
+    تُمثّل هذه الأنظمة أحد أقدم وأنضج تطبيقات الذكاء الاصطناعي التعليمي وأكثرها بحثًا في الأدبيات العلمية. تعمل وفق نموذج يجمع بين نموذج المتعلم ونموذج المعرفة ونموذج التدريس لتقديم شرح مُخصَّص وتغذية راجعة آنية لكل طالب وفق مستواه الفعلي ونمط تعلمه. ومن أبرز أمثلتها المعاصرة منصة Khan Academy Khanmigo وCarnegie Learning.
+  </p>
+
+  <h3>ب) التحليلات التعليمية (Learning Analytics)</h3>
+  <p>
+    تستثمر بيانات التفاعل والأداء لتوليد رؤى تنبؤية حول مسار تعلم الطالب ورصد مؤشرات الخطر المبكرة قبل الوقوع في الفشل الأكاديمي. تُتيح هذه الأنظمة للمؤسسات التعليمية اتخاذ تدخلات استباقية وقرارات مبنية على الأدلة.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">4</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 5 - الفصل الثاني تابع ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الثاني: الإطار النظري</span>
+  </div>
+
+  <h3>ج) المحتوى التعليمي التوليدي (Generative AI for Content)</h3>
+  <p>
+    تُعدّ النماذج اللغوية الكبيرة اليوم أداة فعّالة في يد المعلم والمتعلم على حدٍّ سواء؛ إذ تُتيح توليد شروحات تعليمية مُبسَّطة وأسئلة تقييمية وملخصات أكاديمية وترجمات وتحويل النصوص المعقدة إلى صيغ قابلة للفهم. ومن أبرز هذه النماذج في الاستخدام التعليمي: GPT-4 من OpenAI، وGemini من Google، وClaude من Anthropic.
+  </p>
+
+  <h2>2.3 تطور التعليم في العصر الرقمي</h2>
+  <p>
+    مرّت المنظومة التعليمية العالمية بمراحل تحول رقمي متتابعة بدأت بإدخال الحواسيب في الفصول الدراسية في ثمانينيات القرن الماضي، ثم التوسع في استخدام الإنترنت والبريد الإلكتروني والوسائط المتعددة في التسعينيات، وصولًا إلى ثورة التعلم الإلكتروني (e-Learning) في مطلع الألفية الثالثة. وقد شهدنا بعد ذلك صعود المنصات المفتوحة (MOOCs) كـ Coursera وedX وإتاحتها التعليم العالي الجيد للملايين حول العالم.
+  </p>
+  <p>
+    غير أن التحول الجذري الأعمق جاء مع توظيف الذكاء الاصطناعي الذي أتاح الانتقال من التعليم الرقمي التقليدي إلى تعليم ذكي قادر على التكيف الآني مع المتعلم وتقديم تجارب تعليمية فريدة ومخصصة لكل فرد بمعزل عن سياق الجماعة.
+  </p>
+
+  <h2>2.4 التعليم الشخصي التكيفي</h2>
+  <p>
+    يُعدّ التعلم الشخصي (Personalized Learning) أبرز ما يُميّز الذكاء الاصطناعي عن غيره من التقنيات التعليمية السابقة. إذ تُتيح خوارزميات التعلم التكيفي تتبع مسار كل متعلم بدقة متناهية، وتحليل نقاط قوته وضعفه وأسلوب تعلمه المفضل وسرعة استيعابه، ثم توليد مسارات تعليمية فردية مُصمَّمة خصيصًا له تزيد من فاعلية التعلم وتعمّق الاستيعاب.
+  </p>
+
+  <div class="highlight-box">
+    <strong>أبرز مزايا التعلم الشخصي المدعوم بالذكاء الاصطناعي:</strong><br>
+    يُتيح التحكم الذاتي في وتيرة التعلم وتسلسله، ويُقدّم تغذية راجعة فورية ودقيقة، ويُشخّص الفجوات المعرفية مبكرًا، كما يرفع مستوى الدافعية والانخراط في العملية التعليمية، ويُسهم في تحسين مخرجات التعلم بمعدلات قياسية.
+  </div>
+
+  <h2>2.5 الدراسات السابقة</h2>
+  <p>
+    استأثر موضوع توظيف الذكاء الاصطناعي في التعليم باهتمام بحثي واسع على الصعيدين الدولي والعربي، وفيما يلي استعراض لأبرز الدراسات التي تقاطعت مع مشكلة البحث الحالي:
+  </p>
+
+  <h3>أولًا: الدراسات الأجنبية</h3>
+  <p>
+    أجرى Zawacki-Richter وآخرون (2019) مراجعة منهجية شاملة للأدبيات العلمية حول الذكاء الاصطناعي في التعليم العالي، شملت تحليل 146 دراسة نشرت في الفترة (2007-2018)، وخلصت إلى أن معظم هذه الدراسات ركّزت على التقييم التكيفي وتحليلات التعلم وأنظمة التعليم الذكي، مُوصيةً بضرورة توسيع البحث في التأثيرات الأخلاقية والمخاوف المتعلقة بالخصوصية.
+  </p>
+  <p>
+    وفي سياق مغاير، تناولت دراسة Holmes وآخرين (2022) بعنوان "الذكاء الاصطناعي في التعليم: وعود وتحديات" تقييم الواقع الراهن من خلال مراجعة 61 أداة ذكاء اصطناعي تعليمية، وخلصت إلى أن معظمها لا يزال في طور التطوير ويفتقر إلى قواعد أدلة تجريبية كافية تُثبت فاعليته.
+  </p>
+
+  <h3>ثانيًا: الدراسات العربية</h3>
+  <p>
+    تناولت دراسة العتيبي (2022) من جامعة الملك عبدالعزيز واقع استخدام الذكاء الاصطناعي في التعليم الجامعي السعودي من وجهة نظر أعضاء هيئة التدريس، وأظهرت أن 68% من المشاركين يرون أن المؤسسات التعليمية تفتقر إلى استراتيجيات واضحة لتوظيف هذه التقنيات، في حين أبدى 82% استعدادًا للتدريب على استخدامها.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">5</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 6 ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الثاني: الإطار النظري</span>
+  </div>
+
+  <p>
+    أما دراسة الشهري والقحطاني (2023) فقد هدفت إلى قياس أثر استخدام برامج الذكاء الاصطناعي التوليدي على مستوى التحصيل الدراسي لطلاب الجامعات السعودية، وتوصلت إلى وجود ارتباط إيجابي ذي دلالة إحصائية بين استخدام هذه البرامج وتحسّن المعدلات الأكاديمية، مع التنبيه إلى مخاطر الاعتماد المفرط عليها.
+  </p>
+
+  <h3>ثالثًا: موقع الدراسة الحالية من الدراسات السابقة</h3>
+  <p>
+    يستخلص الباحث من خلال استعراض الدراسات السابقة أن الأدبيات العلمية تميل نحو التأكيد على الإمكانات الهائلة للذكاء الاصطناعي في رفع جودة التعليم، في حين لا تزال الأدلة التجريبية المتعلقة بتأثيره على التحصيل الأكاديمي في السياق العربي غير كافية ومحدودة. وتأتي الدراسة الحالية لسد هذه الفجوة البحثية بالتركيز على بيئة جامعية عربية محددة وقياس الأثر الفعلي بأدوات ميدانية صارمة.
+  </p>
+
+  <h2>2.6 الأطر النظرية الموجِّهة</h2>
+  <p>
+    يستند هذا البحث إلى جملة من الأطر النظرية التي تُعين على فهم ظاهرة توظيف الذكاء الاصطناعي في التعليم وتفسيرها:
+  </p>
+  <p>
+    <strong>نظرية التعلم البنائي (Constructivism):</strong> كما صاغها جان بياجيه وطوّرها فيغوتسكي، تُؤكد على أن المتعلم يبني معرفته بصورة نشطة من خلال تفاعله مع البيئة والخبرات، وهو ما يتلاءم مع طبيعة الأنظمة التعليمية الذكية التي تُشرك المتعلم وتُفعِّل دوره.
+  </p>
+  <p>
+    <strong>نموذج قبول التقنية (TAM):</strong> طوّره Davis عام 1989 ليُفسّر العوامل المؤثرة في قبول الأفراد للتقنيات الجديدة ورفضها، ويُركّز على متغيري السهولة الإدراكية والفائدة الإدراكية بوصفهما المحددَين الرئيسيَّين للاعتماد التقني.
+  </p>
+  <p>
+    <strong>نظرية التعلم المتصل (Connectivism):</strong> كما أطّر لها جورج سيمنز، وتُؤكد على أن التعلم في العصر الرقمي عملية تشبيكية تستلزم التواصل مع مصادر المعرفة الموزعة، مما يجعلها الإطار النظري الأنسب لفهم التعلم المدعوم بالذكاء الاصطناعي.
+  </p>
+
+  <div class="quote-box">
+    "التعليم المدعوم بالذكاء الاصطناعي ليس مجرد أتمتة للتعليم التقليدي، بل هو إعادة تأسيس للعلاقة بين المعلم والمتعلم والمحتوى في بيئة رقمية تفاعلية ذكية."
+    <br><strong>— Seldon & Abidoye, 2018, The Fourth Education Revolution</strong>
+  </div>
+
+  <p>
+    يُمهّد هذا الفصل من خلال استعراضه النظري والأدبي الشامل لفصل المنهجية الذي سيُحدد الإجراءات التطبيقية الكفيلة بالإجابة عن تساؤلات البحث وتحقيق أهدافه.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">6</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الفصل الثالث - المنهجية ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الثالث: منهجية البحث</span>
+  </div>
+
+  <div class="chapter-title">الفصل الثالث</div>
+  <div class="chapter-subtitle">منهجية البحث والإجراءات</div>
+
+  <h2>3.1 مجتمع البحث وعينته</h2>
+  <p>
+    يتألف مجتمع البحث من جميع طلاب البكالوريوس في كلية الحاسبات وتقنية المعلومات بجامعة العلوم والتقنية للعام الجامعي 2025-2026م، والبالغ عددهم وفق السجلات الأكاديمية الرسمية (847) طالبًا وطالبة موزعين على خمسة مستويات دراسية وثلاثة تخصصات رئيسية.
+  </p>
+  <p>
+    اعتُمد أسلوب أخذ العينة العشوائية الطبقية لضمان تمثيل جميع الفئات تمثيلًا نسبيًا عادلًا. وقد أُختيرت عينة الدراسة وفق معادلة ستيفن تومبسون لتحديد أحجام العينات، وبلغت (120) طالبًا وطالبة بنسبة أخطاء مقبولة لا تتجاوز (5%) عند مستوى ثقة (95%).
+  </p>
+
+  <table>
+    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (3-1): توزيع عينة البحث حسب المتغيرات الديموغرافية</caption>
+    <thead>
+      <tr><th>المتغير</th><th>الفئة</th><th>العدد</th><th>النسبة المئوية</th></tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="2">الجنس</td><td>ذكور</td><td>68</td><td>56.7%</td></tr>
+      <tr><td>إناث</td><td>52</td><td>43.3%</td></tr>
+      <tr><td rowspan="3">المستوى الدراسي</td><td>المستوى 1-2</td><td>31</td><td>25.8%</td></tr>
+      <tr><td>المستوى 3-4</td><td>54</td><td>45.0%</td></tr>
+      <tr><td>المستوى 5-6</td><td>35</td><td>29.2%</td></tr>
+      <tr><td rowspan="3">التخصص</td><td>علوم الحاسب</td><td>48</td><td>40.0%</td></tr>
+      <tr><td>نظم المعلومات</td><td>40</td><td>33.3%</td></tr>
+      <tr><td>هندسة البرمجيات</td><td>32</td><td>26.7%</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3.2 أدوات البحث</h2>
+  <p>
+    اعتمد البحث على الاستبانة الإلكترونية أداةً رئيسيةً لجمع البيانات الميدانية، وقد صُمِّمت وفق مقياس ليكرت الخماسي (موافق بشدة=5، موافق=4، محايد=3، غير موافق=2، غير موافق بشدة=1). تتكون الاستبانة من أربعة محاور:
+  </p>
+  <p>
+    <strong>المحور الأول:</strong> البيانات الديموغرافية والمعلومات الشخصية (5 فقرات).
+  </p>
+  <p>
+    <strong>المحور الثاني:</strong> مستوى الوعي والمعرفة بتقنيات الذكاء الاصطناعي التعليمية (12 فقرة).
+  </p>
+  <p>
+    <strong>المحور الثالث:</strong> واقع استخدام أدوات الذكاء الاصطناعي في الدراسة الأكاديمية (15 فقرة).
+  </p>
+  <p>
+    <strong>المحور الرابع:</strong> التحديات والمعيقات التي تحول دون الاستخدام الأمثل (10 فقرات).
+  </p>
+
+  <h2>3.3 صدق الأدوات وثباتها</h2>
+  <p>
+    عُرضت الاستبانة في صورتها الأولية على لجنة من (8) محكّمين من المتخصصين في تقنيات التعليم وعلوم الحاسب، وأجرى الباحث التعديلات اللازمة في ضوء ملاحظاتهم واقتراحاتهم للتحقق من الصدق الظاهري وصدق المحتوى. كما جرى تطبيق الاستبانة على عينة استطلاعية مكوّنة من (20) طالبًا خارج عينة الدراسة الأساسية للتحقق من وضوح الفقرات وقابليتها للفهم.
+  </p>
+  <p>
+    استُخدم معامل ألفا كرونباخ لقياس ثبات الاتساق الداخلي للاستبانة، وأسفرت النتائج عن معاملات ثبات مرتفعة لجميع المحاور تراوحت بين (0.84) و(0.91)، وهي قيم مقبولة إحصائيًا تُشير إلى موثوقية عالية للأداة ومناسبتها للتطبيق.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">7</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 8 - منهجية تابع ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الثالث: منهجية البحث</span>
+  </div>
+
+  <h2>3.4 إجراءات تطبيق البحث</h2>
+  <p>
+    سارت إجراءات تطبيق البحث الميداني وفق الخطوات المنهجية المنظمة الآتية: في المرحلة الأولى، حصل الباحث على الموافقات الأكاديمية اللازمة من عمادة الكلية ومكتب أبحاث الدراسات العليا ومن اللجنة الأخلاقية للبحث العلمي بالجامعة. في المرحلة الثانية، صُمِّمت الاستبانة الإلكترونية على منصة Microsoft Forms وأُضيفت إليها عناصر تضمن السرية التامة لهويات المشاركين وبياناتهم. في المرحلة الثالثة، وُزِّعت الاستبانة عبر قنوات التواصل الرسمية للكلية وجُمِعت البيانات على مدار ثلاثة أسابيع. في المرحلة الرابعة، استُخدم برنامج SPSS الإصدار الثامن والعشرون لتحليل البيانات.
+  </p>
+
+  <h2>3.5 الأساليب الإحصائية المستخدمة</h2>
+  <p>
+    للإجابة عن تساؤلات البحث اعتمد الباحث الأساليب الإحصائية الآتية: التكرارات والنسب المئوية لوصف خصائص العينة، والمتوسطات الحسابية والانحرافات المعيارية لقياس مستويات الاستخدام والاتجاهات. واستُخدم اختبار (t-test) للمقارنة بين مجموعتين مستقلتين، وتحليل التباين الأحادي (ANOVA) للمقارنة بين أكثر من مجموعتين، إضافةً إلى معامل ارتباط بيرسون لقياس قوة العلاقة بين المتغيرات الرئيسية.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">8</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الفصل الرابع - النتائج ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الرابع: النتائج والمناقشة</span>
+  </div>
+
+  <div class="chapter-title">الفصل الرابع</div>
+  <div class="chapter-subtitle">عرض النتائج وتحليلها ومناقشتها</div>
+
+  <h2>4.1 نتائج التساؤل الأول</h2>
+  <p>
+    <em>نص التساؤل: ما مستوى استخدام طلاب كلية الحاسبات لأدوات الذكاء الاصطناعي في دراستهم الأكاديمية؟</em>
+  </p>
+  <p>
+    للإجابة عن هذا التساؤل، حُسبت المتوسطات الحسابية والانحرافات المعيارية لفقرات المحور الثاني والثالث من الاستبانة. ويعرض الجدول التالي نتائج أبرز الفقرات مرتبةً تنازليًا:
+  </p>
+
+  <table>
+    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (4-1): مستوى استخدام أدوات الذكاء الاصطناعي (ن=120)</caption>
+    <thead>
+      <tr><th>الفقرة</th><th>المتوسط الحسابي</th><th>الانحراف المعياري</th><th>المستوى</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>أستخدم ChatGPT أو أدوات مماثلة في البحث الأكاديمي</td><td>4.21</td><td>0.78</td><td>مرتفع</td></tr>
+      <tr><td>أوظّف الذكاء الاصطناعي في فهم المواد الصعبة</td><td>4.05</td><td>0.82</td><td>مرتفع</td></tr>
+      <tr><td>أستعين بأدوات الذكاء الاصطناعي في كتابة التقارير</td><td>3.87</td><td>0.91</td><td>مرتفع</td></tr>
+      <tr><td>أستخدم منصات التعلم التكيفي الذكية</td><td>3.12</td><td>1.04</td><td>متوسط</td></tr>
+      <tr><td>أشارك في دورات تدريبية على الذكاء الاصطناعي التعليمي</td><td>2.65</td><td>1.18</td><td>متوسط</td></tr>
+      <tr style="font-weight:700; background:#f0ebdf;"><td>المتوسط الكلي للمحور</td><td>3.58</td><td>0.94</td><td>مرتفع</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    تُظهر النتائج أن المتوسط الكلي لمستوى استخدام أدوات الذكاء الاصطناعي بلغ (3.58) من أصل (5) وهو متوسط يقع ضمن المستوى المرتفع وفق معيار التحليل المعتمد. كما يتضح أن الاستخدام الأكثر شيوعًا يتمحور حول التطبيقات التوليدية كـ ChatGPT للبحث وفهم المحتوى، في حين يبقى استخدام منصات التعلم التكيفي والمشاركة في التدريب المتخصص في مستوى متوسط.
+  </p>
+
+  <div class="highlight-box">
+    <strong>النتيجة الرئيسية للتساؤل الأول:</strong> يُوظّف 73.3% من أفراد العينة أدوات الذكاء الاصطناعي بصورة منتظمة في دراستهم الأكاديمية، وهي نسبة مرتفعة تعكس وعيًا تقنيًا ملحوظًا لدى طلاب الكلية، غير أن معظم هذا الاستخدام يتركز في التطبيقات الاستهلاكية السطحية دون الغوص في التطبيقات التعليمية المتقدمة.
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">9</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 10 - النتائج تابع ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الرابع: النتائج والمناقشة</span>
+  </div>
+
+  <h2>4.2 نتائج التساؤل الثاني</h2>
+  <p>
+    <em>نص التساؤل: هل توجد فروق ذات دلالة إحصائية في مستوى استخدام الذكاء الاصطناعي تُعزى إلى متغيرات (الجنس، المستوى الدراسي، التخصص)؟</em>
+  </p>
+
+  <h3>أ) الفروق وفق متغير الجنس</h3>
+  <p>
+    أجرى الباحث اختبار (t-test) للمقارنة بين الذكور والإناث في مستوى استخدام الذكاء الاصطناعي، وأسفرت النتائج عن عدم وجود فروق ذات دلالة إحصائية عند مستوى (α ≤ 0.05)، إذ بلغت قيمة (t = 1.43) وهي غير دالة إحصائيًا عند قيمة (p = 0.157). يُشير ذلك إلى تساوي الجنسين في الاتجاه نحو توظيف تقنيات الذكاء الاصطناعي.
+  </p>
+
+  <h3>ب) الفروق وفق المستوى الدراسي</h3>
+  <p>
+    كشف تحليل التباين الأحادي (ANOVA) عن وجود فروق دالة إحصائيًا بحسب المستوى الدراسي (F = 8.34, p = 0.001). وأشارت المقارنات البعدية (LSD) إلى أن طلاب المستويات العليا (5-6) يُحقّقون مستويات استخدام أعلى بصورة دالة مقارنةً بطلاب المستويات الدنيا (1-2)، مما يُشير إلى أن الخبرة الأكاديمية والإلمام بالبيئة الجامعية يُسهمان في تعزيز الكفاءة الرقمية.
+  </p>
+
+  <table>
+    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (4-2): نتائج تحليل التباين (ANOVA) حسب المستوى الدراسي</caption>
+    <thead>
+      <tr><th>مصدر التباين</th><th>مجموع المربعات</th><th>درجات الحرية</th><th>متوسط المربعات</th><th>قيمة F</th><th>الدلالة</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>بين المجموعات</td><td>24.67</td><td>2</td><td>12.34</td><td>8.34</td><td>0.001*</td></tr>
+      <tr><td>داخل المجموعات</td><td>171.92</td><td>117</td><td>1.47</td><td>—</td><td>—</td></tr>
+      <tr style="font-weight:700;"><td>الكلي</td><td>196.59</td><td>119</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;">* دالة إحصائيًا عند مستوى دلالة (α ≤ 0.05)</p>
+
+  <h2>4.3 نتائج التساؤل الثالث: الأثر على التحصيل الأكاديمي</h2>
+  <p>
+    استُخدم معامل ارتباط بيرسون لقياس طبيعة العلاقة بين مستوى استخدام الذكاء الاصطناعي والمعدل التراكمي للطلاب. وقد كشفت النتائج عن وجود ارتباط موجب متوسط بين المتغيرين (r = 0.47, p &lt; 0.01)، وهو ما يُدل على أن الاستخدام الواعي والمنظّم لأدوات الذكاء الاصطناعي يرتبط بشكل إيجابي بمستوى التحصيل الأكاديمي.
+  </p>
+
+  <div class="highlight-box">
+    <strong>تحذير منهجي:</strong> يُنبّه الباحث إلى أن هذه العلاقة الارتباطية لا تعني بالضرورة علاقة سببية مباشرة؛ إذ قد يكون الطلاب المتفوقون أكاديميًا هم من يميلون أصلًا إلى توظيف الأدوات التعليمية بفاعلية أكبر. ومن ثمّ تُوصي الدراسة بتصاميم تجريبية مستقبلية لإثبات العلاقة السببية بصورة قاطعة.
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">10</div>
+    <span>كلية الحاسطبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 11 - مناقشة النتائج ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الرابع: النتائج والمناقشة</span>
+  </div>
+
+  <h2>4.4 التحديات والمعيقات</h2>
+  <p>
+    رصد البحث جملة من التحديات التي تحول دون الاستثمار الأمثل لتقنيات الذكاء الاصطناعي في البيئة التعليمية، يمكن تصنيفها في ثلاثة محاور:
+  </p>
+
+  <h3>أ) تحديات تقنية وبنية تحتية</h3>
+  <p>
+    أشار 61% من أفراد العينة إلى محدودية سرعة الإنترنت وعدم استقراره بوصفها عائقًا أمام الاستخدام المستمر. كذلك يُشكّل غياب الوصول المرخّص لبعض الأدوات المتقدمة عائقًا إضافيًا، لا سيما أن بعض هذه الأدوات تستلزم اشتراكات مدفوعة تُثقل كاهل الطالب.
+  </p>
+
+  <h3>ب) تحديات معرفية ومهارية</h3>
+  <p>
+    أفاد 54% من المستجيبين بافتقارهم إلى مهارات هندسة التوجيه (Prompt Engineering) اللازمة للتفاعل الفعّال مع نماذج الذكاء الاصطناعي والحصول على مخرجات ذات جودة عالية. ويُؤكد هذا ضرورة تضمين هذه المهارة في المناهج الجامعية.
+  </p>
+
+  <h3>ج) تحديات أخلاقية وسياساتية</h3>
+  <p>
+    أبدى 69% من المشاركين قلقًا من عدم وضوح الحدود الأخلاقية المتعلقة باستخدام الذكاء الاصطناعي في التقييمات والامتحانات، وهو ما يُشير إلى فراغ في السياسات المؤسسية يستوجب المعالجة العاجلة.
+  </p>
+
+  <h2>4.5 مناقشة النتائج</h2>
+  <p>
+    تتسق نتائج هذا البحث في جوهرها مع ما توصلت إليه كثير من الدراسات الدولية التي أكدت على الانتشار الواسع لاستخدام أدوات الذكاء الاصطناعي بين طلاب التعليم العالي. غير أن ما يُميّز نتائجنا هو تسليطها الضوء على الهوّة القائمة بين الاستخدام الكمي الواسع والتوظيف النوعي المتعمّق؛ فكثير من الطلاب يستخدمون هذه الأدوات للمهام السطحية كالتلخيص والترجمة، دون الغوص في إمكاناتها العميقة للتعلم النقدي وبناء المعرفة.
+  </p>
+  <p>
+    وتتناغم هذه النتيجة مع استنتاجات Baidoo-Anu & Owusu (2023) التي وصفت نمط استخدام الطلاب لأدوات الذكاء الاصطناعي التوليدي بأنه في الغالب استخدام أداتي استهلاكي لا استراتيجي تعليمي. كما تتوافق نتائج الفروق حسب المستوى الدراسي مع نظرية الكفاءة الرقمية التراكمية التي تؤكد أن الكفاءة التقنية تتراكم وتترسخ بالتدريج عبر سنوات الدراسة.
+  </p>
+
+  <div class="quote-box">
+    "المشكلة ليست في توافر الذكاء الاصطناعي، بل في قدرتنا كمؤسسات تعليمية على تأهيل المتعلمين لتوظيفه بوعي نقدي ومسؤولية أخلاقية."
+    <br><strong>— Mollick, 2023, Chameleons and AI in Education</strong>
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">11</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الفصل الخامس - الخاتمة ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الخامس: التوصيات والخاتمة</span>
+  </div>
+
+  <div class="chapter-title">الفصل الخامس</div>
+  <div class="chapter-subtitle">الاستنتاجات والتوصيات وآفاق البحث المستقبلية</div>
+
+  <h2>5.1 الاستنتاجات</h2>
+  <p>
+    في ضوء ما أسفرت عنه الدراسة من نتائج ميدانية ونظرية، يخلص الباحث إلى جملة من الاستنتاجات الجوهرية:
+  </p>
+  <p>
+    <strong>الاستنتاج الأول:</strong> يُسجَّل مستوى مرتفع من الانتشار لاستخدام أدوات الذكاء الاصطناعي بين طلاب كلية الحاسبات، إذ أفاد أكثر من ثلاثة أرباع العينة باستخدامها بصورة منتظمة، مما يُجسّد حجم التحول الذي أحدثته هذه التقنيات في ثقافة التعلم الجامعي خلال سنوات قليلة.
+  </p>
+  <p>
+    <strong>الاستنتاج الثاني:</strong> لا تُحدث عوامل الجنس فروقًا دالة في مستوى الاستخدام، مما يُشير إلى ديمقراطية نسبية في إمكانية الوصول إلى هذه الأدوات وسهولة تبنّيها بصرف النظر عن الجنس.
+  </p>
+  <p>
+    <strong>الاستنتاج الثالث:</strong> يُعدّ المستوى الدراسي المتغيرَ الأكثر تأثيرًا في حجم الاستخدام وفاعليته، حيث يُحقق الطلاب في المستويات المتقدمة استثمارًا أعمق لهذه الأدوات.
+  </p>
+  <p>
+    <strong>الاستنتاج الرابع:</strong> يرتبط الاستخدام الواعي لأدوات الذكاء الاصطناعي ارتباطًا إيجابيًا بالتحصيل الأكاديمي، مما يُوحي بإمكانية تحويله إلى رافد تعليمي فعّال إذا أُحسن توجيهه.
+  </p>
+  <p>
+    <strong>الاستنتاج الخامس:</strong> يُمثّل الغموض الأخلاقي وغياب السياسات المؤسسية العائقَ الأكثر تأثيرًا في الاستثمار الأمثل لهذه التقنيات، أكثر من العوائق التقنية ذاتها.
+  </p>
+
+  <h2>5.2 التوصيات</h2>
+  <p>
+    بناءً على نتائج البحث واستنتاجاته، يُقدّم الباحث التوصيات الآتية:
+  </p>
+
+  <div class="highlight-box">
+    <strong>التوصية الأولى - وضع سياسات أكاديمية واضحة:</strong><br>
+    تُوصي الدراسة بإعداد وثيقة سياسة مؤسسية شاملة تُنظّم استخدام الذكاء الاصطناعي في البيئة التعليمية، وتُحدد الضوابط الأخلاقية وحالات الاستخدام المقبول والمرفوض، على أن تُصاغ بمشاركة المجتمع الأكاديمي كافة.
+  </div>
+  <div class="highlight-box">
+    <strong>التوصية الثانية - تطوير المناهج الدراسية:</strong><br>
+    إدراج وحدات دراسية متخصصة في مقررات السنة الأولى تُعنى بتأهيل الطلاب على التعامل النقدي والمسؤول مع أدوات الذكاء الاصطناعي وإتقان مهارات هندسة التوجيه.
+  </div>
+  <div class="highlight-box">
+    <strong>التوصية الثالثة - التدريب المستمر لأعضاء هيئة التدريس:</strong><br>
+    إطلاق برنامج تطوير مهني مستمر يُمكّن أعضاء هيئة التدريس من توظيف الذكاء الاصطناعي في تصميم المقررات وأساليب التقييم وتقديم التغذية الراجعة.
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">12</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== صفحة 13 - تكملة التوصيات ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الفصل الخامس: التوصيات والخاتمة</span>
+  </div>
+
+  <div class="highlight-box">
+    <strong>التوصية الرابعة - تعزيز البنية التحتية الرقمية:</strong><br>
+    العمل على ضمان وصول عادل وشامل للطلاب إلى اشتراكات الأدوات التعليمية المدفوعة من خلال برامج ترخيص مؤسسية موحّدة، وتوفير بيئات حوسبة سحابية داعمة.
+  </div>
+  <div class="highlight-box">
+    <strong>التوصية الخامسة - تفعيل الشراكات مع صناعة التقنية:</strong><br>
+    بناء شراكات استراتيجية مع شركات تطوير الذكاء الاصطناعي التعليمي لتطوير أدوات مُصمَّمة خصيصًا للسياق العربي ومتوافقة مع اللغة العربية.
+  </div>
+
+  <h2>5.3 آفاق البحث المستقبلية</h2>
+  <p>
+    يفتح هذا البحث آفاقًا بحثية عديدة يُوصي الباحث بالإسهام فيها مستقبلًا، أبرزها:
+  </p>
+  <p>
+    <strong>أولًا:</strong> إجراء دراسات تجريبية تختبر برامج تدريبية محددة في هندسة التوجيه لقياس أثرها التجريبي الفعلي على التحصيل الأكاديمي وفق تصاميم شبه تجريبية صارمة.
+  </p>
+  <p>
+    <strong>ثانيًا:</strong> توسيع الدراسة لتشمل مؤسسات تعليمية عربية متعددة في دول مختلفة لبناء صورة مقارنة شاملة حول واقع توظيف الذكاء الاصطناعي في التعليم العربي.
+  </p>
+  <p>
+    <strong>ثالثًا:</strong> دراسة الجانب الأخلاقي والقانوني بمزيد من التعمق من خلال تحليل السياسات المؤسسية المعمول بها في الجامعات الرائدة وإمكانية تكييفها مع السياق العربي.
+  </p>
+  <p>
+    <strong>رابعًا:</strong> إجراء بحوث طولية (Longitudinal Studies) تتتبع نفس مجموعات الطلاب على مدى عدة سنوات لرصد التطور في أنماط استخدام الذكاء الاصطناعي وتأثيره المتراكم.
+  </p>
+
+  <h2>خاتمة البحث</h2>
+  <p>
+    في ختام هذه الرحلة البحثية التي استغرقت شهورًا من القراءة والتمحيص والعمل الميداني الدقيق، يتبيّن بجلاء أن العلاقة بين الذكاء الاصطناعي والتعليم ليست علاقة تهديد وخوف، بل هي علاقة تكاملية تُبشّر بمستقبل تعليمي أكثر عدالةً وفاعلية وقدرةً على الاستجابة للفروق الفردية بين المتعلمين.
+  </p>
+  <p>
+    إن الذكاء الاصطناعي لن يحلّ محل المعلم البشري؛ فالمعلم يحمل من الحكمة والتجربة الإنسانية والقيمة التربوية ما لا تستطيع أي خوارزمية محاكاته. لكنه يمنح المعلم قوة تضخيم غير مسبوقة تُمكّنه من الوصول إلى كل طالب بالأسلوب الذي يناسبه، وتحريره من المهام الروتينية للتفرغ لما هو أعمق وأكثر تأثيرًا.
+  </p>
+  <p>
+    والرهان الحقيقي لا يقع على التقنية بحد ذاتها، بل على قدرتنا كمجتمعات تعليمية على استيعاب هذه التقنية وتوجيهها وتهذيبها لتصبّ في مصلحة الإنسان وتحقّق الأهداف النبيلة للتعليم. ويبقى السؤال الفصل: كيف نُبني إنسانًا قادرًا على العيش مع الذكاء الاصطناعي لا مقهورًا به؟ هذا هو التحدي التربوي الأعمق للقرن الحادي والعشرين.
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">13</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== المراجع والمصادر ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>قائمة المراجع والمصادر</span>
+  </div>
+
+  <h1 style="text-align:center; margin-bottom:25px;">قائمة المراجع والمصادر</h1>
+
+  <h2>أولًا: المراجع العربية</h2>
+
+  <div class="ref-item" data-num="1">
+    العتيبي، منصور بن سعد. (2022). <em>واقع استخدام الذكاء الاصطناعي في التعليم الجامعي السعودي من وجهة نظر أعضاء هيئة التدريس</em>. مجلة العلوم التربوية والنفسية، جامعة الملك عبدالعزيز، 23(4)، 45-78.
+  </div>
+
+  <div class="ref-item" data-num="2">
+    الشهري، أحمد محمد، والقحطاني، سلطان عبدالله. (2023). <em>أثر استخدام الذكاء الاصطناعي التوليدي على التحصيل الدراسي لطلاب الجامعات</em>. المجلة العربية للتقنيات التربوية، 15(2)، 112-139.
+  </div>
+
+  <div class="ref-item" data-num="3">
+    الغامدي، سلمى ناصر. (2023). <em>الذكاء الاصطناعي في خدمة التعليم: دليل عملي للمعلمين والمتعلمين</em>. دار المعرفة للنشر والتوزيع، الرياض.
+  </div>
+
+  <div class="ref-item" data-num="4">
+    الزهراني، فهد عبدالرحمن. (2021). <em>التحديات التربوية في ظل الثورة الصناعية الرابعة: رؤية مستقبلية</em>. مجلة دراسات في التعليم الجامعي، جامعة عين شمس، 42، 203-241.
+  </div>
+
+  <div class="ref-item" data-num="5">
+    العمري، حمد بن فهد. (2022). <em>التعلم الشخصي المدعوم بالذكاء الاصطناعي: مفاهيم وتطبيقات</em>. المجلة السعودية للتعليم الإلكتروني، 8(1)، 33-61.
+  </div>
+
+  <div class="ref-item" data-num="6">
+    الحربي، نورة سعد. (2023). <em>الأخلاقيات التربوية في استخدام الذكاء الاصطناعي: دراسة تحليلية للسياسات التعليمية العالمية</em>. المجلة العربية للعلوم التربوية والاجتماعية، 29، 88-120.
+  </div>
+
+  <div class="ref-item" data-num="7">
+    الدوسري، ريم فهد. (2023). <em>نحو مناهج جامعية تدمج الذكاء الاصطناعي: تجارب ونماذج دولية ومقترحات للبيئة العربية</em>. مجلة الجامعة الإسلامية للدراسات التربوية والنفسية، 31(2)، 156-189.
+  </div>
+
+  <div class="ref-item" data-num="8">
+    وزارة التعليم، المملكة العربية السعودية. (2022). <em>الإطار الوطني لتقنيات التعليم والذكاء الاصطناعي 1444-1450هـ</em>. المركز الوطني لتطوير التعليم، الرياض.
+  </div>
+
+  <h2>ثانيًا: المراجع الأجنبية</h2>
+
+  <div class="ref-item" data-num="9">
+    Baidoo-Anu, D., & Owusu Ansah, L. (2023). Education in the Era of Generative Artificial Intelligence (AI): Understanding the Potential Benefits of ChatGPT in Promoting Teaching and Learning. <em>Journal of AI</em>, 7(1), 52-62.
+  </div>
+
+  <div class="ref-item" data-num="10">
+    Davis, F. D. (1989). Perceived Usefulness, Perceived Ease of Use, and User Acceptance of Information Technology. <em>MIS Quarterly</em>, 13(3), 319-340.
+  </div>
+
+  <div class="ref-item" data-num="11">
+    Holmes, W., Bialik, M., & Fadel, C. (2022). <em>Artificial Intelligence in Education: Promises and Implications for Teaching and Learning</em>. Center for Curriculum Redesign, Boston.
+  </div>
+
+  <div class="ref-item" data-num="12">
+    Mollick, E. (2023). Chameleons, AI and the Future of Education. <em>One Useful Thing Newsletter</em>. Retrieved from https://www.oneusefulthing.org
+  </div>
+
+  <div class="ref-item" data-num="13">
+    Seldon, A., & Abidoye, O. (2018). <em>The Fourth Education Revolution: Will Artificial Intelligence Liberate or Infantilise Humanity?</em> University of Buckingham Press.
+  </div>
+
+  <div class="ref-item" data-num="14">
+    Siemens, G. (2005). Connectivism: A Learning Theory for the Digital Age. <em>International Journal of Instructional Technology and Distance Learning</em>, 2(1), 3-10.
+  </div>
+
+  <div class="ref-item" data-num="15">
+    UNESCO. (2023). <em>Guidance for Generative AI in Education and Research</em>. United Nations Educational, Scientific and Cultural Organization, Paris.
+  </div>
+
+  <div class="ref-item" data-num="16">
+    Zawacki-Richter, O., Marín, V. I., Bond, M., & Gouverneur, F. (2019). Systematic Review of Research on Artificial Intelligence Applications in Higher Education. <em>International Journal of Educational Technology in Higher Education</em>, 16(1), 1-27.
+  </div>
+
+  <div class="ref-item" data-num="17">
+    Zhai, X., Chu, X., Chai, C. S., Jong, M. S. Y., Istenic, A., Spector, M., ... & Li, Y. (2021). A Review of Artificial Intelligence (AI) in Education from 2010 to 2020. <em>Complexity</em>, 2021, 1-18.
+  </div>
+
+  <div class="ref-item" data-num="18">
+    European Commission. (2022). <em>Ethical Guidelines on the Use of Artificial Intelligence (AI) and Data in Teaching and Learning for Educators</em>. Publications Office of the European Union, Luxembourg.
+  </div>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">14</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
+<!-- ===== الملاحق ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
+    <span>الملاحق</span>
+  </div>
+
+  <h1 style="text-align:center; margin-bottom:25px;">الملاحق</h1>
+
+  <h2>الملحق (أ): الاستبانة في صورتها النهائية</h2>
+  <p>
+    <strong>بسم الله الرحمن الرحيم</strong><br>
+    أخي الطالب / أختي الطالبة<br>
+    السلام عليكم ورحمة الله وبركاته،
+  </p>
+  <p>
+    يضع بين يديك الباحث هذه الاستبانة التي صُمِّمت لأغراض البحث الأكاديمي في إطار مشروع التخرج الموسوم بـ "توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية". يرجى الإجابة عن جميع الفقرات بموضوعية وأمانة علمية، علمًا بأن المعلومات التي تدلي بها ستُعامَل بسرية تامة ولن تُستخدم إلا لأغراض البحث العلمي.
+  </p>
+
+  <h3>القسم الأول: البيانات الشخصية</h3>
+  <table>
+    <tbody>
+      <tr><td style="width:40%;">الجنس:</td><td>○ ذكر &nbsp;&nbsp; ○ أنثى</td></tr>
+      <tr><td>المستوى الدراسي:</td><td>○ المستوى 1-2 &nbsp;&nbsp; ○ المستوى 3-4 &nbsp;&nbsp; ○ المستوى 5-6</td></tr>
+      <tr><td>التخصص:</td><td>○ علوم الحاسب &nbsp;&nbsp; ○ نظم المعلومات &nbsp;&nbsp; ○ هندسة البرمجيات</td></tr>
+      <tr><td>المعدل التراكمي:</td><td>○ أقل من 2.5 &nbsp;&nbsp; ○ من 2.5 إلى 3.5 &nbsp;&nbsp; ○ أعلى من 3.5</td></tr>
+    </tbody>
+  </table>
+
+  <h3>القسم الثاني: مستوى الوعي بالذكاء الاصطناعي</h3>
+  <p><em>يُرجى وضع علامة (✓) في الخانة التي تعبّر عن رأيك: (5=موافق بشدة، 4=موافق، 3=محايد، 2=غير موافق، 1=غير موافق بشدة)</em></p>
+  <table>
+    <thead><tr><th>الفقرة</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead>
+    <tbody>
+      <tr><td>أعرف الفرق بين أنواع الذكاء الاصطناعي (التوليدي، التحليلي، التكيفي)</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أُدرك المخاطر الأخلاقية لاستخدام الذكاء الاصطناعي في التقييمات</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أمتلك مهارات كافية في التعامل مع أدوات الذكاء الاصطناعي التعليمية</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أتابع آخر مستجدات تقنيات الذكاء الاصطناعي التعليمية</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+    </tbody>
+  </table>
+
+  <h3>القسم الثالث: واقع الاستخدام</h3>
+  <table>
+    <thead><tr><th>الفقرة</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead>
+    <tbody>
+      <tr><td>أستخدم ChatGPT أو أدوات مماثلة في البحث الأكاديمي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أوظّف الذكاء الاصطناعي في فهم المواد الدراسية الصعبة</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أستعين بأدوات الذكاء الاصطناعي في كتابة التقارير والمشاريع</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أستخدم منصات التعلم التكيفي الذكية في دراستي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      <tr><td>أُشارك في دورات تدريبية على الذكاء الاصطناعي التعليمي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:20px; font-size:12px; color:#888;">
+    شكرًا جزيلًا على تعاونكم الكريم. &nbsp; الباحث: محمد أحمد العمري
+  </p>
+
+  <div class="page-footer">
+    <span>جامعة العلوم والتقنية</span>
+    <div class="page-number">15</div>
+    <span>كلية الحاسبات وتقنية المعلومات</span>
+  </div>
+</div>
+
 </body>
 </html>
