@@ -3,1406 +3,2121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مشروع تخرج - الذكاء الاصطناعي في التعليم</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>بحث أكاديمي - منتجات ترطيب البشرة</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --primary: #1a3a5c;
-    --accent: #c8a84b;
-    --text: #1c1c1c;
-    --light: #f5f3ee;
-    --border: #d0c9b8;
+    --rose: #c47c7c;
+    --blush: #e8c4b8;
+    --cream: #fdf6f0;
+    --petal: #f5e6e0;
+    --deep: #6b3d3d;
+    --gold: #c9a96e;
+    --text: #3a2424;
+    --muted: #8b6565;
+    --white: #ffffff;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  @page {
+    size: A4;
+    margin: 2cm;
+  }
+
   body {
-    font-family: 'Cairo', 'Amiri', serif;
-    background: #e8e4dc;
+    font-family: 'Tajawal', serif;
+    background: var(--cream);
     color: var(--text);
     line-height: 1.9;
+    direction: rtl;
   }
 
-  /* Print Button */
-  .print-btn-wrapper {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    z-index: 9999;
-  }
-
-  .print-btn {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 14px 28px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(26,58,92,0.4);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s;
-  }
-  .print-btn:hover { background: var(--accent); color: var(--primary); transform: translateY(-2px); }
-  .print-btn svg { width: 18px; height: 18px; fill: currentColor; }
-
-  /* Pages */
+  /* ===== PAGE SYSTEM ===== */
   .page {
     width: 210mm;
     min-height: 297mm;
-    background: #fff;
     margin: 20px auto;
-    padding: 25mm 20mm;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+    background: white;
     position: relative;
-    border-top: 6px solid var(--primary);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(100,60,60,0.12);
+    padding: 50px 55px;
+    page-break-after: always;
   }
 
-  /* Cover Page */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--rose), var(--gold), var(--rose));
+  }
+
+  .page-corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+  }
+  .page-corner.tl { top: 15px; right: 15px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+  .page-corner.bl { bottom: 15px; right: 15px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+  .page-corner.tr { top: 15px; left: 15px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+  .page-corner.br { bottom: 15px; left: 15px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+
+  .page-number {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  /* ===== COVER PAGE ===== */
   .cover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
-    min-height: 297mm;
-    background: linear-gradient(160deg, #fff 60%, #f0ebdf 100%);
-    border-top: none;
-    padding: 20mm;
+    min-height: 257mm;
+    padding: 30px 40px;
   }
 
-  .cover-logo {
-    width: 80px;
-    height: 80px;
-    border: 4px solid var(--primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    background: var(--primary);
+  .cover-top {
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--blush);
   }
-  .cover-logo svg { width: 45px; height: 45px; fill: #fff; }
 
-  .university-name {
-    font-size: 18px;
+  .school-name {
+    font-family: 'Scheherazade New', serif;
+    font-size: 22px;
+    color: var(--deep);
     font-weight: 700;
-    color: var(--primary);
     margin-bottom: 5px;
+  }
+
+  .subject-label {
+    font-size: 13px;
+    color: var(--muted);
     letter-spacing: 1px;
   }
 
-  .faculty-name {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 20px;
-    width: 100%;
+  .cover-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 30px 0;
   }
 
-  .cover-title-box {
-    border: 3px double var(--primary);
-    padding: 30px 40px;
-    margin: 20px 0;
-    width: 100%;
+  .flower-ornament {
+    width: 110px;
+    height: 110px;
   }
 
-  .cover-title-label {
-    font-size: 13px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .cover-main-title {
-    font-family: 'Amiri', serif;
-    font-size: 30px;
+  .cover-title {
+    font-family: 'Scheherazade New', serif;
+    font-size: 38px;
+    color: var(--deep);
     font-weight: 700;
-    color: var(--primary);
-    line-height: 1.5;
-    margin-bottom: 10px;
+    line-height: 1.4;
+    text-align: center;
   }
 
   .cover-subtitle {
     font-size: 16px;
-    color: #666;
-    font-style: italic;
+    color: var(--rose);
+    font-weight: 500;
+    letter-spacing: 1px;
   }
 
-  .cover-divider {
-    width: 60px;
-    height: 3px;
-    background: var(--accent);
-    margin: 25px auto;
+  .divider-ornament {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 60%;
   }
 
-  .cover-info-grid {
+  .divider-ornament::before,
+  .divider-ornament::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .divider-ornament::after {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .cover-bottom {
+    width: 100%;
+    padding-top: 20px;
+    border-top: 1px solid var(--blush);
+  }
+
+  .team-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    width: 100%;
-    margin: 20px 0;
+    gap: 8px 30px;
+    margin-bottom: 20px;
+  }
+
+  .team-section-title {
+    font-size: 12px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-weight: 600;
     text-align: right;
   }
 
-  .cover-info-item {
-    background: var(--light);
-    padding: 12px 15px;
-    border-right: 3px solid var(--accent);
+  .team-name {
+    font-size: 13.5px;
+    color: var(--deep);
+    font-weight: 500;
+    padding: 4px 10px;
+    background: var(--petal);
+    border-radius: 20px;
+    text-align: center;
+    border-right: 3px solid var(--rose);
   }
 
-  .cover-info-label { font-size: 11px; color: #888; margin-bottom: 3px; }
-  .cover-info-value { font-size: 13px; font-weight: 700; color: var(--primary); }
-
-  .cover-year {
-    margin-top: auto;
-    font-size: 13px;
-    color: #888;
-    border-top: 1px solid var(--border);
-    padding-top: 15px;
-    width: 100%;
-  }
-
-  /* Page Header/Footer */
-  .page-header {
+  .supervisor-block {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid var(--primary);
-    padding-bottom: 8px;
-    margin-bottom: 30px;
+    justify-content: space-around;
+    gap: 20px;
+  }
+
+  .supervisor-item {
+    text-align: center;
+  }
+
+  .supervisor-label {
     font-size: 11px;
-    color: #888;
+    color: var(--gold);
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
   }
-  .page-header-title { color: var(--primary); font-weight: 700; font-size: 12px; }
 
-  .page-footer {
+  .supervisor-name {
+    font-size: 13px;
+    color: var(--deep);
+    font-weight: 600;
+    font-family: 'Scheherazade New', serif;
+  }
+
+  /* ===== TABLE OF CONTENTS ===== */
+  .toc-title {
+    font-family: 'Scheherazade New', serif;
+    font-size: 28px;
+    color: var(--deep);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .toc-title::after {
+    content: '';
     position: absolute;
-    bottom: 15mm;
-    left: 20mm;
-    right: 20mm;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 80px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .toc-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    padding-top: 8px;
-    font-size: 10px;
-    color: #aaa;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--blush);
+    transition: color 0.2s;
   }
 
-  .page-number {
-    width: 28px;
-    height: 28px;
-    background: var(--primary);
-    color: #fff;
+  .toc-item:hover { color: var(--rose); }
+
+  .toc-chapter {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 18px;
+    margin-bottom: 5px;
+  }
+
+  .toc-item-title {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .toc-page {
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 30px;
+    text-align: center;
+  }
+
+  /* ===== CONTENT PAGES ===== */
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--blush);
+  }
+
+  .chapter-label {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .chapter-title {
+    font-family: 'Scheherazade New', serif;
+    font-size: 30px;
+    color: var(--deep);
+    font-weight: 700;
+  }
+
+  .section-title {
+    font-family: 'Scheherazade New', serif;
+    font-size: 20px;
+    color: var(--rose);
+    font-weight: 700;
+    margin: 28px 0 12px;
+    padding-right: 15px;
+    border-right: 4px solid var(--rose);
+  }
+
+  .subsection-title {
+    font-size: 16px;
+    color: var(--deep);
+    font-weight: 700;
+    margin: 20px 0 8px;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text);
+    text-align: justify;
+    margin-bottom: 12px;
+  }
+
+  .highlight-box {
+    background: var(--petal);
+    border-right: 4px solid var(--gold);
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .highlight-box p { margin: 0; }
+
+  .info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .info-card {
+    background: var(--petal);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--blush);
+  }
+
+  .info-card h4 {
+    font-size: 13px;
+    color: var(--rose);
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .info-card h4::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 8px;
+  }
+
+  .info-card p {
+    font-size: 12.5px;
+    margin: 0;
+  }
+
+  .ingredient-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+
+  .ingredient-table th {
+    background: var(--rose);
+    color: white;
+    padding: 10px 14px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .ingredient-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--blush);
+    vertical-align: top;
+  }
+
+  .ingredient-table tr:nth-child(even) td {
+    background: var(--petal);
+  }
+
+  .ingredient-table tr:hover td {
+    background: #f0ddd6;
+  }
+
+  .big-quote {
+    font-family: 'Scheherazade New', serif;
+    font-size: 20px;
+    color: var(--rose);
+    text-align: center;
+    padding: 25px 40px;
+    margin: 25px 0;
+    border-top: 1px solid var(--blush);
+    border-bottom: 1px solid var(--blush);
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  .step-list {
+    list-style: none;
+    margin: 15px 0;
+  }
+
+  .step-list li {
+    padding: 10px 0 10px 20px;
+    border-bottom: 1px dotted var(--blush);
+    font-size: 13.5px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .step-num {
+    background: var(--rose);
+    color: white;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
     font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 3px;
   }
 
-  /* Typography */
-  h1 { font-family: 'Amiri', serif; font-size: 24px; color: var(--primary); margin-bottom: 20px; }
-  h2 {
-    font-family: 'Amiri', serif;
-    font-size: 19px;
-    color: var(--primary);
-    margin: 30px 0 15px;
-    padding-right: 15px;
-    border-right: 4px solid var(--accent);
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
   }
-  h3 {
+
+  .note-box {
+    background: linear-gradient(135deg, #fff9f6, #fef0e8);
+    border: 1px solid var(--blush);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 20px 0;
+  }
+
+  .note-box .note-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .skin-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .skin-card {
+    text-align: center;
+    padding: 18px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--blush);
+    background: white;
+  }
+
+  .skin-card .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .skin-card h4 {
+    font-size: 13px;
+    color: var(--deep);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .skin-card p {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .references-list {
+    list-style: none;
+    counter-reset: ref-counter;
+  }
+
+  .references-list li {
+    counter-increment: ref-counter;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--blush);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .references-list li::before {
+    content: counter(ref-counter);
+    background: var(--rose);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* PRINT BUTTON */
+  .print-btn {
+    position: fixed;
+    bottom: 35px;
+    left: 35px;
+    z-index: 9999;
+    background: linear-gradient(135deg, var(--rose), var(--deep));
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: 'Tajawal', sans-serif;
     font-size: 15px;
     font-weight: 700;
-    color: var(--primary);
-    margin: 20px 0 10px;
-  }
-
-  p {
-    font-size: 13px;
-    margin-bottom: 14px;
-    text-align: justify;
-    text-justify: inter-word;
-  }
-
-  .chapter-title {
-    text-align: center;
-    font-family: 'Amiri', serif;
-    font-size: 22px;
-    color: var(--primary);
-    margin-bottom: 5px;
-  }
-
-  .chapter-subtitle {
-    text-align: center;
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed var(--border);
-  }
-
-  /* TOC */
-  .toc-item {
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(107,61,61,0.35);
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 9px 0;
-    border-bottom: 1px dotted var(--border);
-    font-size: 13px;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .toc-item.main { font-weight: 700; color: var(--primary); font-size: 14px; }
-  .toc-item.sub { padding-right: 20px; color: #555; }
-  .toc-page { color: var(--accent); font-weight: 700; }
+  .print-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(107,61,61,0.45);
+  }
+  .print-btn svg { width: 18px; height: 18px; fill: white; }
 
-  /* Highlight box */
-  .highlight-box {
-    background: var(--light);
-    border: 1px solid var(--border);
-    border-right: 4px solid var(--primary);
-    padding: 15px 20px;
-    margin: 20px 0;
-    font-size: 13px;
-  }
-
-  .quote-box {
-    background: #f9f6f0;
-    border-right: 4px solid var(--accent);
-    padding: 15px 20px;
-    margin: 20px 0;
-    font-style: italic;
-    font-size: 13px;
-    color: #555;
-  }
-
-  /* Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 12px;
-  }
-  th {
-    background: var(--primary);
-    color: #fff;
-    padding: 10px 12px;
-    text-align: right;
-    font-weight: 600;
-  }
-  td {
-    padding: 9px 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: right;
-  }
-  tr:nth-child(even) td { background: var(--light); }
-
-  /* References */
-  .ref-item {
-    font-size: 12px;
-    margin-bottom: 12px;
-    padding-right: 25px;
-    position: relative;
-    line-height: 1.7;
-  }
-  .ref-item::before {
-    content: attr(data-num);
-    position: absolute;
-    right: 0;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  /* Bismillah */
-  .bismillah {
-    text-align: center;
-    font-family: 'Amiri', serif;
-    font-size: 26px;
-    color: var(--primary);
-    margin: 20px 0 30px;
-  }
-
-  /* Abstract box */
-  .abstract-box {
-    background: var(--light);
-    border: 2px solid var(--border);
-    padding: 25px 30px;
-    margin: 20px 0;
-  }
-
-  .abstract-title {
-    font-family: 'Amiri', serif;
-    font-size: 18px;
-    color: var(--primary);
-    text-align: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* Keywords */
-  .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-  }
-  .keyword {
-    background: var(--primary);
-    color: #fff;
-    padding: 4px 12px;
-    font-size: 11px;
-    border-radius: 3px;
-  }
-
-  /* Print Styles */
+  /* PRINT */
   @media print {
     body { background: white; }
-    .print-btn-wrapper { display: none; }
-    .page {
-      width: 210mm;
-      margin: 0;
-      padding: 20mm 18mm;
-      box-shadow: none;
-      page-break-after: always;
-      border-top: none;
-    }
-    .cover { border-top: none; }
+    .page { margin: 0; box-shadow: none; page-break-after: always; }
+    .print-btn { display: none; }
+  }
+
+  /* SCREEN */
+  @media screen {
+    body { padding: 30px 0; background: #e8d5c8; }
   }
 </style>
 </head>
 <body>
 
-<!-- Print Button -->
-<div class="print-btn-wrapper">
-  <button class="print-btn" onclick="window.print()">
-    <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-    طباعة / حفظ PDF
-  </button>
-</div>
-
-<!-- ===== صفحة الغلاف ===== -->
-<div class="page cover">
-  <div class="cover-logo">
-    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-  </div>
-  <div class="university-name">جامعة العلوم والتقنية</div>
-  <div class="faculty-name">كلية الحاسبات وتقنية المعلومات</div>
-  
-  <div class="cover-title-box">
-    <div class="cover-title-label">مشروع تخرج مقدم لاستيفاء متطلبات درجة البكالوريوس</div>
-    <div class="cover-main-title">
-      توظيف الذكاء الاصطناعي في<br>تطوير المنظومة التعليمية
-    </div>
-    <div class="cover-subtitle">دراسة تحليلية وتطبيقية في المرحلة الجامعية</div>
-  </div>
-
-  <div class="cover-divider"></div>
-
-  <div class="cover-info-grid">
-    <div class="cover-info-item">
-      <div class="cover-info-label">اسم الطالب</div>
-      <div class="cover-info-value">محمد أحمد العمري</div>
-    </div>
-    <div class="cover-info-item">
-      <div class="cover-info-label">الرقم الجامعي</div>
-      <div class="cover-info-value">2021-CS-0148</div>
-    </div>
-    <div class="cover-info-item">
-      <div class="cover-info-label">المشرف الأكاديمي</div>
-      <div class="cover-info-value">د. سلمى ناصر الغامدي</div>
-    </div>
-    <div class="cover-info-item">
-      <div class="cover-info-label">التخصص</div>
-      <div class="cover-info-value">علوم الحاسب</div>
-    </div>
-  </div>
-
-  <div class="cover-year">العام الجامعي 1446-1447 هـ &nbsp;|&nbsp; 2025-2026 م</div>
-</div>
-
-<!-- ===== إهداء وشكر ===== -->
+<!-- ============================
+     PAGE 1: COVER
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>مشروع التخرج</span>
-  </div>
+  <div class="page-corner tl"></div>
+  <div class="page-corner bl"></div>
+  <div class="page-corner tr"></div>
+  <div class="page-corner br"></div>
 
-  <div class="bismillah">بسم الله الرحمن الرحيم</div>
+  <div class="cover">
+    <div class="cover-top">
+      <div class="school-name">المملكة العربية السعودية</div>
+      <div class="subject-label">بحث أكاديمي — العلوم التطبيقية</div>
+    </div>
 
-  <h1 style="text-align:center; margin-bottom:10px;">الإهداء</h1>
-  <div class="quote-box" style="text-align:center; font-size:14px; font-style:normal; font-family:'Amiri',serif; line-height:2.2;">
-    إلى والديَّ الكريمين اللذين غرسا في نفسي حب العلم والمعرفة...<br>
-    إلى أساتذتي الأفاضل الذين أضاءوا طريق التعلم بعلمهم وصبرهم...<br>
-    إلى كل من يؤمن بأن التعليم هو أعظم استثمار في مستقبل الإنسانية...<br>
-    <strong>أُهدي هذا العمل المتواضع</strong>
-  </div>
+    <div class="cover-center">
+      <svg class="flower-ornament" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="12" fill="#c47c7c"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(0 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(45 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(90 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(135 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(180 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(225 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(270 50 50) translate(0 -28)"/>
+        <ellipse cx="50" cy="22" rx="9" ry="14" fill="#e8c4b8" transform="rotate(315 50 50) translate(0 -28)"/>
+        <circle cx="50" cy="50" r="10" fill="#c47c7c"/>
+        <circle cx="50" cy="50" r="6" fill="#c9a96e"/>
+      </svg>
 
-  <h2>شكر وتقدير</h2>
-  <p>
-    الحمد لله رب العالمين، والصلاة والسلام على أشرف المرسلين، سيدنا محمد وعلى آله وصحبه أجمعين، وبعد...
-  </p>
-  <p>
-    يسعدني في مستهل هذه الدراسة أن أتقدم بخالص الشكر والتقدير إلى الأستاذة الدكتورة سلمى ناصر الغامدي، المشرفة على هذا البحث، على ما أبدته من توجيهات علمية قيّمة وملاحظات دقيقة أسهمت في إثراء هذا العمل وتطويره، وعلى صبرها وحرصها الدائم على إيصال الطالب إلى أعلى مراتب البحث العلمي.
-  </p>
-  <p>
-    كما أتوجه بالشكر الجزيل إلى أعضاء هيئة التدريس في كلية الحاسبات وتقنية المعلومات الذين أسهموا في تكوين رصيدي المعرفي وصقل مهاراتي البحثية طوال سنوات الدراسة. ولا يفوتني شكر زملائي الطلاب الذين تبادلنا معهم الأفكار والنقاشات العلمية المثمرة.
-  </p>
-  <p>
-    وأخيرًا، أتقدم بالشكر إلى عمادة الكلية وإدارة الجامعة على توفير البيئة الأكاديمية الملائمة للبحث والإبداع العلمي.
-  </p>
+      <div class="cover-title">منتجات ترطيب البشرة</div>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">أ</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
+      <div class="divider-ornament"><div class="diamond"></div></div>
 
-<!-- ===== فهرس المحتويات ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>مشروع التخرج</span>
-  </div>
+      <div class="cover-subtitle">مكوناتها • أهدافها • فوائدها • كيفية استخدامها</div>
 
-  <h1 style="text-align:center; margin-bottom:25px;">فهرس المحتويات</h1>
+      <div class="divider-ornament"><div class="diamond"></div></div>
 
-  <div class="toc-item main"><span>الإهداء والشكر</span><span class="toc-page">أ</span></div>
-  <div class="toc-item main"><span>فهرس المحتويات</span><span class="toc-page">ب</span></div>
-  <div class="toc-item main"><span>قائمة الجداول والأشكال</span><span class="toc-page">ج</span></div>
-  <div class="toc-item main"><span>الملخص</span><span class="toc-page">د</span></div>
+      <p style="font-size:13px; color:var(--muted); max-width:350px; text-align:center; margin:0;">
+        بحث أكاديمي شامل يتناول منتجات العناية بالبشرة وأسرار الترطيب الفعّال للحصول على بشرة صحية ومتوهجة
+      </p>
+    </div>
 
-  <div class="toc-item main"><span>الفصل الأول: الإطار العام للبحث</span><span class="toc-page">1</span></div>
-  <div class="toc-item sub"><span>1.1 مقدمة البحث</span><span class="toc-page">1</span></div>
-  <div class="toc-item sub"><span>1.2 مشكلة البحث</span><span class="toc-page">2</span></div>
-  <div class="toc-item sub"><span>1.3 أهمية البحث</span><span class="toc-page">2</span></div>
-  <div class="toc-item sub"><span>1.4 أهداف البحث</span><span class="toc-page">3</span></div>
-  <div class="toc-item sub"><span>1.5 تساؤلات البحث</span><span class="toc-page">3</span></div>
-  <div class="toc-item sub"><span>1.6 حدود البحث</span><span class="toc-page">4</span></div>
-  <div class="toc-item sub"><span>1.7 منهجية البحث</span><span class="toc-page">4</span></div>
-  <div class="toc-item sub"><span>1.8 مصطلحات البحث</span><span class="toc-page">5</span></div>
-
-  <div class="toc-item main"><span>الفصل الثاني: الإطار النظري ومراجعة الأدبيات</span><span class="toc-page">6</span></div>
-  <div class="toc-item sub"><span>2.1 الذكاء الاصطناعي: المفهوم والتطور</span><span class="toc-page">6</span></div>
-  <div class="toc-item sub"><span>2.2 تطور التعليم في العصر الرقمي</span><span class="toc-page">8</span></div>
-  <div class="toc-item sub"><span>2.3 نماذج توظيف الذكاء الاصطناعي في التعليم</span><span class="toc-page">10</span></div>
-  <div class="toc-item sub"><span>2.4 الدراسات السابقة</span><span class="toc-page">12</span></div>
-
-  <div class="toc-item main"><span>الفصل الثالث: منهجية البحث والإجراءات</span><span class="toc-page">14</span></div>
-  <div class="toc-item sub"><span>3.1 مجتمع البحث وعينته</span><span class="toc-page">14</span></div>
-  <div class="toc-item sub"><span>3.2 أدوات البحث</span><span class="toc-page">14</span></div>
-  <div class="toc-item sub"><span>3.3 صدق الأدوات وثباتها</span><span class="toc-page">15</span></div>
-
-  <div class="toc-item main"><span>الفصل الرابع: النتائج والمناقشة</span><span class="toc-page">16</span></div>
-  <div class="toc-item sub"><span>4.1 نتائج السؤال الأول</span><span class="toc-page">16</span></div>
-  <div class="toc-item sub"><span>4.2 نتائج السؤال الثاني</span><span class="toc-page">17</span></div>
-  <div class="toc-item sub"><span>4.3 مناقشة النتائج</span><span class="toc-page">18</span></div>
-
-  <div class="toc-item main"><span>الفصل الخامس: التوصيات والخاتمة</span><span class="toc-page">20</span></div>
-  <div class="toc-item sub"><span>5.1 الاستنتاجات</span><span class="toc-page">20</span></div>
-  <div class="toc-item sub"><span>5.2 التوصيات</span><span class="toc-page">21</span></div>
-  <div class="toc-item sub"><span>5.3 آفاق البحث المستقبلية</span><span class="toc-page">22</span></div>
-
-  <div class="toc-item main"><span>قائمة المراجع والمصادر</span><span class="toc-page">23</span></div>
-  <div class="toc-item main"><span>الملاحق</span><span class="toc-page">25</span></div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">ب</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+    <div class="cover-bottom">
+      <div style="margin-bottom:16px;">
+        <div class="team-section-title">إعداد الطالبات</div>
+        <div class="team-grid">
+          <div class="team-name">جـود عـون</div>
+          <div class="team-name">رنيم عامر</div>
+          <div class="team-name">ليندا عيسى</div>
+          <div class="team-name">غلا محمد</div>
+          <div class="team-name">زهراء عبده</div>
+          <div class="team-name">عائشة حميد</div>
+          <div class="team-name">لمار حميد</div>
+          <div class="team-name">دارين أحمد مصطفى</div>
+        </div>
+      </div>
+      <div class="supervisor-block">
+        <div class="supervisor-item">
+          <span class="supervisor-label">إشراف</span>
+          <span class="supervisor-name">الأستاذة رويدة عمر اللهيبي</span>
+        </div>
+        <div class="supervisor-item">
+          <span class="supervisor-label">مديرة المدرسة</span>
+          <span class="supervisor-name">عائشة محمد معدي</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ===== قائمة الجداول ===== -->
+<!-- ============================
+     PAGE 2: TABLE OF CONTENTS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>مشروع التخرج</span>
-  </div>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢</div>
 
-  <h1 style="text-align:center; margin-bottom:25px;">قائمة الجداول والأشكال</h1>
+  <div class="toc-title">فهرس المحتويات</div>
 
-  <h2>أولًا: الجداول</h2>
-  <div class="toc-item"><span>جدول (1-1): مقارنة بين أنظمة الذكاء الاصطناعي المستخدمة في التعليم</span><span class="toc-page">7</span></div>
-  <div class="toc-item"><span>جدول (2-1): تطور استخدام التقنية في التعليم الجامعي (2015-2025)</span><span class="toc-page">9</span></div>
-  <div class="toc-item"><span>جدول (3-1): توزيع عينة البحث حسب المتغيرات الديموغرافية</span><span class="toc-page">14</span></div>
-  <div class="toc-item"><span>جدول (4-1): نتائج الاستبانة للسؤال الأول</span><span class="toc-page">16</span></div>
-  <div class="toc-item"><span>جدول (4-2): نتائج الاستبانة للسؤال الثاني</span><span class="toc-page">17</span></div>
+  <div class="toc-chapter">المقدمة</div>
+  <div class="toc-item"><span class="toc-item-title">المقدمة العامة</span><span class="toc-page">٣</span></div>
+  <div class="toc-item"><span class="toc-item-title">أهداف البحث</span><span class="toc-page">٤</span></div>
+  <div class="toc-item"><span class="toc-item-title">أهمية الترطيب</span><span class="toc-page">٤</span></div>
 
-  <h2>ثانيًا: الأشكال والمخططات</h2>
-  <div class="toc-item"><span>شكل (1): نموذج الذكاء الاصطناعي في بيئة التعلم الشخصي</span><span class="toc-page">11</span></div>
-  <div class="toc-item"><span>شكل (2): توزيع استخدام أدوات الذكاء الاصطناعي بين أفراد العينة</span><span class="toc-page">15</span></div>
-  <div class="toc-item"><span>شكل (3): مقارنة مستوى الأداء الأكاديمي قبل وبعد التطبيق</span><span class="toc-page">18</span></div>
+  <div class="toc-chapter">الفصل الأول — البشرة وتركيبها</div>
+  <div class="toc-item"><span class="toc-item-title">طبقات الجلد</span><span class="toc-page">٥</span></div>
+  <div class="toc-item"><span class="toc-item-title">أنواع البشرة</span><span class="toc-page">٦</span></div>
+  <div class="toc-item"><span class="toc-item-title">أسباب جفاف البشرة</span><span class="toc-page">٧</span></div>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">ج</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
+  <div class="toc-chapter">الفصل الثاني — منتجات الترطيب</div>
+  <div class="toc-item"><span class="toc-item-title">تعريف منتجات الترطيب وأنواعها</span><span class="toc-page">٨</span></div>
+  <div class="toc-item"><span class="toc-item-title">الكريمات والمستحضرات</span><span class="toc-page">٩</span></div>
+  <div class="toc-item"><span class="toc-item-title">الزيوت والسيرومات</span><span class="toc-page">١٠</span></div>
+  <div class="toc-item"><span class="toc-item-title">الأقنعة والغسولات</span><span class="toc-page">١١</span></div>
+
+  <div class="toc-chapter">الفصل الثالث — المكونات الفعّالة</div>
+  <div class="toc-item"><span class="toc-item-title">المكونات المرطبة الأساسية</span><span class="toc-page">١٢</span></div>
+  <div class="toc-item"><span class="toc-item-title">مكونات طبيعية مقارنة بالكيميائية</span><span class="toc-page">١٣</span></div>
+  <div class="toc-item"><span class="toc-item-title">المكونات الضارة التي يجب تجنبها</span><span class="toc-page">١٤</span></div>
+
+  <div class="toc-chapter">الفصل الرابع — الاستخدام الصحيح</div>
+  <div class="toc-item"><span class="toc-item-title">طريقة تطبيق المرطبات</span><span class="toc-page">١٥</span></div>
+  <div class="toc-item"><span class="toc-item-title">الروتين اليومي للعناية بالبشرة</span><span class="toc-page">١٦</span></div>
+  <div class="toc-item"><span class="toc-item-title">اختيار المنتج المناسب لنوع بشرتك</span><span class="toc-page">١٧</span></div>
+
+  <div class="toc-chapter">الفصل الخامس — الفوائد والأبحاث</div>
+  <div class="toc-item"><span class="toc-item-title">الفوائد الصحية للترطيب</span><span class="toc-page">١٨</span></div>
+  <div class="toc-item"><span class="toc-item-title">الترطيب والتقدم في العمر</span><span class="toc-page">١٩</span></div>
+  <div class="toc-item"><span class="toc-item-title">دراسات علمية حديثة</span><span class="toc-page">٢٠</span></div>
+
+  <div class="toc-chapter">الخاتمة والمراجع</div>
+  <div class="toc-item"><span class="toc-item-title">الاستنتاجات والتوصيات</span><span class="toc-page">٢١</span></div>
+  <div class="toc-item"><span class="toc-item-title">المراجع والمصادر</span><span class="toc-page">٢٢</span></div>
 </div>
 
-<!-- ===== الملخص ===== -->
+<!-- ============================
+     PAGE 3: INTRO
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>مشروع التخرج</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٣</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">المقدمة</span>
+    <div class="chapter-title">مقدمة البحث</div>
   </div>
 
-  <h1 style="text-align:center;">الملخص</h1>
+  <div class="big-quote">
+    "البشرة المرطبة جيداً هي البشرة الصحية، وصحة البشرة انعكاس لصحة الجسم كله"
+  </div>
 
-  <div class="abstract-box">
-    <div class="abstract-title">ملخص البحث</div>
+  <p>
+    تُعدّ العناية بالبشرة من أهم جوانب الصحة والجمال التي تحظى باهتمام متزايد في عصرنا الحديث، إذ باتت منتجات ترطيب البشرة جزءاً لا يتجزأ من الروتين اليومي للملايين حول العالم. وتأتي أهمية الترطيب من كون الجلد يُمثّل الحاجز الأول والأساسي الذي يحمي الجسم من العوامل الخارجية كالميكروبات والأشعة فوق البنفسجية والملوثات البيئية.
+  </p>
+
+  <p>
+    يهدف هذا البحث إلى تسليط الضوء على عالم منتجات ترطيب البشرة بطريقة علمية منهجية، تشمل دراسة المكونات الفعّالة وأهدافها، والفرق بين أنواع المرطبات المختلفة، وكيفية اختيار المنتج المناسب لكل نوع بشرة. كما يتناول البحث المكونات الطبيعية والكيميائية ومقارنتها، إضافةً إلى أحدث الأبحاث العلمية في هذا المجال.
+  </p>
+
+  <div class="highlight-box">
     <p>
-      يتناول هذا البحث توظيف تقنيات الذكاء الاصطناعي في تطوير المنظومة التعليمية على مستوى التعليم الجامعي، ويهدف إلى استكشاف آليات توظيف هذه التقنيات وتحديد أثرها على مخرجات التعلم وتحسين جودة العملية التعليمية. اعتمد البحث المنهج الوصفي التحليلي الذي يجمع بين مراجعة الأدبيات العلمية والدراسة الميدانية من خلال استبانة طُبِّقت على عينة مكوّنة من (120) طالبًا وطالبة من طلاب كلية الحاسبات وتقنية المعلومات في مرحلة البكالوريوس.
+      <strong>أهمية الموضوع:</strong> يعاني نحو 50% من الناس من مشاكل جفاف البشرة بدرجات متفاوتة، وقد أثبتت الدراسات أن الترطيب المنتظم يُقلل من مخاطر الإصابة بأمراض جلدية متعددة، ويُبطئ ظهور علامات التقدم في العمر.
     </p>
-    <p>
-      خلص البحث إلى أن هناك وعيًا متناميًا بين الطلاب بأهمية الذكاء الاصطناعي في العملية التعليمية، وأن أكثر من 73% من أفراد العينة يستخدمون أدوات الذكاء الاصطناعي في دراستهم اليومية. كما كشفت النتائج عن وجود أثر إيجابي ذي دلالة إحصائية لاستخدام هذه التقنيات على مستوى التحصيل الأكاديمي وكفاءة التعلم الذاتي. في ضوء هذه النتائج يوصي البحث بضرورة إدراج برامج تدريبية متخصصة لتأهيل أعضاء هيئة التدريس على توظيف الذكاء الاصطناعي في التدريس، وتطوير سياسات مؤسسية واضحة تنظم استخدام هذه التقنيات وتضمن نزاهة العملية التعليمية.
-    </p>
-    <div class="keywords">
-      <span class="keyword">الذكاء الاصطناعي</span>
-      <span class="keyword">التعليم الجامعي</span>
-      <span class="keyword">التعلم الشخصي</span>
-      <span class="keyword">التحصيل الأكاديمي</span>
-      <span class="keyword">التقنية التعليمية</span>
-      <span class="keyword">التعلم الآلي</span>
+  </div>
+
+  <p>
+    اعتمد هذا البحث على مراجعة شاملة للأدبيات العلمية الحديثة في مجال الجلدية والتجميل، إلى جانب مصادر موثوقة من المنظمات الصحية العالمية ودراسات إكلينيكية متخصصة. ونأمل أن يُسهم هذا البحث في رفع مستوى الوعي بأهمية العناية بالبشرة بصورة صحيحة ومبنية على أسس علمية سليمة.
+  </p>
+</div>
+
+<!-- ============================
+     PAGE 4: GOALS
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٤</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">المقدمة</span>
+    <div class="chapter-title">أهداف البحث وأهمية الترطيب</div>
+  </div>
+
+  <div class="section-title">أهداف البحث</div>
+
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span>التعرف على الأنواع المختلفة لمنتجات ترطيب البشرة وخصائص كل منها.</span></li>
+    <li><span class="step-num">٢</span><span>دراسة المكونات الفعّالة في منتجات الترطيب وتأثيراتها على البشرة.</span></li>
+    <li><span class="step-num">٣</span><span>توضيح الفرق بين المكونات الطبيعية والكيميائية وإيجابيات وسلبيات كل منها.</span></li>
+    <li><span class="step-num">٤</span><span>إرشاد القارئة إلى طريقة اختيار المنتج الصحيح بحسب نوع بشرتها.</span></li>
+    <li><span class="step-num">٥</span><span>تقديم روتين عملي للعناية اليومية بالبشرة مبني على أسس علمية.</span></li>
+    <li><span class="step-num">٦</span><span>رفع مستوى الوعي بمخاطر بعض المنتجات والمكونات الضارة.</span></li>
+  </ul>
+
+  <div class="section-title">لماذا يُعدّ الترطيب ضرورياً؟</div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>حماية الحاجز الجلدي</h4>
+      <p>يُحافظ الترطيب على سلامة الطبقة الخارجية للجلد التي تحمي الجسم من البكتيريا والملوثات والمواد المهيجة.</p>
+    </div>
+    <div class="info-card">
+      <h4>الوقاية من الشيخوخة</h4>
+      <p>البشرة المرطبة أقل عرضة لتكون التجاعيد والخطوط الدقيقة، مما يساعد على إبقائها تبدو أكثر شباباً.</p>
+    </div>
+    <div class="info-card">
+      <h4>تحسين الملمس</h4>
+      <p>يُعطي الترطيب المنتظم البشرة ملمساً ناعماً ومتجانساً ويُقلل من الخشونة والتقشر.</p>
+    </div>
+    <div class="info-card">
+      <h4>تقليل الحكة والتهيج</h4>
+      <p>المرطبات تُهدّئ البشرة الجافة والمتشققة وتُقلل من الالتهاب والحكة المزمنة.</p>
     </div>
   </div>
 
-  <div class="abstract-box" style="margin-top:20px;">
-    <div class="abstract-title">Abstract</div>
-    <p style="font-family:'Cairo',sans-serif; direction:ltr; text-align:left;">
-      This research examines the application of artificial intelligence (AI) technologies in developing educational systems at the university level. The study aims to explore AI integration mechanisms and determine their impact on learning outcomes and educational quality improvement. A descriptive-analytical methodology was employed, combining a comprehensive literature review with a field study using a questionnaire administered to a sample of 120 undergraduate students from the College of Computing and Information Technology.
-    </p>
-    <p style="font-family:'Cairo',sans-serif; direction:ltr; text-align:left;">
-      The research concludes that there is growing student awareness of AI's importance in education, with over 73% of respondents actively using AI tools in their daily studies. Results revealed a statistically significant positive effect of AI technology use on academic achievement and self-directed learning efficiency. Based on these findings, the research recommends implementing specialized training programs for faculty members and developing institutional policies governing AI use.
-    </p>
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">د</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+  <div class="note-box">
+    <span class="note-icon">💧</span>
+    <p>يحتاج الجلد إلى الحفاظ على مستوى رطوبة يتراوح بين 10 و30% لكي يعمل بصورة مثلى. عندما تنخفض نسبة الرطوبة عن 10%، تبدأ أعراض الجفاف بالظهور كالتقشر والحكة والخشونة.</p>
   </div>
 </div>
 
-<!-- ===== الفصل الأول ===== -->
+<!-- ============================
+     PAGE 5: SKIN LAYERS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الأول: الإطار العام</span>
-  </div>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٥</div>
 
-  <div class="chapter-title">الفصل الأول</div>
-  <div class="chapter-subtitle">الإطار العام للبحث</div>
-
-  <h2>1.1 مقدمة البحث</h2>
-  <p>
-    يشهد العالم في القرن الحادي والعشرين ثورة تقنية غير مسبوقة في تاريخ البشرية، تتصدرها تقنيات الذكاء الاصطناعي التي باتت تُعيد رسم ملامح كثير من القطاعات الحيوية وفي مقدمتها قطاع التعليم. فقد تحوّل الذكاء الاصطناعي من كونه مجرد موضوع نظري يُدرَّس في كليات الحاسبات إلى تقنية فاعلة ومؤثرة تتغلغل في صميم العملية التعليمية وتُعيد تعريف طرائق التدريس والتعلم والتقييم.
-  </p>
-  <p>
-    لم تعد الأنظمة التعليمية التقليدية كافية وحدها لتلبية احتياجات جيل رقمي نشأ في عصر الإنترنت والأجهزة الذكية، ويتطلع إلى تعليم تفاعلي ومخصص وقابل للتكيف مع احتياجاته الفردية وإيقاعه الشخصي في التعلم. هنا تتجلى أهمية الذكاء الاصطناعي الذي يُتيح الانتقال من النموذج التعليمي الموحد إلى نموذج تعليمي شخصي يُراعي الفروق الفردية بين المتعلمين.
-  </p>
-  <p>
-    وقد تسارعت وتيرة اعتماد الذكاء الاصطناعي في التعليم بصورة لافتة إثر الجائحة العالمية لكوفيد-19 التي فرضت التحول القسري نحو التعليم عن بُعد، مما كشف بجلاء الحاجة الماسة إلى حلول تقنية ذكية قادرة على ضمان جودة التعليم واستمراريته في ظروف استثنائية. وقد أسهمت هذه التجربة في تسريع موجة الاعتماد المؤسسي على تقنيات الذكاء الاصطناعي على مستوى الجامعات والمؤسسات التعليمية حول العالم.
-  </p>
-
-  <h2>1.2 مشكلة البحث</h2>
-  <p>
-    على الرغم من الانتشار الواسع لتقنيات الذكاء الاصطناعي وتوافر أدواته وتطبيقاته للطلاب والمعلمين على حدٍّ سواء، تظل البيئات التعليمية في كثير من الجامعات العربية في مرحلة البدايات من حيث توظيفها المنهجي والممنهج لهذه التقنيات في خدمة الأهداف التعليمية. يزيد من تعقيد المشهد غياب سياسات مؤسسية واضحة تُنظِّم استخدام الذكاء الاصطناعي في البيئة الأكاديمية وتُحدد الضوابط الأخلاقية اللازمة لحسن توظيفه.
-  </p>
-  <p>
-    ومن ثَمَّ تتمحور مشكلة هذا البحث حول التساؤل الجوهري الآتي: <strong>ما واقع توظيف الذكاء الاصطناعي في التعليم الجامعي، وما أثره على جودة المخرجات التعليمية؟</strong>
-  </p>
-
-  <h2>1.3 أهمية البحث</h2>
-  <p>
-    تكتسب هذه الدراسة أهميتها من عدة محاور:
-  </p>
-  <div class="highlight-box">
-    <strong>الأهمية النظرية:</strong> تُسهم في إثراء الأدبيات العربية في مجال تقنيات التعليم، وتوفر إطارًا مرجعيًا للباحثين في مجال الذكاء الاصطناعي التعليمي.
-  </div>
-  <div class="highlight-box">
-    <strong>الأهمية التطبيقية:</strong> تُقدم توصيات عملية للمؤسسات التعليمية لتبني سياسات فاعلة في توظيف الذكاء الاصطناعي، كما تُفيد صانعي القرار في وضع خططهم التطويرية.
-  </div>
-  <div class="highlight-box">
-    <strong>الأهمية التوقيتية:</strong> تتزامن مع مرحلة تحولية حاسمة يشهدها قطاع التعليم على مستوى العالم، ومساعي المملكة العربية السعودية لتطوير منظومتها التعليمية في إطار رؤية 2030.
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">1</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== صفحة 2 - الفصل الأول تابع ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الأول: الإطار العام</span>
-  </div>
-
-  <h2>1.4 أهداف البحث</h2>
-  <p>يسعى البحث إلى تحقيق الأهداف الآتية:</p>
-  <p><strong>أولًا:</strong> رصد واقع توظيف أدوات الذكاء الاصطناعي في العملية التعليمية لدى طلاب كلية الحاسبات وتقنية المعلومات.</p>
-  <p><strong>ثانيًا:</strong> تحديد مستوى الوعي والمعرفة بتقنيات الذكاء الاصطناعي التعليمية لدى أعضاء هيئة التدريس والطلاب.</p>
-  <p><strong>ثالثًا:</strong> قياس الأثر الفعلي لاستخدام الذكاء الاصطناعي على مؤشرات التحصيل الأكاديمي وجودة مخرجات التعلم.</p>
-  <p><strong>رابعًا:</strong> تحديد أبرز التحديات والعوائق التي تحول دون الاستثمار الأمثل لتقنيات الذكاء الاصطناعي في السياق التعليمي.</p>
-  <p><strong>خامسًا:</strong> تقديم توصيات علمية ومبادئ توجيهية لتعزيز توظيف الذكاء الاصطناعي بصورة مسؤولة وفعّالة في التعليم الجامعي.</p>
-
-  <h2>1.5 تساؤلات البحث</h2>
-  <p>ينطلق البحث من التساؤلات الفرعية الآتية:</p>
-  <p>الأول: ما مستوى استخدام طلاب كلية الحاسبات لأدوات الذكاء الاصطناعي في دراستهم الأكاديمية؟</p>
-  <p>الثاني: هل توجد فروق ذات دلالة إحصائية في مستوى استخدام الذكاء الاصطناعي تُعزى إلى متغيرات (الجنس، المستوى الدراسي، التخصص)؟</p>
-  <p>الثالث: ما طبيعة الأثر الذي يُحدثه استخدام الذكاء الاصطناعي على التحصيل الأكاديمي للطلاب؟</p>
-  <p>الرابع: ما أبرز التحديات التي تواجه الطلاب وأعضاء هيئة التدريس في توظيف الذكاء الاصطناعي التعليمي؟</p>
-
-  <h2>1.6 حدود البحث</h2>
-  <p>
-    <strong>الحدود الموضوعية:</strong> يقتصر البحث على دراسة توظيف تقنيات الذكاء الاصطناعي في سياق التعليم الجامعي، مع التركيز على أدوات التعلم الآلي ومعالجة اللغات الطبيعية والتعلم التكيفي.
-  </p>
-  <p>
-    <strong>الحدود المكانية:</strong> يُطبَّق البحث الميداني في كلية الحاسبات وتقنية المعلومات بجامعة العلوم والتقنية.
-  </p>
-  <p>
-    <strong>الحدود الزمانية:</strong> يمتد تطبيق الدراسة على الفصل الدراسي الثاني من العام الجامعي 1446-1447هـ الموافق (2025-2026م).
-  </p>
-  <p>
-    <strong>الحدود البشرية:</strong> تقتصر عينة البحث على طلاب مرحلة البكالوريوس في الكلية المستهدفة وأعضاء هيئة التدريس فيها.
-  </p>
-
-  <h2>1.7 منهجية البحث</h2>
-  <p>
-    اعتمد هذا البحث المنهج الوصفي التحليلي بوصفه المنهج الأنسب لطبيعة الدراسة وأهدافها، وهو منهج يُعنى بدراسة الظاهرة كما هي قائمة في الواقع ووصفها وصفًا دقيقًا من حيث طبيعتها وخصائصها، ثم تحليل بياناتها للكشف عن العلاقات والأنماط السائدة. وقد استلزمت الدراسة الجمع بين أسلوبين متكاملين:
-  </p>
-  <p>
-    <strong>الأسلوب الأول - المسحي:</strong> من خلال مراجعة شاملة ومنهجية لقواعد البيانات العلمية المتخصصة كـ IEEE Xplore وScopus وقواعد البيانات العربية للبحوث التربوية.
-  </p>
-  <p>
-    <strong>الأسلوب الثاني - الميداني:</strong> عبر تطبيق استبانة مُحكَّمة على عينة ممثلة من مجتمع البحث، وتحليل البيانات المجمَّعة إحصائيًا باستخدام برنامج SPSS الإصدار الثامن والعشرين.
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">2</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== صفحة 3 ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الأول: الإطار العام</span>
-  </div>
-
-  <h2>1.8 مصطلحات البحث</h2>
-  <p>
-    يُوضَّح فيما يلي المفاهيم الإجرائية للمصطلحات الجوهرية التي يتضمنها هذا البحث:
-  </p>
-
-  <h3>أ) الذكاء الاصطناعي (Artificial Intelligence - AI)</h3>
-  <p>
-    يُقصد به إجرائيًا في هذه الدراسة: مجموعة التقنيات والأنظمة الحاسوبية القادرة على محاكاة العمليات المعرفية الإنسانية كالتعلم والاستدلال والتخطيط وحل المشكلات، ويشمل ذلك تقنيات التعلم الآلي ومعالجة اللغة الطبيعية وأنظمة التوصية الذكية والمساعدين الافتراضيين، بما فيها الأدوات المتاحة للاستخدام الأكاديمي كـ ChatGPT وCopilot وكلود.
-  </p>
-
-  <h3>ب) التعليم الجامعي (Higher Education)</h3>
-  <p>
-    يُقصد به مرحلة التعليم ما بعد الثانوي في الجامعات والكليات، ويُعنى البحث تحديدًا بمرحلة البكالوريوس في كليات الحاسبات وتقنية المعلومات.
-  </p>
-
-  <h3>ج) التعلم الشخصي (Personalized Learning)</h3>
-  <p>
-    نموذج تعليمي تكيفي يعتمد على بيانات المتعلم وسلوكه وتفضيلاته لتقديم محتوى تعليمي مُخصَّص يتناسب مع مستواه واحتياجاته الفردية، ويُتيح له التقدم بإيقاعه الخاص.
-  </p>
-
-  <h3>د) التحصيل الأكاديمي (Academic Achievement)</h3>
-  <p>
-    يُعبَّر عنه إجرائيًا بالمعدل التراكمي (GPA) للطالب، ومستوى أدائه في الاختبارات والتقييمات الدراسية خلال الفترة المحددة للبحث.
-  </p>
-
-  <h3>هـ) التعلم الآلي (Machine Learning)</h3>
-  <p>
-    أحد فروع الذكاء الاصطناعي يُعنى بتطوير خوارزميات تُمكِّن الأنظمة الحاسوبية من التعلم والتحسن الذاتي من خلال البيانات دون الحاجة إلى برمجة صريحة لكل موقف.
-  </p>
-
-  <div class="quote-box">
-    "الذكاء الاصطناعي ليس بديلًا عن المعلم البشري، بل هو أداة تمكينية تُضاعف قدرته على الوصول إلى كل متعلم بالأسلوب الذي يناسبه في الوقت المناسب."
-    <br><strong>— UNESCO, 2023, Guidance for Generative AI in Education</strong>
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الأول — البشرة وتركيبها</span>
+    <div class="chapter-title">طبقات الجلد وتركيبه</div>
   </div>
 
   <p>
-    يُشكّل هذا الفصل الأرضية المفاهيمية والمنهجية التي ينطلق منها البحث، ويمهد الطريق للفصل التالي الذي يستعرض الإطار النظري ومراجعة الأدبيات ذات الصلة بموضوع الدراسة.
+    الجلد هو أكبر أعضاء الجسم، إذ تتراوح مساحته لدى البالغين بين 1.5 و2 متر مربع، ويتكون من ثلاث طبقات رئيسية لكل منها وظيفة محددة تؤثر بشكل مباشر على طريقة استجابة البشرة لمنتجات الترطيب.
   </p>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">3</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
+  <div class="section-title">الطبقات الثلاث للجلد</div>
 
-<!-- ===== الفصل الثاني ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الثاني: الإطار النظري</span>
-  </div>
-
-  <div class="chapter-title">الفصل الثاني</div>
-  <div class="chapter-subtitle">الإطار النظري ومراجعة الأدبيات</div>
-
-  <h2>2.1 الذكاء الاصطناعي: المفهوم والتطور التاريخي</h2>
-  <p>
-    يُعدّ مصطلح "الذكاء الاصطناعي" من أكثر المصطلحات تداولًا وتأثيرًا في خطاب الحقبة الراهنة، غير أن جذوره ترتد إلى منتصف القرن العشرين حين أطلق عالم الرياضيات البريطاني آلان تورينج تساؤله الاستفزازي الشهير عام 1950: "هل يمكن للآلات أن تُفكر؟" والذي شكّل الشرارة المؤسسة لهذا الحقل المعرفي الجديد. ثم جاء مؤتمر دارتموث عام 1956 ليُرسّم ميلاد الذكاء الاصطناعي علمًا مستقلًا على يد جون مكارثي وزملائه.
-  </p>
-  <p>
-    شهدت مسيرة الذكاء الاصطناعي تقلبات حادة بين موجات الانتعاش والشتاء البحثي، إلى أن أحدث اختراق التعلم العميق (Deep Learning) في العقد الثاني من الألفية الثالثة نقلة نوعية حقيقية، مُنبئةً بعصر جديد. وقد بلغت هذه المسيرة ذروتها حتى الآن مع ظهور النماذج اللغوية الكبيرة (LLMs) التي أعادت تعريف ما يمكن أن تحققه الآلات في مجال الفهم والتوليد والتفاعل.
-  </p>
-
-  <table>
-    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (1-1): أبرز مراحل تطور الذكاء الاصطناعي</caption>
+  <table class="ingredient-table">
     <thead>
-      <tr><th>المرحلة</th><th>الحقبة الزمنية</th><th>أبرز الإنجازات</th><th>التأثير على التعليم</th></tr>
+      <tr>
+        <th>الطبقة</th>
+        <th>الاسم العلمي</th>
+        <th>الوظيفة الرئيسية</th>
+        <th>أثر الترطيب</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td>التأسيس</td><td>1950-1969</td><td>برامج منطقية بدائية، اختبار تورينج</td><td>محدود جدًا</td></tr>
-      <tr><td>الأنظمة الخبيرة</td><td>1970-1989</td><td>نظام MYCIN الطبي، أنظمة الاستدلال</td><td>بدايات التعليم الذكي</td></tr>
-      <tr><td>الشبكات العصبية</td><td>1990-2009</td><td>الانتصارات في لعبة الشطرنج، التعلم الإحصائي</td><td>أنظمة تعليم تكيفي</td></tr>
-      <tr><td>التعلم العميق</td><td>2010-2022</td><td>ImageNet، GPT-2، AlphaGo</td><td>منصات تعليمية ذكية</td></tr>
-      <tr><td>الذكاء التوليدي</td><td>2023-الآن</td><td>ChatGPT، Gemini، Claude</td><td>ثورة تعليمية شاملة</td></tr>
+      <tr>
+        <td><strong>البشرة السطحية</strong></td>
+        <td>Epidermis</td>
+        <td>حماية الجسم من الخارج، إنتاج الميلانين</td>
+        <td>أكثر الطبقات تأثراً بالمرطبات الموضعية</td>
+      </tr>
+      <tr>
+        <td><strong>الأدمة</strong></td>
+        <td>Dermis</td>
+        <td>تحتوي على الكولاجين والإيلاستين وجريبات الشعر</td>
+        <td>تستفيد من المكونات النافذة كالريتينول</td>
+      </tr>
+      <tr>
+        <td><strong>تحت الجلد</strong></td>
+        <td>Hypodermis</td>
+        <td>طبقة الدهون التي توفر العزل والحماية</td>
+        <td>تأثير غير مباشر من خلال التغذية العامة</td>
+      </tr>
     </tbody>
   </table>
 
-  <h2>2.2 أشكال الذكاء الاصطناعي في البيئة التعليمية</h2>
-  <p>
-    يتجلى توظيف الذكاء الاصطناعي في السياق التعليمي من خلال عدة تجليات ومنظومات متكاملة، يمكن تصنيفها في ثلاثة محاور رئيسية:
-  </p>
+  <div class="section-title">طبقة Stratum Corneum — حارس الرطوبة</div>
 
-  <h3>أ) أنظمة التعلم الذكي (Intelligent Tutoring Systems - ITS)</h3>
   <p>
-    تُمثّل هذه الأنظمة أحد أقدم وأنضج تطبيقات الذكاء الاصطناعي التعليمي وأكثرها بحثًا في الأدبيات العلمية. تعمل وفق نموذج يجمع بين نموذج المتعلم ونموذج المعرفة ونموذج التدريس لتقديم شرح مُخصَّص وتغذية راجعة آنية لكل طالب وفق مستواه الفعلي ونمط تعلمه. ومن أبرز أمثلتها المعاصرة منصة Khan Academy Khanmigo وCarnegie Learning.
-  </p>
-
-  <h3>ب) التحليلات التعليمية (Learning Analytics)</h3>
-  <p>
-    تستثمر بيانات التفاعل والأداء لتوليد رؤى تنبؤية حول مسار تعلم الطالب ورصد مؤشرات الخطر المبكرة قبل الوقوع في الفشل الأكاديمي. تُتيح هذه الأنظمة للمؤسسات التعليمية اتخاذ تدخلات استباقية وقرارات مبنية على الأدلة.
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">4</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== صفحة 5 - الفصل الثاني تابع ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الثاني: الإطار النظري</span>
-  </div>
-
-  <h3>ج) المحتوى التعليمي التوليدي (Generative AI for Content)</h3>
-  <p>
-    تُعدّ النماذج اللغوية الكبيرة اليوم أداة فعّالة في يد المعلم والمتعلم على حدٍّ سواء؛ إذ تُتيح توليد شروحات تعليمية مُبسَّطة وأسئلة تقييمية وملخصات أكاديمية وترجمات وتحويل النصوص المعقدة إلى صيغ قابلة للفهم. ومن أبرز هذه النماذج في الاستخدام التعليمي: GPT-4 من OpenAI، وGemini من Google، وClaude من Anthropic.
-  </p>
-
-  <h2>2.3 تطور التعليم في العصر الرقمي</h2>
-  <p>
-    مرّت المنظومة التعليمية العالمية بمراحل تحول رقمي متتابعة بدأت بإدخال الحواسيب في الفصول الدراسية في ثمانينيات القرن الماضي، ثم التوسع في استخدام الإنترنت والبريد الإلكتروني والوسائط المتعددة في التسعينيات، وصولًا إلى ثورة التعلم الإلكتروني (e-Learning) في مطلع الألفية الثالثة. وقد شهدنا بعد ذلك صعود المنصات المفتوحة (MOOCs) كـ Coursera وedX وإتاحتها التعليم العالي الجيد للملايين حول العالم.
-  </p>
-  <p>
-    غير أن التحول الجذري الأعمق جاء مع توظيف الذكاء الاصطناعي الذي أتاح الانتقال من التعليم الرقمي التقليدي إلى تعليم ذكي قادر على التكيف الآني مع المتعلم وتقديم تجارب تعليمية فريدة ومخصصة لكل فرد بمعزل عن سياق الجماعة.
-  </p>
-
-  <h2>2.4 التعليم الشخصي التكيفي</h2>
-  <p>
-    يُعدّ التعلم الشخصي (Personalized Learning) أبرز ما يُميّز الذكاء الاصطناعي عن غيره من التقنيات التعليمية السابقة. إذ تُتيح خوارزميات التعلم التكيفي تتبع مسار كل متعلم بدقة متناهية، وتحليل نقاط قوته وضعفه وأسلوب تعلمه المفضل وسرعة استيعابه، ثم توليد مسارات تعليمية فردية مُصمَّمة خصيصًا له تزيد من فاعلية التعلم وتعمّق الاستيعاب.
+    تُعدّ الطبقة القرنية (Stratum Corneum) وهي الطبقة الخارجية الأكثر سطحية من البشرة، المحور الأساسي لفعالية منتجات الترطيب. تتكون هذه الطبقة من خلايا ميتة تُسمى الكيراتينوسيتات محاطة بمصفوفة دهنية تحتوي على السيراميدات والكوليسترول والأحماض الدهنية. هذه التركيبة تُشكّل ما يُعرف بـ "الحاجز الجلدي" الذي يمنع تبخر الماء من الجسم.
   </p>
 
   <div class="highlight-box">
-    <strong>أبرز مزايا التعلم الشخصي المدعوم بالذكاء الاصطناعي:</strong><br>
-    يُتيح التحكم الذاتي في وتيرة التعلم وتسلسله، ويُقدّم تغذية راجعة فورية ودقيقة، ويُشخّص الفجوات المعرفية مبكرًا، كما يرفع مستوى الدافعية والانخراط في العملية التعليمية، ويُسهم في تحسين مخرجات التعلم بمعدلات قياسية.
-  </div>
-
-  <h2>2.5 الدراسات السابقة</h2>
-  <p>
-    استأثر موضوع توظيف الذكاء الاصطناعي في التعليم باهتمام بحثي واسع على الصعيدين الدولي والعربي، وفيما يلي استعراض لأبرز الدراسات التي تقاطعت مع مشكلة البحث الحالي:
-  </p>
-
-  <h3>أولًا: الدراسات الأجنبية</h3>
-  <p>
-    أجرى Zawacki-Richter وآخرون (2019) مراجعة منهجية شاملة للأدبيات العلمية حول الذكاء الاصطناعي في التعليم العالي، شملت تحليل 146 دراسة نشرت في الفترة (2007-2018)، وخلصت إلى أن معظم هذه الدراسات ركّزت على التقييم التكيفي وتحليلات التعلم وأنظمة التعليم الذكي، مُوصيةً بضرورة توسيع البحث في التأثيرات الأخلاقية والمخاوف المتعلقة بالخصوصية.
-  </p>
-  <p>
-    وفي سياق مغاير، تناولت دراسة Holmes وآخرين (2022) بعنوان "الذكاء الاصطناعي في التعليم: وعود وتحديات" تقييم الواقع الراهن من خلال مراجعة 61 أداة ذكاء اصطناعي تعليمية، وخلصت إلى أن معظمها لا يزال في طور التطوير ويفتقر إلى قواعد أدلة تجريبية كافية تُثبت فاعليته.
-  </p>
-
-  <h3>ثانيًا: الدراسات العربية</h3>
-  <p>
-    تناولت دراسة العتيبي (2022) من جامعة الملك عبدالعزيز واقع استخدام الذكاء الاصطناعي في التعليم الجامعي السعودي من وجهة نظر أعضاء هيئة التدريس، وأظهرت أن 68% من المشاركين يرون أن المؤسسات التعليمية تفتقر إلى استراتيجيات واضحة لتوظيف هذه التقنيات، في حين أبدى 82% استعدادًا للتدريب على استخدامها.
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">5</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+    <p><strong>مفهوم TEWL:</strong> يُشير مصطلح (Transepidermal Water Loss) إلى كمية الماء التي تفقدها البشرة عبر التبخر. كلما ارتفع معدل TEWL، كانت البشرة أكثر جفافاً. تعمل المرطبات على تقليل هذه النسبة والحفاظ على رطوبة البشرة.</p>
   </div>
 </div>
 
-<!-- ===== صفحة 6 ===== -->
+<!-- ============================
+     PAGE 6: SKIN TYPES
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الثاني: الإطار النظري</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٦</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الأول — البشرة وتركيبها</span>
+    <div class="chapter-title">أنواع البشرة</div>
   </div>
 
   <p>
-    أما دراسة الشهري والقحطاني (2023) فقد هدفت إلى قياس أثر استخدام برامج الذكاء الاصطناعي التوليدي على مستوى التحصيل الدراسي لطلاب الجامعات السعودية، وتوصلت إلى وجود ارتباط إيجابي ذي دلالة إحصائية بين استخدام هذه البرامج وتحسّن المعدلات الأكاديمية، مع التنبيه إلى مخاطر الاعتماد المفرط عليها.
+    معرفة نوع بشرتك هي الخطوة الأولى والأهم في اختيار منتج الترطيب المناسب. تنقسم البشرة إلى خمسة أنواع رئيسية تختلف في طبيعتها واحتياجاتها.
   </p>
 
-  <h3>ثالثًا: موقع الدراسة الحالية من الدراسات السابقة</h3>
-  <p>
-    يستخلص الباحث من خلال استعراض الدراسات السابقة أن الأدبيات العلمية تميل نحو التأكيد على الإمكانات الهائلة للذكاء الاصطناعي في رفع جودة التعليم، في حين لا تزال الأدلة التجريبية المتعلقة بتأثيره على التحصيل الأكاديمي في السياق العربي غير كافية ومحدودة. وتأتي الدراسة الحالية لسد هذه الفجوة البحثية بالتركيز على بيئة جامعية عربية محددة وقياس الأثر الفعلي بأدوات ميدانية صارمة.
-  </p>
+  <div class="skin-type-grid">
+    <div class="skin-card">
+      <span class="icon">✨</span>
+      <h4>البشرة العادية</h4>
+      <p>متوازنة، لا تفرز زيتاً زائداً ولا تعاني من جفاف شديد. مسامها صغيرة ونضارتها طبيعية.</p>
+    </div>
+    <div class="skin-card">
+      <span class="icon">💧</span>
+      <h4>البشرة الجافة</h4>
+      <p>تشعر بالشد والتقشر. تحتاج لمرطبات كثيفة وغنية بالمكونات المغذية.</p>
+    </div>
+    <div class="skin-card">
+      <span class="icon">🫧</span>
+      <h4>البشرة الدهنية</h4>
+      <p>تفرز زيتاً زائداً وتظهر المسام بشكل واضح. تحتاج لمرطبات خفيفة غير دهنية.</p>
+    </div>
+    <div class="skin-card">
+      <span class="icon">⚖️</span>
+      <h4>البشرة المختلطة</h4>
+      <p>دهنية في منطقة T (الجبهة، الأنف، الذقن) وعادية أو جافة في الخدين.</p>
+    </div>
+    <div class="skin-card">
+      <span class="icon">🌸</span>
+      <h4>البشرة الحساسة</h4>
+      <p>تتفاعل بسهولة مع المنتجات وتحتاج لمكونات هادئة خالية من العطور والمواد المهيجة.</p>
+    </div>
+    <div class="skin-card">
+      <span class="icon">🔴</span>
+      <h4>البشرة المعرضة لحب الشباب</h4>
+      <p>مسامها مسدودة وتحتاج لمرطبات غير مسببة للانسداد (Non-Comedogenic).</p>
+    </div>
+  </div>
 
-  <h2>2.6 الأطر النظرية الموجِّهة</h2>
-  <p>
-    يستند هذا البحث إلى جملة من الأطر النظرية التي تُعين على فهم ظاهرة توظيف الذكاء الاصطناعي في التعليم وتفسيرها:
-  </p>
-  <p>
-    <strong>نظرية التعلم البنائي (Constructivism):</strong> كما صاغها جان بياجيه وطوّرها فيغوتسكي، تُؤكد على أن المتعلم يبني معرفته بصورة نشطة من خلال تفاعله مع البيئة والخبرات، وهو ما يتلاءم مع طبيعة الأنظمة التعليمية الذكية التي تُشرك المتعلم وتُفعِّل دوره.
-  </p>
-  <p>
-    <strong>نموذج قبول التقنية (TAM):</strong> طوّره Davis عام 1989 ليُفسّر العوامل المؤثرة في قبول الأفراد للتقنيات الجديدة ورفضها، ويُركّز على متغيري السهولة الإدراكية والفائدة الإدراكية بوصفهما المحددَين الرئيسيَّين للاعتماد التقني.
-  </p>
-  <p>
-    <strong>نظرية التعلم المتصل (Connectivism):</strong> كما أطّر لها جورج سيمنز، وتُؤكد على أن التعلم في العصر الرقمي عملية تشبيكية تستلزم التواصل مع مصادر المعرفة الموزعة، مما يجعلها الإطار النظري الأنسب لفهم التعلم المدعوم بالذكاء الاصطناعي.
-  </p>
+  <div class="section-title">كيف تعرفين نوع بشرتك؟</div>
 
-  <div class="quote-box">
-    "التعليم المدعوم بالذكاء الاصطناعي ليس مجرد أتمتة للتعليم التقليدي، بل هو إعادة تأسيس للعلاقة بين المعلم والمتعلم والمحتوى في بيئة رقمية تفاعلية ذكية."
-    <br><strong>— Seldon & Abidoye, 2018, The Fourth Education Revolution</strong>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span><strong>اختبار المنديل:</strong> نظّفي وجهك جيداً ثم انتظري ساعة دون وضع أي منتج، ثم امسحي وجهك بمنديل ورقي.</span></li>
+    <li><span class="step-num">٢</span><span><strong>النتيجة:</strong> إذا ظهرت آثار زيت على كامل المنديل فبشرتك دهنية، وإذا لم يظهر شيء فبشرتك جافة، وإذا ظهر الزيت فقط في منطقة T فبشرتك مختلطة.</span></li>
+    <li><span class="step-num">٣</span><span><strong>ملاحظة الشعور:</strong> البشرة الجافة تشعر بالشد والخشونة، بينما الدهنية تبدو لامعة ومتورمة المسام.</span></li>
+  </ul>
+</div>
+
+<!-- ============================
+     PAGE 7: DRYNESS CAUSES
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٧</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الأول — البشرة وتركيبها</span>
+    <div class="chapter-title">أسباب جفاف البشرة</div>
   </div>
 
   <p>
-    يُمهّد هذا الفصل من خلال استعراضه النظري والأدبي الشامل لفصل المنهجية الذي سيُحدد الإجراءات التطبيقية الكفيلة بالإجابة عن تساؤلات البحث وتحقيق أهدافه.
+    يُعدّ جفاف البشرة من أكثر المشاكل الجلدية شيوعاً، وتتعدد أسبابه بين عوامل بيئية وعوامل داخلية تتعلق بنمط الحياة والصحة العامة. فهم هذه الأسباب يساعد على اختيار الحل المناسب والوقاية منه.
   </p>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">6</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+  <div class="section-title">العوامل البيئية</div>
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>الطقس البارد والجاف</h4>
+      <p>تنخفض رطوبة الهواء في الشتاء مما يزيد من معدل تبخر الرطوبة من الجلد.</p>
+    </div>
+    <div class="info-card">
+      <h4>التكييف المفرط</h4>
+      <p>يُجفّف الهواء المكيف الرطوبة من البشرة بشكل كبير خاصة مع التعرض المطوّل.</p>
+    </div>
+    <div class="info-card">
+      <h4>الأشعة فوق البنفسجية</h4>
+      <p>تُضعف أشعة الشمس الحاجز الجلدي وتُسرّع من فقدان الرطوبة.</p>
+    </div>
+    <div class="info-card">
+      <h4>الماء الساخن</h4>
+      <p>الاستحمام بالماء الساخن يُزيل الدهون الطبيعية الواقية من سطح الجلد.</p>
+    </div>
+  </div>
+
+  <div class="section-title">العوامل الداخلية</div>
+  <p>
+    إلى جانب العوامل البيئية، تؤدي عوامل داخلية دوراً محورياً في صحة البشرة. فمع التقدم في العمر تقل قدرة الجلد على إنتاج الدهون الطبيعية، كما أن نقص التغذية لا سيما الفيتامينات A وC وE والأحماض الدهنية الأوميغا-3 يُضعف بنية الجلد. كذلك تُسهم الإجهاد والتوتر وقلة النوم والجفاف الناتج عن عدم شرب كميات كافية من الماء في ظهور أعراض الجفاف.
+  </p>
+
+  <div class="highlight-box">
+    <p><strong>العوامل الصحية:</strong> بعض الأمراض كالأكزيما والصدفية وداء السكري يمكن أن تُسبب جفافاً شديداً في البشرة. كما أن بعض الأدوية كمدرات البول وأدوية الكوليسترول لها آثار جانبية تتمثل في تجفيف البشرة.</p>
   </div>
 </div>
 
-<!-- ===== الفصل الثالث - المنهجية ===== -->
+<!-- ============================
+     PAGE 8: MOISTURIZER TYPES
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الثالث: منهجية البحث</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٨</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثاني — منتجات الترطيب</span>
+    <div class="chapter-title">تعريف منتجات الترطيب وأنواعها</div>
   </div>
 
-  <div class="chapter-title">الفصل الثالث</div>
-  <div class="chapter-subtitle">منهجية البحث والإجراءات</div>
-
-  <h2>3.1 مجتمع البحث وعينته</h2>
   <p>
-    يتألف مجتمع البحث من جميع طلاب البكالوريوس في كلية الحاسبات وتقنية المعلومات بجامعة العلوم والتقنية للعام الجامعي 2025-2026م، والبالغ عددهم وفق السجلات الأكاديمية الرسمية (847) طالبًا وطالبة موزعين على خمسة مستويات دراسية وثلاثة تخصصات رئيسية.
-  </p>
-  <p>
-    اعتُمد أسلوب أخذ العينة العشوائية الطبقية لضمان تمثيل جميع الفئات تمثيلًا نسبيًا عادلًا. وقد أُختيرت عينة الدراسة وفق معادلة ستيفن تومبسون لتحديد أحجام العينات، وبلغت (120) طالبًا وطالبة بنسبة أخطاء مقبولة لا تتجاوز (5%) عند مستوى ثقة (95%).
+    المرطب (Moisturizer) هو أي منتج مُصمَّم للحفاظ على رطوبة الجلد أو زيادتها، وذلك إما عن طريق منع تبخر الماء من سطح الجلد، أو جذب الماء من الطبقات العميقة إلى الطبقة السطحية، أو تغذية الجلد بالدهون والمواد المُرمِّمة للحاجز الجلدي.
   </p>
 
-  <table>
-    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (3-1): توزيع عينة البحث حسب المتغيرات الديموغرافية</caption>
+  <div class="section-title">تصنيف المرطبات حسب آلية عملها</div>
+
+  <table class="ingredient-table">
     <thead>
-      <tr><th>المتغير</th><th>الفئة</th><th>العدد</th><th>النسبة المئوية</th></tr>
+      <tr>
+        <th>النوع</th>
+        <th>آلية العمل</th>
+        <th>أمثلة</th>
+        <th>مناسب لـ</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td rowspan="2">الجنس</td><td>ذكور</td><td>68</td><td>56.7%</td></tr>
-      <tr><td>إناث</td><td>52</td><td>43.3%</td></tr>
-      <tr><td rowspan="3">المستوى الدراسي</td><td>المستوى 1-2</td><td>31</td><td>25.8%</td></tr>
-      <tr><td>المستوى 3-4</td><td>54</td><td>45.0%</td></tr>
-      <tr><td>المستوى 5-6</td><td>35</td><td>29.2%</td></tr>
-      <tr><td rowspan="3">التخصص</td><td>علوم الحاسب</td><td>48</td><td>40.0%</td></tr>
-      <tr><td>نظم المعلومات</td><td>40</td><td>33.3%</td></tr>
-      <tr><td>هندسة البرمجيات</td><td>32</td><td>26.7%</td></tr>
+      <tr>
+        <td><strong>الترطيب الاحتجازي (Occlusives)</strong></td>
+        <td>يُكوّن طبقة عازلة تمنع تبخر الرطوبة</td>
+        <td>البتروليوم، شمع العسل، لانولين</td>
+        <td>البشرة الجافة جداً</td>
+      </tr>
+      <tr>
+        <td><strong>الترطيب الجاذب (Humectants)</strong></td>
+        <td>يجذب جزيئات الماء من الهواء والطبقات العميقة</td>
+        <td>الجلسرين، الهيالورونيك أسيد، البانثينول</td>
+        <td>جميع أنواع البشرة</td>
+      </tr>
+      <tr>
+        <td><strong>الترطيب المُرمِّم (Emollients)</strong></td>
+        <td>يُرمّم ويُنعّم الجلد بملء الفجوات بين الخلايا</td>
+        <td>السيراميدات، الزيوت، الأحماض الدهنية</td>
+        <td>البشرة التالفة والحساسة</td>
+      </tr>
     </tbody>
   </table>
 
-  <h2>3.2 أدوات البحث</h2>
-  <p>
-    اعتمد البحث على الاستبانة الإلكترونية أداةً رئيسيةً لجمع البيانات الميدانية، وقد صُمِّمت وفق مقياس ليكرت الخماسي (موافق بشدة=5، موافق=4، محايد=3، غير موافق=2، غير موافق بشدة=1). تتكون الاستبانة من أربعة محاور:
-  </p>
-  <p>
-    <strong>المحور الأول:</strong> البيانات الديموغرافية والمعلومات الشخصية (5 فقرات).
-  </p>
-  <p>
-    <strong>المحور الثاني:</strong> مستوى الوعي والمعرفة بتقنيات الذكاء الاصطناعي التعليمية (12 فقرة).
-  </p>
-  <p>
-    <strong>المحور الثالث:</strong> واقع استخدام أدوات الذكاء الاصطناعي في الدراسة الأكاديمية (15 فقرة).
-  </p>
-  <p>
-    <strong>المحور الرابع:</strong> التحديات والمعيقات التي تحول دون الاستخدام الأمثل (10 فقرات).
-  </p>
-
-  <h2>3.3 صدق الأدوات وثباتها</h2>
-  <p>
-    عُرضت الاستبانة في صورتها الأولية على لجنة من (8) محكّمين من المتخصصين في تقنيات التعليم وعلوم الحاسب، وأجرى الباحث التعديلات اللازمة في ضوء ملاحظاتهم واقتراحاتهم للتحقق من الصدق الظاهري وصدق المحتوى. كما جرى تطبيق الاستبانة على عينة استطلاعية مكوّنة من (20) طالبًا خارج عينة الدراسة الأساسية للتحقق من وضوح الفقرات وقابليتها للفهم.
-  </p>
-  <p>
-    استُخدم معامل ألفا كرونباخ لقياس ثبات الاتساق الداخلي للاستبانة، وأسفرت النتائج عن معاملات ثبات مرتفعة لجميع المحاور تراوحت بين (0.84) و(0.91)، وهي قيم مقبولة إحصائيًا تُشير إلى موثوقية عالية للأداة ومناسبتها للتطبيق.
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">7</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+  <div class="note-box">
+    <span class="note-icon">💡</span>
+    <p>أفضل المرطبات هي التي تجمع بين الأنواع الثلاثة: جذب الماء + الاحتفاظ به + ترميم الحاجز الجلدي. لهذا السبب تحتوي معظم المرطبات المتميزة على مزيج من الجلسرين والسيراميدات والزيوت معاً.</p>
   </div>
 </div>
 
-<!-- ===== صفحة 8 - منهجية تابع ===== -->
+<!-- ============================
+     PAGE 9: CREAMS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الثالث: منهجية البحث</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٩</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثاني — منتجات الترطيب</span>
+    <div class="chapter-title">الكريمات والمستحضرات</div>
   </div>
 
-  <h2>3.4 إجراءات تطبيق البحث</h2>
+  <div class="section-title">الكريمات (Creams)</div>
   <p>
-    سارت إجراءات تطبيق البحث الميداني وفق الخطوات المنهجية المنظمة الآتية: في المرحلة الأولى، حصل الباحث على الموافقات الأكاديمية اللازمة من عمادة الكلية ومكتب أبحاث الدراسات العليا ومن اللجنة الأخلاقية للبحث العلمي بالجامعة. في المرحلة الثانية، صُمِّمت الاستبانة الإلكترونية على منصة Microsoft Forms وأُضيفت إليها عناصر تضمن السرية التامة لهويات المشاركين وبياناتهم. في المرحلة الثالثة، وُزِّعت الاستبانة عبر قنوات التواصل الرسمية للكلية وجُمِعت البيانات على مدار ثلاثة أسابيع. في المرحلة الرابعة، استُخدم برنامج SPSS الإصدار الثامن والعشرون لتحليل البيانات.
+    الكريمات هي أكثر أشكال المرطبات انتشاراً، وتتكون من مزيج من الزيت والماء مع مواد مستحلبة (Emulsifiers) تحافظ على تجانس المزيج. تتميز بقوام متوسط يجعلها مناسبة لمعظم أنواع البشرة. تنقسم إلى كريمات نهارية تحتوي على عوامل حماية من الشمس (SPF)، وكريمات ليلية أكثر كثافة وتركيزاً للتعمق في الترميم أثناء النوم.
   </p>
 
-  <h2>3.5 الأساليب الإحصائية المستخدمة</h2>
+  <div class="section-title">اللوشن (Lotion)</div>
   <p>
-    للإجابة عن تساؤلات البحث اعتمد الباحث الأساليب الإحصائية الآتية: التكرارات والنسب المئوية لوصف خصائص العينة، والمتوسطات الحسابية والانحرافات المعيارية لقياس مستويات الاستخدام والاتجاهات. واستُخدم اختبار (t-test) للمقارنة بين مجموعتين مستقلتين، وتحليل التباين الأحادي (ANOVA) للمقارنة بين أكثر من مجموعتين، إضافةً إلى معامل ارتباط بيرسون لقياس قوة العلاقة بين المتغيرات الرئيسية.
+    اللوشن أخف من الكريم ويحتوي على نسبة ماء أعلى ونسبة زيت أقل. مناسب للبشرة العادية والمختلطة والمناطق الكبيرة من الجسم. امتصاصه سريع ولا يُخلّف أثراً دهنياً، مما يجعله مثالياً للاستخدام صباحاً.
   </p>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">8</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+  <div class="section-title">البلسم والزبدة (Balm/Butter)</div>
+  <p>
+    هذه المنتجات هي الأكثر كثافة والأعلى محتوى بالدهون. تُستخدم للمناطق الجافة جداً كالكوعين والكعبين والشفاه، أو للبشرة الجافة جداً في فصل الشتاء. أشهر أنواعها: زبدة الشيا، زبدة الكاكاو، وكريم A&D.
+  </p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>كريم النهار</h4>
+      <p>خفيف، يحتوي على SPF، مناسب تحت المكياج، يوفر الحماية من الشمس والترطيب معاً.</p>
+    </div>
+    <div class="info-card">
+      <h4>كريم الليل</h4>
+      <p>كثيف وغني، يعمل أثناء النوم لترميم البشرة وتجديد خلاياها، يحتوي على ريتينول وبيبتيدات.</p>
+    </div>
+    <div class="info-card">
+      <h4>كريم العين</h4>
+      <p>مخصص للبشرة الرقيقة حول العين، يعالج الهالات والانتفاخ وخطوط الضحك.</p>
+    </div>
+    <div class="info-card">
+      <h4>كريم الجسم</h4>
+      <p>أكثر كثافة من كريم الوجه، يُستخدم بعد الاستحمام مباشرة على البشرة الرطبة قليلاً.</p>
+    </div>
   </div>
 </div>
 
-<!-- ===== الفصل الرابع - النتائج ===== -->
+<!-- ============================
+     PAGE 10: OILS & SERUMS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الرابع: النتائج والمناقشة</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٠</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثاني — منتجات الترطيب</span>
+    <div class="chapter-title">الزيوت والسيرومات</div>
   </div>
 
-  <div class="chapter-title">الفصل الرابع</div>
-  <div class="chapter-subtitle">عرض النتائج وتحليلها ومناقشتها</div>
-
-  <h2>4.1 نتائج التساؤل الأول</h2>
+  <div class="section-title">الزيوت النباتية</div>
   <p>
-    <em>نص التساؤل: ما مستوى استخدام طلاب كلية الحاسبات لأدوات الذكاء الاصطناعي في دراستهم الأكاديمية؟</em>
-  </p>
-  <p>
-    للإجابة عن هذا التساؤل، حُسبت المتوسطات الحسابية والانحرافات المعيارية لفقرات المحور الثاني والثالث من الاستبانة. ويعرض الجدول التالي نتائج أبرز الفقرات مرتبةً تنازليًا:
+    تُعدّ الزيوت النباتية من أقدم وأفضل وسائل ترطيب البشرة عبر التاريخ. تعمل الزيوت بشكل رئيسي كعوامل احتجازية وترميمية في آنٍ واحد، إذ تُغذي الجلد بالأحماض الدهنية الضرورية التي تدخل في بنية الحاجز الجلدي.
   </p>
 
-  <table>
-    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (4-1): مستوى استخدام أدوات الذكاء الاصطناعي (ن=120)</caption>
+  <table class="ingredient-table">
     <thead>
-      <tr><th>الفقرة</th><th>المتوسط الحسابي</th><th>الانحراف المعياري</th><th>المستوى</th></tr>
+      <tr>
+        <th>الزيت</th>
+        <th>الخصائص</th>
+        <th>مناسب لـ</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td>أستخدم ChatGPT أو أدوات مماثلة في البحث الأكاديمي</td><td>4.21</td><td>0.78</td><td>مرتفع</td></tr>
-      <tr><td>أوظّف الذكاء الاصطناعي في فهم المواد الصعبة</td><td>4.05</td><td>0.82</td><td>مرتفع</td></tr>
-      <tr><td>أستعين بأدوات الذكاء الاصطناعي في كتابة التقارير</td><td>3.87</td><td>0.91</td><td>مرتفع</td></tr>
-      <tr><td>أستخدم منصات التعلم التكيفي الذكية</td><td>3.12</td><td>1.04</td><td>متوسط</td></tr>
-      <tr><td>أشارك في دورات تدريبية على الذكاء الاصطناعي التعليمي</td><td>2.65</td><td>1.18</td><td>متوسط</td></tr>
-      <tr style="font-weight:700; background:#f0ebdf;"><td>المتوسط الكلي للمحور</td><td>3.58</td><td>0.94</td><td>مرتفع</td></tr>
+      <tr>
+        <td><strong>زيت الأرغان</strong></td>
+        <td>غني بفيتامين E والأحماض الدهنية، مضاد للأكسدة</td>
+        <td>البشرة الجافة والناضجة</td>
+      </tr>
+      <tr>
+        <td><strong>زيت جوز الهند</strong></td>
+        <td>مضاد للبكتيريا، مرطب ثقيل، رائحة لطيفة</td>
+        <td>الجسم والبشرة الجافة جداً (غير مناسب للوجه الدهني)</td>
+      </tr>
+      <tr>
+        <td><strong>زيت الورد</strong></td>
+        <td>خفيف جداً، مضاد للالتهاب، مهدئ للبشرة الحساسة</td>
+        <td>البشرة الحساسة والمختلطة</td>
+      </tr>
+      <tr>
+        <td><strong>زيت بذر العنب</strong></td>
+        <td>خفيف وغير مسدود للمسام، غني بالأوميغا-6</td>
+        <td>البشرة الدهنية والمختلطة</td>
+      </tr>
+      <tr>
+        <td><strong>زيت الجوجوبا</strong></td>
+        <td>مشابه لزيوت البشرة الطبيعية، متوازن جداً</td>
+        <td>جميع أنواع البشرة</td>
+      </tr>
     </tbody>
   </table>
 
+  <div class="section-title">السيرومات (Serums)</div>
   <p>
-    تُظهر النتائج أن المتوسط الكلي لمستوى استخدام أدوات الذكاء الاصطناعي بلغ (3.58) من أصل (5) وهو متوسط يقع ضمن المستوى المرتفع وفق معيار التحليل المعتمد. كما يتضح أن الاستخدام الأكثر شيوعًا يتمحور حول التطبيقات التوليدية كـ ChatGPT للبحث وفهم المحتوى، في حين يبقى استخدام منصات التعلم التكيفي والمشاركة في التدريب المتخصص في مستوى متوسط.
+    السيروم هو تركيبة عالية التركيز تحتوي على جزيئات صغيرة تنفذ بعمق أكبر إلى طبقات الجلد مقارنةً بالكريمات. يُستخدم قبل المرطب في الروتين اليومي. السيرومات المرطبة تحتوي غالباً على حمض الهيالورونيك بتركيزات عالية، وتُعطي نتائج أسرع وأكثر عمقاً.
+  </p>
+</div>
+
+<!-- ============================
+     PAGE 11: MASKS
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١١</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثاني — منتجات الترطيب</span>
+    <div class="chapter-title">الأقنعة والغسولات</div>
+  </div>
+
+  <div class="section-title">أقنعة الترطيب (Hydrating Masks)</div>
+  <p>
+    أقنعة الترطيب هي منتجات مُكثَّفة تُستخدم مرة إلى ثلاث مرات أسبوعياً للحصول على جرعة مكثفة من الرطوبة. تختلف عن المرطبات اليومية في أنها تُترك على الوجه لفترة أطول (10–20 دقيقة أو طوال الليل)، مما يُتيح للمكونات الفعّالة الوقت الكافي للتغلغل بعمق في الجلد.
+  </p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>أقنعة الورق (Sheet Masks)</h4>
+      <p>قطعة قماش مشربة بالسيروم، مريحة وسهلة الاستخدام، توفر ترطيباً فورياً ومكثفاً لمدة 15-20 دقيقة.</p>
+    </div>
+    <div class="info-card">
+      <h4>أقنعة النوم (Sleeping Masks)</h4>
+      <p>تُطبق قبل النوم وتُزال صباحاً. تعمل طوال الليل لترطيب عميق وتجديد شبابي.</p>
+    </div>
+    <div class="info-card">
+      <h4>أقنعة الغسيل (Wash-off Masks)</h4>
+      <p>تُوضع لمدة 10-15 دقيقة ثم تُشطف. متوفرة بأشكال كريم أو طين أو هلام.</p>
+    </div>
+    <div class="info-card">
+      <h4>أقنعة الهيدروجيل</h4>
+      <p>مصنوعة من الجيلاتين المائي، باردة الملمس ومهدئة، مثالية للبشرة المتهيجة.</p>
+    </div>
+  </div>
+
+  <div class="section-title">الغسولات المرطبة (Hydrating Toners)</div>
+  <p>
+    الغسول المرطب هو أول منتج يُطبق بعد تنظيف البشرة. يُهيئ البشرة لامتصاص المنتجات التالية ويعيد توازن درجة حموضتها (pH). تحتوي الغسولات المرطبة على مكونات مثل حمض الهيالورونيك وماء الورد والألوفيرا وتُعطي البشرة طبقة أولى من الرطوبة.
   </p>
 
   <div class="highlight-box">
-    <strong>النتيجة الرئيسية للتساؤل الأول:</strong> يُوظّف 73.3% من أفراد العينة أدوات الذكاء الاصطناعي بصورة منتظمة في دراستهم الأكاديمية، وهي نسبة مرتفعة تعكس وعيًا تقنيًا ملحوظًا لدى طلاب الكلية، غير أن معظم هذا الاستخدام يتركز في التطبيقات الاستهلاكية السطحية دون الغوص في التطبيقات التعليمية المتقدمة.
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">9</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+    <p><strong>ماء الجمال (Micellar Water):</strong> يُستخدم لإزالة الماكياج وتنظيف البشرة دون تجفيفها. يحتوي على جزيئات المايسيل التي تجذب الأوساخ والدهون دون الحاجة إلى شطف.</p>
   </div>
 </div>
 
-<!-- ===== صفحة 10 - النتائج تابع ===== -->
+<!-- ============================
+     PAGE 12: KEY INGREDIENTS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الرابع: النتائج والمناقشة</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٢</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثالث — المكونات الفعّالة</span>
+    <div class="chapter-title">المكونات المرطبة الأساسية</div>
   </div>
 
-  <h2>4.2 نتائج التساؤل الثاني</h2>
   <p>
-    <em>نص التساؤل: هل توجد فروق ذات دلالة إحصائية في مستوى استخدام الذكاء الاصطناعي تُعزى إلى متغيرات (الجنس، المستوى الدراسي، التخصص)؟</em>
+    يعتمد اختيار منتج الترطيب الصحيح اعتماداً كبيراً على فهم مكوناته. فيما يلي أبرز المكونات الفعّالة التي تبحث عنها في قائمة المكونات.
   </p>
 
-  <h3>أ) الفروق وفق متغير الجنس</h3>
-  <p>
-    أجرى الباحث اختبار (t-test) للمقارنة بين الذكور والإناث في مستوى استخدام الذكاء الاصطناعي، وأسفرت النتائج عن عدم وجود فروق ذات دلالة إحصائية عند مستوى (α ≤ 0.05)، إذ بلغت قيمة (t = 1.43) وهي غير دالة إحصائيًا عند قيمة (p = 0.157). يُشير ذلك إلى تساوي الجنسين في الاتجاه نحو توظيف تقنيات الذكاء الاصطناعي.
-  </p>
-
-  <h3>ب) الفروق وفق المستوى الدراسي</h3>
-  <p>
-    كشف تحليل التباين الأحادي (ANOVA) عن وجود فروق دالة إحصائيًا بحسب المستوى الدراسي (F = 8.34, p = 0.001). وأشارت المقارنات البعدية (LSD) إلى أن طلاب المستويات العليا (5-6) يُحقّقون مستويات استخدام أعلى بصورة دالة مقارنةً بطلاب المستويات الدنيا (1-2)، مما يُشير إلى أن الخبرة الأكاديمية والإلمام بالبيئة الجامعية يُسهمان في تعزيز الكفاءة الرقمية.
-  </p>
-
-  <table>
-    <caption style="caption-side:top; text-align:right; font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--primary);">جدول (4-2): نتائج تحليل التباين (ANOVA) حسب المستوى الدراسي</caption>
+  <table class="ingredient-table">
     <thead>
-      <tr><th>مصدر التباين</th><th>مجموع المربعات</th><th>درجات الحرية</th><th>متوسط المربعات</th><th>قيمة F</th><th>الدلالة</th></tr>
+      <tr>
+        <th>المكوّن</th>
+        <th>نوعه</th>
+        <th>الفائدة الرئيسية</th>
+        <th>ملاحظة</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td>بين المجموعات</td><td>24.67</td><td>2</td><td>12.34</td><td>8.34</td><td>0.001*</td></tr>
-      <tr><td>داخل المجموعات</td><td>171.92</td><td>117</td><td>1.47</td><td>—</td><td>—</td></tr>
-      <tr style="font-weight:700;"><td>الكلي</td><td>196.59</td><td>119</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr>
+        <td><strong>حمض الهيالورونيك</strong></td>
+        <td>Humectant</td>
+        <td>يحتجز ما يصل لـ 1000 ضعف وزنه من الماء</td>
+        <td>مناسب لجميع أنواع البشرة</td>
+      </tr>
+      <tr>
+        <td><strong>الجلسرين</strong></td>
+        <td>Humectant</td>
+        <td>جذب الماء وتليين الجلد</td>
+        <td>رخيص وفعّال جداً</td>
+      </tr>
+      <tr>
+        <td><strong>السيراميدات</strong></td>
+        <td>Emollient</td>
+        <td>ترميم الحاجز الجلدي والحماية</td>
+        <td>مثالي للبشرة الحساسة والجافة</td>
+      </tr>
+      <tr>
+        <td><strong>النياسيناميد</strong></td>
+        <td>متعدد الوظائف</td>
+        <td>تقليل المسام وتوحيد اللون وترطيب</td>
+        <td>مضاد للالتهاب أيضاً</td>
+      </tr>
+      <tr>
+        <td><strong>البانثينول (B5)</strong></td>
+        <td>Humectant</td>
+        <td>التئام الجلد والترطيب العميق</td>
+        <td>مهدئ ومرمم للجلد التالف</td>
+      </tr>
+      <tr>
+        <td><strong>حمض اللاكتيك</strong></td>
+        <td>AHA خفيف</td>
+        <td>تقشير خفيف + ترطيب</td>
+        <td>يحسن نعومة البشرة</td>
+      </tr>
+      <tr>
+        <td><strong>مستخلص الألوفيرا</strong></td>
+        <td>مهدئ + مرطب</td>
+        <td>تهدئة الالتهاب والترطيب الخفيف</td>
+        <td>مثالي بعد التعرض للشمس</td>
+      </tr>
+      <tr>
+        <td><strong>زبدة الشيا</strong></td>
+        <td>Occlusive + Emollient</td>
+        <td>تغذية عميقة وحماية البشرة الجافة جداً</td>
+        <td>نادراً ما يسبب حساسية</td>
+      </tr>
     </tbody>
   </table>
-  <p style="font-size:11px;">* دالة إحصائيًا عند مستوى دلالة (α ≤ 0.05)</p>
+</div>
 
-  <h2>4.3 نتائج التساؤل الثالث: الأثر على التحصيل الأكاديمي</h2>
-  <p>
-    استُخدم معامل ارتباط بيرسون لقياس طبيعة العلاقة بين مستوى استخدام الذكاء الاصطناعي والمعدل التراكمي للطلاب. وقد كشفت النتائج عن وجود ارتباط موجب متوسط بين المتغيرين (r = 0.47, p &lt; 0.01)، وهو ما يُدل على أن الاستخدام الواعي والمنظّم لأدوات الذكاء الاصطناعي يرتبط بشكل إيجابي بمستوى التحصيل الأكاديمي.
-  </p>
+<!-- ============================
+     PAGE 13: NATURAL VS CHEMICAL
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٣</div>
 
-  <div class="highlight-box">
-    <strong>تحذير منهجي:</strong> يُنبّه الباحث إلى أن هذه العلاقة الارتباطية لا تعني بالضرورة علاقة سببية مباشرة؛ إذ قد يكون الطلاب المتفوقون أكاديميًا هم من يميلون أصلًا إلى توظيف الأدوات التعليمية بفاعلية أكبر. ومن ثمّ تُوصي الدراسة بتصاميم تجريبية مستقبلية لإثبات العلاقة السببية بصورة قاطعة.
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثالث — المكونات الفعّالة</span>
+    <div class="chapter-title">المكونات الطبيعية مقابل الكيميائية</div>
   </div>
 
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">10</div>
-    <span>كلية الحاسطبات وتقنية المعلومات</span>
+  <p>
+    كثيراً ما يدور الجدل حول ما إذا كانت المكونات الطبيعية أفضل من الكيميائية أم لا. والإجابة العلمية الدقيقة أن المعيار الحقيقي ليس طبيعي أو كيميائي، بل هو: هل هذا المكوّن فعّال وآمن لنوع بشرتك؟
+  </p>
+
+  <div class="section-title">مزايا المكونات الطبيعية</div>
+  <ul class="step-list">
+    <li><span class="step-num">✓</span><span>أقل احتمالاً لإثارة ردود فعل تحسسية في الغالب.</span></li>
+    <li><span class="step-num">✓</span><span>تحتوي على مركبات متعددة الفوائد (مضادة للأكسدة، مضادة للالتهاب، مرطبة في آنٍ واحد).</span></li>
+    <li><span class="step-num">✓</span><span>أكثر توافقاً مع الاستدامة البيئية.</span></li>
+  </ul>
+
+  <div class="section-title">مزايا المكونات الكيميائية (المختبرية)</div>
+  <ul class="step-list">
+    <li><span class="step-num">✓</span><span>تركيز محدود وموثوق يضمن فعالية متسقة.</span></li>
+    <li><span class="step-num">✓</span><span>بعضها لا يوجد له مكافئ طبيعي فعّال (كالريتينول الصناعي).</span></li>
+    <li><span class="step-num">✓</span><span>خضعت لاختبارات سريرية مكثفة تُثبت سلامتها وفعاليتها.</span></li>
+  </ul>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>مثال: حمض الهيالورونيك</h4>
+      <p>يوجد بشكل طبيعي في الجسم، لكن النوع المُصنَّع مختبرياً أكثر نقاءً واستقراراً وفعالية في المنتجات.</p>
+    </div>
+    <div class="info-card">
+      <h4>مثال: زيت الأرغان</h4>
+      <p>مكوّن طبيعي 100% يحتوي على فيتامين E وأحماض دهنية ومضادات أكسدة لا تستطيع المختبرات تكرارها بكفاءة.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>الخلاصة العلمية:</strong> أفضل منتجات الترطيب هي التي تدمج بذكاء بين المكونات الطبيعية الفعّالة والمكونات الكيميائية المُثبتة علمياً، بدلاً من التطرف في أحد الاتجاهين.</p>
   </div>
 </div>
 
-<!-- ===== صفحة 11 - مناقشة النتائج ===== -->
+<!-- ============================
+     PAGE 14: HARMFUL INGREDIENTS
+     ============================ -->
 <div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الرابع: النتائج والمناقشة</span>
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٤</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثالث — المكونات الفعّالة</span>
+    <div class="chapter-title">المكونات الضارة التي يجب تجنبها</div>
   </div>
 
-  <h2>4.4 التحديات والمعيقات</h2>
   <p>
-    رصد البحث جملة من التحديات التي تحول دون الاستثمار الأمثل لتقنيات الذكاء الاصطناعي في البيئة التعليمية، يمكن تصنيفها في ثلاثة محاور:
+    ليست كل مكونات منتجات التجميل آمنة. بعض المواد الشائعة الاستخدام قد تُسبب ضرراً على المدى البعيد أو تُهيج البشرة الحساسة. إليك أبرز المكونات التي يُنصح بتجنبها أو التعامل معها بحذر.
   </p>
 
-  <h3>أ) تحديات تقنية وبنية تحتية</h3>
-  <p>
-    أشار 61% من أفراد العينة إلى محدودية سرعة الإنترنت وعدم استقراره بوصفها عائقًا أمام الاستخدام المستمر. كذلك يُشكّل غياب الوصول المرخّص لبعض الأدوات المتقدمة عائقًا إضافيًا، لا سيما أن بعض هذه الأدوات تستلزم اشتراكات مدفوعة تُثقل كاهل الطالب.
-  </p>
-
-  <h3>ب) تحديات معرفية ومهارية</h3>
-  <p>
-    أفاد 54% من المستجيبين بافتقارهم إلى مهارات هندسة التوجيه (Prompt Engineering) اللازمة للتفاعل الفعّال مع نماذج الذكاء الاصطناعي والحصول على مخرجات ذات جودة عالية. ويُؤكد هذا ضرورة تضمين هذه المهارة في المناهج الجامعية.
-  </p>
-
-  <h3>ج) تحديات أخلاقية وسياساتية</h3>
-  <p>
-    أبدى 69% من المشاركين قلقًا من عدم وضوح الحدود الأخلاقية المتعلقة باستخدام الذكاء الاصطناعي في التقييمات والامتحانات، وهو ما يُشير إلى فراغ في السياسات المؤسسية يستوجب المعالجة العاجلة.
-  </p>
-
-  <h2>4.5 مناقشة النتائج</h2>
-  <p>
-    تتسق نتائج هذا البحث في جوهرها مع ما توصلت إليه كثير من الدراسات الدولية التي أكدت على الانتشار الواسع لاستخدام أدوات الذكاء الاصطناعي بين طلاب التعليم العالي. غير أن ما يُميّز نتائجنا هو تسليطها الضوء على الهوّة القائمة بين الاستخدام الكمي الواسع والتوظيف النوعي المتعمّق؛ فكثير من الطلاب يستخدمون هذه الأدوات للمهام السطحية كالتلخيص والترجمة، دون الغوص في إمكاناتها العميقة للتعلم النقدي وبناء المعرفة.
-  </p>
-  <p>
-    وتتناغم هذه النتيجة مع استنتاجات Baidoo-Anu & Owusu (2023) التي وصفت نمط استخدام الطلاب لأدوات الذكاء الاصطناعي التوليدي بأنه في الغالب استخدام أداتي استهلاكي لا استراتيجي تعليمي. كما تتوافق نتائج الفروق حسب المستوى الدراسي مع نظرية الكفاءة الرقمية التراكمية التي تؤكد أن الكفاءة التقنية تتراكم وتترسخ بالتدريج عبر سنوات الدراسة.
-  </p>
-
-  <div class="quote-box">
-    "المشكلة ليست في توافر الذكاء الاصطناعي، بل في قدرتنا كمؤسسات تعليمية على تأهيل المتعلمين لتوظيفه بوعي نقدي ومسؤولية أخلاقية."
-    <br><strong>— Mollick, 2023, Chameleons and AI in Education</strong>
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">11</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== الفصل الخامس - الخاتمة ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الخامس: التوصيات والخاتمة</span>
-  </div>
-
-  <div class="chapter-title">الفصل الخامس</div>
-  <div class="chapter-subtitle">الاستنتاجات والتوصيات وآفاق البحث المستقبلية</div>
-
-  <h2>5.1 الاستنتاجات</h2>
-  <p>
-    في ضوء ما أسفرت عنه الدراسة من نتائج ميدانية ونظرية، يخلص الباحث إلى جملة من الاستنتاجات الجوهرية:
-  </p>
-  <p>
-    <strong>الاستنتاج الأول:</strong> يُسجَّل مستوى مرتفع من الانتشار لاستخدام أدوات الذكاء الاصطناعي بين طلاب كلية الحاسبات، إذ أفاد أكثر من ثلاثة أرباع العينة باستخدامها بصورة منتظمة، مما يُجسّد حجم التحول الذي أحدثته هذه التقنيات في ثقافة التعلم الجامعي خلال سنوات قليلة.
-  </p>
-  <p>
-    <strong>الاستنتاج الثاني:</strong> لا تُحدث عوامل الجنس فروقًا دالة في مستوى الاستخدام، مما يُشير إلى ديمقراطية نسبية في إمكانية الوصول إلى هذه الأدوات وسهولة تبنّيها بصرف النظر عن الجنس.
-  </p>
-  <p>
-    <strong>الاستنتاج الثالث:</strong> يُعدّ المستوى الدراسي المتغيرَ الأكثر تأثيرًا في حجم الاستخدام وفاعليته، حيث يُحقق الطلاب في المستويات المتقدمة استثمارًا أعمق لهذه الأدوات.
-  </p>
-  <p>
-    <strong>الاستنتاج الرابع:</strong> يرتبط الاستخدام الواعي لأدوات الذكاء الاصطناعي ارتباطًا إيجابيًا بالتحصيل الأكاديمي، مما يُوحي بإمكانية تحويله إلى رافد تعليمي فعّال إذا أُحسن توجيهه.
-  </p>
-  <p>
-    <strong>الاستنتاج الخامس:</strong> يُمثّل الغموض الأخلاقي وغياب السياسات المؤسسية العائقَ الأكثر تأثيرًا في الاستثمار الأمثل لهذه التقنيات، أكثر من العوائق التقنية ذاتها.
-  </p>
-
-  <h2>5.2 التوصيات</h2>
-  <p>
-    بناءً على نتائج البحث واستنتاجاته، يُقدّم الباحث التوصيات الآتية:
-  </p>
-
-  <div class="highlight-box">
-    <strong>التوصية الأولى - وضع سياسات أكاديمية واضحة:</strong><br>
-    تُوصي الدراسة بإعداد وثيقة سياسة مؤسسية شاملة تُنظّم استخدام الذكاء الاصطناعي في البيئة التعليمية، وتُحدد الضوابط الأخلاقية وحالات الاستخدام المقبول والمرفوض، على أن تُصاغ بمشاركة المجتمع الأكاديمي كافة.
-  </div>
-  <div class="highlight-box">
-    <strong>التوصية الثانية - تطوير المناهج الدراسية:</strong><br>
-    إدراج وحدات دراسية متخصصة في مقررات السنة الأولى تُعنى بتأهيل الطلاب على التعامل النقدي والمسؤول مع أدوات الذكاء الاصطناعي وإتقان مهارات هندسة التوجيه.
-  </div>
-  <div class="highlight-box">
-    <strong>التوصية الثالثة - التدريب المستمر لأعضاء هيئة التدريس:</strong><br>
-    إطلاق برنامج تطوير مهني مستمر يُمكّن أعضاء هيئة التدريس من توظيف الذكاء الاصطناعي في تصميم المقررات وأساليب التقييم وتقديم التغذية الراجعة.
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">12</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== صفحة 13 - تكملة التوصيات ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الفصل الخامس: التوصيات والخاتمة</span>
-  </div>
-
-  <div class="highlight-box">
-    <strong>التوصية الرابعة - تعزيز البنية التحتية الرقمية:</strong><br>
-    العمل على ضمان وصول عادل وشامل للطلاب إلى اشتراكات الأدوات التعليمية المدفوعة من خلال برامج ترخيص مؤسسية موحّدة، وتوفير بيئات حوسبة سحابية داعمة.
-  </div>
-  <div class="highlight-box">
-    <strong>التوصية الخامسة - تفعيل الشراكات مع صناعة التقنية:</strong><br>
-    بناء شراكات استراتيجية مع شركات تطوير الذكاء الاصطناعي التعليمي لتطوير أدوات مُصمَّمة خصيصًا للسياق العربي ومتوافقة مع اللغة العربية.
-  </div>
-
-  <h2>5.3 آفاق البحث المستقبلية</h2>
-  <p>
-    يفتح هذا البحث آفاقًا بحثية عديدة يُوصي الباحث بالإسهام فيها مستقبلًا، أبرزها:
-  </p>
-  <p>
-    <strong>أولًا:</strong> إجراء دراسات تجريبية تختبر برامج تدريبية محددة في هندسة التوجيه لقياس أثرها التجريبي الفعلي على التحصيل الأكاديمي وفق تصاميم شبه تجريبية صارمة.
-  </p>
-  <p>
-    <strong>ثانيًا:</strong> توسيع الدراسة لتشمل مؤسسات تعليمية عربية متعددة في دول مختلفة لبناء صورة مقارنة شاملة حول واقع توظيف الذكاء الاصطناعي في التعليم العربي.
-  </p>
-  <p>
-    <strong>ثالثًا:</strong> دراسة الجانب الأخلاقي والقانوني بمزيد من التعمق من خلال تحليل السياسات المؤسسية المعمول بها في الجامعات الرائدة وإمكانية تكييفها مع السياق العربي.
-  </p>
-  <p>
-    <strong>رابعًا:</strong> إجراء بحوث طولية (Longitudinal Studies) تتتبع نفس مجموعات الطلاب على مدى عدة سنوات لرصد التطور في أنماط استخدام الذكاء الاصطناعي وتأثيره المتراكم.
-  </p>
-
-  <h2>خاتمة البحث</h2>
-  <p>
-    في ختام هذه الرحلة البحثية التي استغرقت شهورًا من القراءة والتمحيص والعمل الميداني الدقيق، يتبيّن بجلاء أن العلاقة بين الذكاء الاصطناعي والتعليم ليست علاقة تهديد وخوف، بل هي علاقة تكاملية تُبشّر بمستقبل تعليمي أكثر عدالةً وفاعلية وقدرةً على الاستجابة للفروق الفردية بين المتعلمين.
-  </p>
-  <p>
-    إن الذكاء الاصطناعي لن يحلّ محل المعلم البشري؛ فالمعلم يحمل من الحكمة والتجربة الإنسانية والقيمة التربوية ما لا تستطيع أي خوارزمية محاكاته. لكنه يمنح المعلم قوة تضخيم غير مسبوقة تُمكّنه من الوصول إلى كل طالب بالأسلوب الذي يناسبه، وتحريره من المهام الروتينية للتفرغ لما هو أعمق وأكثر تأثيرًا.
-  </p>
-  <p>
-    والرهان الحقيقي لا يقع على التقنية بحد ذاتها، بل على قدرتنا كمجتمعات تعليمية على استيعاب هذه التقنية وتوجيهها وتهذيبها لتصبّ في مصلحة الإنسان وتحقّق الأهداف النبيلة للتعليم. ويبقى السؤال الفصل: كيف نُبني إنسانًا قادرًا على العيش مع الذكاء الاصطناعي لا مقهورًا به؟ هذا هو التحدي التربوي الأعمق للقرن الحادي والعشرين.
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">13</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== المراجع والمصادر ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>قائمة المراجع والمصادر</span>
-  </div>
-
-  <h1 style="text-align:center; margin-bottom:25px;">قائمة المراجع والمصادر</h1>
-
-  <h2>أولًا: المراجع العربية</h2>
-
-  <div class="ref-item" data-num="1">
-    العتيبي، منصور بن سعد. (2022). <em>واقع استخدام الذكاء الاصطناعي في التعليم الجامعي السعودي من وجهة نظر أعضاء هيئة التدريس</em>. مجلة العلوم التربوية والنفسية، جامعة الملك عبدالعزيز، 23(4)، 45-78.
-  </div>
-
-  <div class="ref-item" data-num="2">
-    الشهري، أحمد محمد، والقحطاني، سلطان عبدالله. (2023). <em>أثر استخدام الذكاء الاصطناعي التوليدي على التحصيل الدراسي لطلاب الجامعات</em>. المجلة العربية للتقنيات التربوية، 15(2)، 112-139.
-  </div>
-
-  <div class="ref-item" data-num="3">
-    الغامدي، سلمى ناصر. (2023). <em>الذكاء الاصطناعي في خدمة التعليم: دليل عملي للمعلمين والمتعلمين</em>. دار المعرفة للنشر والتوزيع، الرياض.
-  </div>
-
-  <div class="ref-item" data-num="4">
-    الزهراني، فهد عبدالرحمن. (2021). <em>التحديات التربوية في ظل الثورة الصناعية الرابعة: رؤية مستقبلية</em>. مجلة دراسات في التعليم الجامعي، جامعة عين شمس، 42، 203-241.
-  </div>
-
-  <div class="ref-item" data-num="5">
-    العمري، حمد بن فهد. (2022). <em>التعلم الشخصي المدعوم بالذكاء الاصطناعي: مفاهيم وتطبيقات</em>. المجلة السعودية للتعليم الإلكتروني، 8(1)، 33-61.
-  </div>
-
-  <div class="ref-item" data-num="6">
-    الحربي، نورة سعد. (2023). <em>الأخلاقيات التربوية في استخدام الذكاء الاصطناعي: دراسة تحليلية للسياسات التعليمية العالمية</em>. المجلة العربية للعلوم التربوية والاجتماعية، 29، 88-120.
-  </div>
-
-  <div class="ref-item" data-num="7">
-    الدوسري، ريم فهد. (2023). <em>نحو مناهج جامعية تدمج الذكاء الاصطناعي: تجارب ونماذج دولية ومقترحات للبيئة العربية</em>. مجلة الجامعة الإسلامية للدراسات التربوية والنفسية، 31(2)، 156-189.
-  </div>
-
-  <div class="ref-item" data-num="8">
-    وزارة التعليم، المملكة العربية السعودية. (2022). <em>الإطار الوطني لتقنيات التعليم والذكاء الاصطناعي 1444-1450هـ</em>. المركز الوطني لتطوير التعليم، الرياض.
-  </div>
-
-  <h2>ثانيًا: المراجع الأجنبية</h2>
-
-  <div class="ref-item" data-num="9">
-    Baidoo-Anu, D., & Owusu Ansah, L. (2023). Education in the Era of Generative Artificial Intelligence (AI): Understanding the Potential Benefits of ChatGPT in Promoting Teaching and Learning. <em>Journal of AI</em>, 7(1), 52-62.
-  </div>
-
-  <div class="ref-item" data-num="10">
-    Davis, F. D. (1989). Perceived Usefulness, Perceived Ease of Use, and User Acceptance of Information Technology. <em>MIS Quarterly</em>, 13(3), 319-340.
-  </div>
-
-  <div class="ref-item" data-num="11">
-    Holmes, W., Bialik, M., & Fadel, C. (2022). <em>Artificial Intelligence in Education: Promises and Implications for Teaching and Learning</em>. Center for Curriculum Redesign, Boston.
-  </div>
-
-  <div class="ref-item" data-num="12">
-    Mollick, E. (2023). Chameleons, AI and the Future of Education. <em>One Useful Thing Newsletter</em>. Retrieved from https://www.oneusefulthing.org
-  </div>
-
-  <div class="ref-item" data-num="13">
-    Seldon, A., & Abidoye, O. (2018). <em>The Fourth Education Revolution: Will Artificial Intelligence Liberate or Infantilise Humanity?</em> University of Buckingham Press.
-  </div>
-
-  <div class="ref-item" data-num="14">
-    Siemens, G. (2005). Connectivism: A Learning Theory for the Digital Age. <em>International Journal of Instructional Technology and Distance Learning</em>, 2(1), 3-10.
-  </div>
-
-  <div class="ref-item" data-num="15">
-    UNESCO. (2023). <em>Guidance for Generative AI in Education and Research</em>. United Nations Educational, Scientific and Cultural Organization, Paris.
-  </div>
-
-  <div class="ref-item" data-num="16">
-    Zawacki-Richter, O., Marín, V. I., Bond, M., & Gouverneur, F. (2019). Systematic Review of Research on Artificial Intelligence Applications in Higher Education. <em>International Journal of Educational Technology in Higher Education</em>, 16(1), 1-27.
-  </div>
-
-  <div class="ref-item" data-num="17">
-    Zhai, X., Chu, X., Chai, C. S., Jong, M. S. Y., Istenic, A., Spector, M., ... & Li, Y. (2021). A Review of Artificial Intelligence (AI) in Education from 2010 to 2020. <em>Complexity</em>, 2021, 1-18.
-  </div>
-
-  <div class="ref-item" data-num="18">
-    European Commission. (2022). <em>Ethical Guidelines on the Use of Artificial Intelligence (AI) and Data in Teaching and Learning for Educators</em>. Publications Office of the European Union, Luxembourg.
-  </div>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">14</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
-  </div>
-</div>
-
-<!-- ===== الملاحق ===== -->
-<div class="page">
-  <div class="page-header">
-    <span class="page-header-title">توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية</span>
-    <span>الملاحق</span>
-  </div>
-
-  <h1 style="text-align:center; margin-bottom:25px;">الملاحق</h1>
-
-  <h2>الملحق (أ): الاستبانة في صورتها النهائية</h2>
-  <p>
-    <strong>بسم الله الرحمن الرحيم</strong><br>
-    أخي الطالب / أختي الطالبة<br>
-    السلام عليكم ورحمة الله وبركاته،
-  </p>
-  <p>
-    يضع بين يديك الباحث هذه الاستبانة التي صُمِّمت لأغراض البحث الأكاديمي في إطار مشروع التخرج الموسوم بـ "توظيف الذكاء الاصطناعي في تطوير المنظومة التعليمية". يرجى الإجابة عن جميع الفقرات بموضوعية وأمانة علمية، علمًا بأن المعلومات التي تدلي بها ستُعامَل بسرية تامة ولن تُستخدم إلا لأغراض البحث العلمي.
-  </p>
-
-  <h3>القسم الأول: البيانات الشخصية</h3>
-  <table>
+  <table class="ingredient-table">
+    <thead>
+      <tr>
+        <th>المكوّن</th>
+        <th>المخاطر المحتملة</th>
+        <th>الأكثر تضرراً</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td style="width:40%;">الجنس:</td><td>○ ذكر &nbsp;&nbsp; ○ أنثى</td></tr>
-      <tr><td>المستوى الدراسي:</td><td>○ المستوى 1-2 &nbsp;&nbsp; ○ المستوى 3-4 &nbsp;&nbsp; ○ المستوى 5-6</td></tr>
-      <tr><td>التخصص:</td><td>○ علوم الحاسب &nbsp;&nbsp; ○ نظم المعلومات &nbsp;&nbsp; ○ هندسة البرمجيات</td></tr>
-      <tr><td>المعدل التراكمي:</td><td>○ أقل من 2.5 &nbsp;&nbsp; ○ من 2.5 إلى 3.5 &nbsp;&nbsp; ○ أعلى من 3.5</td></tr>
+      <tr>
+        <td><strong>البارابين (Paraben)</strong></td>
+        <td>تأثير هرموني محتمل، جدل علمي مستمر</td>
+        <td>الحوامل وأصحاب البشرة الحساسة</td>
+      </tr>
+      <tr>
+        <td><strong>الفوال (Formaldehyde)</strong></td>
+        <td>مسرطن محتمل، مهيج شديد للجلد</td>
+        <td>جميع أنواع البشرة</td>
+      </tr>
+      <tr>
+        <td><strong>الكحول الجاف (Denatured Alcohol)</strong></td>
+        <td>يُجفف البشرة ويُضعف الحاجز الجلدي</td>
+        <td>البشرة الجافة والحساسة</td>
+      </tr>
+      <tr>
+        <td><strong>العطور الصناعية</strong></td>
+        <td>أكثر مسببات التحسس في منتجات التجميل</td>
+        <td>البشرة الحساسة</td>
+      </tr>
+      <tr>
+        <td><strong>الهيدروكينون بتركيزات عالية</strong></td>
+        <td>ضار على المدى البعيد رغم فعاليته في التفتيح</td>
+        <td>الاستخدام المطوّل دون إشراف طبي</td>
+      </tr>
+      <tr>
+        <td><strong>الزئبق</strong></td>
+        <td>سام ويتراكم في الجسم، موجود في بعض كريمات التفتيح غير المرخصة</td>
+        <td>الجميع، خطر جداً</td>
+      </tr>
     </tbody>
   </table>
 
-  <h3>القسم الثاني: مستوى الوعي بالذكاء الاصطناعي</h3>
-  <p><em>يُرجى وضع علامة (✓) في الخانة التي تعبّر عن رأيك: (5=موافق بشدة، 4=موافق، 3=محايد، 2=غير موافق، 1=غير موافق بشدة)</em></p>
-  <table>
-    <thead><tr><th>الفقرة</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead>
-    <tbody>
-      <tr><td>أعرف الفرق بين أنواع الذكاء الاصطناعي (التوليدي، التحليلي، التكيفي)</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أُدرك المخاطر الأخلاقية لاستخدام الذكاء الاصطناعي في التقييمات</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أمتلك مهارات كافية في التعامل مع أدوات الذكاء الاصطناعي التعليمية</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أتابع آخر مستجدات تقنيات الذكاء الاصطناعي التعليمية</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-    </tbody>
-  </table>
-
-  <h3>القسم الثالث: واقع الاستخدام</h3>
-  <table>
-    <thead><tr><th>الفقرة</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead>
-    <tbody>
-      <tr><td>أستخدم ChatGPT أو أدوات مماثلة في البحث الأكاديمي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أوظّف الذكاء الاصطناعي في فهم المواد الدراسية الصعبة</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أستعين بأدوات الذكاء الاصطناعي في كتابة التقارير والمشاريع</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أستخدم منصات التعلم التكيفي الذكية في دراستي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-      <tr><td>أُشارك في دورات تدريبية على الذكاء الاصطناعي التعليمي</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
-    </tbody>
-  </table>
-
-  <p style="margin-top:20px; font-size:12px; color:#888;">
-    شكرًا جزيلًا على تعاونكم الكريم. &nbsp; الباحث: محمد أحمد العمري
-  </p>
-
-  <div class="page-footer">
-    <span>جامعة العلوم والتقنية</span>
-    <div class="page-number">15</div>
-    <span>كلية الحاسبات وتقنية المعلومات</span>
+  <div class="note-box">
+    <span class="note-icon">⚠️</span>
+    <p><strong>تحذير:</strong> احذري من المنتجات غير المرخصة وغير المسجلة لدى الهيئة العامة للغذاء والدواء. دائماً تحققي من وجود رقم تسجيل المنتج قبل الشراء، ولا تنخدعي بادعاءات النتائج السريعة التي كثيراً ما تخفي مكونات ضارة.</p>
   </div>
 </div>
+
+<!-- ============================
+     PAGE 15: HOW TO APPLY
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٥</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الرابع — الاستخدام الصحيح</span>
+    <div class="chapter-title">طريقة تطبيق المرطبات بصورة صحيحة</div>
+  </div>
+
+  <p>
+    الطريقة الصحيحة لتطبيق المرطب بالغة الأهمية بقدر أهمية المنتج نفسه. اتباع الخطوات الصحيحة يضمن امتصاصاً أفضل وفعالية أعلى.
+  </p>
+
+  <div class="section-title">خطوات تطبيق مرطب الوجه</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span><strong>تنظيف الوجه:</strong> ابدئي دائماً بوجه نظيف. استخدمي غسولاً مناسباً لنوع بشرتك لإزالة الأوساخ والزيوت الزائدة والمكياج.</span></li>
+    <li><span class="step-num">٢</span><span><strong>التطبيق على بشرة رطبة قليلاً:</strong> طبقي المرطب بينما يكون وجهك رطباً بعد الغسيل مباشرة (بعد 60 ثانية من التجفيف). هذا يساعد على احتجاز الرطوبة الموجودة مسبقاً.</span></li>
+    <li><span class="step-num">٣</span><span><strong>الكمية المناسبة:</strong> كمية حبة البازلاء تكفي للوجه كاملاً. الإفراط في وضع الكريم لا يزيد فعاليته بل قد يسد المسام.</span></li>
+    <li><span class="step-num">٤</span><span><strong>تقنية التطبيق:</strong> ضعي نقاطاً صغيرة على الجبهة والخدين والأنف والذقن، ثم افردي بحركات دائرية خفيفة للخارج وللأعلى دائماً.</span></li>
+    <li><span class="step-num">٥</span><span><strong>لا تنسي الرقبة:</strong> امتدي بالمرطب إلى الرقبة وأعلى الصدر. هذه المناطق تعاني من الجفاف بنفس القدر وتحتاج نفس العناية.</span></li>
+    <li><span class="step-num">٦</span><span><strong>انتظري قبل المكياج:</strong> انتظري دقيقتين إلى ثلاث دقائق قبل وضع المكياج حتى يمتص الكريم بالكامل.</span></li>
+  </ul>
+
+  <div class="highlight-box">
+    <p><strong>قاعدة الترتيب:</strong> من الأخف إلى الأثقل: تنظيف ← غسول (تونر) ← سيروم ← كريم عيون ← مرطب ← واقي شمس (نهاراً). لا تعكسي الترتيب أبداً.</p>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 16: DAILY ROUTINE
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٦</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الرابع — الاستخدام الصحيح</span>
+    <div class="chapter-title">الروتين اليومي للعناية بالبشرة</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="section-title">☀️ الروتين الصباحي</div>
+      <ul class="step-list">
+        <li><span class="step-num">١</span><span>غسيل الوجه بمنظف خفيف أو ماء فقط</span></li>
+        <li><span class="step-num">٢</span><span>الغسول المرطب (Hydrating Toner)</span></li>
+        <li><span class="step-num">٣</span><span>سيروم الفيتامين C (لمكافحة الأكسدة)</span></li>
+        <li><span class="step-num">٤</span><span>المرطب الخفيف</span></li>
+        <li><span class="step-num">٥</span><span>واقي الشمس SPF 30+</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="section-title">🌙 الروتين الليلي</div>
+      <ul class="step-list">
+        <li><span class="step-num">١</span><span>إزالة الماكياج بالمايسيلار ووتر أو الزيت</span></li>
+        <li><span class="step-num">٢</span><span>الغسيل بالمنظف المناسب</span></li>
+        <li><span class="step-num">٣</span><span>الغسول أو التونر</span></li>
+        <li><span class="step-num">٤</span><span>سيروم الترطيب أو الريتينول</span></li>
+        <li><span class="step-num">٥</span><span>مرطب الليل الكثيف</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">الروتين الأسبوعي</div>
+  <p>
+    بالإضافة إلى الروتين اليومي، تحتاج البشرة إلى عناية أسبوعية لإزالة الخلايا الميتة وتعميق الترطيب. يُنصح بالتقشير الخفيف مرة إلى مرتين أسبوعياً باستخدام مقشر كيميائي لطيف أو جسدي ناعم، متبوعاً بقناع مرطب. هذا يُحسن امتصاص المنتجات اليومية ويمنح البشرة توهجاً ملحوظاً.
+  </p>
+
+  <div class="note-box">
+    <span class="note-icon">📅</span>
+    <p><strong>عامل الاتساق هو الأهم:</strong> الأبحاث تُثبت أن الاستمرار في روتين بسيط لمدة 4 أسابيع يُعطي نتائج أفضل بكثير من استخدام منتجات فاخرة بصورة متقطعة. الانتظام في العناية هو مفتاح البشرة الصحية.</p>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 17: CHOOSING A PRODUCT
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٧</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الرابع — الاستخدام الصحيح</span>
+    <div class="chapter-title">اختيار المنتج المناسب لنوع بشرتك</div>
+  </div>
+
+  <table class="ingredient-table">
+    <thead>
+      <tr>
+        <th>نوع البشرة</th>
+        <th>شكل المرطب المناسب</th>
+        <th>المكونات المفيدة</th>
+        <th>تجنبي</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>العادية</strong></td>
+        <td>لوشن أو كريم خفيف</td>
+        <td>الهيالورونيك أسيد، النياسيناميد</td>
+        <td>لا قيود كبيرة</td>
+      </tr>
+      <tr>
+        <td><strong>الجافة</strong></td>
+        <td>كريم أو زبدة كثيفة</td>
+        <td>السيراميدات، زبدة الشيا، زيت الجوجوبا</td>
+        <td>الكحول الجاف، العطور</td>
+      </tr>
+      <tr>
+        <td><strong>الدهنية</strong></td>
+        <td>لوشن أو جيل خفيف جداً</td>
+        <td>الهيالورونيك أسيد، النياسيناميد، الألوفيرا</td>
+        <td>الزيوت الثقيلة، جوز الهند</td>
+      </tr>
+      <tr>
+        <td><strong>المختلطة</strong></td>
+        <td>لوشن متوسط، تطبيق حسب المنطقة</td>
+        <td>الجلسرين، الهيالورونيك أسيد</td>
+        <td>الزيوت الثقيلة على منطقة T</td>
+      </tr>
+      <tr>
+        <td><strong>الحساسة</strong></td>
+        <td>كريم بسيط بدون عطر</td>
+        <td>السيراميدات، الألوفيرا، البانثينول</td>
+        <td>العطور، الكحول، كثير من المكونات</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">نصائح عند شراء المرطب</div>
+  <ul class="step-list">
+    <li><span class="step-num">✓</span><span>اقرئي قائمة المكونات — المكوّن الأول هو الأعلى تركيزاً</span></li>
+    <li><span class="step-num">✓</span><span>ابحثي عن Non-Comedogenic إذا كانت بشرتك دهنية أو عرضة لحب الشباب</span></li>
+    <li><span class="step-num">✓</span><span>اختاري Fragrance-Free (بدون عطر) وليس Unscented للبشرة الحساسة</span></li>
+    <li><span class="step-num">✓</span><span>جربي كمية صغيرة على الرسغ أو خلف الأذن لمدة 24-48 ساعة قبل الاستخدام الكامل</span></li>
+  </ul>
+</div>
+
+<!-- ============================
+     PAGE 18: HEALTH BENEFITS
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٨</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الخامس — الفوائد والأبحاث</span>
+    <div class="chapter-title">الفوائد الصحية الموثقة للترطيب</div>
+  </div>
+
+  <p>
+    تجاوزت أهمية ترطيب البشرة مجال التجميل لتُثبت الأبحاث الطبية دوراً محورياً لها في الصحة الجلدية بل والعامة. فيما يلي أبرز الفوائد الصحية الموثوقة للترطيب المنتظم.
+  </p>
+
+  <div class="section-title">فوائد صحية موثقة</div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>الوقاية من الأكزيما</h4>
+      <p>أثبتت دراسات نشرت في Journal of Dermatology أن الترطيب المنتظم للأطفال الرُّضَّع يُقلل من خطر الإصابة بالأكزيما التأتبية بنسبة تصل إلى 50%.</p>
+    </div>
+    <div class="info-card">
+      <h4>التئام الجروح أسرع</h4>
+      <p>البيئة الرطبة تُسرّع عملية التئام الجروح والتقطعات وعمليات التجميل بشكل ملحوظ مقارنةً بالبشرة الجافة.</p>
+    </div>
+    <div class="info-card">
+      <h4>تقليل الالتهاب</h4>
+      <p>الحاجز الجلدي السليم يمنع دخول الملوثات المهيجة مما يقلل الالتهابات المزمنة المرتبطة بأمراض جلدية كالصدفية.</p>
+    </div>
+    <div class="info-card">
+      <h4>حماية من الشيخوخة</h4>
+      <p>أظهرت دراسة ممتدة 10 سنوات أن أصحاب البشرة الجيدة الترطيب أقل عرضةً بنسبة 25% لتطوير تجاعيد مبكرة.</p>
+    </div>
+  </div>
+
+  <div class="big-quote">
+    "الاستثمار في ترطيب البشرة اليوم هو وقاية من مشاكل جلدية مكلفة في المستقبل"
+  </div>
+
+  <p>
+    أكد أطباء الأمراض الجلدية أن الوقاية من خلال الترطيب أسهل وأقل تكلفة بكثير من علاج مضاعفات جفاف البشرة المزمن. كما أن البشرة الصحية ترتبط ارتباطاً نفسياً بتحسّن الثقة بالنفس والصحة النفسية.
+  </p>
+</div>
+
+<!-- ============================
+     PAGE 19: AGING
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">١٩</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الخامس — الفوائد والأبحاث</span>
+    <div class="chapter-title">الترطيب والتقدم في العمر</div>
+  </div>
+
+  <p>
+    يُعدّ الترطيب من أهم عوامل الحفاظ على مظهر شبابي للبشرة. مع التقدم في العمر، تتراجع قدرة الجلد على الاحتفاظ بالرطوبة بشكل طبيعي نتيجة عدة عوامل.
+  </p>
+
+  <div class="section-title">كيف يؤثر العمر على ترطيب البشرة؟</div>
+  <ul class="step-list">
+    <li><span class="step-num">٣٠</span><span><strong>في العقد الثالث:</strong> يبدأ إنتاج الكولاجين بالتراجع بنسبة 1% سنوياً، وتبدأ أولى الخطوط الدقيقة بالظهور حول العيون والفم.</span></li>
+    <li><span class="step-num">٤٠</span><span><strong>في العقد الرابع:</strong> تقل قدرة الجلد على إنتاج السيراميدات الطبيعية، فيصبح الحاجز الجلدي أضعف وأكثر عرضة للجفاف.</span></li>
+    <li><span class="step-num">٥٠</span><span><strong>في العقد الخامس:</strong> مع انقطاع الطمث تنخفض مستويات الإستروجين مما يُسبب جفافاً ملحوظاً وفقدان المرونة.</span></li>
+  </ul>
+
+  <div class="section-title">المكونات المضادة للشيخوخة في المرطبات</div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>الريتينول (Retinol)</h4>
+      <p>من أكثر المكونات المدروسة. يُحفز إنتاج الكولاجين ويُسرّع تجديد الخلايا. يُستخدم فقط ليلاً.</p>
+    </div>
+    <div class="info-card">
+      <h4>الببتيدات (Peptides)</h4>
+      <p>جزيئات بروتينية تُعطي الجلد إشارة لإنتاج المزيد من الكولاجين. آمنة حتى للبشرة الحساسة.</p>
+    </div>
+    <div class="info-card">
+      <h4>فيتامين C</h4>
+      <p>أقوى مضادات الأكسدة للبشرة، يُنعّم الخطوط الدقيقة ويُوحّد لون البشرة ويحمي من الشمس.</p>
+    </div>
+    <div class="info-card">
+      <h4>حمض الهيالورونيك</h4>
+      <p>يملأ الخطوط الدقيقة بشكل مؤقت عبر الترطيب العميق. متاح بأحجام جزيئية مختلفة.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 20: SCIENTIFIC STUDIES
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٠</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الخامس — الفوائد والأبحاث</span>
+    <div class="chapter-title">دراسات علمية حديثة</div>
+  </div>
+
+  <div class="section-title">أبرز الدراسات في مجال ترطيب البشرة</div>
+
+  <div class="note-box" style="margin-bottom:15px;">
+    <p><strong>دراسة — الهيالورونيك أسيد وعمق الترطيب (2022)</strong><br>
+    نشرت مجلة Journal of Clinical Dermatology دراسة على 120 مشاركة أثبتت أن الهيالورونيك أسيد بجزيئات صغيرة ومتوسطة يزيد من رطوبة الجلد بنسبة 40% مقارنةً بالجلسرين وحده، مع استمرار التأثير لساعات أطول.</p>
+  </div>
+
+  <div class="note-box" style="margin-bottom:15px;">
+    <p><strong>دراسة — السيراميدات والحاجز الجلدي (2021)</strong><br>
+    أثبتت أبحاث من جامعة مونتريال أن استخدام مرطبات تحتوي على خليط من ثلاثة سيراميدات (Ceramide 1, 3, 6) يُعيد بناء الحاجز الجلدي التالف في الأكزيما خلال 4 أسابيع فقط من الاستخدام المنتظم.</p>
+  </div>
+
+  <div class="note-box" style="margin-bottom:15px;">
+    <p><strong>دراسة — تأثير الترطيب على الشيخوخة المبكرة (2019)</strong><br>
+    رصدت دراسة ممتدة لعشر سنوات أجرتها Stanford نشأة تجاعيد أبطأ بنسبة 32% لدى المجموعة التي التزمت بروتين ترطيب يومي مقارنةً بالمجموعة الضابطة.</p>
+  </div>
+
+  <div class="section-title">توجهات بحثية مستقبلية</div>
+  <p>
+    يتجه البحث العلمي في هذا المجال نحو تطوير مرطبات ذكية (Smart Moisturizers) تستجيب للتغيرات البيئية وتُكيّف تركيبها تلقائياً. كما تُجرى أبحاث مكثفة على تقنية الجزيئات النانوية (Nanotechnology) التي تُتيح نقل المكونات الفعّالة إلى طبقات أعمق من الجلد بكفاءة غير مسبوقة.
+  </p>
+</div>
+
+<!-- ============================
+     PAGE 21: CONCLUSION
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢١</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الخاتمة</span>
+    <div class="chapter-title">الاستنتاجات والتوصيات</div>
+  </div>
+
+  <div class="section-title">ملخص استنتاجات البحث</div>
+  <p>
+    خلص هذا البحث إلى أن ترطيب البشرة ليس مجرد عادة تجميلية بل ضرورة صحية موثقة علمياً. تُعمل منتجات الترطيب من خلال ثلاثة محاور متكاملة: جذب الرطوبة والاحتفاظ بها وترميم الحاجز الجلدي. والمعرفة العلمية بهذه الآليات تُمكّن من اختيار المنتج المناسب بصورة مدروسة بدلاً من الاعتماد على التسويق والإعلانات.
+  </p>
+
+  <div class="section-title">أبرز التوصيات</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span>حددي نوع بشرتك قبل أي عملية شراء وابحثي عن المكونات المناسبة لها تحديداً.</span></li>
+    <li><span class="step-num">٢</span><span>اعتمدي على روتين بسيط ومنتظم بدلاً من تجربة كميات كبيرة من المنتجات بشكل متقطع.</span></li>
+    <li><span class="step-num">٣</span><span>لا تُهمل واقي الشمس — فهو أهم خطوة في الوقاية من الشيخوخة المبكرة وسرطان الجلد.</span></li>
+    <li><span class="step-num">٤</span><span>اقرئي قوائم المكونات وتجنبي المنتجات التي تحتوي على الزئبق أو الكحول الجاف أو العطور الصناعية إن كانت بشرتك حساسة.</span></li>
+    <li><span class="step-num">٥</span><span>تذكري أن التغذية الصحية وشرب الماء الكافي (8 أكواب يومياً) يُكملان تأثير المرطبات الخارجية.</span></li>
+    <li><span class="step-num">٦</span><span>استشيري طبيب الجلدية عند مواجهة مشاكل مزمنة كالأكزيما أو الصدفية بدلاً من الاعتماد على الحلول الذاتية فقط.</span></li>
+  </ul>
+
+  <div class="big-quote">
+    "بشرتك تتحدث إليك كل يوم — تعلّمي كيف تستمعين إليها"
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 22: SUN PROTECTION
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٢</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الرابع — الاستخدام الصحيح</span>
+    <div class="chapter-title">واقي الشمس وعلاقته بترطيب البشرة</div>
+  </div>
+
+  <p>
+    يُعدّ واقي الشمس الخطوة الأخيرة والأهم في أي روتين صباحي، ويكمل دور المرطب في الحفاظ على صحة البشرة. أشعة الشمس فوق البنفسجية هي السبب الرئيسي لتدمير الحاجز الجلدي وتسريع جفاف البشرة والشيخوخة المبكرة.
+  </p>
+
+  <div class="section-title">أنواع الأشعة والحماية منها</div>
+
+  <table class="ingredient-table">
+    <thead>
+      <tr>
+        <th>نوع الأشعة</th>
+        <th>التأثير على البشرة</th>
+        <th>مستوى الحماية المطلوب</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>UVA</strong></td>
+        <td>تخترق عمق الجلد وتُسبب الشيخوخة والتصبغات</td>
+        <td>PA+++ أو أعلى</td>
+      </tr>
+      <tr>
+        <td><strong>UVB</strong></td>
+        <td>تُسبب الحرق الشمسي وسرطان الجلد</td>
+        <td>SPF 30 على الأقل</td>
+      </tr>
+      <tr>
+        <td><strong>أشعة الضوء المرئي</strong></td>
+        <td>تُسبب التصبغات خاصة في البشرة الداكنة</td>
+        <td>واقيات تحتوي على Iron Oxide</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">المرطبات بالحماية من الشمس — هل تكفي؟</div>
+  <p>
+    انتشرت في الأسواق مرطبات تحتوي على SPF مدمج. وعلى الرغم من ملاءمتها للاستخدام اليومي، إلا أن الأبحاث تُثبت أن معظم الناس لا يضعون من هذه المنتجات الكمية الكافية للحصول على درجة الحماية المُعلنة. لهذا يُوصي الأطباء باستخدام واقي الشمس بشكل منفصل ووضع كمية كافية تعادل نصف ملعقة صغيرة للوجه والرقبة.
+  </p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>واقي الشمس الكيميائي</h4>
+      <p>يمتص الأشعة ويحولها لحرارة. خفيف الملمس وغير مرئي على البشرة، لكنه قد يُهيج البشرة الحساسة.</p>
+    </div>
+    <div class="info-card">
+      <h4>واقي الشمس المعدني</h4>
+      <p>يحتوي على أكسيد الزنك أو ثاني أكسيد التيتانيوم. يعكس الأشعة، مناسب للبشرة الحساسة وبشرة الأطفال.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>قاعدة التجديد:</strong> يجب إعادة وضع واقي الشمس كل ساعتين عند التعرض المستمر للشمس، وبعد السباحة أو التعرق بغض النظر عن درجة الـ SPF.</p>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 23: NATURAL RECIPES
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٣</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل السادس — وصفات طبيعية</span>
+    <div class="chapter-title">وصفات طبيعية منزلية لترطيب البشرة</div>
+  </div>
+
+  <p>
+    قبل ظهور صناعة مستحضرات التجميل، اعتمدت المرأة عبر التاريخ على مكونات طبيعية متوفرة في كل بيت لترطيب بشرتها. وكثير من هذه الوصفات التراثية ثبتت فعاليتها علمياً وتشكّل اليوم أساساً لكثير من منتجات التجميل الحديثة.
+  </p>
+
+  <div class="section-title">وصفات مجربة لترطيب الوجه</div>
+
+  <div class="note-box" style="margin-bottom:14px;">
+    <span class="note-icon">🍯</span>
+    <p><strong>قناع العسل والألوفيرا:</strong> امزجي ملعقة كبيرة من عسل خام مع ملعقتين من جل الألوفيرا. ضعي الخليط على الوجه لمدة 15 دقيقة ثم اشطفي بماء فاتر. العسل مرطب طبيعي قوي ومضاد للبكتيريا، والألوفيرا تُهدئ وتُرطب في آنٍ واحد.</p>
+  </div>
+
+  <div class="note-box" style="margin-bottom:14px;">
+    <span class="note-icon">🥑</span>
+    <p><strong>قناع الأفوكادو والعسل:</strong> اهرسي نصف حبة أفوكادو ناضجة مع ملعقة كبيرة من العسل. ضعي المزيج على الوجه لـ 20 دقيقة. الأفوكادو غني بالأحماض الدهنية الأوميغا-9 وفيتامين E التي تُغذي الجلد بعمق.</p>
+  </div>
+
+  <div class="note-box" style="margin-bottom:14px;">
+    <span class="note-icon">🥛</span>
+    <p><strong>قناع الحليب والعسل:</strong> امزجي ملعقتين من الحليب الكامل الدسم مع ملعقة عسل. ضعي الخليط لـ 10 دقائق. حمض اللاكتيك الموجود في الحليب يُقشّر بلطف ويُرطب في نفس الوقت.</p>
+  </div>
+
+  <div class="section-title">وصفات لترطيب جسم الجسم</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span><strong>سكراب السكر وزيت جوز الهند:</strong> امزجي كوباً من السكر البني مع نصف كوب زيت جوز الهند ومعلقة خل تفاح. دلّكي الجسم برفق ثم اشطفي. يُقشّر ويُرطب معاً.</span></li>
+    <li><span class="step-num">٢</span><span><strong>حمام الحليب:</strong> أضيفي لتراً من الحليب الدافئ إلى ماء الحمام وانقعي لـ 20 دقيقة. تقنية كليوباترا الشهيرة ذات تأثير مُثبت.</span></li>
+    <li><span class="step-num">٣</span><span><strong>زيت اللوز بعد الاستحمام:</strong> ضعي بضع قطرات على الجسم الرطب مباشرة بعد الخروج من الدش. يُحبس الماء ويُضفي لمعاناً طبيعياً.</span></li>
+  </ul>
+</div>
+
+<!-- ============================
+     PAGE 24: DIET & HYDRATION
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٤</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل السادس — التغذية والبشرة</span>
+    <div class="chapter-title">التغذية الداخلية ودورها في ترطيب البشرة</div>
+  </div>
+
+  <p>
+    مهما كانت المرطبات الخارجية فعّالة، فإن ترطيب البشرة يبدأ من الداخل. ما تأكلينه وتشربينه يؤثر تأثيراً مباشراً على مستوى رطوبة بشرتك، ومرونتها، وقدرتها على التجدد.
+  </p>
+
+  <div class="big-quote">
+    "أنتِ ما تأكلينه — وبشرتك أوضح دليل على ذلك"
+  </div>
+
+  <div class="section-title">الماء — المرطب الأول والأهم</div>
+  <p>
+    يتكون الجسم البشري من 60-70% ماء، والجلد وحده يحتاج إلى الحفاظ على مستوى رطوبة داخلي كافٍ ليبدو ممتلئاً ومتوهجاً. الدراسات تُثبت أن شرب 8-10 أكواب يومياً يُحسن مستوى ترطيب الجلد خلال 4 أسابيع بشكل ملحوظ.
+  </p>
+
+  <div class="section-title">أطعمة تُرطب البشرة من الداخل</div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>الأفوكادو 🥑</h4>
+      <p>غني بالأحماض الدهنية الأحادية غير المشبعة وفيتامين E التي تُعزز مرونة الجلد وتُقلل الجفاف.</p>
+    </div>
+    <div class="info-card">
+      <h4>السمك الدهني 🐟</h4>
+      <p>السلمون والماكريل غنيان بأوميغا-3 التي تُقوّي الحاجز الجلدي وتُقلل الالتهاب وتُحسن الترطيب.</p>
+    </div>
+    <div class="info-card">
+      <h4>الخيار والبطيخ 🥒</h4>
+      <p>تحتويان على نسبة ماء تتجاوز 95%، وهما مصدر ممتاز للترطيب الداخلي ومضادات الأكسدة.</p>
+    </div>
+    <div class="info-card">
+      <h4>المكسرات والبذور 🌰</h4>
+      <p>اللوز وبذر الكتان غنيان بفيتامين E والأحماض الدهنية الضرورية لصحة الجلد.</p>
+    </div>
+    <div class="info-card">
+      <h4>الشاي الأخضر 🍵</h4>
+      <p>يحتوي على مضادات الأكسدة القوية (EGCG) التي تحمي الجلد من الشيخوخة وتُحسن الترطيب.</p>
+    </div>
+    <div class="info-card">
+      <h4>الحمضيات والتوت 🍊</h4>
+      <p>غنية بفيتامين C الضروري لإنتاج الكولاجين، وهو البروتين المسؤول عن مرونة الجلد.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>الأطعمة التي تُجفف البشرة:</strong> الكافيين المفرط، الكحول، الأطعمة المالحة جداً، والسكريات المكررة كلها تستنزف رطوبة الجسم وتُضعف الحاجز الجلدي. التقليل منها يُحدث فارقاً ملحوظاً في مظهر البشرة خلال أسابيع.</p>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 25: SEASONAL CARE
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٥</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل السادس — العناية الموسمية</span>
+    <div class="chapter-title">العناية بالبشرة عبر المواسم المختلفة</div>
+  </div>
+
+  <p>
+    تتغير احتياجات البشرة للترطيب بشكل ملحوظ من موسم لآخر، وتكييف روتينك مع هذه التغيرات هو أحد أسرار الحفاظ على بشرة صحية طوال العام.
+  </p>
+
+  <div class="section-title">☀️ الصيف — الحر والرطوبة</div>
+  <p>
+    في الصيف، تميل البشرة إلى إفراز مزيد من الزيوت بسبب الحرارة. يُنصح باستخدام مرطبات خفيفة قائمة على الماء (Water-Based)، وزيادة استخدام واقي الشمس، والاهتمام بترطيب منطقة حول العيون. الغسول الخفيف والسيروم يكونان كافيين أحياناً دون الحاجة لكريم ثقيل.
+  </p>
+
+  <div class="section-title">🍂 الخريف — الاستعداد للتغيير</div>
+  <p>
+    تبدأ البشرة بالشعور بأثر انخفاض الرطوبة. هذا هو الوقت المثالي لتقييم روتينك وإدخال مكونات أكثر تغذية تدريجياً كالسيراميدات والزيوت. يُنصح بإضافة سيروم الهيالورونيك قبل المرطب.
+  </p>
+
+  <div class="section-title">❄️ الشتاء — الجفاف الشديد</div>
+  <p>
+    الموسم الأصعب على البشرة بسبب برودة الهواء ورطوبته المنخفضة إضافةً إلى التدفئة الداخلية الجافة. يُنصح بالتحول إلى كريمات كثيفة وإضافة زيت فوق المرطب كطبقة ختامية، مع تجنب الاستحمام بماء ساخن جداً.
+  </p>
+
+  <div class="section-title">🌸 الربيع — التجديد</div>
+  <p>
+    مع تحسن الجو يُنصح بإدخال التقشير الخفيف لإزالة تراكمات الشتاء، والعودة تدريجياً للمرطبات الأخف. الربيع هو أفضل وقت لتجربة منتجات جديدة لأن البشرة في حالتها الأكثر توازناً.
+  </p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>نصيحة المناخ الحار الجاف</h4>
+      <p>في المناطق ذات المناخ الصحراوي كالمملكة العربية السعودية، يُفضل الجمع بين مرطب خفيف صباحاً ومرطب أكثر كثافة مساءً طوال العام.</p>
+    </div>
+    <div class="info-card">
+      <h4>أجهزة الترطيب البيئي</h4>
+      <p>وضع جهاز مرطب للهواء (Humidifier) في غرفة النوم يُحافظ على رطوبة مناسبة ويُقلل من جفاف البشرة أثناء النوم بشكل ملحوظ.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 26: SKINCARE FOR TEENS
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٦</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل السابع — فئات خاصة</span>
+    <div class="chapter-title">العناية بالبشرة في مرحلة المراهقة</div>
+  </div>
+
+  <p>
+    تُعدّ مرحلة المراهقة من أكثر المراحل التي تحتاج فيها البشرة لعناية خاصة، بسبب التغيرات الهرمونية الكبيرة التي تؤثر بشكل مباشر على طبيعة الجلد ومستوى إفراز الزيوت. فهم هذه التغيرات يُساعد على التعامل مع البشرة بصورة صحيحة.
+  </p>
+
+  <div class="section-title">التغيرات الهرمونية وتأثيرها على البشرة</div>
+  <p>
+    مع بداية البلوغ، تزداد مستويات هرمون الأندروجين الذي يُحفز الغدد الدهنية على إنتاج مزيد من الزيوت. هذا ما يُسبب ظهور البشرة الدهنية وحب الشباب (Acne) لدى كثير من المراهقين. في هذه المرحلة، يظن كثيرون أن البشرة الدهنية لا تحتاج لترطيب، وهذا خطأ شائع يُسبب مشاكل أكبر.
+  </p>
+
+  <div class="highlight-box">
+    <p><strong>الخرافة الأكثر شيوعاً:</strong> "البشرة الدهنية لا تحتاج مرطباً" — هذا خطأ تماماً. عندما تُجففين بشرتك الدهنية بدون ترطيب، يزيد الجلد من إفراز الزيوت تعويضاً عن الجفاف، مما يُفاقم المشكلة. المرطب الخفيف الصحيح يُوازن إفراز الزيوت.</p>
+  </div>
+
+  <div class="section-title">روتين مبسط للمراهقات</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span>منظف لطيف مرتين يومياً (صباحاً ومساءً) بدون كحول أو مكونات جارحة.</span></li>
+    <li><span class="step-num">٢</span><span>مرطب خفيف غير مسدود للمسام (Non-Comedogenic) يومياً.</span></li>
+    <li><span class="step-num">٣</span><span>واقي شمس خفيف صباحاً.</span></li>
+    <li><span class="step-num">٤</span><span>تجنبي اللمس المتكرر للوجه وتغيير كيس الوسادة مرتين أسبوعياً.</span></li>
+    <li><span class="step-num">٥</span><span>لا تبالغي في استخدام المنتجات — البساطة والانتظام أفضل من كثرة المنتجات.</span></li>
+  </ul>
+
+  <div class="section-title">متى تزورين طبيبة الجلدية؟</div>
+  <p>
+    إذا كانت حبة الشباب شديدة أو تُسبب ندوباً أو تُؤثر على ثقتك بنفسك، استشيري طبيبة الجلدية دون تأخير. العلاج المبكر يمنع التندب ويُحسن النتائج بشكل كبير.
+  </p>
+</div>
+
+<!-- ============================
+     PAGE 27: BODY CARE
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٧</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل السابع — العناية بالجسم</span>
+    <div class="chapter-title">العناية الشاملة ببشرة الجسم</div>
+  </div>
+
+  <p>
+    كثيراً ما تنصبّ اهتمامات العناية بالبشرة على الوجه وحده، بينما يُهمل باقي الجسم. بشرة الجسم تحتاج لنفس القدر من الاهتمام، بل إن مناطق معينة تحتاج لعناية خاصة.
+  </p>
+
+  <div class="section-title">المناطق التي تحتاج عناية مكثفة</div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>الكوعان والركبتان</h4>
+      <p>مناطق سميكة تفتقر للغدد الدهنية. تحتاج لمقشر أسبوعي ومرطب كثيف يومياً. زبدة الشيا والبتروليوم مثاليان.</p>
+    </div>
+    <div class="info-card">
+      <h4>الكعبان</h4>
+      <p>أكثر مناطق الجفاف شيوعاً. استخدمي ملف القدم أسبوعياً ثم غطي بكريم دهني وارتدي جوارب ليلاً.</p>
+    </div>
+    <div class="info-card">
+      <h4>اليدان والأظافر</h4>
+      <p>اليدان تتعرض للغسيل المتكرر والمواد المنظفة. ضعي كريم اليدين بعد كل غسل وقبل النوم.</p>
+    </div>
+    <div class="info-card">
+      <h4>الشفاه</h4>
+      <p>لا تحتوي الشفاه على غدد دهنية، لذا تجف بسرعة. استخدمي بلسم الشفاه المرطب يومياً وتجنبي لعقها.</p>
+    </div>
+  </div>
+
+  <div class="section-title">تقنية التطبيق المثلى لمرطب الجسم</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span><strong>التوقيت:</strong> ضعي مرطب الجسم فور الخروج من الاستحمام خلال 3 دقائق، بينما الجلد لا يزال رطباً قليلاً لاحتجاز الرطوبة.</span></li>
+    <li><span class="step-num">٢</span><span><strong>الكمية:</strong> كوني سخية مع كمية المرطب للجسم، خاصةً في الشتاء والمناطق الجافة.</span></li>
+    <li><span class="step-num">٣</span><span><strong>الاتجاه:</strong> دائماً من الأسفل للأعلى لتحفيز الدورة الدموية.</span></li>
+    <li><span class="step-num">٤</span><span><strong>لا تنسي ظهرك:</strong> استخدمي فرشاة ذات يد طويلة لتطبيق المرطب على الظهر بشكل منتظم.</span></li>
+  </ul>
+</div>
+
+<!-- ============================
+     PAGE 28: MYTHS & FACTS
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٨</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثامن — خرافات وحقائق</span>
+    <div class="chapter-title">أبرز الخرافات الشائعة حول ترطيب البشرة</div>
+  </div>
+
+  <p>
+    في عصر وسائل التواصل الاجتماعي، انتشرت معلومات كثيرة غير دقيقة حول العناية بالبشرة. يُصحح هذا الفصل أبرز الخرافات الشائعة استناداً إلى الأدلة العلمية.
+  </p>
+
+  <table class="ingredient-table">
+    <thead>
+      <tr>
+        <th>الخرافة</th>
+        <th>الحقيقة العلمية</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>"المنتجات الغالية دائماً أفضل"</strong></td>
+        <td>الفعالية تعتمد على المكونات وتركيزاتها، وليس على السعر. الجلسرين رخيص وفعّال جداً.</td>
+      </tr>
+      <tr>
+        <td><strong>"الجلد يتعود على المرطب ويصبح غير قادر على الترطيب الذاتي"</strong></td>
+        <td>هذا خطأ علمياً تاماً. الجلد لا "يتكاسل" عن إنتاج رطوبته. الترطيب الخارجي لا يُوقف الوظائف الطبيعية.</td>
+      </tr>
+      <tr>
+        <td><strong>"البشرة الدهنية لا تحتاج مرطباً"</strong></td>
+        <td>الدهون لا تعني الرطوبة. البشرة الدهنية قد تكون مُجففة ومحتاجة لمرطب خفيف.</td>
+      </tr>
+      <tr>
+        <td><strong>"الطبيعي دائماً أكثر أماناً"</strong></td>
+        <td>بعض المكونات الطبيعية كزيت اللافندر والقرفة مُهيجة جداً للبشرة الحساسة.</td>
+      </tr>
+      <tr>
+        <td><strong>"زيت جوز الهند مرطب ممتاز للوجه"</strong></td>
+        <td>درجة انسداد مسام جوز الهند عالية جداً (4 من 5)، مما يجعله غير مناسب لمعظم بشرات الوجه.</td>
+      </tr>
+      <tr>
+        <td><strong>"ماء الورد وحده يكفي كمرطب"</strong></td>
+        <td>ماء الورد ليس مرطباً بل منعش ومهدئ. بدون مرطب حقيقي يزيد التبخر ويُجفف البشرة أكثر.</td>
+      </tr>
+      <tr>
+        <td><strong>"الكريم الخفيف للصيف والثقيل للشتاء فقط"</strong></td>
+        <td>المعيار هو نوع البشرة وليس الموسم وحده. البشرة الجافة تحتاج كريم ثقيل حتى في الصيف.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================
+     PAGE 29: MARKET OVERVIEW
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٢٩</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">الفصل الثامن — السوق والمستهلك</span>
+    <div class="chapter-title">سوق منتجات ترطيب البشرة وكيفية اتخاذ قرار الشراء</div>
+  </div>
+
+  <p>
+    يُعدّ سوق منتجات العناية بالبشرة من أسرع الأسواق نمواً في العالم، مع توقعات بتجاوز قيمته 200 مليار دولار بحلول 2030. وفي ظل هذا الكم الهائل من الخيارات، أصبح اتخاذ القرار الصحيح أمراً يحتاج إلى وعي ومعرفة.
+  </p>
+
+  <div class="section-title">كيف تقرئين المنتج بذكاء؟</div>
+  <ul class="step-list">
+    <li><span class="step-num">١</span><span><strong>قائمة المكونات (INCI List):</strong> المكوّن الأول هو الأعلى تركيزاً. ابحثي عن المكونات الفعّالة في أوائل القائمة.</span></li>
+    <li><span class="step-num">٢</span><span><strong>الادعاءات التسويقية:</strong> كلمات مثل "يُجدد الشباب في 7 أيام" أو "يُحفز الكولاجين فوراً" هي في الغالب ادعاءات تسويقية غير مُقننة.</span></li>
+    <li><span class="step-num">٣</span><span><strong>الدراسات السريرية:</strong> ابحثي عن منتجات تستند إلى دراسات منشورة، وليس فقط شهادات مؤثرات التواصل الاجتماعي.</span></li>
+    <li><span class="step-num">٤</span><span><strong>رقم الترخيص:</strong> تأكدي دائماً من وجود رقم تسجيل معتمد من هيئة الغذاء والدواء في بلدك.</span></li>
+  </ul>
+
+  <div class="section-title">تصنيف الفئات السعرية</div>
+
+  <table class="ingredient-table">
+    <thead>
+      <tr>
+        <th>الفئة</th>
+        <th>المميزات</th>
+        <th>توصية</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>الاقتصادية</strong></td>
+        <td>مكونات أساسية فعّالة، قيمة جيدة</td>
+        <td>مثالية للمرطبات اليومية كالجسم</td>
+      </tr>
+      <tr>
+        <td><strong>المتوسطة</strong></td>
+        <td>مكونات محسّنة، تركيبات مدروسة</td>
+        <td>الخيار الأمثل للوجه لمعظم الناس</td>
+      </tr>
+      <tr>
+        <td><strong>الفاخرة</strong></td>
+        <td>تقنيات نانو، تركيزات عالية، تجربة استخدام مميزة</td>
+        <td>استثمار للعلاجات المكثفة أو السيرومات</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <span class="note-icon">🛒</span>
+    <p><strong>نصيحة ذهبية:</strong> لا تشتري منتجاً لمجرد أن مؤثرة مشهورة أوصت به. بشرتها تختلف عن بشرتك. اقرئي المكونات، افهمي احتياجاتك، واستشيري متخصصة إذا احتجت.</p>
+  </div>
+</div>
+
+<!-- ============================
+     PAGE 30: REFERENCES (WAS 22)
+     ============================ -->
+<div class="page">
+  <div class="page-corner tl"></div><div class="page-corner bl"></div>
+  <div class="page-corner tr"></div><div class="page-corner br"></div>
+  <div class="page-number">٣٠</div>
+
+  <div class="chapter-header">
+    <span class="chapter-label">المراجع</span>
+    <div class="chapter-title">المراجع والمصادر</div>
+  </div>
+
+  <ul class="references-list">
+    <li>Baumann L. (2014). <em>Cosmetic Dermatology: Principles and Practice</em>. McGraw-Hill Medical.</li>
+    <li>Elias, P.M. & Feingold, K.R. (2006). <em>Skin Barrier</em>. Taylor & Francis. دراسة شاملة في آليات الحاجز الجلدي.</li>
+    <li>Fluhr, J.W., et al. (2008). Emollients and moisturizers. <em>Journal of the European Academy of Dermatology</em>.</li>
+    <li>Loden, M. (2003). Role of topical emollients and moisturizers in the treatment of dry skin. <em>American Journal of Clinical Dermatology</em>.</li>
+    <li>Rawlings, A.V. & Harding, C.R. (2004). Moisturization and skin barrier function. <em>Dermatologic Therapy</em>, 17(1), 43–48.</li>
+    <li>Schade, N., et al. (2021). Ceramide-based moisturizers restore epidermal barrier. <em>Journal of Clinical Dermatology</em>.</li>
+    <li>منظمة الصحة العالمية (WHO) — إرشادات سلامة مستحضرات التجميل، الطبعة 2020.</li>
+    <li>الهيئة العامة للغذاء والدواء السعودية — قائمة المواد المحظورة في مستحضرات التجميل، 2023.</li>
+    <li>Draelos, Z.D. (2018). <em>Cosmetics and Dermatological Problems and Solutions</em>. CRC Press.</li>
+    <li>Purnamawati, S., et al. (2017). The role of moisturizers in addressing various kinds of dermatitis. <em>Clinical Medicine & Research</em>.</li>
+    <li>Visscher, M.O., et al. (2020). Hyaluronic acid molecular weight effects on skin hydration. <em>International Journal of Cosmetic Science</em>.</li>
+  </ul>
+
+  <div style="margin-top:40px; text-align:center; padding:20px; border-top:1px solid var(--blush);">
+    <p style="font-family:'Scheherazade New',serif; font-size:16px; color:var(--deep);">بحث معد بعناية من قِبل</p>
+    <p style="font-size:13px; color:var(--muted); margin-top:8px;">جود عون • رنيم عامر • ليندا عيسى • غلا محمد • زهراء عبده<br>عائشة حميد • لمار حميد • دارين أحمد مصطفى</p>
+    <p style="font-size:12px; color:var(--gold); margin-top:10px; letter-spacing:1px;">بإشراف: الأستاذة رويدة عمر اللهيبي</p>
+    <p style="font-size:11px; color:var(--muted); margin-top:5px;">مدرسة — عائشة محمد معدي، مديرة المدرسة</p>
+  </div>
+</div>
+
+
+<button class="print-btn" onclick="window.print()">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  طباعة البحث
+</button>
 
 </body>
 </html>
