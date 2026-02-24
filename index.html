@@ -21,8 +21,8 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   @page {
-    size: A4;
-    margin: 2cm;
+    size: A4 portrait;
+    margin: 0;
   }
 
   body {
@@ -560,9 +560,25 @@
 
   /* PRINT */
   @media print {
-    body { background: white; }
-    .page { margin: 0; box-shadow: none; page-break-after: always; }
-    .print-btn { display: none; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body {
+      width: 210mm;
+      margin: 0;
+      padding: 0 !important;
+      background: white;
+    }
+    .page {
+      width: 210mm !important;
+      height: 297mm !important;
+      min-height: unset !important;
+      margin: 0 !important;
+      padding: 45px 50px !important;
+      box-shadow: none !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      overflow: hidden !important;
+    }
+    .print-btn { display: none !important; }
   }
 
   /* SCREEN */
@@ -2112,12 +2128,24 @@
 </div>
 
 
-<button class="print-btn" onclick="window.print()">
+<button class="print-btn" onclick="printDoc()">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
   طباعة البحث
 </button>
 
+
+<script>
+function printDoc() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @page { size: A4 portrait; margin: 0; }
+  `;
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(() => document.head.removeChild(style), 1000);
+}
+</script>
 </body>
 </html>
