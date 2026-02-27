@@ -337,7 +337,7 @@
           </div>
           <div class="opt-field">
             <label>انتظار إضافي (ms)</label>
-            <input type="number" id="optDelay" value="600" min="0" max="8000" step="100" />
+            <input type="number" id="optDelay" value="800" min="0" max="8000" step="100" />
           </div>
           <div class="opt-field">
             <label>جودة JPEG (1–10)</label>
@@ -455,16 +455,41 @@ function injectHTML(html) {
 
   document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
 
+  // حقن الـ styles مع إضافة font-display:block لمنع الخطوط المقطعة
   doc.querySelectorAll('style').forEach(s => {
     const c = document.createElement('style');
     c.setAttribute('data-pdf-injected', '1');
-    c.textContent = s.textContent;
+    // أضف font-display:block لكل @font-face موجود
+    c.textContent = s.textContent.replace(
+      /@font-face\s*\{/gi,
+      '@font-face { font-display: block;'
+    );
     document.head.appendChild(c);
   });
 
+  // حقن الـ Google Fonts links مع إضافة &display=block
   doc.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
-    const href = l.getAttribute('href');
-    if (!href || document.querySelector('link[href="' + href + '"]')) return;
+    let href = l.getAttribute('href');
+    if (!href) return;
+
+    // تحويل display=swap إلى display=block لضمان عرض الخط فوراً
+    href = href.replace('display=swap', 'display=block');
+    if (!href.includes('display=') && href.includes('fonts.googleapis')) {
+      href += (href.includes('?') ? '&' : '?') + 'display=block';
+    }
+
+    if (document.querySelector('link[href="' + href + '"]')) return;
+
+    // preconnect لتسريع التحميل
+    if (href.includes('fonts.googleapis') || href.includes('fonts.gstatic')) {
+      const pre = document.createElement('link');
+      pre.rel  = 'preconnect';
+      pre.href = href.includes('gstatic') ? 'https://fonts.gstatic.com' : 'https://fonts.googleapis.com';
+      pre.crossOrigin = 'anonymous';
+      pre.setAttribute('data-pdf-injected', '1');
+      document.head.appendChild(pre);
+    }
+
     const c = document.createElement('link');
     c.rel  = 'stylesheet'; c.href = href;
     c.setAttribute('data-pdf-injected', '1');
@@ -479,9 +504,30 @@ function injectHTML(html) {
    STEP 2 — WAIT FOR RESOURCES
    ═══════════════════════════════════════ */
 async function waitForResources(container, extraDelay) {
-  try { await document.fonts.ready; LOG.ok('الخطوط جاهزة'); }
-  catch(e) { LOG.warn('الخطوط: ' + e.message); }
+  // 1) انتظر document.fonts.ready أولاً
+  try { await document.fonts.ready; LOG.ok('document.fonts.ready ✓'); }
+  catch(e) { LOG.warn('fonts.ready: ' + e.message); }
 
+  // 2) اجبر تحميل كل الخطوط المستخدمة فعلاً في العناصر
+  //    هذا يحل مشكلة الخطوط المقطعة — fonts.ready لا يضمن render الخطوط الخارجية
+  try {
+    const textNodes = [...container.querySelectorAll('*')].filter(el =>
+      el.childNodes.length && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())
+    );
+    const fontChecks = textNodes.slice(0, 30).map(el => {
+      const cs = getComputedStyle(el);
+      const fontFam = cs.fontFamily;
+      const fontWt  = cs.fontWeight;
+      const fontSize = cs.fontSize;
+      return document.fonts.load(fontWt + ' ' + fontSize + ' ' + fontFam, el.textContent.slice(0,4) || 'ا');
+    });
+    await Promise.allSettled(fontChecks);
+    LOG.ok('تحميل الخطوط المُستخدمة ✓');
+  } catch(e) {
+    LOG.warn('تحقق الخطوط: ' + e.message);
+  }
+
+  // 3) انتظر الصور
   const imgs = [...container.querySelectorAll('img')];
   LOG.info('صور: ' + imgs.length);
   if (imgs.length) {
@@ -493,40 +539,70 @@ async function waitForResources(container, extraDelay) {
     })));
     LOG.ok('الصور محملة (' + imgs.length + ')');
   }
-  if (extraDelay > 0) await sleep(extraDelay);
+
+  // 4) تأخير إضافي يسمح للمتصفح برسم الخطوط الخارجية (Google Fonts)
+  //    حتى لو extraDelay = 0 نعطيه 200ms على الأقل
+  const minDelay = Math.max(extraDelay, 200);
+  LOG.info('انتظار رسم الخطوط ' + minDelay + 'ms...');
+  await sleep(minDelay);
+
   LOG.ok('جاهز للتصوير');
 }
 
 /* ═══════════════════════════════════════
    STEP 3 — CAPTURE PAGE → BASE64
-   (canvas freed immediately to save RAM)
+   الإصلاحات:
+   - لا نغير position/overflow على العنصر الأصلي (يكسر text-align:center)
+   - في onclone نكتفي بإزالة page-break فقط دون المس بالـ layout
+   - نستخدم windowWidth/Height صريحة لضمان الأبعاد الصحيحة
    ═══════════════════════════════════════ */
 async function capturePageToBase64(pageEl, scale, quality) {
-  const ov = pageEl.style.visibility;
-  const od = pageEl.style.display;
-  pageEl.style.visibility = 'visible';
-  if (od === 'none') pageEl.style.display = 'block';
+  // احصل على الأبعاد الحقيقية قبل أي تعديل
+  const rect = pageEl.getBoundingClientRect();
+  const elW  = Math.round(pageEl.offsetWidth)  || 794;
+  const elH  = Math.round(pageEl.offsetHeight) || 1123;
 
   let imgData = null, previewDataUrl = null;
   try {
     const canvas = await html2canvas(pageEl, {
       scale,
-      useCORS: true,
-      allowTaint: true,
+      useCORS        : true,
+      allowTaint     : true,
       backgroundColor: '#ffffff',
-      logging: false,
-      imageTimeout: 20000,
+      logging        : false,
+      imageTimeout   : 20000,
       removeContainer: true,
       foreignObjectRendering: false,
+      width  : elW,
+      height : elH,
+      // ⚠️ لا نضيف x/y لأن html2canvas يحسبها تلقائياً من موضع العنصر
       onclone(clonedDoc, clonedEl) {
-        clonedEl.style.visibility = 'visible';
-        clonedEl.style.display    = 'block';
-        clonedEl.style.overflow   = 'visible';
-        clonedEl.style.position   = 'relative';
+        // ✅ فقط نزيل خصائص page-break — لا نلمس display/position/overflow/visibility
+        // لأن أي تغيير على هذه الخصائص يكسر text-align:center وتوزيع العناصر
         clonedDoc.querySelectorAll('*').forEach(el => {
           const s = el.style;
-          s.pageBreakAfter = s.pageBreakBefore = s.pageBreakInside = '';
-          s.breakAfter     = s.breakBefore     = s.breakInside     = '';
+          if (s.pageBreakAfter)  s.pageBreakAfter  = 'auto';
+          if (s.pageBreakBefore) s.pageBreakBefore = 'auto';
+          if (s.pageBreakInside) s.pageBreakInside = 'auto';
+          if (s.breakAfter)      s.breakAfter      = 'auto';
+          if (s.breakBefore)     s.breakBefore     = 'auto';
+          if (s.breakInside)     s.breakInside     = 'auto';
+        });
+
+        // ✅ فقط تأكد من رؤية العنصر الرئيسي نفسه
+        clonedEl.style.visibility = 'visible';
+        clonedEl.style.opacity    = '1';
+
+        // ✅ ضمان تحميل الخطوط في المستند المستنسخ
+        const existingLinks = [...document.querySelectorAll('link[data-pdf-injected]')];
+        existingLinks.forEach(link => {
+          const found = clonedDoc.querySelector('link[href="' + link.href + '"]');
+          if (!found) {
+            const cl = clonedDoc.createElement('link');
+            cl.rel  = 'stylesheet';
+            cl.href = link.href;
+            clonedDoc.head.appendChild(cl);
+          }
         });
       }
     });
@@ -534,14 +610,15 @@ async function capturePageToBase64(pageEl, scale, quality) {
     imgData        = canvas.toDataURL('image/jpeg', quality / 10);
     previewDataUrl = canvas.toDataURL('image/jpeg', 0.5);
 
-    // Free canvas RAM immediately
+    // تحرير الذاكرة فوراً
     canvas.width = 0;
     canvas.height = 0;
 
-  } finally {
-    pageEl.style.visibility = ov;
-    pageEl.style.display    = od;
+  } catch(err) {
+    LOG.err('فشل تصوير الصفحة: ' + err.message);
+    throw err;
   }
+
   return { imgData, previewDataUrl };
 }
 
@@ -577,7 +654,7 @@ function addPreviewCard(dataUrl, index, total) {
 async function startConversion() {
   const html    = document.getElementById('htmlInput').value.trim();
   const scale   = Math.max(1, Math.min(6, parseInt(document.getElementById('optScale').value)    || 3));
-  const delay   = Math.max(0,            parseInt(document.getElementById('optDelay').value)     || 600);
+  const delay   = Math.max(0,            parseInt(document.getElementById('optDelay').value)     || 800);
   const quality = Math.max(1, Math.min(10, parseInt(document.getElementById('optQuality').value) || 9));
   const filename= (document.getElementById('optFilename').value.trim() || 'document').replace(/[^\w\-أ-ي]/g, '_');
 
@@ -600,7 +677,8 @@ async function startConversion() {
     const container = injectHTML(html);
     LOG.ok('HTML مُحقن');
     setProgress(12, 'تحميل الموارد...');
-    await sleep(60);
+    // انتظر أطول بعد الحقن مباشرة لإعطاء Google Fonts وقتاً للتسجيل
+    await sleep(300);
 
     await waitForResources(container, delay);
     setProgress(28, 'البحث عن صفحات...');
