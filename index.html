@@ -303,13 +303,8 @@
           <input type="number" id="optDelay" value="600" min="0" max="8000" step="100" />
         </div>
         <div class="opt-field">
-          <label>حجم الدُفعة</label>
-          <select id="optBatch">
-            <option value="1">1 صفحة</option>
-            <option value="2">2 صفحة</option>
-            <option value="3" selected>3 صفحات</option>
-            <option value="5">5 صفحات</option>
-          </select>
+          <label>جودة JPEG (1-10)</label>
+          <input type="number" id="optQuality" value="9" min="1" max="10" />
         </div>
       </div>
     </div>
@@ -478,37 +473,34 @@ async function waitForResources(container, extraDelay) {
 }
 
 /* ════════════════════════════════
-   STEP 3 — Capture one .page element
+   STEP 3 — Capture one .page → base64 string (ثم احذف الـ canvas فوراً)
    ════════════════════════════════ */
-async function capturePageElement(pageEl, scale) {
-  // Force element visibility in case any CSS hides it
+async function capturePageToBase64(pageEl, scale) {
   const origVisibility = pageEl.style.visibility;
   const origDisplay    = pageEl.style.display;
   pageEl.style.visibility = 'visible';
   if (origDisplay === 'none') pageEl.style.display = 'block';
 
-  let canvas;
+  let imgData = null;
+  let previewDataUrl = null;
+
   try {
-    canvas = await html2canvas(pageEl, {
+    const canvas = await html2canvas(pageEl, {
       scale           : scale,
       useCORS         : true,
       allowTaint      : true,
-      backgroundColor : '#ffffff',   // solid white = never transparent = no blank pages
+      backgroundColor : '#ffffff',
       logging         : false,
       imageTimeout    : 20000,
       removeContainer : true,
-      foreignObjectRendering: false, // more stable cross-browser
+      foreignObjectRendering: false,
       onclone(clonedDoc, clonedEl) {
-        // Ensure the cloned element is fully visible
         clonedEl.style.visibility = 'visible';
         clonedEl.style.display    = 'block';
         clonedEl.style.overflow   = 'visible';
         clonedEl.style.position   = 'relative';
-
-        // Remove any rules that cause rendering issues during capture
         clonedDoc.querySelectorAll('*').forEach(el => {
           const cs = el.style;
-          // Remove page-break properties
           cs.pageBreakAfter  = '';
           cs.pageBreakBefore = '';
           cs.pageBreakInside = '';
@@ -518,112 +510,59 @@ async function capturePageElement(pageEl, scale) {
         });
       }
     });
+
+    // ✅ استخرج البيانات من الـ canvas فوراً
+    imgData      = canvas.toDataURL('image/jpeg', Math.min(1, (window._pdfQuality || 9) / 10));
+    previewDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+
+    // ✅ احذف الـ canvas من الذاكرة فوراً — هذا هو مفتاح الحل
+    canvas.width  = 0;
+    canvas.height = 0;
+
   } finally {
-    // Restore original styles
     pageEl.style.visibility = origVisibility;
     pageEl.style.display    = origDisplay;
   }
 
-  return canvas;
+  return { imgData, previewDataUrl };
 }
 
-/* ════════════════════════════════
-   STEP 4 — Build PDF from canvases
-   ════════════════════════════════ */
-function buildAndDownloadPDF(canvases, filename) {
-  const { jsPDF } = window.jspdf;
-
-  // A4 dimensions in mm
-  const W_MM = 210;
-  const H_MM = 297;
-
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    unit       : 'mm',
-    format     : [W_MM, H_MM],
-    compress   : false,  // no compression → max fidelity
-    putOnlyUsedFonts: true,
-  });
-
-  canvases.forEach((canvas, i) => {
-    if (i > 0) pdf.addPage([W_MM, H_MM], 'portrait');
-
-    // Convert to PNG at maximum quality
-    const imgData = canvas.toDataURL('image/png', 1.0);
-
-    // Place image to fill the entire A4 page exactly
-    // NONE compression = no re-encoding artifacts
-    pdf.addImage(imgData, 'PNG', 0, 0, W_MM, H_MM, `page_${i}`, 'NONE');
-  });
-
-  pdf.save(`${filename}.pdf`);
-  return canvases.length;
-}
-
-/* ════════════════════════════════
-   STEP 5 — Render preview thumbnails
-   ════════════════════════════════ */
-function renderPreview(canvases) {
-  const scroll = document.getElementById('previewScroll');
-  document.getElementById('emptyState').style.display = 'none';
-
-  // Remove old thumbnails
-  scroll.querySelectorAll('.preview-page-card').forEach(c => c.remove());
-
-  canvases.forEach((canvas, i) => {
-    const card = document.createElement('div');
-    card.className = 'preview-page-card';
-
-    const img = document.createElement('img');
-    img.src = canvas.toDataURL('image/jpeg', 0.85); // JPEG for preview perf
-    const ratio = canvas.height / canvas.width;
-    const previewW = Math.min(480, scroll.clientWidth - 56);
-    img.style.width  = previewW + 'px';
-    img.style.height = (previewW * ratio) + 'px';
-    card.appendChild(img);
-
-    const badge = document.createElement('div');
-    badge.className  = 'page-num-badge';
-    badge.textContent = `صفحة ${i + 1} من ${canvases.length}`;
-    card.appendChild(badge);
-
-    scroll.appendChild(card);
-  });
-
-  document.getElementById('pageCountBadge').textContent = `${canvases.length} صفحة`;
-  scroll.scrollTop = 0;
-}
-
-/* ════════════════════════════════
-   MAIN — Orchestrate the pipeline
-   ════════════════════════════════ */
+/* ════════════════════════════════════════════════════════
+   MAIN — Streaming pipeline (صفحة واحدة في الذاكرة في أي وقت)
+   ════════════════════════════════════════════════════════ */
 async function startConversion() {
   const html     = document.getElementById('htmlInput').value.trim();
   const scale    = Math.max(1, Math.min(6, parseInt(document.getElementById('optScale').value)    || 3));
   const delay    = Math.max(0,            parseInt(document.getElementById('optDelay').value)     || 600);
-  const batchSz  = Math.max(1,            parseInt(document.getElementById('optBatch').value)     || 3);
+  const quality  = Math.max(1, Math.min(10, parseInt(document.getElementById('optQuality').value) || 9));
+  window._pdfQuality = quality;
   const filename = (document.getElementById('optFilename').value.trim() || 'document').replace(/[^\w\-أ-ي]/g, '_');
 
   if (!html) { alert('الرجاء لصق كود HTML أولاً'); return; }
 
   const btn = document.getElementById('btnConvert');
-  btn.disabled     = true;
-  btn.textContent  = '⏳ جاري التحويل...';
+  btn.disabled    = true;
+  btn.textContent = '⏳ جاري التحويل...';
   document.getElementById('progressWrap').classList.add('active');
 
   LOG.init();
-  LOG.info(`scale=${scale} | delay=${delay}ms | batch=${batchSz}`);
+  LOG.info(`scale=${scale} | delay=${delay}ms | quality=${quality}/10 | streaming`);
   setProgress(5, 'حقن HTML في DOM...');
 
-  const canvases = [];
+  // مسح المعاينة القديمة
+  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('pageCountBadge').textContent = '⏳';
+
+  // قائمة للمعاينة فقط (base64 منخفضة الجودة)
+  const previewList = [];
 
   try {
-
     /* ── 1. Inject ── */
     const container = injectHTML(html);
     LOG.ok('HTML مُحقن');
     setProgress(12, 'انتظار تحميل الموارد...');
-    await sleep(50); // let browser start loading linked resources
+    await sleep(50);
 
     /* ── 2. Wait ── */
     await waitForResources(container, delay);
@@ -633,48 +572,89 @@ async function startConversion() {
     const pages = [...container.querySelectorAll('.page')];
     if (pages.length === 0) {
       LOG.err('لا توجد عناصر تحمل class="page"');
-      alert('لم يُعثر على عناصر .page في الكود المُدخل.\nتأكد أن كل صفحة لديها class="page".');
+      alert('لم يُعثر على عناصر .page في الكود المُدخل.');
       resetBtn(btn); return;
     }
     LOG.ok(`تم اكتشاف ${pages.length} صفحة`);
-    setProgress(32, `تصوير ${pages.length} صفحة...`);
+    setProgress(32, `بدء التصوير المتدفق (${pages.length} صفحة)...`);
 
-    /* ── 4. Capture in batches ── */
-    for (let i = 0; i < pages.length; i += batchSz) {
-      const slice   = pages.slice(i, i + batchSz);
-      const results = await Promise.all(slice.map(p => capturePageElement(p, scale)));
-      canvases.push(...results);
+    /* ── 4. إنشاء PDF أولاً ثم تدفق الصفحات إليه واحدة بواحدة ── */
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation     : 'portrait',
+      unit            : 'mm',
+      format          : [210, 297],
+      compress        : false,
+      putOnlyUsedFonts: true,
+    });
 
-      const done = canvases.length;
-      const pct  = 32 + Math.round((done / pages.length) * 52);
-      setProgress(pct, `تم تصوير ${done} / ${pages.length} صفحة`);
-      LOG.ok(`دُفعة ${Math.ceil((i+1)/batchSz)}: صفحات ${i+1}–${i+slice.length}`);
+    for (let i = 0; i < pages.length; i++) {
 
-      // Yield to browser between batches
-      await sleep(20);
+      LOG.info(`تصوير صفحة ${i + 1} / ${pages.length}...`);
+      const pct = 32 + Math.round(((i) / pages.length) * 58);
+      setProgress(pct, `صفحة ${i + 1} / ${pages.length}`);
+
+      // صوّر الصفحة واحصل على base64 — الـ canvas يُحذف داخل الدالة
+      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], scale);
+
+      // أضف للـ PDF مباشرة
+      if (i > 0) pdf.addPage([210, 297], 'portrait');
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, `p${i}`, 'NONE');
+      LOG.ok(`✓ صفحة ${i + 1} أُضيفت للـ PDF`);
+
+      // احتفظ بنسخة منخفضة للمعاينة فقط
+      previewList.push(previewDataUrl);
+
+      // أضف بطاقة معاينة الصفحة الحالية فوراً
+      addPreviewCard(previewDataUrl, i, pages.length);
+
+      // أعطِ المتصفح فرصة للتنفس بين الصفحات
+      await sleep(30);
     }
 
-    /* ── 5. Build PDF ── */
-    setProgress(86, 'إنشاء ملف PDF...');
-    LOG.info('إنشاء PDF...');
-    const count = buildAndDownloadPDF(canvases, filename);
-    LOG.ok(`تم حفظ "${filename}.pdf" (${count} صفحة)`);
+    /* ── 5. حفظ PDF ── */
+    setProgress(92, 'حفظ ملف PDF...');
+    LOG.info('حفظ PDF...');
+    pdf.save(`${filename}.pdf`);
+    LOG.ok(`تم حفظ "${filename}.pdf" (${pages.length} صفحة)`);
 
-    /* ── 6. Preview ── */
-    setProgress(96, 'تحديث المعاينة...');
-    renderPreview(canvases);
-    setProgress(100, `✓ اكتمل! ${count} صفحة جاهزة`);
+    document.getElementById('pageCountBadge').textContent = `${pages.length} صفحة`;
+    setProgress(100, `✓ اكتمل! ${pages.length} صفحة جاهزة`);
 
-    /* ── 7. Cleanup injected styles ── */
+    /* ── 6. تنظيف ── */
     document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
+    document.getElementById('renderContainer').innerHTML = '';
 
   } catch (err) {
     LOG.err('خطأ فادح: ' + err.message);
     console.error('[PDF Converter]', err);
-    alert('حدث خطأ:\n' + err.message + '\n\nراجع السجل أدناه لمزيد من التفاصيل.');
+    alert('حدث خطأ:\n' + err.message);
   }
 
   resetBtn(btn);
+}
+
+/* ── إضافة بطاقة معاينة واحدة فوراً (streaming preview) ── */
+function addPreviewCard(dataUrl, index, total) {
+  const scroll = document.getElementById('previewScroll');
+  document.getElementById('emptyState').style.display = 'none';
+
+  const card = document.createElement('div');
+  card.className = 'preview-page-card';
+
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  const previewW = Math.min(480, scroll.clientWidth - 56);
+  img.style.width  = previewW + 'px';
+  img.style.height = (previewW * (297/210)) + 'px'; // نسبة A4
+  card.appendChild(img);
+
+  const badge = document.createElement('div');
+  badge.className   = 'page-num-badge';
+  badge.textContent = `صفحة ${index + 1} من ${total}`;
+  card.appendChild(badge);
+
+  scroll.appendChild(card);
 }
 
 function resetBtn(btn) {
