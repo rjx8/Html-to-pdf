@@ -587,6 +587,26 @@ async function capturePageToBase64(pageEl, scale, quality) {
           if (s.breakAfter)      s.breakAfter      = 'auto';
           if (s.breakBefore)     s.breakBefore     = 'auto';
           if (s.breakInside)     s.breakInside     = 'auto';
+
+          // ✅ إصلاح letter-spacing مع النص العربي
+          // html2canvas يطبّق letter-spacing بعد كل حرف بما فيها آخر حرف في الكلمة
+          // هذا يكسر الكلمات العربية — الحل: نصفّر letter-spacing فقط على العناصر التي
+          // تحتوي على نص عربي وعندها letter-spacing موجب
+          const cs = getComputedStyle(el);
+          const ls = parseFloat(cs.letterSpacing);
+          if (ls > 0 || s.letterSpacing) {
+            // تحقق هل النص يحتوي على حروف عربية
+            const text = el.textContent || '';
+            const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
+            if (hasArabic) {
+              el.style.letterSpacing = '0px';
+              // عوّض بـ word-spacing لو كانت هناك مسافات بين كلمات
+              // (بعض التصاميم تستخدم letter-spacing لإضافة هواء بين الكلمات)
+              if (ls > 0 && text.includes(' ')) {
+                el.style.wordSpacing = Math.min(ls * 2, 8) + 'px';
+              }
+            }
+          }
         });
 
         // ✅ فقط تأكد من رؤية العنصر الرئيسي نفسه
