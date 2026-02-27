@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>محوّل HTML إلى PDF</title>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -16,257 +16,281 @@
       --muted: #6b6460;
       --border: #d4cfc9;
       --surface: #ffffff;
+      --header-h: 60px;
+      --tabs-h: 48px;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body {
       font-family: 'IBM Plex Sans Arabic', sans-serif;
       background: var(--paper);
       color: var(--ink);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
     }
 
+    /* HEADER */
     header {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 22px 40px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--ink); color: var(--paper);
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 24px;
       border-bottom: 3px solid var(--accent);
-      flex-shrink: 0;
+      z-index: 100;
     }
-
     .logo-mark {
-      width: 42px; height: 42px;
+      width: 36px; height: 36px; flex-shrink: 0;
       background: var(--accent);
       display: grid; place-items: center;
-      font-size: 14px; font-weight: 700;
-      color: #fff; flex-shrink: 0;
-      clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%);
+      font-size: 12px; font-weight: 700; color: #fff;
+      clip-path: polygon(0 0,85% 0,100% 15%,100% 100%,15% 100%,0 85%);
+    }
+    header h1 { font-size: 1.1rem; font-weight: 600; }
+    header p  { font-size: 0.7rem; color: #a09a94; margin-top: 1px; }
+
+    /* TAB BAR — mobile only */
+    .tab-bar {
+      display: none;
+      position: fixed;
+      top: var(--header-h); left: 0; right: 0;
+      height: var(--tabs-h);
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
+      z-index: 99;
+    }
+    .tab-bar-inner { display: flex; height: 100%; }
+    .tab-btn {
+      flex: 1; background: none; border: none;
+      font-family: inherit; font-size: 0.85rem; font-weight: 600;
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      border-bottom: 2.5px solid transparent;
+      transition: color .15s, border-color .15s;
+      padding: 0 8px;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-badge {
+      background: var(--accent); color: #fff;
+      font-size: 0.58rem; font-weight: 700;
+      padding: 1px 5px; border-radius: 10px; display: none;
+    }
+    .tab-badge.visible { display: inline-block; }
+
+    /* APP BODY */
+    .app-body {
+      position: fixed;
+      top: var(--header-h); left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: row;
     }
 
-    header h1 { font-size: 1.3rem; font-weight: 600; }
-    header p  { font-size: 0.75rem; color: #a09a94; margin-top: 2px; }
-
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 400px 1fr;
-      min-height: 0;
-    }
-
+    /* SIDEBAR */
     .sidebar {
+      width: 380px; flex-shrink: 0;
       background: var(--surface);
       border-left: 1px solid var(--border);
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      overflow-y: auto;
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+    }
+    .sidebar-inner {
+      padding: 24px 20px 28px;
+      display: flex; flex-direction: column; gap: 18px; flex: 1;
     }
 
+    /* PREVIEW PANE */
+    .preview-pane {
+      flex: 1; background: #e0dbd4;
+      display: flex; flex-direction: column;
+      overflow: hidden; min-width: 0;
+    }
+    .preview-toolbar {
+      background: #2a2724; color: #c8c0b8;
+      padding: 8px 16px; font-size: 0.72rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .preview-toolbar span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    #previewScroll {
+      flex: 1; overflow-y: auto;
+      padding: 24px 20px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 24px;
+    }
+    .preview-page-card {
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18);
+      position: relative; margin-bottom: 16px; max-width: 100%;
+    }
+    .preview-page-card img { display: block; max-width: 100%; height: auto; }
+    .page-num-badge {
+      position: absolute; bottom: -18px;
+      left: 50%; transform: translateX(-50%);
+      font-size: 0.64rem; color: #8a8480; white-space: nowrap;
+    }
+    .empty-state {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; height: 100%;
+      color: #a09a94; text-align: center; padding: 24px;
+    }
+    .empty-icon {
+      width: 60px; height: 60px;
+      border: 2px dashed #c8c0b8; border-radius: 8px;
+      display: grid; place-items: center; font-size: 24px;
+    }
+    .empty-state code { background: #e8e4de; padding: 2px 5px; border-radius: 3px; font-size: .82em; }
+
+    /* FORM */
     .section-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
+      font-size: 0.67rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 7px;
     }
-
     textarea#htmlInput {
-      width: 100%;
-      height: 260px;
-      border: 1.5px solid var(--border);
-      border-radius: 4px;
-      padding: 12px;
+      width: 100%; height: 220px;
+      border: 1.5px solid var(--border); border-radius: 6px;
+      padding: 11px;
       font-family: 'Courier New', monospace;
-      font-size: 0.76rem;
-      line-height: 1.6;
-      resize: vertical;
-      background: #fafaf8;
-      color: var(--ink);
+      font-size: 0.74rem; line-height: 1.6; resize: vertical;
+      background: #fafaf8; color: var(--ink);
     }
     textarea#htmlInput:focus { outline: none; border-color: var(--accent); }
-
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .opt-field label {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 4px;
+      display: block; font-size: 0.69rem; font-weight: 600;
+      color: var(--muted); margin-bottom: 4px;
     }
-
-    .opt-field input, .opt-field select {
-      width: 100%;
-      padding: 7px 9px;
-      border: 1.5px solid var(--border);
-      border-radius: 4px;
-      font-size: 0.82rem;
-      font-family: inherit;
-      background: #fafaf8;
-      color: var(--ink);
+    .opt-field input {
+      width: 100%; padding: 9px 10px;
+      border: 1.5px solid var(--border); border-radius: 6px;
+      font-size: 0.85rem; font-family: inherit;
+      background: #fafaf8; color: var(--ink);
     }
-    .opt-field input:focus, .opt-field select:focus { outline: none; border-color: var(--accent); }
+    .opt-field input:focus { outline: none; border-color: var(--accent); }
 
-    .btn-convert {
-      width: 100%;
-      padding: 13px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.2s;
+    .btn-convert-desktop {
+      width: 100%; padding: 13px;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 0.92rem; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      transition: background .2s;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-convert:hover  { background: #a33608; }
-    .btn-convert:disabled { background: #c0b8b0; cursor: not-allowed; }
+    .btn-convert-desktop:hover     { background: #a33608; }
+    .btn-convert-desktop:disabled  { background: #c0b8b0; cursor: not-allowed; }
 
     .btn-sample {
-      width: 100%;
-      padding: 9px;
-      background: transparent;
-      color: var(--accent2);
-      border: 1.5px solid var(--accent2);
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
+      width: 100%; padding: 10px;
+      background: transparent; color: var(--accent2);
+      border: 1.5px solid var(--accent2); border-radius: 6px;
+      font-size: 0.82rem; font-weight: 600;
+      font-family: inherit; cursor: pointer;
     }
     .btn-sample:hover { background: #eef7f3; }
 
     .progress-wrap { display: none; flex-direction: column; gap: 6px; }
     .progress-wrap.active { display: flex; }
-
     .progress-bar-bg { height: 6px; background: #e8e4de; border-radius: 3px; overflow: hidden; }
     .progress-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), #e8620e);
-      border-radius: 3px;
-      width: 0%;
-      transition: width 0.3s ease;
+      border-radius: 3px; width: 0%; transition: width .3s ease;
     }
-    .progress-text { font-size: 0.73rem; color: var(--muted); text-align: center; }
+    .progress-text { font-size: .72rem; color: var(--muted); text-align: center; }
 
     .log-box {
-      background: #1a1612;
-      color: #c8c0b8;
-      border-radius: 4px;
-      padding: 10px 12px;
+      background: #1a1612; color: #c8c0b8;
+      border-radius: 6px; padding: 10px 12px;
       font-family: 'Courier New', monospace;
-      font-size: 0.7rem;
-      line-height: 1.8;
-      max-height: 120px;
-      overflow-y: auto;
-      display: none;
+      font-size: 0.68rem; line-height: 1.8;
+      max-height: 110px; overflow-y: auto; display: none;
     }
     .log-box.active { display: block; }
     .log-ok   { color: #6ecf8c; }
     .log-warn { color: #f0b84a; }
     .log-err  { color: #f06a6a; }
 
-    .preview-pane {
-      background: #e0dbd4;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .preview-toolbar {
-      background: #2a2724;
-      color: #c8c0b8;
-      padding: 9px 18px;
-      font-size: 0.73rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0;
-    }
-    .preview-toolbar span { display: flex; align-items: center; gap: 6px; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-
-    #previewScroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .preview-page-card {
-      background: #fff;
-      box-shadow: 0 6px 28px rgba(0,0,0,0.20);
-      position: relative;
-      margin-bottom: 18px;
-    }
-    .preview-page-card img { display: block; }
-    .page-num-badge {
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.66rem;
-      color: #8a8480;
-      white-space: nowrap;
-    }
-
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      height: 100%;
-      color: #a09a94;
-      text-align: center;
-    }
-    .empty-icon {
-      width: 64px; height: 64px;
-      border: 2px dashed #c8c0b8;
-      border-radius: 8px;
-      display: grid; place-items: center;
-      font-size: 26px;
-    }
-    .empty-state code {
-      background: #e8e4de;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-size: 0.85em;
-    }
-
-    /* The hidden render container — must be in DOM but off-screen */
-    #renderContainer {
+    /* MOBILE FAB */
+    .fab-convert {
       position: fixed;
-      top: 0; left: -9999px;
-      width: 794px;
-      background: #fff;
-      visibility: hidden;
-      pointer-events: none;
-      z-index: -1000;
+      bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 30px;
+      padding: 15px 32px;
+      font-family: inherit; font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(200,68,10,.5);
+      display: none; /* shown via media query */
+      align-items: center; gap: 8px;
+      white-space: nowrap;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .fab-convert:active { transform: translateX(-50%) scale(0.96); }
+    .fab-convert:disabled { background: #c0b8b0; box-shadow: none; }
+
+    /* RENDER CONTAINER */
+    #renderContainer {
+      position: fixed; top: 0; left: -9999px;
+      width: 794px; background: #fff;
+      visibility: hidden; pointer-events: none; z-index: -1000;
     }
 
-    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ═══════════════════════
+       MOBILE  ≤ 768px
+       ═══════════════════════ */
+    @media (max-width: 768px) {
+      :root { --header-h: 56px; }
+
+      header p    { display: none; }
+      header      { padding: 0 16px; }
+
+      .tab-bar    { display: block; }
+
+      .app-body {
+        top: calc(var(--header-h) + var(--tabs-h));
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%; flex: 1;
+        border-left: none;
+        display: none;
+      }
+      .sidebar.tab-active { display: flex; }
+      .sidebar-inner { padding: 16px 16px 100px; }
+
+      .preview-pane {
+        width: 100%; flex: 1;
+        display: none;
+      }
+      .preview-pane.tab-active { display: flex; }
+
+      textarea#htmlInput    { height: 180px; }
+      .opt-field input      { padding: 11px 10px; font-size: 1rem; }
+
+      .btn-convert-desktop  { display: none; }
+      .fab-convert          { display: flex; }
+
+      #previewScroll { padding: 16px 12px 88px; gap: 18px; }
+      .preview-page-card img { width: 100% !important; height: auto !important; }
+    }
+
+    @media (max-width: 380px) {
+      .options-grid   { grid-template-columns: 1fr; }
+      .tab-btn        { font-size: 0.78rem; gap: 4px; }
+    }
   </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="logo-mark">PDF</div>
   <div>
@@ -275,56 +299,70 @@
   </div>
 </header>
 
-<main>
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside class="sidebar">
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" id="tabEditor"  onclick="switchTab('editor')">✏️ المحرر</button>
+    <button class="tab-btn"        id="tabPreview" onclick="switchTab('preview')">
+      👁 المعاينة <span class="tab-badge" id="tabBadge">0</span>
+    </button>
+  </div>
+</div>
 
-    <div>
-      <div class="section-label">كود HTML</div>
-      <textarea id="htmlInput" dir="ltr"
-        placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'></textarea>
-    </div>
+<!-- APP BODY -->
+<div class="app-body">
 
-    <button class="btn-sample" onclick="loadSample()">⬇ تحميل مثال تجريبي</button>
+  <!-- SIDEBAR -->
+  <aside class="sidebar tab-active" id="panelEditor">
+    <div class="sidebar-inner">
 
-    <div>
-      <div class="section-label">إعدادات التحويل</div>
-      <div class="options-grid">
-        <div class="opt-field">
-          <label>دقة التصوير (scale)</label>
-          <input type="number" id="optScale" value="3" min="1" max="6" />
-        </div>
-        <div class="opt-field">
-          <label>اسم ملف PDF</label>
-          <input type="text" id="optFilename" value="document" />
-        </div>
-        <div class="opt-field">
-          <label>انتظار إضافي (ms)</label>
-          <input type="number" id="optDelay" value="600" min="0" max="8000" step="100" />
-        </div>
-        <div class="opt-field">
-          <label>جودة JPEG (1-10)</label>
-          <input type="number" id="optQuality" value="9" min="1" max="10" />
+      <div>
+        <div class="section-label">كود HTML</div>
+        <textarea id="htmlInput" dir="ltr"
+          placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'></textarea>
+      </div>
+
+      <button class="btn-sample" onclick="loadSample()">⬇ تحميل مثال تجريبي</button>
+
+      <div>
+        <div class="section-label">إعدادات</div>
+        <div class="options-grid">
+          <div class="opt-field">
+            <label>دقة التصوير (scale)</label>
+            <input type="number" id="optScale" value="3" min="1" max="6" />
+          </div>
+          <div class="opt-field">
+            <label>اسم ملف PDF</label>
+            <input type="text" id="optFilename" value="document" />
+          </div>
+          <div class="opt-field">
+            <label>انتظار إضافي (ms)</label>
+            <input type="number" id="optDelay" value="600" min="0" max="8000" step="100" />
+          </div>
+          <div class="opt-field">
+            <label>جودة JPEG (1–10)</label>
+            <input type="number" id="optQuality" value="9" min="1" max="10" />
+          </div>
         </div>
       </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="section-label">التقدم</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">جاري التحضير...</div>
+      </div>
+
+      <pre class="log-box" id="logBox"></pre>
+
+      <button class="btn-convert-desktop" id="btnConvert" onclick="startConversion()">
+        🖨 تحويل إلى PDF وتنزيله
+      </button>
+
     </div>
-
-    <div class="progress-wrap" id="progressWrap">
-      <div class="section-label">التقدم</div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-      <div class="progress-text" id="progressText">جاري التحضير...</div>
-    </div>
-
-    <pre class="log-box" id="logBox"></pre>
-
-    <button class="btn-convert" id="btnConvert" onclick="startConversion()">
-      <span>🖨</span> تحويل إلى PDF وتنزيله
-    </button>
-
   </aside>
 
-  <!-- ═══ PREVIEW PANE ═══ -->
-  <section class="preview-pane">
+  <!-- PREVIEW PANE -->
+  <section class="preview-pane" id="panelPreview">
     <div class="preview-toolbar">
       <span><span class="dot"></span> معاينة الصفحات</span>
       <span id="pageCountBadge">—</span>
@@ -334,165 +372,151 @@
         <div class="empty-icon">📄</div>
         <div>
           <strong>لا توجد صفحات بعد</strong><br/>
-          الصق كود HTML يحتوي على عناصر <code>.page</code><br/>ثم اضغط تحويل
+          الصق كود HTML يحتوي على <code>.page</code><br/>ثم اضغط تحويل
         </div>
       </div>
     </div>
   </section>
-</main>
 
-<!-- Hidden render container — stays in DOM for html2canvas -->
+</div>
+
+<!-- Mobile FAB -->
+<button class="fab-convert" id="fabConvert" onclick="startConversion()">
+  🖨 تحويل إلى PDF
+</button>
+
+<!-- Hidden render container -->
 <div id="renderContainer"></div>
 
 <script>
-/* ════════════════════════════════════════════════════════════════
-   HTML → PDF ENGINE
-   ════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   TAB SWITCHING
+   ═══════════════════════════════════════ */
+function switchTab(tab) {
+  const isEditor = tab === 'editor';
+  document.getElementById('panelEditor') .classList.toggle('tab-active',  isEditor);
+  document.getElementById('panelPreview').classList.toggle('tab-active', !isEditor);
+  document.getElementById('tabEditor')  .classList.toggle('active',  isEditor);
+  document.getElementById('tabPreview') .classList.toggle('active', !isEditor);
+}
+function updateTabBadge(n) {
+  const b = document.getElementById('tabBadge');
+  b.textContent = n;
+  b.classList.toggle('visible', n > 0);
+}
 
-/* ── Logger ── */
+/* ═══════════════════════════════════════
+   LOGGER
+   ═══════════════════════════════════════ */
 const LOG = (() => {
   let box;
   return {
-    init() {
-      box = document.getElementById('logBox');
-      box.classList.add('active');
-      box.innerHTML = '';
-    },
-    _write(msg, cls) {
+    init() { box = document.getElementById('logBox'); box.classList.add('active'); box.innerHTML = ''; },
+    _w(msg, cls) {
       if (!box) return;
       const d = document.createElement('div');
       d.className = cls || '';
-      d.textContent = `[${new Date().toLocaleTimeString('en')}] ${msg}`;
+      d.textContent = '[' + new Date().toLocaleTimeString('en') + '] ' + msg;
       box.appendChild(d);
       box.scrollTop = box.scrollHeight;
     },
-    ok  (m) { this._write('✓ ' + m, 'log-ok'); },
-    warn(m) { this._write('⚠ ' + m, 'log-warn'); },
-    err (m) { this._write('✗ ' + m, 'log-err'); },
-    info(m) { this._write('  ' + m); },
+    ok  (m) { this._w('✓ ' + m, 'log-ok');   },
+    warn(m) { this._w('⚠ ' + m, 'log-warn'); },
+    err (m) { this._w('✗ ' + m, 'log-err');  },
+    info(m) { this._w('  ' + m);              },
   };
 })();
 
-/* ── Progress ── */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 function setProgress(pct, msg) {
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressText').textContent = msg;
 }
 
-/* ── Utility ── */
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+function setButtons(disabled, label) {
+  ['btnConvert','fabConvert'].forEach(id => {
+    const el = document.getElementById(id);
+    el.disabled   = disabled;
+    el.innerHTML  = label;
+  });
+}
 
-/* ════════════════════
-   STEP 1 — Inject HTML
-   ════════════════════ */
+/* ═══════════════════════════════════════
+   STEP 1 — INJECT HTML
+   ═══════════════════════════════════════ */
 function injectHTML(html) {
   const container = document.getElementById('renderContainer');
-
-  // Reset
   container.innerHTML = '';
-  container.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: -9999px;
-    width: 794px;
-    background: #fff;
-    visibility: visible;
-    pointer-events: none;
-    z-index: -1000;
-  `;
+  container.style.cssText = 'position:fixed;top:0;left:-9999px;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1000;';
 
-  // Parse the incoming HTML
-  const parser  = new DOMParser();
-  const doc     = parser.parseFromString(html, 'text/html');
+  const parser = new DOMParser();
+  const doc    = parser.parseFromString(html, 'text/html');
 
-  // Transplant <style> and <link> tags into our document so fonts/CSS load
-  const styleTags = [...doc.querySelectorAll('style')];
-  const linkTags  = [...doc.querySelectorAll('link[rel="stylesheet"]')];
-
-  // Remove old injected styles from previous run
   document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
 
-  styleTags.forEach(s => {
-    const clone = document.createElement('style');
-    clone.setAttribute('data-pdf-injected', '1');
-    clone.textContent = s.textContent;
-    document.head.appendChild(clone);
+  doc.querySelectorAll('style').forEach(s => {
+    const c = document.createElement('style');
+    c.setAttribute('data-pdf-injected', '1');
+    c.textContent = s.textContent;
+    document.head.appendChild(c);
   });
 
-  linkTags.forEach(l => {
-    // Avoid duplicates
+  doc.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
     const href = l.getAttribute('href');
-    if (!href || document.querySelector(`link[href="${href}"]`)) return;
-    const clone = document.createElement('link');
-    clone.rel  = 'stylesheet';
-    clone.href = href;
-    clone.setAttribute('data-pdf-injected', '1');
-    document.head.appendChild(clone);
+    if (!href || document.querySelector('link[href="' + href + '"]')) return;
+    const c = document.createElement('link');
+    c.rel  = 'stylesheet'; c.href = href;
+    c.setAttribute('data-pdf-injected', '1');
+    document.head.appendChild(c);
   });
 
-  // Inject the <body> content into the container
   container.innerHTML = doc.body.innerHTML;
-
   return container;
 }
 
-/* ════════════════════════════════
-   STEP 2 — Wait for ALL resources
-   ════════════════════════════════ */
+/* ═══════════════════════════════════════
+   STEP 2 — WAIT FOR RESOURCES
+   ═══════════════════════════════════════ */
 async function waitForResources(container, extraDelay) {
+  try { await document.fonts.ready; LOG.ok('الخطوط جاهزة'); }
+  catch(e) { LOG.warn('الخطوط: ' + e.message); }
 
-  // 1) Wait for font loading API
-  try {
-    await document.fonts.ready;
-    LOG.ok('document.fonts.ready ✓');
-  } catch(e) {
-    LOG.warn('تعذّر انتظار الخطوط: ' + e.message);
-  }
-
-  // 2) Wait for all images
   const imgs = [...container.querySelectorAll('img')];
-  LOG.info(`صور مكتشفة: ${imgs.length}`);
-
-  if (imgs.length > 0) {
+  LOG.info('صور: ' + imgs.length);
+  if (imgs.length) {
     await Promise.all(imgs.map(img => new Promise(res => {
       if (img.complete && img.naturalWidth > 0) { res(); return; }
-      const timeout = setTimeout(() => { LOG.warn('انتهت مهلة صورة: ' + img.src.slice(0,50)); res(); }, 10000);
-      img.onload  = () => { clearTimeout(timeout); res(); };
-      img.onerror = () => { clearTimeout(timeout); LOG.warn('خطأ تحميل صورة'); res(); };
+      const t = setTimeout(() => { LOG.warn('مهلة صورة'); res(); }, 10000);
+      img.onload  = () => { clearTimeout(t); res(); };
+      img.onerror = () => { clearTimeout(t); res(); };
     })));
-    LOG.ok(`جميع الصور محملة (${imgs.length})`);
+    LOG.ok('الصور محملة (' + imgs.length + ')');
   }
-
-  // 3) Extra delay for fonts to render (especially Google Fonts)
-  if (extraDelay > 0) {
-    LOG.info(`انتظار إضافي ${extraDelay}ms للخطوط...`);
-    await sleep(extraDelay);
-  }
-
+  if (extraDelay > 0) await sleep(extraDelay);
   LOG.ok('جاهز للتصوير');
 }
 
-/* ════════════════════════════════
-   STEP 3 — Capture one .page → base64 string (ثم احذف الـ canvas فوراً)
-   ════════════════════════════════ */
-async function capturePageToBase64(pageEl, scale) {
-  const origVisibility = pageEl.style.visibility;
-  const origDisplay    = pageEl.style.display;
+/* ═══════════════════════════════════════
+   STEP 3 — CAPTURE PAGE → BASE64
+   (canvas freed immediately to save RAM)
+   ═══════════════════════════════════════ */
+async function capturePageToBase64(pageEl, scale, quality) {
+  const ov = pageEl.style.visibility;
+  const od = pageEl.style.display;
   pageEl.style.visibility = 'visible';
-  if (origDisplay === 'none') pageEl.style.display = 'block';
+  if (od === 'none') pageEl.style.display = 'block';
 
-  let imgData = null;
-  let previewDataUrl = null;
-
+  let imgData = null, previewDataUrl = null;
   try {
     const canvas = await html2canvas(pageEl, {
-      scale           : scale,
-      useCORS         : true,
-      allowTaint      : true,
-      backgroundColor : '#ffffff',
-      logging         : false,
-      imageTimeout    : 20000,
-      removeContainer : true,
+      scale,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      imageTimeout: 20000,
+      removeContainer: true,
       foreignObjectRendering: false,
       onclone(clonedDoc, clonedEl) {
         clonedEl.style.visibility = 'visible';
@@ -500,141 +524,30 @@ async function capturePageToBase64(pageEl, scale) {
         clonedEl.style.overflow   = 'visible';
         clonedEl.style.position   = 'relative';
         clonedDoc.querySelectorAll('*').forEach(el => {
-          const cs = el.style;
-          cs.pageBreakAfter  = '';
-          cs.pageBreakBefore = '';
-          cs.pageBreakInside = '';
-          cs.breakAfter      = '';
-          cs.breakBefore     = '';
-          cs.breakInside     = '';
+          const s = el.style;
+          s.pageBreakAfter = s.pageBreakBefore = s.pageBreakInside = '';
+          s.breakAfter     = s.breakBefore     = s.breakInside     = '';
         });
       }
     });
 
-    // ✅ استخرج البيانات من الـ canvas فوراً
-    imgData      = canvas.toDataURL('image/jpeg', Math.min(1, (window._pdfQuality || 9) / 10));
+    imgData        = canvas.toDataURL('image/jpeg', quality / 10);
     previewDataUrl = canvas.toDataURL('image/jpeg', 0.5);
 
-    // ✅ احذف الـ canvas من الذاكرة فوراً — هذا هو مفتاح الحل
-    canvas.width  = 0;
+    // Free canvas RAM immediately
+    canvas.width = 0;
     canvas.height = 0;
 
   } finally {
-    pageEl.style.visibility = origVisibility;
-    pageEl.style.display    = origDisplay;
+    pageEl.style.visibility = ov;
+    pageEl.style.display    = od;
   }
-
   return { imgData, previewDataUrl };
 }
 
-/* ════════════════════════════════════════════════════════
-   MAIN — Streaming pipeline (صفحة واحدة في الذاكرة في أي وقت)
-   ════════════════════════════════════════════════════════ */
-async function startConversion() {
-  const html     = document.getElementById('htmlInput').value.trim();
-  const scale    = Math.max(1, Math.min(6, parseInt(document.getElementById('optScale').value)    || 3));
-  const delay    = Math.max(0,            parseInt(document.getElementById('optDelay').value)     || 600);
-  const quality  = Math.max(1, Math.min(10, parseInt(document.getElementById('optQuality').value) || 9));
-  window._pdfQuality = quality;
-  const filename = (document.getElementById('optFilename').value.trim() || 'document').replace(/[^\w\-أ-ي]/g, '_');
-
-  if (!html) { alert('الرجاء لصق كود HTML أولاً'); return; }
-
-  const btn = document.getElementById('btnConvert');
-  btn.disabled    = true;
-  btn.textContent = '⏳ جاري التحويل...';
-  document.getElementById('progressWrap').classList.add('active');
-
-  LOG.init();
-  LOG.info(`scale=${scale} | delay=${delay}ms | quality=${quality}/10 | streaming`);
-  setProgress(5, 'حقن HTML في DOM...');
-
-  // مسح المعاينة القديمة
-  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('pageCountBadge').textContent = '⏳';
-
-  // قائمة للمعاينة فقط (base64 منخفضة الجودة)
-  const previewList = [];
-
-  try {
-    /* ── 1. Inject ── */
-    const container = injectHTML(html);
-    LOG.ok('HTML مُحقن');
-    setProgress(12, 'انتظار تحميل الموارد...');
-    await sleep(50);
-
-    /* ── 2. Wait ── */
-    await waitForResources(container, delay);
-    setProgress(28, 'البحث عن عناصر .page...');
-
-    /* ── 3. Find pages ── */
-    const pages = [...container.querySelectorAll('.page')];
-    if (pages.length === 0) {
-      LOG.err('لا توجد عناصر تحمل class="page"');
-      alert('لم يُعثر على عناصر .page في الكود المُدخل.');
-      resetBtn(btn); return;
-    }
-    LOG.ok(`تم اكتشاف ${pages.length} صفحة`);
-    setProgress(32, `بدء التصوير المتدفق (${pages.length} صفحة)...`);
-
-    /* ── 4. إنشاء PDF أولاً ثم تدفق الصفحات إليه واحدة بواحدة ── */
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation     : 'portrait',
-      unit            : 'mm',
-      format          : [210, 297],
-      compress        : false,
-      putOnlyUsedFonts: true,
-    });
-
-    for (let i = 0; i < pages.length; i++) {
-
-      LOG.info(`تصوير صفحة ${i + 1} / ${pages.length}...`);
-      const pct = 32 + Math.round(((i) / pages.length) * 58);
-      setProgress(pct, `صفحة ${i + 1} / ${pages.length}`);
-
-      // صوّر الصفحة واحصل على base64 — الـ canvas يُحذف داخل الدالة
-      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], scale);
-
-      // أضف للـ PDF مباشرة
-      if (i > 0) pdf.addPage([210, 297], 'portrait');
-      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, `p${i}`, 'NONE');
-      LOG.ok(`✓ صفحة ${i + 1} أُضيفت للـ PDF`);
-
-      // احتفظ بنسخة منخفضة للمعاينة فقط
-      previewList.push(previewDataUrl);
-
-      // أضف بطاقة معاينة الصفحة الحالية فوراً
-      addPreviewCard(previewDataUrl, i, pages.length);
-
-      // أعطِ المتصفح فرصة للتنفس بين الصفحات
-      await sleep(30);
-    }
-
-    /* ── 5. حفظ PDF ── */
-    setProgress(92, 'حفظ ملف PDF...');
-    LOG.info('حفظ PDF...');
-    pdf.save(`${filename}.pdf`);
-    LOG.ok(`تم حفظ "${filename}.pdf" (${pages.length} صفحة)`);
-
-    document.getElementById('pageCountBadge').textContent = `${pages.length} صفحة`;
-    setProgress(100, `✓ اكتمل! ${pages.length} صفحة جاهزة`);
-
-    /* ── 6. تنظيف ── */
-    document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
-    document.getElementById('renderContainer').innerHTML = '';
-
-  } catch (err) {
-    LOG.err('خطأ فادح: ' + err.message);
-    console.error('[PDF Converter]', err);
-    alert('حدث خطأ:\n' + err.message);
-  }
-
-  resetBtn(btn);
-}
-
-/* ── إضافة بطاقة معاينة واحدة فوراً (streaming preview) ── */
+/* ═══════════════════════════════════════
+   ADD PREVIEW CARD (streaming)
+   ═══════════════════════════════════════ */
 function addPreviewCard(dataUrl, index, total) {
   const scroll = document.getElementById('previewScroll');
   document.getElementById('emptyState').style.display = 'none';
@@ -644,27 +557,111 @@ function addPreviewCard(dataUrl, index, total) {
 
   const img = document.createElement('img');
   img.src = dataUrl;
-  const previewW = Math.min(480, scroll.clientWidth - 56);
-  img.style.width  = previewW + 'px';
-  img.style.height = (previewW * (297/210)) + 'px'; // نسبة A4
+  const w = Math.min(460, scroll.clientWidth - 40);
+  img.style.width  = w + 'px';
+  img.style.height = (w * (297 / 210)) + 'px';
   card.appendChild(img);
 
   const badge = document.createElement('div');
   badge.className   = 'page-num-badge';
-  badge.textContent = `صفحة ${index + 1} من ${total}`;
+  badge.textContent = 'صفحة ' + (index + 1) + ' من ' + total;
   card.appendChild(badge);
 
   scroll.appendChild(card);
+  updateTabBadge(index + 1);
 }
 
-function resetBtn(btn) {
-  btn.disabled    = false;
-  btn.innerHTML   = '<span>🖨</span> تحويل إلى PDF وتنزيله';
+/* ═══════════════════════════════════════
+   MAIN CONVERSION
+   ═══════════════════════════════════════ */
+async function startConversion() {
+  const html    = document.getElementById('htmlInput').value.trim();
+  const scale   = Math.max(1, Math.min(6, parseInt(document.getElementById('optScale').value)    || 3));
+  const delay   = Math.max(0,            parseInt(document.getElementById('optDelay').value)     || 600);
+  const quality = Math.max(1, Math.min(10, parseInt(document.getElementById('optQuality').value) || 9));
+  const filename= (document.getElementById('optFilename').value.trim() || 'document').replace(/[^\w\-أ-ي]/g, '_');
+
+  if (!html) { alert('الرجاء لصق كود HTML أولاً'); return; }
+
+  setButtons(true, '⏳ جاري التحويل...');
+  document.getElementById('progressWrap').classList.add('active');
+
+  // Clear preview
+  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('pageCountBadge').textContent = '⏳';
+  updateTabBadge(0);
+
+  LOG.init();
+  LOG.info('scale=' + scale + ' | delay=' + delay + 'ms | quality=' + quality + '/10');
+  setProgress(5, 'حقن HTML...');
+
+  try {
+    const container = injectHTML(html);
+    LOG.ok('HTML مُحقن');
+    setProgress(12, 'تحميل الموارد...');
+    await sleep(60);
+
+    await waitForResources(container, delay);
+    setProgress(28, 'البحث عن صفحات...');
+
+    const pages = [...container.querySelectorAll('.page')];
+    if (!pages.length) {
+      LOG.err('لا توجد عناصر .page');
+      alert('لم يُعثر على عناصر class="page".');
+      setButtons(false, '🖨 تحويل إلى PDF وتنزيله');
+      return;
+    }
+    LOG.ok(pages.length + ' صفحة');
+    setProgress(32, 'تصوير ' + pages.length + ' صفحة...');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait', unit: 'mm',
+      format: [210, 297], compress: false, putOnlyUsedFonts: true,
+    });
+
+    for (let i = 0; i < pages.length; i++) {
+      const pct = 32 + Math.round((i / pages.length) * 56);
+      setProgress(pct, 'صفحة ' + (i+1) + ' / ' + pages.length);
+      LOG.info('تصوير صفحة ' + (i+1) + '...');
+
+      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], scale, quality);
+
+      if (i > 0) pdf.addPage([210, 297], 'portrait');
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, 'p' + i, 'NONE');
+      LOG.ok('صفحة ' + (i+1) + ' أُضيفت');
+
+      addPreviewCard(previewDataUrl, i, pages.length);
+
+      // Auto-switch to preview on mobile after first page
+      if (i === 0 && window.innerWidth <= 768) switchTab('preview');
+
+      await sleep(25);
+    }
+
+    setProgress(94, 'حفظ PDF...');
+    pdf.save(filename + '.pdf');
+    LOG.ok('تم حفظ "' + filename + '.pdf" (' + pages.length + ' صفحة)');
+
+    document.getElementById('pageCountBadge').textContent = pages.length + ' صفحة';
+    setProgress(100, '✓ اكتمل — ' + pages.length + ' صفحة');
+
+    document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
+    document.getElementById('renderContainer').innerHTML = '';
+
+  } catch(err) {
+    LOG.err('خطأ: ' + err.message);
+    console.error(err);
+    alert('خطأ: ' + err.message);
+  }
+
+  setButtons(false, '🖨 تحويل إلى PDF وتنزيله');
 }
 
-/* ════════════════════════════════
-   Sample HTML loader
-   ════════════════════════════════ */
+/* ═══════════════════════════════════════
+   SAMPLE LOADER
+   ═══════════════════════════════════════ */
 function loadSample() {
   document.getElementById('htmlInput').value = `<!DOCTYPE html>
 <html dir="rtl" lang="ar">
@@ -672,158 +669,74 @@ function loadSample() {
 <meta charset="UTF-8"/>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-body { font-family: 'IBM Plex Sans Arabic', Arial, sans-serif; }
-
-/* ── Page base: exact A4 at 96dpi ── */
-.page {
-  width: 794px;
-  height: 1123px;
-  padding: 60px 64px;
-  background: #fff;
-  overflow: hidden;
-  position: relative;
-  display: block;
-}
-
-/* ── Page 1: Cover ── */
-.page-cover {
-  background: linear-gradient(145deg, #0f0c29, #1a1a2e 50%, #16213e);
-  color: #fff;
-}
-.cover-eyebrow {
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: #c8440a; font-weight: 700; margin-top: 180px;
-}
-.cover-title {
-  font-size: 54px; font-weight: 700; line-height: 1.2;
-  margin-top: 18px;
-}
-.cover-title em { color: #c8440a; font-style: normal; }
-.cover-sub { font-size: 18px; color: #8090b0; margin-top: 18px; }
-.cover-rule { width: 80px; height: 4px; background: #c8440a; margin-top: 40px; }
-.cover-meta {
-  position: absolute; bottom: 60px; left: 64px; right: 64px;
-  display: flex; justify-content: space-between;
-  font-size: 12px; color: #556080; border-top: 1px solid #2a3050; padding-top: 18px;
-}
-
-/* ── Page 2–3: Content ── */
-.page-content { background: #fff; }
-.page-header-line {
-  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-  color: #c8440a; font-weight: 700; margin-bottom: 32px;
-  display: flex; align-items: center; gap: 10px;
-}
-.page-header-line::after { content: ''; flex:1; height:1px; background:#f0ebe5; }
-h2 { font-size: 30px; font-weight: 700; color: #0d0d0d; margin-bottom: 16px; }
-p  { font-size: 14.5px; line-height: 2; color: #3a3530; margin-bottom: 18px; }
-.card-row { display: flex; gap: 18px; margin-top: 28px; }
-.card {
-  flex: 1; background: #f7f5f0; border-radius: 6px;
-  padding: 20px 18px; border-top: 3px solid #c8440a;
-}
-.card.green { border-color: #1a6b4a; }
-.card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.card .stat { font-size: 28px; font-weight: 700; color: #c8440a; }
-.card.green .stat { color: #1a6b4a; }
-.card p { font-size: 12px; color: #7a7470; margin: 4px 0 0; }
-.page-footer {
-  position: absolute; bottom: 32px; left: 64px; right: 64px;
-  display: flex; justify-content: space-between;
-  font-size: 11px; color: #b0a8a0;
-  border-top: 1px solid #ece8e4; padding-top: 12px;
-}
-.highlight-box {
-  background: linear-gradient(135deg, #fff8f5, #fff3ee);
-  border: 1px solid #f0d8ce; border-right: 4px solid #c8440a;
-  border-radius: 4px; padding: 18px 22px; margin-top: 24px;
-}
-.highlight-box p { margin: 0; font-size: 14px; color: #4a3528; }
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'IBM Plex Sans Arabic',Arial,sans-serif; }
+.page { width:794px; height:1123px; padding:60px 64px; background:#fff; overflow:hidden; position:relative; display:block; }
+.page-cover { background:linear-gradient(145deg,#0f0c29,#1a1a2e 50%,#16213e); color:#fff; }
+.cover-eyebrow { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#c8440a; font-weight:700; margin-top:180px; }
+.cover-title   { font-size:54px; font-weight:700; line-height:1.2; margin-top:18px; }
+.cover-title em { color:#c8440a; font-style:normal; }
+.cover-sub  { font-size:18px; color:#8090b0; margin-top:18px; }
+.cover-rule { width:80px; height:4px; background:#c8440a; margin-top:40px; }
+.cover-meta { position:absolute; bottom:60px; left:64px; right:64px; display:flex; justify-content:space-between; font-size:12px; color:#556080; border-top:1px solid #2a3050; padding-top:18px; }
+.phl { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#c8440a; font-weight:700; margin-bottom:32px; display:flex; align-items:center; gap:10px; }
+.phl::after { content:''; flex:1; height:1px; background:#f0ebe5; }
+h2 { font-size:30px; font-weight:700; color:#0d0d0d; margin-bottom:16px; }
+p  { font-size:14.5px; line-height:2; color:#3a3530; margin-bottom:18px; }
+.card-row { display:flex; gap:18px; margin-top:28px; }
+.card { flex:1; background:#f7f5f0; border-radius:6px; padding:20px 18px; border-top:3px solid #c8440a; }
+.card.g { border-color:#1a6b4a; }
+.card h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
+.stat { font-size:28px; font-weight:700; color:#c8440a; }
+.card.g .stat { color:#1a6b4a; }
+.card p { font-size:12px; color:#7a7470; margin:4px 0 0; }
+.pf { position:absolute; bottom:32px; left:64px; right:64px; display:flex; justify-content:space-between; font-size:11px; color:#b0a8a0; border-top:1px solid #ece8e4; padding-top:12px; }
+.hb { background:linear-gradient(135deg,#fff8f5,#fff3ee); border:1px solid #f0d8ce; border-right:4px solid #c8440a; border-radius:4px; padding:18px 22px; margin-top:24px; }
+.hb p { margin:0; font-size:14px; color:#4a3528; }
 </style>
 </head>
 <body>
-
-<!-- صفحة 1: غلاف -->
 <div class="page page-cover">
   <div class="cover-eyebrow">تقرير سنوي — 2024</div>
   <div class="cover-title">نظرة شاملة<br/>على الأداء <em>المؤسسي</em></div>
   <div class="cover-sub">مؤشرات النمو · الإنجازات · خارطة الطريق</div>
   <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <span>شركة النموذج المحدودة</span>
-    <span>سري — للاستخدام الداخلي فقط</span>
-  </div>
+  <div class="cover-meta"><span>شركة النموذج</span><span>سري — داخلي</span></div>
 </div>
-
-<!-- صفحة 2: ملخص تنفيذي -->
-<div class="page page-content">
-  <div class="page-header-line">ملخص تنفيذي</div>
+<div class="page">
+  <div class="phl">ملخص تنفيذي</div>
   <h2>أبرز إنجازات العام</h2>
-  <p>حقّقت الشركة خلال عام 2024 نمواً استثنائياً على جميع المحاور التشغيلية والمالية، مما يعكس نجاح الاستراتيجية المتبعة وعمق كفاءة الفرق على اختلاف مستوياتها.</p>
-  <p>ارتفعت الإيرادات الإجمالية بنسبة تجاوزت 34٪ مقارنةً بالعام الماضي، فيما توسّعت قاعدة العملاء لتشمل أسواقاً جديدة في ثلاث دول خليجية.</p>
-  <div class="highlight-box">
-    <p>💡 تُعدّ هذه النتائج الأفضل في تاريخ الشركة منذ تأسيسها، مما يضع أساساً متيناً للتوسع المخطط في 2025.</p>
-  </div>
+  <p>حقّقت الشركة خلال 2024 نمواً استثنائياً على جميع المحاور التشغيلية والمالية، مما يعكس نجاح الاستراتيجية وكفاءة الفرق.</p>
+  <div class="hb"><p>💡 هذه النتائج الأفضل في تاريخ الشركة منذ تأسيسها.</p></div>
   <div class="card-row">
-    <div class="card">
-      <h3>الإيرادات</h3>
-      <div class="stat">+34٪</div>
-      <p>نمو سنوي مقارنة بـ 2023</p>
-    </div>
-    <div class="card green">
-      <h3>العملاء الجدد</h3>
-      <div class="stat">1,247</div>
-      <p>في 3 أسواق خليجية</p>
-    </div>
-    <div class="card">
-      <h3>الفرق البشرية</h3>
-      <div class="stat">80+</div>
-      <p>موظف في 4 مدن رئيسية</p>
-    </div>
+    <div class="card"><h3>الإيرادات</h3><div class="stat">+34٪</div><p>نمو سنوي</p></div>
+    <div class="card g"><h3>العملاء</h3><div class="stat">1,247</div><p>عميل جديد</p></div>
+    <div class="card"><h3>الفريق</h3><div class="stat">80+</div><p>موظف</p></div>
   </div>
-  <div class="page-footer">
-    <span>التقرير السنوي 2024 — شركة النموذج</span>
-    <span>صفحة 2</span>
-  </div>
+  <div class="pf"><span>التقرير السنوي 2024</span><span>صفحة 2</span></div>
 </div>
-
-<!-- صفحة 3: التحديات والفرص -->
-<div class="page page-content">
-  <div class="page-header-line">التحليل الاستراتيجي</div>
+<div class="page">
+  <div class="phl">التحليل الاستراتيجي</div>
   <h2>التحديات والفرص</h2>
-  <p>واجه القطاع خلال العام عدة تحديات هيكلية أبرزها: تصاعد حدّة المنافسة الإقليمية، وارتفاع تكاليف البنية التحتية، وتقلّبات سلاسل الإمداد العالمية.</p>
-  <p>في المقابل، أتاحت الشراكات الاستراتيجية الجديدة التي أبرمتها الشركة مع مؤسسات تقنية رائدة فرصاً واسعة لإطلاق منتجات رقمية مبتكرة ودخول أسواق واعدة.</p>
+  <p>واجه القطاع عدة تحديات أبرزها المنافسة وارتفاع التكاليف، غير أن الفريق حوّلها إلى فرص نمو واعدة.</p>
   <div class="card-row">
-    <div class="card green">
-      <h3>🚀 فرصة 1</h3>
-      <div class="stat" style="font-size:20px">السوق السعودية</div>
-      <p>اتفاقيات شراكة مع 3 جهات حكومية</p>
-    </div>
-    <div class="card green">
-      <h3>🌐 فرصة 2</h3>
-      <div class="stat" style="font-size:20px">المنتج الرقمي</div>
-      <p>إطلاق المنصة Q1 2025</p>
-    </div>
+    <div class="card g"><h3>🚀 فرصة 1</h3><div class="stat" style="font-size:18px">السوق السعودية</div><p>3 شراكات حكومية</p></div>
+    <div class="card g"><h3>🌐 فرصة 2</h3><div class="stat" style="font-size:18px">المنتج الرقمي</div><p>إطلاق Q1 2025</p></div>
   </div>
-  <div class="highlight-box" style="margin-top:28px">
-    <p>📌 خلاصة: يُقدّر الفريق التنفيذي أن نافذة الفرص المتاحة بين 2025–2026 هي الأهم في مسيرة الشركة، وتستلزم تسريع قرارات الاستثمار.</p>
-  </div>
-  <div class="page-footer">
-    <span>التقرير السنوي 2024 — شركة النموذج</span>
-    <span>صفحة 3</span>
-  </div>
+  <div class="hb" style="margin-top:28px"><p>📌 نافذة 2025–2026 هي الأهم في مسيرة الشركة.</p></div>
+  <div class="pf"><span>التقرير السنوي 2024</span><span>صفحة 3</span></div>
 </div>
-
 </body>
 </html>`;
 
-  // Reset UI
-  document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
+  document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('pageCountBadge').textContent = '—';
   document.getElementById('progressWrap').classList.remove('active');
   document.getElementById('logBox').classList.remove('active');
+  updateTabBadge(0);
+  // Switch to editor tab so user sees the loaded code
+  if (window.innerWidth <= 768) switchTab('editor');
 }
 </script>
 </body>
