@@ -162,16 +162,13 @@
       <button class="btn-sample" onclick="loadSample()">📐 عرض مثال الأبعاد</button>
 
       <div>
-        <div class="section-label">اتجاه الصفحة في PDF</div>
+        <div class="section-label">نوع المستند</div>
         <div class="orient-row">
           <button class="orient-btn active" id="btnPortrait" onclick="setOrient('portrait')">
-            <span class="icon">📄</span>عمودي A4
+            <span class="icon">📄</span>بحث A4
           </button>
           <button class="orient-btn" id="btnSlides" onclick="setOrient('slides')">
             <span class="icon">🖥</span>عروض 16:9
-          </button>
-          <button class="orient-btn" id="btnAuto" onclick="setOrient('auto')">
-            <span class="icon">🔄</span>تلقائي
           </button>
         </div>
       </div>
@@ -239,7 +236,7 @@
 /* ════════════════════════════════════════════════════════
    STATE
    ════════════════════════════════════════════════════════ */
-let currentOrient = 'portrait'; // 'portrait' | 'landscape' | 'auto'
+let currentOrient = 'portrait'; // 'portrait' | 'slides'
 
 /* ════════════════════════════════════════════════════════
    TAB SWITCHING
@@ -261,10 +258,8 @@ function updateTabBadge(n) {
    ════════════════════════════════════════════════════════ */
 function setOrient(val) {
   currentOrient = val;
-  ['portrait','slides','auto'].forEach(k => {
-    document.getElementById('btn' + k.charAt(0).toUpperCase() + k.slice(1))
-      .classList.toggle('active', k === val);
-  });
+  document.getElementById('btnPortrait').classList.toggle('active', val === 'portrait');
+  document.getElementById('btnSlides')  .classList.toggle('active', val === 'slides');
 }
 
 /* ════════════════════════════════════════════════════════
@@ -377,9 +372,9 @@ function injectHTML(html) {
    STEP 3 — GET PAGE DIMS MM
    ════════════════════════════════════════════════════════ */
 function getPageDimsMM(pageEl) {
-  const PX_MM = 0.2646; // 96dpi: 1px = 0.2646mm
+  const PX_MM = 0.2646; // 96dpi → mm
 
-  // ── ابحث في الفهرس عن أول class مطابق ──
+  // ── اقرأ الأبعاد من الفهرس المبني من CSS ──
   const classes = (pageEl.className || '').trim().split(/\s+/).filter(Boolean);
   let pw = 0, ph = 0, matched = '';
 
@@ -392,18 +387,17 @@ function getPageDimsMM(pageEl) {
     }
   }
 
-  // fallback
+  // fallback إذا ما وُجد الـ class في الفهرس
   if (!pw || !ph) { pw = 794; ph = 1123; }
 
-  LOG.info('[.' + (matched || classes[0]) + '] ' + pw + '×' + ph + 'px');
-
-  // ── اتجاه يدوي ──
-  if (currentOrient === 'portrait') return { wMM: 210,              hMM: 297,              orient: 'portrait',  pw, ph };
-  if (currentOrient === 'slides')   return { wMM: Math.round(pw * PX_MM), hMM: Math.round(ph * PX_MM), orient: 'landscape', pw, ph };
-
-  // ── تلقائي: حوّل px → mm مباشرة ──
+  // حوّل px → mm بناءً على 96dpi
+  const wMM   = Math.round(pw * PX_MM);
+  const hMM   = Math.round(ph * PX_MM);
   const orient = pw > ph ? 'landscape' : 'portrait';
-  return { wMM: Math.round(pw * PX_MM), hMM: Math.round(ph * PX_MM), orient, pw, ph };
+
+  LOG.info('[.' + (matched || classes[0]) + '] ' + pw + '×' + ph + 'px → ' + wMM + '×' + hMM + 'mm');
+
+  return { wMM, hMM, orient, pw, ph };
 }
 async function waitForResources(container, extraDelay) {
   try { await document.fonts.ready; LOG.ok('fonts.ready ✓'); }
@@ -595,7 +589,7 @@ async function startConversion() {
   updateTabBadge(0);
 
   LOG.init();
-  LOG.info('scale=' + scale + ' | delay=' + delay + 'ms | quality=' + quality + '/10 | orient=' + currentOrient);
+  LOG.info('scale=' + scale + ' | delay=' + delay + 'ms | quality=' + quality + '/10 | mode=' + currentOrient);
   setProgress(5, 'حقن HTML...');
 
   try {
