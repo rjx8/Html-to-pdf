@@ -9,297 +9,136 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
-      --ink: #0d0d0d;
-      --paper: #f7f5f0;
-      --accent: #c8440a;
-      --accent2: #1a6b4a;
-      --muted: #6b6460;
-      --border: #d4cfc9;
-      --surface: #ffffff;
-      --header-h: 60px;
-      --tabs-h: 48px;
+      --ink: #0d0d0d; --paper: #f7f5f0; --accent: #c8440a; --accent2: #1a6b4a;
+      --muted: #6b6460; --border: #d4cfc9; --surface: #fff;
+      --header-h: 60px; --tabs-h: 48px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body {
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      height: 100%;
-      overflow: hidden;
-    }
+    html, body { font-family: 'IBM Plex Sans Arabic', sans-serif; background: var(--paper); color: var(--ink); height: 100%; overflow: hidden; }
 
-    /* HEADER */
+    /* ── HEADER ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: var(--header-h);
+      position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
       background: var(--ink); color: var(--paper);
-      display: flex; align-items: center; gap: 14px;
-      padding: 0 24px;
-      border-bottom: 3px solid var(--accent);
-      z-index: 100;
+      display: flex; align-items: center; gap: 14px; padding: 0 24px;
+      border-bottom: 3px solid var(--accent); z-index: 100;
     }
     .logo-mark {
-      width: 36px; height: 36px; flex-shrink: 0;
-      background: var(--accent);
-      display: grid; place-items: center;
-      font-size: 12px; font-weight: 700; color: #fff;
+      width: 36px; height: 36px; flex-shrink: 0; background: var(--accent);
+      display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff;
       clip-path: polygon(0 0,85% 0,100% 15%,100% 100%,15% 100%,0 85%);
     }
     header h1 { font-size: 1.1rem; font-weight: 600; }
     header p  { font-size: 0.7rem; color: #a09a94; margin-top: 1px; }
 
-    /* TAB BAR — mobile only */
-    .tab-bar {
-      display: none;
-      position: fixed;
-      top: var(--header-h); left: 0; right: 0;
-      height: var(--tabs-h);
-      background: var(--surface);
-      border-bottom: 1.5px solid var(--border);
-      z-index: 99;
-    }
+    /* ── TAB BAR ── */
+    .tab-bar { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; height: var(--tabs-h); background: var(--surface); border-bottom: 1.5px solid var(--border); z-index: 99; }
     .tab-bar-inner { display: flex; height: 100%; }
-    .tab-btn {
-      flex: 1; background: none; border: none;
-      font-family: inherit; font-size: 0.85rem; font-weight: 600;
-      color: var(--muted); cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      border-bottom: 2.5px solid transparent;
-      transition: color .15s, border-color .15s;
-      padding: 0 8px;
-    }
+    .tab-btn { flex: 1; background: none; border: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; border-bottom: 2.5px solid transparent; transition: color .15s, border-color .15s; }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-badge {
-      background: var(--accent); color: #fff;
-      font-size: 0.58rem; font-weight: 700;
-      padding: 1px 5px; border-radius: 10px; display: none;
-    }
+    .tab-badge { background: var(--accent); color: #fff; font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 10px; display: none; }
     .tab-badge.visible { display: inline-block; }
 
-    /* APP BODY */
-    .app-body {
-      position: fixed;
-      top: var(--header-h); left: 0; right: 0; bottom: 0;
-      display: flex; flex-direction: row;
-    }
+    /* ── LAYOUT ── */
+    .app-body { position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; display: flex; flex-direction: row; }
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 380px; flex-shrink: 0;
-      background: var(--surface);
-      border-left: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      overflow-y: auto; overflow-x: hidden;
-    }
-    .sidebar-inner {
-      padding: 24px 20px 28px;
-      display: flex; flex-direction: column; gap: 18px; flex: 1;
-    }
+    /* ── SIDEBAR ── */
+    .sidebar { width: 390px; flex-shrink: 0; background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+    .sidebar-inner { padding: 20px 18px 28px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
 
-    /* PREVIEW PANE */
-    .preview-pane {
-      flex: 1; background: #e0dbd4;
-      display: flex; flex-direction: column;
-      overflow: hidden; min-width: 0;
-    }
-    .preview-toolbar {
-      background: #2a2724; color: #c8c0b8;
-      padding: 8px 16px; font-size: 0.72rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0;
-    }
+    /* ── PREVIEW ── */
+    .preview-pane { flex: 1; background: #e0dbd4; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .preview-toolbar { background: #2a2724; color: #c8c0b8; padding: 8px 16px; font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
     .preview-toolbar span { display: flex; align-items: center; gap: 6px; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-    #previewScroll {
-      flex: 1; overflow-y: auto;
-      padding: 24px 20px;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 24px;
-    }
-    .preview-page-card {
-      background: #fff;
-      box-shadow: 0 4px 20px rgba(0,0,0,.18);
-      position: relative; margin-bottom: 16px; max-width: 100%;
-    }
+    #previewScroll { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+    .preview-page-card { background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.18); position: relative; margin-bottom: 18px; max-width: 100%; }
     .preview-page-card img { display: block; max-width: 100%; height: auto; }
-    .page-num-badge {
-      position: absolute; bottom: -18px;
-      left: 50%; transform: translateX(-50%);
-      font-size: 0.64rem; color: #8a8480; white-space: nowrap;
-    }
-    .empty-state {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 12px; height: 100%;
-      color: #a09a94; text-align: center; padding: 24px;
-    }
-    .empty-icon {
-      width: 60px; height: 60px;
-      border: 2px dashed #c8c0b8; border-radius: 8px;
-      display: grid; place-items: center; font-size: 24px;
-    }
+    .page-num-badge { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 0.63rem; color: #8a8480; white-space: nowrap; }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; height: 100%; color: #a09a94; text-align: center; padding: 24px; }
+    .empty-icon { width: 60px; height: 60px; border: 2px dashed #c8c0b8; border-radius: 8px; display: grid; place-items: center; font-size: 24px; }
     .empty-state code { background: #e8e4de; padding: 2px 5px; border-radius: 3px; font-size: .82em; }
 
-    /* FORM */
-    .section-label {
-      font-size: 0.67rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 7px;
-    }
-    textarea#htmlInput {
-      width: 100%; height: 220px;
-      border: 1.5px solid var(--border); border-radius: 6px;
-      padding: 11px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.74rem; line-height: 1.6; resize: vertical;
-      background: #fafaf8; color: var(--ink);
-    }
+    /* ── FORM ── */
+    .section-label { font-size: 0.67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    textarea#htmlInput { width: 100%; height: 200px; border: 1.5px solid var(--border); border-radius: 6px; padding: 11px; font-family: 'Courier New', monospace; font-size: 0.74rem; line-height: 1.6; resize: vertical; background: #fafaf8; color: var(--ink); }
     textarea#htmlInput:focus { outline: none; border-color: var(--accent); }
-    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .opt-field label {
-      display: block; font-size: 0.69rem; font-weight: 600;
-      color: var(--muted); margin-bottom: 4px;
-    }
-    .opt-field input {
-      width: 100%; padding: 9px 10px;
-      border: 1.5px solid var(--border); border-radius: 6px;
-      font-size: 0.85rem; font-family: inherit;
-      background: #fafaf8; color: var(--ink);
-    }
-    .opt-field input:focus { outline: none; border-color: var(--accent); }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .opt-field label { display: block; font-size: 0.68rem; font-weight: 600; color: var(--muted); margin-bottom: 3px; }
+    .opt-field input, .opt-field select { width: 100%; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; background: #fafaf8; color: var(--ink); -webkit-appearance: none; }
+    .opt-field input:focus, .opt-field select:focus { outline: none; border-color: var(--accent); }
 
-    .btn-convert-desktop {
-      width: 100%; padding: 13px;
-      background: var(--accent); color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 0.92rem; font-weight: 700;
-      font-family: inherit; cursor: pointer;
-      transition: background .2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+    /* ── ORIENTATION TOGGLE ── */
+    .orient-row { display: flex; gap: 8px; }
+    .orient-btn {
+      flex: 1; padding: 8px 6px; border: 1.5px solid var(--border); border-radius: 6px;
+      background: #fafaf8; color: var(--muted); font-family: inherit; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all .15s;
     }
-    .btn-convert-desktop:hover     { background: #a33608; }
-    .btn-convert-desktop:disabled  { background: #c0b8b0; cursor: not-allowed; }
+    .orient-btn .icon { font-size: 1.1rem; }
+    .orient-btn.active { border-color: var(--accent); background: #fff4f0; color: var(--accent); }
+    .orient-btn:hover:not(.active) { border-color: #b0a8a0; }
 
-    .btn-sample {
-      width: 100%; padding: 10px;
-      background: transparent; color: var(--accent2);
-      border: 1.5px solid var(--accent2); border-radius: 6px;
-      font-size: 0.82rem; font-weight: 600;
-      font-family: inherit; cursor: pointer;
-    }
+    /* ── BUTTONS ── */
+    .btn-convert-desktop { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 0.92rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background .2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-convert-desktop:hover { background: #a33608; }
+    .btn-convert-desktop:disabled { background: #c0b8b0; cursor: not-allowed; }
+    .btn-sample { width: 100%; padding: 9px; background: transparent; color: var(--accent2); border: 1.5px solid var(--accent2); border-radius: 6px; font-size: 0.82rem; font-weight: 600; font-family: inherit; cursor: pointer; }
     .btn-sample:hover { background: #eef7f3; }
 
+    /* ── PROGRESS ── */
     .progress-wrap { display: none; flex-direction: column; gap: 6px; }
     .progress-wrap.active { display: flex; }
     .progress-bar-bg { height: 6px; background: #e8e4de; border-radius: 3px; overflow: hidden; }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #e8620e);
-      border-radius: 3px; width: 0%; transition: width .3s ease;
-    }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #e8620e); border-radius: 3px; width: 0%; transition: width .3s ease; }
     .progress-text { font-size: .72rem; color: var(--muted); text-align: center; }
 
-    .log-box {
-      background: #1a1612; color: #c8c0b8;
-      border-radius: 6px; padding: 10px 12px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.68rem; line-height: 1.8;
-      max-height: 110px; overflow-y: auto; display: none;
-    }
+    /* ── LOG ── */
+    .log-box { background: #1a1612; color: #c8c0b8; border-radius: 6px; padding: 9px 12px; font-family: 'Courier New', monospace; font-size: 0.67rem; line-height: 1.8; max-height: 100px; overflow-y: auto; display: none; }
     .log-box.active { display: block; }
-    .log-ok   { color: #6ecf8c; }
-    .log-warn { color: #f0b84a; }
-    .log-err  { color: #f06a6a; }
+    .log-ok { color: #6ecf8c; } .log-warn { color: #f0b84a; } .log-err { color: #f06a6a; }
 
-    /* MOBILE FAB */
-    .fab-convert {
-      position: fixed;
-      bottom: 20px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 200;
-      background: var(--accent); color: #fff;
-      border: none; border-radius: 30px;
-      padding: 15px 32px;
-      font-family: inherit; font-size: 1rem; font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 24px rgba(200,68,10,.5);
-      display: none; /* shown via media query */
-      align-items: center; gap: 8px;
-      white-space: nowrap;
-      transition: transform .15s, box-shadow .15s;
-    }
+    /* ── FAB ── */
+    .fab-convert { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 200; background: var(--accent); color: #fff; border: none; border-radius: 30px; padding: 15px 32px; font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 24px rgba(200,68,10,.5); display: none; align-items: center; gap: 8px; white-space: nowrap; transition: transform .15s; }
     .fab-convert:active { transform: translateX(-50%) scale(0.96); }
     .fab-convert:disabled { background: #c0b8b0; box-shadow: none; }
 
-    /* RENDER CONTAINER */
-    #renderContainer {
-      position: fixed; top: 0; left: -9999px;
-      width: 794px; background: #fff;
-      visibility: hidden; pointer-events: none; z-index: -1000;
-    }
+    /* ── RENDER CONTAINER ── */
+    #renderContainer { position: fixed; top: 0; left: -9999px; width: 794px; background: #fff; visibility: hidden; pointer-events: none; z-index: -1000; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-    /* ═══════════════════════
-       MOBILE  ≤ 768px
-       ═══════════════════════ */
+    /* ── MOBILE ── */
     @media (max-width: 768px) {
       :root { --header-h: 56px; }
-
-      header p    { display: none; }
-      header      { padding: 0 16px; }
-
-      .tab-bar    { display: block; }
-
-      .app-body {
-        top: calc(var(--header-h) + var(--tabs-h));
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%; flex: 1;
-        border-left: none;
-        display: none;
-      }
+      header p { display: none; } header { padding: 0 16px; }
+      .tab-bar { display: block; }
+      .app-body { top: calc(var(--header-h) + var(--tabs-h)); flex-direction: column; }
+      .sidebar { width: 100%; flex: 1; border-left: none; display: none; }
       .sidebar.tab-active { display: flex; }
-      .sidebar-inner { padding: 16px 16px 100px; }
-
-      .preview-pane {
-        width: 100%; flex: 1;
-        display: none;
-      }
+      .sidebar-inner { padding: 14px 14px 100px; }
+      .preview-pane { width: 100%; flex: 1; display: none; }
       .preview-pane.tab-active { display: flex; }
-
-      textarea#htmlInput    { height: 180px; }
-      .opt-field input      { padding: 11px 10px; font-size: 1rem; }
-
-      .btn-convert-desktop  { display: none; }
-      .fab-convert          { display: flex; }
-
-      #previewScroll { padding: 16px 12px 88px; gap: 18px; }
+      textarea#htmlInput { height: 160px; }
+      .opt-field input, .opt-field select { padding: 11px 10px; font-size: 0.95rem; }
+      .btn-convert-desktop { display: none; }
+      .fab-convert { display: flex; }
+      #previewScroll { padding: 16px 10px 88px; gap: 20px; }
       .preview-page-card img { width: 100% !important; height: auto !important; }
     }
-
-    @media (max-width: 380px) {
-      .options-grid   { grid-template-columns: 1fr; }
-      .tab-btn        { font-size: 0.78rem; gap: 4px; }
-    }
+    @media (max-width: 380px) { .options-grid { grid-template-columns: 1fr; } .tab-btn { font-size: 0.78rem; } }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo-mark">PDF</div>
   <div>
     <h1>محوّل HTML إلى PDF</h1>
-    <p>تحويل صفحات A4 بدقة عالية — بدون print engine</p>
+    <p>يدعم A4 عمودي وأفقي وأبعاد مخصصة</p>
   </div>
 </header>
 
-<!-- TAB BAR -->
 <div class="tab-bar">
   <div class="tab-bar-inner">
     <button class="tab-btn active" id="tabEditor"  onclick="switchTab('editor')">✏️ المحرر</button>
@@ -309,20 +148,33 @@
   </div>
 </div>
 
-<!-- APP BODY -->
 <div class="app-body">
 
-  <!-- SIDEBAR -->
+  <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar tab-active" id="panelEditor">
     <div class="sidebar-inner">
 
       <div>
         <div class="section-label">كود HTML</div>
-        <textarea id="htmlInput" dir="ltr"
-          placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'></textarea>
+        <textarea id="htmlInput" dir="ltr" placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'></textarea>
       </div>
 
       <button class="btn-sample" onclick="loadSample()">⬇ تحميل مثال تجريبي</button>
+
+      <div>
+        <div class="section-label">اتجاه الصفحة في PDF</div>
+        <div class="orient-row">
+          <button class="orient-btn active" id="btnPortrait" onclick="setOrient('portrait')">
+            <span class="icon">📄</span>عمودي A4
+          </button>
+          <button class="orient-btn" id="btnLandscape" onclick="setOrient('landscape')">
+            <span class="icon">🖥</span>أفقي / عروض
+          </button>
+          <button class="orient-btn" id="btnAuto" onclick="setOrient('auto')">
+            <span class="icon">🔄</span>تلقائي
+          </button>
+        </div>
+      </div>
 
       <div>
         <div class="section-label">إعدادات</div>
@@ -361,7 +213,7 @@
     </div>
   </aside>
 
-  <!-- PREVIEW PANE -->
+  <!-- ══ PREVIEW ══ -->
   <section class="preview-pane" id="panelPreview">
     <div class="preview-toolbar">
       <span><span class="dot"></span> معاينة الصفحات</span>
@@ -380,18 +232,18 @@
 
 </div>
 
-<!-- Mobile FAB -->
-<button class="fab-convert" id="fabConvert" onclick="startConversion()">
-  🖨 تحويل إلى PDF
-</button>
-
-<!-- Hidden render container -->
+<button class="fab-convert" id="fabConvert" onclick="startConversion()">🖨 تحويل إلى PDF</button>
 <div id="renderContainer"></div>
 
 <script>
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════ */
+let currentOrient = 'portrait'; // 'portrait' | 'landscape' | 'auto'
+
+/* ════════════════════════════════════════════════════════
    TAB SWITCHING
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 function switchTab(tab) {
   const isEditor = tab === 'editor';
   document.getElementById('panelEditor') .classList.toggle('tab-active',  isEditor);
@@ -401,13 +253,23 @@ function switchTab(tab) {
 }
 function updateTabBadge(n) {
   const b = document.getElementById('tabBadge');
-  b.textContent = n;
-  b.classList.toggle('visible', n > 0);
+  b.textContent = n; b.classList.toggle('visible', n > 0);
 }
 
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
+   ORIENTATION TOGGLE
+   ════════════════════════════════════════════════════════ */
+function setOrient(val) {
+  currentOrient = val;
+  ['portrait','landscape','auto'].forEach(k => {
+    document.getElementById('btn' + k.charAt(0).toUpperCase() + k.slice(1))
+      .classList.toggle('active', k === val);
+  });
+}
+
+/* ════════════════════════════════════════════════════════
    LOGGER
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 const LOG = (() => {
   let box;
   return {
@@ -417,12 +279,11 @@ const LOG = (() => {
       const d = document.createElement('div');
       d.className = cls || '';
       d.textContent = '[' + new Date().toLocaleTimeString('en') + '] ' + msg;
-      box.appendChild(d);
-      box.scrollTop = box.scrollHeight;
+      box.appendChild(d); box.scrollTop = box.scrollHeight;
     },
-    ok  (m) { this._w('✓ ' + m, 'log-ok');   },
+    ok(m)   { this._w('✓ ' + m, 'log-ok');   },
     warn(m) { this._w('⚠ ' + m, 'log-warn'); },
-    err (m) { this._w('✗ ' + m, 'log-err');  },
+    err(m)  { this._w('✗ ' + m, 'log-err');  },
     info(m) { this._w('  ' + m);              },
   };
 })();
@@ -433,18 +294,16 @@ function setProgress(pct, msg) {
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressText').textContent = msg;
 }
-
 function setButtons(disabled, label) {
   ['btnConvert','fabConvert'].forEach(id => {
     const el = document.getElementById(id);
-    el.disabled   = disabled;
-    el.innerHTML  = label;
+    el.disabled = disabled; el.innerHTML = label;
   });
 }
 
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
    STEP 1 — INJECT HTML
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 function injectHTML(html) {
   const container = document.getElementById('renderContainer');
   container.innerHTML = '';
@@ -455,43 +314,22 @@ function injectHTML(html) {
 
   document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
 
-  // حقن الـ styles مع إضافة font-display:block لمنع الخطوط المقطعة
   doc.querySelectorAll('style').forEach(s => {
     const c = document.createElement('style');
     c.setAttribute('data-pdf-injected', '1');
-    // أضف font-display:block لكل @font-face موجود
-    c.textContent = s.textContent.replace(
-      /@font-face\s*\{/gi,
-      '@font-face { font-display: block;'
-    );
+    c.textContent = s.textContent.replace(/@font-face\s*\{/gi, '@font-face { font-display: block;');
     document.head.appendChild(c);
   });
 
-  // حقن الـ Google Fonts links مع إضافة &display=block
   doc.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
     let href = l.getAttribute('href');
     if (!href) return;
-
-    // تحويل display=swap إلى display=block لضمان عرض الخط فوراً
     href = href.replace('display=swap', 'display=block');
-    if (!href.includes('display=') && href.includes('fonts.googleapis')) {
+    if (!href.includes('display=') && href.includes('fonts.googleapis'))
       href += (href.includes('?') ? '&' : '?') + 'display=block';
-    }
-
     if (document.querySelector('link[href="' + href + '"]')) return;
-
-    // preconnect لتسريع التحميل
-    if (href.includes('fonts.googleapis') || href.includes('fonts.gstatic')) {
-      const pre = document.createElement('link');
-      pre.rel  = 'preconnect';
-      pre.href = href.includes('gstatic') ? 'https://fonts.gstatic.com' : 'https://fonts.googleapis.com';
-      pre.crossOrigin = 'anonymous';
-      pre.setAttribute('data-pdf-injected', '1');
-      document.head.appendChild(pre);
-    }
-
     const c = document.createElement('link');
-    c.rel  = 'stylesheet'; c.href = href;
+    c.rel = 'stylesheet'; c.href = href;
     c.setAttribute('data-pdf-injected', '1');
     document.head.appendChild(c);
   });
@@ -500,152 +338,182 @@ function injectHTML(html) {
   return container;
 }
 
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
    STEP 2 — WAIT FOR RESOURCES
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 async function waitForResources(container, extraDelay) {
-  // 1) انتظر document.fonts.ready أولاً
-  try { await document.fonts.ready; LOG.ok('document.fonts.ready ✓'); }
+  try { await document.fonts.ready; LOG.ok('fonts.ready ✓'); }
   catch(e) { LOG.warn('fonts.ready: ' + e.message); }
 
-  // 2) اجبر تحميل كل الخطوط المستخدمة فعلاً في العناصر
-  //    هذا يحل مشكلة الخطوط المقطعة — fonts.ready لا يضمن render الخطوط الخارجية
   try {
-    const textNodes = [...container.querySelectorAll('*')].filter(el =>
-      el.childNodes.length && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())
+    const nodes = [...container.querySelectorAll('*')].filter(el =>
+      [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())
     );
-    const fontChecks = textNodes.slice(0, 30).map(el => {
+    await Promise.allSettled(nodes.slice(0, 40).map(el => {
       const cs = getComputedStyle(el);
-      const fontFam = cs.fontFamily;
-      const fontWt  = cs.fontWeight;
-      const fontSize = cs.fontSize;
-      return document.fonts.load(fontWt + ' ' + fontSize + ' ' + fontFam, el.textContent.slice(0,4) || 'ا');
-    });
-    await Promise.allSettled(fontChecks);
-    LOG.ok('تحميل الخطوط المُستخدمة ✓');
-  } catch(e) {
-    LOG.warn('تحقق الخطوط: ' + e.message);
-  }
+      return document.fonts.load(cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily, el.textContent.slice(0,4) || 'ا');
+    }));
+    LOG.ok('font.load() ✓');
+  } catch(e) { LOG.warn('font.load: ' + e.message); }
 
-  // 3) انتظر الصور
   const imgs = [...container.querySelectorAll('img')];
-  LOG.info('صور: ' + imgs.length);
   if (imgs.length) {
     await Promise.all(imgs.map(img => new Promise(res => {
       if (img.complete && img.naturalWidth > 0) { res(); return; }
-      const t = setTimeout(() => { LOG.warn('مهلة صورة'); res(); }, 10000);
-      img.onload  = () => { clearTimeout(t); res(); };
-      img.onerror = () => { clearTimeout(t); res(); };
+      const t = setTimeout(() => { LOG.warn('img timeout'); res(); }, 10000);
+      img.onload = img.onerror = () => { clearTimeout(t); res(); };
     })));
-    LOG.ok('الصور محملة (' + imgs.length + ')');
+    LOG.ok('images (' + imgs.length + ') ✓');
   }
 
-  // 4) تأخير إضافي يسمح للمتصفح برسم الخطوط الخارجية (Google Fonts)
-  //    حتى لو extraDelay = 0 نعطيه 200ms على الأقل
-  const minDelay = Math.max(extraDelay, 200);
-  LOG.info('انتظار رسم الخطوط ' + minDelay + 'ms...');
+  const minDelay = Math.max(extraDelay, 250);
   await sleep(minDelay);
-
-  LOG.ok('جاهز للتصوير');
+  LOG.ok('جاهز');
 }
 
-/* ═══════════════════════════════════════
-   STEP 3 — CAPTURE PAGE → BASE64
-   الإصلاحات:
-   - لا نغير position/overflow على العنصر الأصلي (يكسر text-align:center)
-   - في onclone نكتفي بإزالة page-break فقط دون المس بالـ layout
-   - نستخدم windowWidth/Height صريحة لضمان الأبعاد الصحيحة
-   ═══════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════
+   STEP 3 — DETECT PAGE DIMENSIONS
+   يكتشف إذا كانت الصفحة أفقية أم عمودية تلقائياً
+   ════════════════════════════════════════════════════════ */
+function getPageDimsMM(pageEl) {
+  const w = pageEl.offsetWidth;
+  const h = pageEl.offsetHeight;
+
+  if (currentOrient === 'portrait')  return { wMM: 210, hMM: 297, orient: 'portrait' };
+  if (currentOrient === 'landscape') return { wMM: 297, hMM: 210, orient: 'landscape' };
+
+  // auto — كشف تلقائي بناءً على نسبة العرض / الارتفاع
+  if (w > h) {
+    // صفحة عرضية — نحسب النسبة لمعرفة إذا هي 16:9 أو A4 landscape أو غيرها
+    const ratio = w / h;
+    if (Math.abs(ratio - 16/9) < 0.1) {
+      // 16:9 — أبعاد بوربوينت
+      return { wMM: 338, hMM: 190, orient: 'landscape' };
+    }
+    // A4 landscape أو قريب منه
+    return { wMM: 297, hMM: 210, orient: 'landscape' };
+  }
+
+  // عمودي — A4 افتراضي
+  return { wMM: 210, hMM: 297, orient: 'portrait' };
+}
+
+/* ════════════════════════════════════════════════════════
+   FIX ARABIC TEXT — إصلاح شامل لمشكلة letter-spacing مع العربي
+   هذه الدالة تُطبَّق داخل onclone على كل عنصر
+   ════════════════════════════════════════════════════════ */
+function fixArabicSpacing(clonedDoc) {
+  const ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+  clonedDoc.querySelectorAll('*').forEach(el => {
+    const text = el.textContent || '';
+    if (!text.trim()) return;
+
+    const hasArabic = ARABIC_RE.test(text);
+
+    // ── 1. letter-spacing مع عربي = كارثة في html2canvas ──
+    // نصفّره دائماً إذا وُجد نص عربي في العنصر أو أحد أبنائه
+    if (hasArabic) {
+      const cs = window.getComputedStyle(el);
+      const ls = parseFloat(cs.letterSpacing);
+
+      // إذا كان letter-spacing موجوداً (من style مباشر أو CSS)
+      if (ls !== 0 || el.style.letterSpacing) {
+        el.style.letterSpacing = '0px';
+
+        // عوّض ببعض word-spacing لو كان ls كبيراً (المصمم أراد هواء بين الكلمات)
+        if (ls > 0 && text.includes(' ') && el.children.length === 0) {
+          const compensation = Math.min(ls * 1.5, 6);
+          el.style.wordSpacing = compensation + 'px';
+        }
+      }
+    }
+
+    // ── 2. word-spacing سالب يكسر النص العربي أيضاً ──
+    if (hasArabic) {
+      const cs2 = window.getComputedStyle(el);
+      const ws = parseFloat(cs2.wordSpacing);
+      if (ws < -2) el.style.wordSpacing = '0px';
+    }
+
+    // ── 3. text-justify: inter-character يكسر html2canvas مع العربي ──
+    if (el.style.textJustify === 'inter-character') {
+      el.style.textJustify = 'auto';
+    }
+
+    // ── 4. page-break cleanup ──
+    const s = el.style;
+    if (s.pageBreakAfter)  s.pageBreakAfter  = 'auto';
+    if (s.pageBreakBefore) s.pageBreakBefore = 'auto';
+    if (s.pageBreakInside) s.pageBreakInside = 'auto';
+    if (s.breakAfter)      s.breakAfter      = 'auto';
+    if (s.breakBefore)     s.breakBefore     = 'auto';
+    if (s.breakInside)     s.breakInside     = 'auto';
+  });
+
+  // ── 5. * { letter-spacing: 0 !important } في الـ CSS ──
+  // بعض المصممين يضعونه في Reset CSS — نتأكد أنه مطبّق
+  const overrideStyle = clonedDoc.createElement('style');
+  overrideStyle.textContent = `
+    *:lang(ar), *[dir="rtl"], *[dir="rtl"] * {
+      letter-spacing: 0 !important;
+    }
+  `;
+  clonedDoc.head.appendChild(overrideStyle);
+}
+
+/* ════════════════════════════════════════════════════════
+   STEP 4 — CAPTURE PAGE → BASE64
+   ════════════════════════════════════════════════════════ */
 async function capturePageToBase64(pageEl, scale, quality) {
-  // احصل على الأبعاد الحقيقية قبل أي تعديل
-  const rect = pageEl.getBoundingClientRect();
-  const elW  = Math.round(pageEl.offsetWidth)  || 794;
-  const elH  = Math.round(pageEl.offsetHeight) || 1123;
+  const elW = Math.round(pageEl.offsetWidth)  || 794;
+  const elH = Math.round(pageEl.offsetHeight) || 1123;
 
   let imgData = null, previewDataUrl = null;
-  try {
-    const canvas = await html2canvas(pageEl, {
-      scale,
-      useCORS        : true,
-      allowTaint     : true,
-      backgroundColor: '#ffffff',
-      logging        : false,
-      imageTimeout   : 20000,
-      removeContainer: true,
-      foreignObjectRendering: false,
-      width  : elW,
-      height : elH,
-      // ⚠️ لا نضيف x/y لأن html2canvas يحسبها تلقائياً من موضع العنصر
-      onclone(clonedDoc, clonedEl) {
-        // ✅ فقط نزيل خصائص page-break — لا نلمس display/position/overflow/visibility
-        // لأن أي تغيير على هذه الخصائص يكسر text-align:center وتوزيع العناصر
-        clonedDoc.querySelectorAll('*').forEach(el => {
-          const s = el.style;
-          if (s.pageBreakAfter)  s.pageBreakAfter  = 'auto';
-          if (s.pageBreakBefore) s.pageBreakBefore = 'auto';
-          if (s.pageBreakInside) s.pageBreakInside = 'auto';
-          if (s.breakAfter)      s.breakAfter      = 'auto';
-          if (s.breakBefore)     s.breakBefore     = 'auto';
-          if (s.breakInside)     s.breakInside     = 'auto';
 
-          // ✅ إصلاح letter-spacing مع النص العربي
-          // html2canvas يطبّق letter-spacing بعد كل حرف بما فيها آخر حرف في الكلمة
-          // هذا يكسر الكلمات العربية — الحل: نصفّر letter-spacing فقط على العناصر التي
-          // تحتوي على نص عربي وعندها letter-spacing موجب
-          const cs = getComputedStyle(el);
-          const ls = parseFloat(cs.letterSpacing);
-          if (ls > 0 || s.letterSpacing) {
-            // تحقق هل النص يحتوي على حروف عربية
-            const text = el.textContent || '';
-            const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
-            if (hasArabic) {
-              el.style.letterSpacing = '0px';
-              // عوّض بـ word-spacing لو كانت هناك مسافات بين كلمات
-              // (بعض التصاميم تستخدم letter-spacing لإضافة هواء بين الكلمات)
-              if (ls > 0 && text.includes(' ')) {
-                el.style.wordSpacing = Math.min(ls * 2, 8) + 'px';
-              }
-            }
-          }
-        });
+  const canvas = await html2canvas(pageEl, {
+    scale,
+    useCORS        : true,
+    allowTaint     : true,
+    backgroundColor: '#ffffff',
+    logging        : false,
+    imageTimeout   : 20000,
+    removeContainer: true,
+    foreignObjectRendering: false,
+    width : elW,
+    height: elH,
+    onclone(clonedDoc, clonedEl) {
+      // ✅ تأكد رؤية العنصر
+      clonedEl.style.visibility = 'visible';
+      clonedEl.style.opacity    = '1';
 
-        // ✅ فقط تأكد من رؤية العنصر الرئيسي نفسه
-        clonedEl.style.visibility = 'visible';
-        clonedEl.style.opacity    = '1';
+      // ✅ إصلاح شامل للنص العربي + page-break
+      fixArabicSpacing(clonedDoc);
 
-        // ✅ ضمان تحميل الخطوط في المستند المستنسخ
-        const existingLinks = [...document.querySelectorAll('link[data-pdf-injected]')];
-        existingLinks.forEach(link => {
-          const found = clonedDoc.querySelector('link[href="' + link.href + '"]');
-          if (!found) {
-            const cl = clonedDoc.createElement('link');
-            cl.rel  = 'stylesheet';
-            cl.href = link.href;
-            clonedDoc.head.appendChild(cl);
-          }
-        });
-      }
-    });
+      // ✅ حقن الخطوط في المستند المستنسخ
+      [...document.querySelectorAll('link[data-pdf-injected]')].forEach(link => {
+        if (!clonedDoc.querySelector('link[href="' + link.href + '"]')) {
+          const cl = clonedDoc.createElement('link');
+          cl.rel = 'stylesheet'; cl.href = link.href;
+          clonedDoc.head.appendChild(cl);
+        }
+      });
+    }
+  });
 
-    imgData        = canvas.toDataURL('image/jpeg', quality / 10);
-    previewDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+  imgData        = canvas.toDataURL('image/jpeg', quality / 10);
+  previewDataUrl = canvas.toDataURL('image/jpeg', 0.5);
 
-    // تحرير الذاكرة فوراً
-    canvas.width = 0;
-    canvas.height = 0;
-
-  } catch(err) {
-    LOG.err('فشل تصوير الصفحة: ' + err.message);
-    throw err;
-  }
+  // تحرير الذاكرة فوراً
+  canvas.width = 0; canvas.height = 0;
 
   return { imgData, previewDataUrl };
 }
 
-/* ═══════════════════════════════════════
-   ADD PREVIEW CARD (streaming)
-   ═══════════════════════════════════════ */
-function addPreviewCard(dataUrl, index, total) {
+/* ════════════════════════════════════════════════════════
+   ADD PREVIEW CARD
+   ════════════════════════════════════════════════════════ */
+function addPreviewCard(dataUrl, dims, index, total) {
   const scroll = document.getElementById('previewScroll');
   document.getElementById('emptyState').style.display = 'none';
 
@@ -654,23 +522,25 @@ function addPreviewCard(dataUrl, index, total) {
 
   const img = document.createElement('img');
   img.src = dataUrl;
-  const w = Math.min(460, scroll.clientWidth - 40);
-  img.style.width  = w + 'px';
-  img.style.height = (w * (297 / 210)) + 'px';
+
+  const maxW   = Math.min(520, scroll.clientWidth - 40);
+  const ratio  = dims.hMM / dims.wMM;
+  img.style.width  = maxW + 'px';
+  img.style.height = (maxW * ratio) + 'px';
   card.appendChild(img);
 
   const badge = document.createElement('div');
   badge.className   = 'page-num-badge';
-  badge.textContent = 'صفحة ' + (index + 1) + ' من ' + total;
+  badge.textContent = 'صفحة ' + (index + 1) + ' من ' + total + (dims.orient === 'landscape' ? ' — أفقي' : '');
   card.appendChild(badge);
 
   scroll.appendChild(card);
   updateTabBadge(index + 1);
 }
 
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
    MAIN CONVERSION
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 async function startConversion() {
   const html    = document.getElementById('htmlInput').value.trim();
   const scale   = Math.max(1, Math.min(6, parseInt(document.getElementById('optScale').value)    || 3));
@@ -682,22 +552,19 @@ async function startConversion() {
 
   setButtons(true, '⏳ جاري التحويل...');
   document.getElementById('progressWrap').classList.add('active');
-
-  // Clear preview
   document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('pageCountBadge').textContent = '⏳';
   updateTabBadge(0);
 
   LOG.init();
-  LOG.info('scale=' + scale + ' | delay=' + delay + 'ms | quality=' + quality + '/10');
+  LOG.info('scale=' + scale + ' | delay=' + delay + 'ms | quality=' + quality + '/10 | orient=' + currentOrient);
   setProgress(5, 'حقن HTML...');
 
   try {
     const container = injectHTML(html);
     LOG.ok('HTML مُحقن');
     setProgress(12, 'تحميل الموارد...');
-    // انتظر أطول بعد الحقن مباشرة لإعطاء Google Fonts وقتاً للتسجيل
     await sleep(300);
 
     await waitForResources(container, delay);
@@ -714,25 +581,34 @@ async function startConversion() {
     setProgress(32, 'تصوير ' + pages.length + ' صفحة...');
 
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: 'portrait', unit: 'mm',
-      format: [210, 297], compress: false, putOnlyUsedFonts: true,
-    });
+    let pdf = null;
 
     for (let i = 0; i < pages.length; i++) {
-      const pct = 32 + Math.round((i / pages.length) * 56);
-      setProgress(pct, 'صفحة ' + (i+1) + ' / ' + pages.length);
+      setProgress(32 + Math.round((i / pages.length) * 56), 'صفحة ' + (i+1) + ' / ' + pages.length);
       LOG.info('تصوير صفحة ' + (i+1) + '...');
+
+      // كشف أبعاد هذه الصفحة تحديداً
+      const dims = getPageDimsMM(pages[i]);
 
       const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], scale, quality);
 
-      if (i > 0) pdf.addPage([210, 297], 'portrait');
-      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, 'p' + i, 'NONE');
-      LOG.ok('صفحة ' + (i+1) + ' أُضيفت');
+      // إنشاء PDF عند أول صفحة بأبعادها
+      if (!pdf) {
+        pdf = new jsPDF({
+          orientation    : dims.orient,
+          unit           : 'mm',
+          format         : [dims.wMM, dims.hMM],
+          compress       : false,
+          putOnlyUsedFonts: true,
+        });
+      } else {
+        pdf.addPage([dims.wMM, dims.hMM], dims.orient);
+      }
 
-      addPreviewCard(previewDataUrl, i, pages.length);
+      pdf.addImage(imgData, 'JPEG', 0, 0, dims.wMM, dims.hMM, 'p' + i, 'NONE');
+      LOG.ok('صفحة ' + (i+1) + ' [' + dims.wMM + '×' + dims.hMM + 'mm ' + dims.orient + ']');
 
-      // Auto-switch to preview on mobile after first page
+      addPreviewCard(previewDataUrl, dims, i, pages.length);
       if (i === 0 && window.innerWidth <= 768) switchTab('preview');
 
       await sleep(25);
@@ -757,83 +633,126 @@ async function startConversion() {
   setButtons(false, '🖨 تحويل إلى PDF وتنزيله');
 }
 
-/* ═══════════════════════════════════════
+/* ════════════════════════════════════════════════════════
    SAMPLE LOADER
-   ═══════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 function loadSample() {
   document.getElementById('htmlInput').value = `<!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:'IBM Plex Sans Arabic',Arial,sans-serif; }
-.page { width:794px; height:1123px; padding:60px 64px; background:#fff; overflow:hidden; position:relative; display:block; }
-.page-cover { background:linear-gradient(145deg,#0f0c29,#1a1a2e 50%,#16213e); color:#fff; }
-.cover-eyebrow { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#c8440a; font-weight:700; margin-top:180px; }
-.cover-title   { font-size:54px; font-weight:700; line-height:1.2; margin-top:18px; }
-.cover-title em { color:#c8440a; font-style:normal; }
-.cover-sub  { font-size:18px; color:#8090b0; margin-top:18px; }
-.cover-rule { width:80px; height:4px; background:#c8440a; margin-top:40px; }
-.cover-meta { position:absolute; bottom:60px; left:64px; right:64px; display:flex; justify-content:space-between; font-size:12px; color:#556080; border-top:1px solid #2a3050; padding-top:18px; }
-.phl { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#c8440a; font-weight:700; margin-bottom:32px; display:flex; align-items:center; gap:10px; }
-.phl::after { content:''; flex:1; height:1px; background:#f0ebe5; }
-h2 { font-size:30px; font-weight:700; color:#0d0d0d; margin-bottom:16px; }
-p  { font-size:14.5px; line-height:2; color:#3a3530; margin-bottom:18px; }
-.card-row { display:flex; gap:18px; margin-top:28px; }
-.card { flex:1; background:#f7f5f0; border-radius:6px; padding:20px 18px; border-top:3px solid #c8440a; }
-.card.g { border-color:#1a6b4a; }
-.card h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
-.stat { font-size:28px; font-weight:700; color:#c8440a; }
-.card.g .stat { color:#1a6b4a; }
-.card p { font-size:12px; color:#7a7470; margin:4px 0 0; }
-.pf { position:absolute; bottom:32px; left:64px; right:64px; display:flex; justify-content:space-between; font-size:11px; color:#b0a8a0; border-top:1px solid #ece8e4; padding-top:12px; }
-.hb { background:linear-gradient(135deg,#fff8f5,#fff3ee); border:1px solid #f0d8ce; border-right:4px solid #c8440a; border-radius:4px; padding:18px 22px; margin-top:24px; }
-.hb p { margin:0; font-size:14px; color:#4a3528; }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{ --primary:#064E3B; --accent:#B45309; }
+body{ font-family:'Cairo',sans-serif; background:#1F2937; display:flex; flex-direction:column; align-items:center; }
+/* صفحة عمودية A4 */
+.page{
+  width:794px; height:1123px; background:#fff;
+  margin:20px auto; position:relative; padding:60px 64px;
+  display:flex; flex-direction:column;
+  border:12px solid var(--primary); overflow:hidden;
+}
+/* صفحة أفقية 16:9 */
+.page-wide{
+  width:1280px; height:720px; background:#fff;
+  margin:20px auto; position:relative; padding:35px 45px;
+  display:flex; flex-direction:column;
+  border:12px solid var(--primary); overflow:hidden;
+}
+.cover{ justify-content:center; align-items:center; text-align:center; }
+.cover h1{ font-size:80pt; color:var(--primary); font-weight:900; margin-bottom:16px; }
+.cover h3{ font-size:32pt; color:var(--accent); margin-bottom:20px; }
+.author{ font-size:28pt; font-weight:900; color:#374151; }
+.header{ text-align:center; margin-bottom:20px; }
+.header h2{ font-size:36pt; color:var(--primary); font-weight:900; border-bottom:6px solid var(--accent); display:inline-block; padding-bottom:8px; }
+.content-box{ display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; }
+.card{ background:#F0FDF4; padding:22px; border-radius:12px; border-right:8px solid var(--accent); }
+.card h3{ font-size:22pt; color:var(--primary); margin-bottom:12px; }
+.card p, .card li{ font-size:16pt; line-height:1.6; }
+.card ul{ margin-right:22px; list-style-type:disc; }
+.hadith-zone{ grid-column:span 2; background:var(--primary); color:#fff; padding:22px; text-align:center; font-family:'Amiri',serif; font-size:22pt; border-radius:16px; }
+/* عرض بوربوينت */
+.slide-header{ text-align:center; margin-bottom:16px; }
+.slide-header h2{ font-size:44pt; color:var(--primary); font-weight:900; border-bottom:5px solid var(--accent); display:inline-block; padding-bottom:6px; }
+.slide-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; }
+.slide-card{ background:#F0FDF4; padding:18px 22px; border-radius:10px; border-right:7px solid var(--accent); }
+.slide-card h3{ font-size:24pt; color:var(--primary); margin-bottom:10px; }
+.slide-card p{ font-size:18pt; line-height:1.5; }
 </style>
 </head>
 <body>
-<div class="page page-cover">
-  <div class="cover-eyebrow">تقرير سنوي — 2024</div>
-  <div class="cover-title">نظرة شاملة<br/>على الأداء <em>المؤسسي</em></div>
-  <div class="cover-sub">مؤشرات النمو · الإنجازات · خارطة الطريق</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta"><span>شركة النموذج</span><span>سري — داخلي</span></div>
+
+<!-- صفحة 1: غلاف A4 عمودي -->
+<div class="page cover">
+  <h1>درس النصيحة</h1>
+  <h3>الدراسات الإسلامية · ثالث متوسط</h3>
+  <div style="width:200px;height:6px;background:var(--primary);margin:20px auto;"></div>
+  <div class="author">أيمن الغامدي</div>
 </div>
+
+<!-- صفحة 2: محتوى A4 عمودي -->
 <div class="page">
-  <div class="phl">ملخص تنفيذي</div>
-  <h2>أبرز إنجازات العام</h2>
-  <p>حقّقت الشركة خلال 2024 نمواً استثنائياً على جميع المحاور التشغيلية والمالية، مما يعكس نجاح الاستراتيجية وكفاءة الفرق.</p>
-  <div class="hb"><p>💡 هذه النتائج الأفضل في تاريخ الشركة منذ تأسيسها.</p></div>
-  <div class="card-row">
-    <div class="card"><h3>الإيرادات</h3><div class="stat">+34٪</div><p>نمو سنوي</p></div>
-    <div class="card g"><h3>العملاء</h3><div class="stat">1,247</div><p>عميل جديد</p></div>
-    <div class="card"><h3>الفريق</h3><div class="stat">80+</div><p>موظف</p></div>
+  <div class="header"><h2>المنطلق الشرعي</h2></div>
+  <div class="content-box">
+    <div class="hadith-zone">
+      "الدينُ النصيحةُ" · رواه مسلم
+    </div>
+    <div class="card" style="grid-column:span 2;">
+      <p>• النصيحة هي عماد الدين وجوهره، وهي الصدق في إرادة الخير للغير.</p>
+      <p>• تشمل النصيحة علاقة العبد بربه وبكتابه وبقدوته ﷺ وبكل أفراد المجتمع.</p>
+    </div>
   </div>
-  <div class="pf"><span>التقرير السنوي 2024</span><span>صفحة 2</span></div>
 </div>
-<div class="page">
-  <div class="phl">التحليل الاستراتيجي</div>
-  <h2>التحديات والفرص</h2>
-  <p>واجه القطاع عدة تحديات أبرزها المنافسة وارتفاع التكاليف، غير أن الفريق حوّلها إلى فرص نمو واعدة.</p>
-  <div class="card-row">
-    <div class="card g"><h3>🚀 فرصة 1</h3><div class="stat" style="font-size:18px">السوق السعودية</div><p>3 شراكات حكومية</p></div>
-    <div class="card g"><h3>🌐 فرصة 2</h3><div class="stat" style="font-size:18px">المنتج الرقمي</div><p>إطلاق Q1 2025</p></div>
+
+<!-- صفحة 3: عرض بوربوينت 16:9 أفقي -->
+<div class="page-wide">
+  <div class="slide-header"><h2>مجالات النصيحة</h2></div>
+  <div class="slide-grid">
+    <div class="slide-card">
+      <h3>لله ولكتابه ولرسوله</h3>
+      <p>• الإيمان بالله وتوحيده وتعظيمه.</p>
+      <p>• تعظيم القرآن والعمل بأحكامه.</p>
+      <p>• محبة النبي ﷺ واتباع سنته الكريمة.</p>
+    </div>
+    <div class="slide-card">
+      <h3>للمسلمين</h3>
+      <p>• طاعة ولاة الأمر في المعروف.</p>
+      <p>• إرشاد الناس لمصالح دينهم ودنياهم.</p>
+      <p>• كف الأذى وحب الخير للجميع.</p>
+    </div>
   </div>
-  <div class="hb" style="margin-top:28px"><p>📌 نافذة 2025–2026 هي الأهم في مسيرة الشركة.</p></div>
-  <div class="pf"><span>التقرير السنوي 2024</span><span>صفحة 3</span></div>
 </div>
+
+<!-- صفحة 4: عرض بوربوينت 16:9 أفقي -->
+<div class="page-wide">
+  <div class="slide-header"><h2>آداب النصيحة</h2></div>
+  <div class="slide-grid">
+    <div class="slide-card">
+      <h3>آداب الناصح</h3>
+      <p>• الإخلاص لله عز وجل في نصيحته.</p>
+      <p>• الرفق واللين في الكلام والأسلوب.</p>
+      <p>• اختيار الوقت والمكان المناسب (الستر).</p>
+    </div>
+    <div class="slide-card">
+      <h3>آداب المنصوح</h3>
+      <p>• التواضع وقبول الحق من الناصح.</p>
+      <p>• عدم الغضب ممن يريد مصلحته.</p>
+      <p>• شكر من أهداك عيوبك بصدر رحب.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>`;
 
-  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
+  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c=>c.remove());
   document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('pageCountBadge').textContent = '—';
   document.getElementById('progressWrap').classList.remove('active');
   document.getElementById('logBox').classList.remove('active');
   updateTabBadge(0);
-  // Switch to editor tab so user sees the loaded code
+  setOrient('auto'); // المثال يحتوي على صفحات مختلطة
   if (window.innerWidth <= 768) switchTab('editor');
 }
 </script>
