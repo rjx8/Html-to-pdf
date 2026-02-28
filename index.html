@@ -434,69 +434,51 @@ async function waitForResources(container, extraDelay) {
    هذه الدالة تُطبَّق داخل onclone على كل عنصر
    ════════════════════════════════════════════════════════ */
 function fixArabicSpacing(clonedDoc) {
-  const ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  // ── الحل الصحيح: نحقن CSS يصفّر letter-spacing على كل العناصر ──
+  // computedStyle لا تعمل بشكل موثوق داخل onclone (المستند المستنسخ معزول)
+  // لذلك نستخدم !important مباشرة في style tag
 
-  clonedDoc.querySelectorAll('*').forEach(el => {
-    const text = el.textContent || '';
-    if (!text.trim()) return;
-
-    const hasArabic = ARABIC_RE.test(text);
-
-    // ── 1. letter-spacing مع عربي = كارثة في html2canvas ──
-    // نصفّره دائماً إذا وُجد نص عربي في العنصر أو أحد أبنائه
-    if (hasArabic) {
-      const cs = window.getComputedStyle(el);
-      const ls = parseFloat(cs.letterSpacing);
-
-      // إذا كان letter-spacing موجوداً (من style مباشر أو CSS)
-      if (ls !== 0 || el.style.letterSpacing) {
-        el.style.letterSpacing = '0px';
-
-        // عوّض ببعض word-spacing لو كان ls كبيراً (المصمم أراد هواء بين الكلمات)
-        if (ls > 0 && text.includes(' ') && el.children.length === 0) {
-          const compensation = Math.min(ls * 1.5, 6);
-          el.style.wordSpacing = compensation + 'px';
-        }
-      }
-    }
-
-    // ── 2. word-spacing سالب يكسر النص العربي أيضاً ──
-    if (hasArabic) {
-      const cs2 = window.getComputedStyle(el);
-      const ws = parseFloat(cs2.wordSpacing);
-      if (ws < -2) el.style.wordSpacing = '0px';
-    }
-
-    // ── 3. text-justify: inter-character يكسر html2canvas مع العربي ──
-    if (el.style.textJustify === 'inter-character') {
-      el.style.textJustify = 'auto';
-    }
-
-    // ── 4. page-break cleanup ──
-    const s = el.style;
-    if (s.pageBreakAfter)  s.pageBreakAfter  = 'auto';
-    if (s.pageBreakBefore) s.pageBreakBefore = 'auto';
-    if (s.pageBreakInside) s.pageBreakInside = 'auto';
-    if (s.breakAfter)      s.breakAfter      = 'auto';
-    if (s.breakBefore)     s.breakBefore     = 'auto';
-    if (s.breakInside)     s.breakInside     = 'auto';
-  });
-
-  // ── 5. * { letter-spacing: 0 !important } في الـ CSS ──
-  // بعض المصممين يضعونه في Reset CSS — نتأكد أنه مطبّق
-  const overrideStyle = clonedDoc.createElement('style');
-  overrideStyle.textContent = `
-    *:lang(ar), *[dir="rtl"], *[dir="rtl"] * {
+  const fix = clonedDoc.createElement('style');
+  fix.textContent = `
+    /* ── إصلاح letter-spacing مع html2canvas ── */
+    /* أي letter-spacing موجب أو سالب يكسر النص العربي */
+    * {
       letter-spacing: 0 !important;
+      word-spacing: normal !important;
+      text-justify: auto !important;
+    }
+    /* ── إصلاح page-break ── */
+    * {
+      page-break-after: auto !important;
+      page-break-before: auto !important;
+      page-break-inside: auto !important;
+      break-after: auto !important;
+      break-before: auto !important;
+      break-inside: auto !important;
     }
   `;
-  clonedDoc.head.appendChild(overrideStyle);
+  clonedDoc.head.appendChild(fix);
+
+  // ── إزالة الـ inline styles المتعارضة مباشرة ──
+  clonedDoc.querySelectorAll('*').forEach(el => {
+    if (el.style.letterSpacing) el.style.removeProperty('letter-spacing');
+    if (el.style.wordSpacing)   el.style.removeProperty('word-spacing');
+    if (el.style.pageBreakAfter)  el.style.pageBreakAfter  = 'auto';
+    if (el.style.pageBreakBefore) el.style.pageBreakBefore = 'auto';
+    if (el.style.pageBreakInside) el.style.pageBreakInside = 'auto';
+    if (el.style.breakAfter)      el.style.breakAfter      = 'auto';
+    if (el.style.breakBefore)     el.style.breakBefore     = 'auto';
+    if (el.style.breakInside)     el.style.breakInside     = 'auto';
+  });
 }
 
 /* ════════════════════════════════════════════════════════
    STEP 4 — CAPTURE PAGE → BASE64
    ════════════════════════════════════════════════════════ */
 async function capturePageToBase64(pageEl, dims, scale, quality) {
+  // استخدم الأبعاد من الـ CSS — لكن إذا كان overflow:hidden وارتفاع الـ scroll أكبر
+  // فهذا يعني المحتوى يتجاوز الصفحة وهو مشكلة في الكود الأصلي
+  // نصور بالأبعاد المحددة فعلياً في CSS (dims.pw × dims.ph) بالضبط
   const elW = dims.pw;
   const elH = dims.ph;
 
@@ -511,12 +493,20 @@ async function capturePageToBase64(pageEl, dims, scale, quality) {
     imageTimeout   : 20000,
     removeContainer: true,
     foreignObjectRendering: false,
-    width : elW,
-    height: elH,
+    width       : elW,
+    height      : elH,
+    windowWidth : elW + 50,
+    windowHeight: elH + 50,
     onclone(clonedDoc, clonedEl) {
       // ✅ تأكد رؤية العنصر
       clonedEl.style.visibility = 'visible';
       clonedEl.style.opacity    = '1';
+      // ✅ أجبر الأبعاد وأخفِ الفائض — يمنع التداخل بين الصفحات
+      clonedEl.style.width    = elW + 'px';
+      clonedEl.style.height   = elH + 'px';
+      clonedEl.style.overflow = 'hidden';
+      clonedEl.style.minHeight = 'unset';
+      clonedEl.style.maxHeight = elH + 'px';
 
       // ✅ إصلاح شامل للنص العربي + page-break
       fixArabicSpacing(clonedDoc);
@@ -621,6 +611,18 @@ async function startConversion() {
       return;
     }
     LOG.ok(pages.length + ' صفحة');
+
+    // ── تحقق من تجاوز المحتوى لحجم الصفحة ──
+    let overflowCount = 0;
+    pages.forEach((p, i) => {
+      if (p.scrollHeight > p.offsetHeight + 10) {
+        overflowCount++;
+        LOG.warn('صفحة ' + (i+1) + ': المحتوى (' + p.scrollHeight + 'px) أطول من الصفحة (' + p.offsetHeight + 'px) — قد يظهر تداخل');
+      }
+    });
+    if (overflowCount > 0) {
+      LOG.warn('⚠ ' + overflowCount + ' صفحة محتواها أطول من ارتفاعها — قلّل حجم الخطوط أو قسّم المحتوى على صفحات إضافية');
+    }
     setProgress(32, 'تصوير ' + pages.length + ' صفحة...');
 
     const { jsPDF } = window.jspdf;
