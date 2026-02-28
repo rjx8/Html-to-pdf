@@ -167,8 +167,8 @@
           <button class="orient-btn active" id="btnPortrait" onclick="setOrient('portrait')">
             <span class="icon">📄</span>عمودي A4
           </button>
-          <button class="orient-btn" id="btnLandscape" onclick="setOrient('landscape')">
-            <span class="icon">🖥</span>أفقي / عروض
+          <button class="orient-btn" id="btnSlides" onclick="setOrient('slides')">
+            <span class="icon">🖥</span>عروض 16:9
           </button>
           <button class="orient-btn" id="btnAuto" onclick="setOrient('auto')">
             <span class="icon">🔄</span>تلقائي
@@ -261,7 +261,7 @@ function updateTabBadge(n) {
    ════════════════════════════════════════════════════════ */
 function setOrient(val) {
   currentOrient = val;
-  ['portrait','landscape','auto'].forEach(k => {
+  ['portrait','slides','auto'].forEach(k => {
     document.getElementById('btn' + k.charAt(0).toUpperCase() + k.slice(1))
       .classList.toggle('active', k === val);
   });
@@ -398,8 +398,8 @@ function getPageDimsMM(pageEl) {
   LOG.info('[.' + (matched || classes[0]) + '] ' + pw + '×' + ph + 'px');
 
   // ── اتجاه يدوي ──
-  if (currentOrient === 'portrait')  return { wMM: 210,              hMM: 297,              orient: 'portrait',  pw, ph };
-  if (currentOrient === 'landscape') return { wMM: 297,              hMM: 210,              orient: 'landscape', pw, ph };
+  if (currentOrient === 'portrait') return { wMM: 210,              hMM: 297,              orient: 'portrait',  pw, ph };
+  if (currentOrient === 'slides')   return { wMM: Math.round(pw * PX_MM), hMM: Math.round(ph * PX_MM), orient: 'landscape', pw, ph };
 
   // ── تلقائي: حوّل px → mm مباشرة ──
   const orient = pw > ph ? 'landscape' : 'portrait';
