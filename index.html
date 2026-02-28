@@ -159,7 +159,7 @@
         <textarea id="htmlInput" dir="ltr" placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'></textarea>
       </div>
 
-      <button class="btn-sample" onclick="loadSample()">⬇ تحميل مثال تجريبي</button>
+      <button class="btn-sample" onclick="loadSample()">📐 عرض مثال الأبعاد</button>
 
       <div>
         <div class="section-label">اتجاه الصفحة في PDF</div>
@@ -224,7 +224,7 @@
         <div class="empty-icon">📄</div>
         <div>
           <strong>لا توجد صفحات بعد</strong><br/>
-          الصق كود HTML يحتوي على <code>.page</code><br/>ثم اضغط تحويل
+          الصق كود HTML يحتوي على <code>class="page"</code><br/>أو أي class يحتوي كلمة <code>page</code>
         </div>
       </div>
     </div>
@@ -304,10 +304,41 @@ function setButtons(disabled, label) {
 /* ════════════════════════════════════════════════════════
    STEP 1 — INJECT HTML
    ════════════════════════════════════════════════════════ */
+
+// فهرس الأبعاد — يُبنى من نص CSS قبل الحقن
+let _dimsIndex = {};
+
+function parseDimsFromHTML(html) {
+  const idx = {};
+  // استخرج نص كل <style>
+  const styleRe = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+  let sm;
+  while ((sm = styleRe.exec(html)) !== null) {
+    const css = sm[1];
+    // ابحث عن كل rule فيه width وheight بـ px
+    const ruleRe = /\.([a-zA-Z][\w-]*)\s*\{([^}]*)\}/g;
+    let rm;
+    while ((rm = ruleRe.exec(css)) !== null) {
+      const cls  = rm[1];
+      const body = rm[2];
+      if (!/page/i.test(cls)) continue;
+      const wm = body.match(/\bwidth\s*:\s*([\d.]+)px/);
+      const hm = body.match(/\bheight\s*:\s*([\d.]+)px/);
+      if (wm && hm) {
+        idx[cls] = { w: parseFloat(wm[1]), h: parseFloat(hm[1]) };
+        LOG.info('CSS: .' + cls + ' = ' + wm[1] + '×' + hm[1] + 'px');
+      }
+    }
+  }
+  return idx;
+}
+
 function injectHTML(html) {
+  // ── بناء فهرس الأبعاد من CSS النصّي قبل أي حقن ──
+  _dimsIndex = parseDimsFromHTML(html);
+
   const container = document.getElementById('renderContainer');
   container.innerHTML = '';
-  container.style.cssText = 'position:fixed;top:0;left:-9999px;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1000;';
 
   const parser = new DOMParser();
   const doc    = parser.parseFromString(html, 'text/html');
@@ -334,13 +365,46 @@ function injectHTML(html) {
     document.head.appendChild(c);
   });
 
+  // عرض الـ container = أعرض صفحة + هامش
+  const maxW = Object.values(_dimsIndex).reduce((mx, d) => Math.max(mx, d.w), 1300);
+  container.style.cssText = 'position:fixed;top:0;left:-9999px;width:' + (maxW + 4) + 'px;background:#fff;visibility:visible;pointer-events:none;z-index:-1000;';
   container.innerHTML = doc.body.innerHTML;
+
   return container;
 }
 
 /* ════════════════════════════════════════════════════════
-   STEP 2 — WAIT FOR RESOURCES
+   STEP 3 — GET PAGE DIMS MM
    ════════════════════════════════════════════════════════ */
+function getPageDimsMM(pageEl) {
+  const PX_MM = 0.2646; // 96dpi: 1px = 0.2646mm
+
+  // ── ابحث في الفهرس عن أول class مطابق ──
+  const classes = (pageEl.className || '').trim().split(/\s+/).filter(Boolean);
+  let pw = 0, ph = 0, matched = '';
+
+  for (const cls of classes) {
+    if (_dimsIndex[cls]) {
+      pw = _dimsIndex[cls].w;
+      ph = _dimsIndex[cls].h;
+      matched = cls;
+      break;
+    }
+  }
+
+  // fallback
+  if (!pw || !ph) { pw = 794; ph = 1123; }
+
+  LOG.info('[.' + (matched || classes[0]) + '] ' + pw + '×' + ph + 'px');
+
+  // ── اتجاه يدوي ──
+  if (currentOrient === 'portrait')  return { wMM: 210,              hMM: 297,              orient: 'portrait',  pw, ph };
+  if (currentOrient === 'landscape') return { wMM: 297,              hMM: 210,              orient: 'landscape', pw, ph };
+
+  // ── تلقائي: حوّل px → mm مباشرة ──
+  const orient = pw > ph ? 'landscape' : 'portrait';
+  return { wMM: Math.round(pw * PX_MM), hMM: Math.round(ph * PX_MM), orient, pw, ph };
+}
 async function waitForResources(container, extraDelay) {
   try { await document.fonts.ready; LOG.ok('fonts.ready ✓'); }
   catch(e) { LOG.warn('fonts.ready: ' + e.message); }
@@ -369,33 +433,6 @@ async function waitForResources(container, extraDelay) {
   const minDelay = Math.max(extraDelay, 250);
   await sleep(minDelay);
   LOG.ok('جاهز');
-}
-
-/* ════════════════════════════════════════════════════════
-   STEP 3 — DETECT PAGE DIMENSIONS
-   يكتشف إذا كانت الصفحة أفقية أم عمودية تلقائياً
-   ════════════════════════════════════════════════════════ */
-function getPageDimsMM(pageEl) {
-  const w = pageEl.offsetWidth;
-  const h = pageEl.offsetHeight;
-
-  if (currentOrient === 'portrait')  return { wMM: 210, hMM: 297, orient: 'portrait' };
-  if (currentOrient === 'landscape') return { wMM: 297, hMM: 210, orient: 'landscape' };
-
-  // auto — كشف تلقائي بناءً على نسبة العرض / الارتفاع
-  if (w > h) {
-    // صفحة عرضية — نحسب النسبة لمعرفة إذا هي 16:9 أو A4 landscape أو غيرها
-    const ratio = w / h;
-    if (Math.abs(ratio - 16/9) < 0.1) {
-      // 16:9 — أبعاد بوربوينت
-      return { wMM: 338, hMM: 190, orient: 'landscape' };
-    }
-    // A4 landscape أو قريب منه
-    return { wMM: 297, hMM: 210, orient: 'landscape' };
-  }
-
-  // عمودي — A4 افتراضي
-  return { wMM: 210, hMM: 297, orient: 'portrait' };
 }
 
 /* ════════════════════════════════════════════════════════
@@ -465,9 +502,9 @@ function fixArabicSpacing(clonedDoc) {
 /* ════════════════════════════════════════════════════════
    STEP 4 — CAPTURE PAGE → BASE64
    ════════════════════════════════════════════════════════ */
-async function capturePageToBase64(pageEl, scale, quality) {
-  const elW = Math.round(pageEl.offsetWidth)  || 794;
-  const elH = Math.round(pageEl.offsetHeight) || 1123;
+async function capturePageToBase64(pageEl, dims, scale, quality) {
+  const elW = dims.pw;
+  const elH = dims.ph;
 
   let imgData = null, previewDataUrl = null;
 
@@ -570,10 +607,22 @@ async function startConversion() {
     await waitForResources(container, delay);
     setProgress(28, 'البحث عن صفحات...');
 
-    const pages = [...container.querySelectorAll('.page')];
+    const pages = [...container.querySelectorAll('[class*="page"]')].filter(el => {
+      // نأخذ فقط العناصر التي class اسمها يبدأ بـ "page" أو يحتوي على "page"
+      // ونستثني العناصر التابعة لصفحة أخرى (أي عنصر أبوه يحمل page أيضاً)
+      const cls = el.className || '';
+      if (!/\bpage/.test(cls)) return false;
+      // تأكد أن العنصر ليس ابناً لعنصر page آخر
+      let parent = el.parentElement;
+      while (parent && parent !== container) {
+        if (/\bpage/.test(parent.className || '')) return false;
+        parent = parent.parentElement;
+      }
+      return true;
+    });
     if (!pages.length) {
-      LOG.err('لا توجد عناصر .page');
-      alert('لم يُعثر على عناصر class="page".');
+      LOG.err('لا توجد عناصر صفحات (.page / .page-*)');
+      alert('لم يُعثر على عناصر صفحات.\nتأكد أن كل صفحة لديها class يحتوي على كلمة "page".\n\nأمثلة: class="page" أو class="page-a4-land" أو class="page-16-9"');
       setButtons(false, '🖨 تحويل إلى PDF وتنزيله');
       return;
     }
@@ -587,10 +636,8 @@ async function startConversion() {
       setProgress(32 + Math.round((i / pages.length) * 56), 'صفحة ' + (i+1) + ' / ' + pages.length);
       LOG.info('تصوير صفحة ' + (i+1) + '...');
 
-      // كشف أبعاد هذه الصفحة تحديداً
       const dims = getPageDimsMM(pages[i]);
-
-      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], scale, quality);
+      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], dims, scale, quality);
 
       // إنشاء PDF عند أول صفحة بأبعادها
       if (!pdf) {
@@ -641,106 +688,134 @@ function loadSample() {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{ --primary:#064E3B; --accent:#B45309; }
-body{ font-family:'Cairo',sans-serif; background:#1F2937; display:flex; flex-direction:column; align-items:center; }
-/* صفحة عمودية A4 */
-.page{
-  width:794px; height:1123px; background:#fff;
-  margin:20px auto; position:relative; padding:60px 64px;
-  display:flex; flex-direction:column;
-  border:12px solid var(--primary); overflow:hidden;
+/* ════════════════════════════════════════════════
+   قواعد مشتركة — لا تحذفها
+   ════════════════════════════════════════════════ */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; background:#e5e7eb; }
+
+/* ─────────────────────────────────────────────
+   📄  A4 عمودي  —  width:794px  height:1123px
+   ─────────────────────────────────────────────
+   يعادل: 210mm × 297mm عند 96dpi
+   مناسب لـ: تقارير، رسائل، بحوث، فواتير       */
+.page {
+  width:  794px;
+  height: 1123px;
+  background: #fff;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  /* ↑ هذه الخصائص الأربعة مطلوبة في كل .page */
+
+  /* ── تنسيق توضيحي فقط ── */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #94a3b8;
+  gap: 12px;
 }
-/* صفحة أفقية 16:9 */
-.page-wide{
-  width:1280px; height:720px; background:#fff;
-  margin:20px auto; position:relative; padding:35px 45px;
-  display:flex; flex-direction:column;
-  border:12px solid var(--primary); overflow:hidden;
+
+/* ─────────────────────────────────────────────
+   📄  A4 أفقي  —  width:1123px  height:794px
+   ─────────────────────────────────────────────
+   يعادل: 297mm × 210mm
+   مناسب لـ: جداول عريضة، شهادات، لافتات       */
+.page-a4-land {
+  width:  1123px;
+  height:  794px;
+  background: #fff;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #94a3b8;
+  gap: 12px;
 }
-.cover{ justify-content:center; align-items:center; text-align:center; }
-.cover h1{ font-size:80pt; color:var(--primary); font-weight:900; margin-bottom:16px; }
-.cover h3{ font-size:32pt; color:var(--accent); margin-bottom:20px; }
-.author{ font-size:28pt; font-weight:900; color:#374151; }
-.header{ text-align:center; margin-bottom:20px; }
-.header h2{ font-size:36pt; color:var(--primary); font-weight:900; border-bottom:6px solid var(--accent); display:inline-block; padding-bottom:8px; }
-.content-box{ display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; }
-.card{ background:#F0FDF4; padding:22px; border-radius:12px; border-right:8px solid var(--accent); }
-.card h3{ font-size:22pt; color:var(--primary); margin-bottom:12px; }
-.card p, .card li{ font-size:16pt; line-height:1.6; }
-.card ul{ margin-right:22px; list-style-type:disc; }
-.hadith-zone{ grid-column:span 2; background:var(--primary); color:#fff; padding:22px; text-align:center; font-family:'Amiri',serif; font-size:22pt; border-radius:16px; }
-/* عرض بوربوينت */
-.slide-header{ text-align:center; margin-bottom:16px; }
-.slide-header h2{ font-size:44pt; color:var(--primary); font-weight:900; border-bottom:5px solid var(--accent); display:inline-block; padding-bottom:6px; }
-.slide-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; }
-.slide-card{ background:#F0FDF4; padding:18px 22px; border-radius:10px; border-right:7px solid var(--accent); }
-.slide-card h3{ font-size:24pt; color:var(--primary); margin-bottom:10px; }
-.slide-card p{ font-size:18pt; line-height:1.5; }
+
+/* ─────────────────────────────────────────────
+   🖥  16:9 عرضي  —  width:1280px  height:720px
+   ─────────────────────────────────────────────
+   نسبة بوربوينت/كيينوت القياسية
+   مناسب لـ: شرائح عروض، بنرات، إنفوغرافيك    */
+.page-16-9 {
+  width:  1280px;
+  height:  720px;
+  background: #fff;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #94a3b8;
+  gap: 12px;
+}
+
+/* ── أنماط توضيحية مشتركة ── */
+.tag {
+  background: #1e40af;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 18px;
+  border-radius: 20px;
+  letter-spacing: 0;
+}
+.dims {
+  font-size: 15px;
+  color: #475569;
+  font-family: monospace;
+}
+.desc {
+  font-size: 13px;
+  color: #94a3b8;
+}
+.corner {
+  position: absolute;
+  font-size: 11px;
+  color: #cbd5e1;
+  font-family: monospace;
+}
+.tl { top:12px; right:16px; }
+.br { bottom:12px; left:16px; }
 </style>
 </head>
 <body>
 
-<!-- صفحة 1: غلاف A4 عمودي -->
-<div class="page cover">
-  <h1>درس النصيحة</h1>
-  <h3>الدراسات الإسلامية · ثالث متوسط</h3>
-  <div style="width:200px;height:6px;background:var(--primary);margin:20px auto;"></div>
-  <div class="author">أيمن الغامدي</div>
-</div>
-
-<!-- صفحة 2: محتوى A4 عمودي -->
+<!-- ══ صفحة 1 — A4 عمودي ══ -->
 <div class="page">
-  <div class="header"><h2>المنطلق الشرعي</h2></div>
-  <div class="content-box">
-    <div class="hadith-zone">
-      "الدينُ النصيحةُ" · رواه مسلم
-    </div>
-    <div class="card" style="grid-column:span 2;">
-      <p>• النصيحة هي عماد الدين وجوهره، وهي الصدق في إرادة الخير للغير.</p>
-      <p>• تشمل النصيحة علاقة العبد بربه وبكتابه وبقدوته ﷺ وبكل أفراد المجتمع.</p>
-    </div>
-  </div>
+  <span class="corner tl">class="page"</span>
+  <span class="corner br">210mm × 297mm</span>
+  <div class="tag">📄 A4 عمودي</div>
+  <div class="dims">width: 794px — height: 1123px</div>
+  <div class="desc">تقارير · بحوث · فواتير · رسائل رسمية</div>
 </div>
 
-<!-- صفحة 3: عرض بوربوينت 16:9 أفقي -->
-<div class="page-wide">
-  <div class="slide-header"><h2>مجالات النصيحة</h2></div>
-  <div class="slide-grid">
-    <div class="slide-card">
-      <h3>لله ولكتابه ولرسوله</h3>
-      <p>• الإيمان بالله وتوحيده وتعظيمه.</p>
-      <p>• تعظيم القرآن والعمل بأحكامه.</p>
-      <p>• محبة النبي ﷺ واتباع سنته الكريمة.</p>
-    </div>
-    <div class="slide-card">
-      <h3>للمسلمين</h3>
-      <p>• طاعة ولاة الأمر في المعروف.</p>
-      <p>• إرشاد الناس لمصالح دينهم ودنياهم.</p>
-      <p>• كف الأذى وحب الخير للجميع.</p>
-    </div>
-  </div>
+<!-- ══ صفحة 2 — A4 أفقي ══ -->
+<div class="page-a4-land">
+  <span class="corner tl">class="page-a4-land"</span>
+  <span class="corner br">297mm × 210mm</span>
+  <div class="tag" style="background:#065f46;">📄 A4 أفقي</div>
+  <div class="dims">width: 1123px — height: 794px</div>
+  <div class="desc">جداول عريضة · شهادات · لافتات</div>
 </div>
 
-<!-- صفحة 4: عرض بوربوينت 16:9 أفقي -->
-<div class="page-wide">
-  <div class="slide-header"><h2>آداب النصيحة</h2></div>
-  <div class="slide-grid">
-    <div class="slide-card">
-      <h3>آداب الناصح</h3>
-      <p>• الإخلاص لله عز وجل في نصيحته.</p>
-      <p>• الرفق واللين في الكلام والأسلوب.</p>
-      <p>• اختيار الوقت والمكان المناسب (الستر).</p>
-    </div>
-    <div class="slide-card">
-      <h3>آداب المنصوح</h3>
-      <p>• التواضع وقبول الحق من الناصح.</p>
-      <p>• عدم الغضب ممن يريد مصلحته.</p>
-      <p>• شكر من أهداك عيوبك بصدر رحب.</p>
-    </div>
-  </div>
+<!-- ══ صفحة 3 — 16:9 عروض ══ -->
+<div class="page-16-9">
+  <span class="corner tl">class="page-16-9"</span>
+  <span class="corner br">نسبة 16:9</span>
+  <div class="tag" style="background:#7c3aed;">🖥 عرض 16:9</div>
+  <div class="dims">width: 1280px — height: 720px</div>
+  <div class="desc">شرائح بوربوينت · إنفوغرافيك · بنرات</div>
 </div>
 
 </body>
@@ -752,7 +827,7 @@ body{ font-family:'Cairo',sans-serif; background:#1F2937; display:flex; flex-dir
   document.getElementById('progressWrap').classList.remove('active');
   document.getElementById('logBox').classList.remove('active');
   updateTabBadge(0);
-  setOrient('auto'); // المثال يحتوي على صفحات مختلطة
+  // لا نغيّر اختيار الاتجاه — المستخدم يختار بنفسه
   if (window.innerWidth <= 768) switchTab('editor');
 }
 </script>
