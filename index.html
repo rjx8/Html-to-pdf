@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>محوّل HTML إلى PDF</title>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
       --ink:#0d0d0d; --paper:#f7f5f0; --accent:#c8440a; --accent2:#1a6b4a;
@@ -22,15 +20,15 @@
     header h1{font-size:1.05rem;font-weight:600}
     header p{font-size:0.68rem;color:#a09a94;margin-top:1px}
     .header-right{margin-right:auto;display:flex;align-items:center;gap:8px}
-    #pageCountBadge{font-size:0.7rem;color:#a09a94;background:#2a2724;padding:3px 10px;border-radius:20px}
+    #serverBadge{font-size:0.7rem;padding:3px 10px;border-radius:20px;background:#2a2724;color:#a09a94;transition:all .3s}
+    #serverBadge.online{background:#0f2e1a;color:#6ecf8c}
+    #serverBadge.busy{background:#2e1e0f;color:#f0b84a}
 
     /* ── TABS (mobile) ── */
     .tab-bar{display:none;position:fixed;top:var(--header-h);left:0;right:0;height:var(--tabs-h);background:var(--surface);border-bottom:1.5px solid var(--border);z-index:99}
     .tab-bar-inner{display:flex;height:100%}
     .tab-btn{flex:1;background:none;border:none;font-family:inherit;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s}
     .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-    .tab-badge{background:var(--accent);color:#fff;font-size:0.58rem;font-weight:700;padding:1px 5px;border-radius:10px;display:none}
-    .tab-badge.visible{display:inline-block}
 
     /* ── LAYOUT ── */
     .app-body{position:fixed;top:var(--header-h);left:0;right:0;bottom:0;display:flex;flex-direction:row}
@@ -45,9 +43,6 @@
     .preview-toolbar span{display:flex;align-items:center;gap:6px}
     .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
     #previewScroll{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:28px}
-    .preview-page-card{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.18);position:relative;margin-bottom:18px;max-width:100%}
-    .preview-page-card img{display:block;max-width:100%;height:auto}
-    .page-num-badge{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:0.62rem;color:#8a8480;white-space:nowrap}
 
     /* ── IFRAME PREVIEW ── */
     #iframeWrap{flex:1;overflow:hidden;display:flex;flex-direction:column}
@@ -93,7 +88,7 @@
     /* ── MAIN BUTTONS ── */
     .action-row{display:flex;gap:8px}
     .btn-convert{flex:1;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:7px}
-    .btn-convert:hover{background:#a33608}
+    .btn-convert:hover:not(:disabled){background:#a33608}
     .btn-convert:disabled{background:#c0b8b0;cursor:not-allowed}
     .btn-preview-live{padding:12px 14px;background:transparent;color:var(--accent2);border:1.5px solid var(--accent2);border-radius:8px;font-size:0.9rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
     .btn-preview-live:hover{background:#eef7f3}
@@ -102,7 +97,7 @@
     .progress-wrap{display:none;flex-direction:column;gap:5px}
     .progress-wrap.active{display:flex}
     .progress-bar-bg{height:5px;background:#e8e4de;border-radius:3px;overflow:hidden}
-    .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#e8620e);border-radius:3px;width:0%;transition:width .35s ease}
+    .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#e8620e);border-radius:3px;width:0%;transition:width .4s ease}
     .progress-text{font-size:.7rem;color:var(--muted);text-align:center}
 
     /* ── LOG ── */
@@ -110,17 +105,29 @@
     .log-box.active{display:block}
     .log-ok{color:#6ecf8c}.log-warn{color:#f0b84a}.log-err{color:#f06a6a}
 
+    /* ── SUCCESS CARD ── */
+    .success-card{background:#0f2e1a;border:1px solid #1a5530;border-radius:8px;padding:14px 16px;display:none;align-items:center;gap:12px}
+    .success-card.visible{display:flex}
+    .success-icon{font-size:1.6rem;flex-shrink:0}
+    .success-info{flex:1}
+    .success-title{color:#6ecf8c;font-weight:700;font-size:0.85rem}
+    .success-sub{color:#4a9a6a;font-size:0.7rem;margin-top:2px}
+    .btn-download-again{background:#1a5530;color:#6ecf8c;border:1px solid #2a7040;border-radius:6px;padding:6px 14px;font-family:inherit;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap}
+    .btn-download-again:hover{background:#2a7040}
+
     /* ── FAB ── */
     .fab-convert{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--accent);color:#fff;border:none;border-radius:30px;padding:14px 30px;font-family:inherit;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(200,68,10,.45);display:none;align-items:center;gap:8px;white-space:nowrap;transition:transform .15s}
     .fab-convert:active{transform:translateX(-50%) scale(0.96)}
     .fab-convert:disabled{background:#c0b8b0;box-shadow:none}
 
-    /* ── RENDER CONTAINER ── */
-    #renderContainer{position:fixed;top:0;left:-9999px;width:794px;background:#fff;visibility:hidden;pointer-events:none;z-index:-1000}
-
     /* ── TOAST ── */
-    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1612;color:#6ecf8c;padding:8px 20px;border-radius:20px;font-size:0.8rem;font-weight:600;z-index:500;opacity:0;transition:opacity .2s;pointer-events:none}
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1612;color:#6ecf8c;padding:8px 20px;border-radius:20px;font-size:0.8rem;font-weight:600;z-index:500;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
     .toast.show{opacity:1}
+
+    /* ── PREVIEW PAGE ── */
+    .preview-page-card{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.18);position:relative;margin-bottom:18px;max-width:100%}
+    .preview-page-card img{display:block;max-width:100%;height:auto}
+    .page-num-badge{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:0.62rem;color:#8a8480;white-space:nowrap}
 
     ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
@@ -140,7 +147,6 @@
       .btn-preview-live{display:none}
       .fab-convert{display:flex}
       #previewScroll{padding:14px 8px 85px;gap:18px}
-      .preview-page-card img{width:100%!important;height:auto!important}
     }
     @media(max-width:380px){.options-grid{grid-template-columns:1fr}.tab-btn{font-size:0.76rem}}
   </style>
@@ -151,20 +157,18 @@
   <div class="logo-mark">PDF</div>
   <div>
     <h1>محوّل HTML إلى PDF</h1>
-    <p>يدعم بحوث A4 وعروض 16:9 وأبعاد مخصصة</p>
+    <p>يدعم بحوث A4 وعروض 16:9 — مدعوم بـ Puppeteer</p>
   </div>
   <div class="header-right">
-    <span id="pageCountBadge">—</span>
+    <span id="serverBadge">⏳ جاري الاتصال...</span>
   </div>
 </header>
 
 <div class="tab-bar">
   <div class="tab-bar-inner">
-    <button class="tab-btn active" id="tabEditor"  onclick="switchTab('editor')">✏️ المحرر</button>
-    <button class="tab-btn"        id="tabResult"  onclick="switchTab('result')">
-      📄 النتيجة <span class="tab-badge" id="tabBadge">0</span>
-    </button>
-    <button class="tab-btn"        id="tabLive"    onclick="switchTab('live')">👁 معاينة</button>
+    <button class="tab-btn active" id="tabEditor" onclick="switchTab('editor')">✏️ المحرر</button>
+    <button class="tab-btn"        id="tabResult" onclick="switchTab('result')">📄 النتيجة</button>
+    <button class="tab-btn"        id="tabLive"   onclick="switchTab('live')">👁 معاينة</button>
   </div>
 </div>
 
@@ -181,7 +185,7 @@
           <textarea id="htmlInput" dir="ltr"
             placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'
             oninput="onInputChange()"></textarea>
-          <button class="btn-clear" onclick="clearInput()" title="مسح الكود">✕ مسح</button>
+          <button class="btn-clear" onclick="clearInput()">✕ مسح</button>
         </div>
         <div class="page-detect" id="pageDetect"></div>
       </div>
@@ -203,12 +207,8 @@
       <div>
         <div class="section-label">برومبت للذكاء الاصطناعي</div>
         <div class="prompt-row">
-          <button class="btn-prompt" id="btnPromptA4" onclick="copyPrompt('a4')">
-            📋 برومبت بحث A4
-          </button>
-          <button class="btn-prompt" id="btnPromptSlides" onclick="copyPrompt('slides')">
-            📋 برومبت عروض 16:9
-          </button>
+          <button class="btn-prompt" id="btnPromptA4"     onclick="copyPrompt('a4')">📋 برومبت بحث A4</button>
+          <button class="btn-prompt" id="btnPromptSlides" onclick="copyPrompt('slides')">📋 برومبت عروض 16:9</button>
         </div>
       </div>
 
@@ -217,20 +217,15 @@
         <div class="section-label">إعدادات</div>
         <div class="options-grid">
           <div class="opt-field">
-            <label>دقة التصوير (scale)</label>
-            <input type="number" id="optScale" value="5" min="1" max="6" />
-          </div>
-          <div class="opt-field">
             <label>اسم ملف PDF</label>
             <input type="text" id="optFilename" value="document" />
           </div>
           <div class="opt-field">
-            <label>انتظار إضافي (ms)</label>
-            <input type="number" id="optDelay" value="1000" min="0" max="8000" step="100" />
-          </div>
-          <div class="opt-field">
-            <label>جودة الصورة (1–10)</label>
-            <input type="number" id="optQuality" value="9" min="1" max="10" />
+            <label>نوع الملف</label>
+            <select id="optOrientation" onchange="syncOrientFromSelect()">
+              <option value="a4">بحث A4</option>
+              <option value="slides">عروض 16:9</option>
+            </select>
           </div>
         </div>
       </div>
@@ -239,11 +234,21 @@
       <div class="progress-wrap" id="progressWrap">
         <div class="section-label">التقدم</div>
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-        <div class="progress-text" id="progressText">جاري التحضير...</div>
+        <div class="progress-text" id="progressText">جاري الإرسال للسيرفر...</div>
       </div>
 
       <!-- سجل العمليات -->
       <pre class="log-box" id="logBox"></pre>
+
+      <!-- بطاقة النجاح + تحميل مجدد -->
+      <div class="success-card" id="successCard">
+        <div class="success-icon">✅</div>
+        <div class="success-info">
+          <div class="success-title" id="successTitle">تم التحويل بنجاح!</div>
+          <div class="success-sub"  id="successSub">—</div>
+        </div>
+        <button class="btn-download-again" id="btnDownloadAgain" onclick="downloadAgain()">↓ تحميل مجدد</button>
+      </div>
 
       <!-- أزرار التحويل والمعاينة -->
       <div class="action-row">
@@ -257,18 +262,18 @@
   </aside>
 
   <!-- ══ RESULT PANE ══ -->
-  <section class="preview-pane" id="panelResult">
+  <section class="preview-pane tab-active" id="panelResult">
     <div class="preview-toolbar">
-      <span><span class="dot"></span> الصفحات المحوّلة</span>
+      <span><span class="dot"></span> المعاينة المباشرة</span>
       <span id="resultInfo">—</span>
     </div>
     <div id="previewScroll">
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">📄</div>
         <div>
-          <strong>لا توجد صفحات بعد</strong><br/>
-          الصق كود HTML يحتوي على <code>class="page"</code><br/>
-          أو أي class يحتوي كلمة <code>page</code>
+          <strong>المعاينة المباشرة</strong><br/>
+          اضغط 👁 لمعاينة HTML<br/>
+          أو 🖨 للتحويل مباشرة
         </div>
       </div>
     </div>
@@ -288,24 +293,24 @@
 </div>
 
 <button class="fab-convert" id="fabConvert" onclick="startConversion()">🖨 تحويل</button>
-<div id="renderContainer"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 'use strict';
-/* ═══════════════════════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════════════════════ */
-let currentOrient = 'portrait';
-let _dimsIndex    = {};
-let _activePane   = 'result'; // 'result' | 'live'
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
+   STATE
+════════════════════════════ */
+let currentOrient   = 'portrait';
+let lastPdfBlob     = null;
+let lastFilename    = 'document.pdf';
+
+/* ════════════════════════════
    UTILS
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function toast(msg, dur = 2000) {
+function toast(msg, dur = 2500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -318,17 +323,17 @@ function setProgress(pct, msg) {
 }
 
 function setButtons(disabled, label) {
-  ['btnConvert','fabConvert'].forEach(id => {
+  ['btnConvert', 'fabConvert'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.disabled = disabled;
-    el.innerHTML = label;
+    if (label) el.innerHTML = label;
   });
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
    LOGGER
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 const LOG = (() => {
   let box;
   return {
@@ -341,131 +346,133 @@ const LOG = (() => {
       if (!box) return;
       const d = document.createElement('div');
       d.className = cls || '';
-      d.textContent = '[' + new Date().toLocaleTimeString('en') + '] ' + msg;
+      d.textContent = '[' + new Date().toLocaleTimeString('ar') + '] ' + msg;
       box.appendChild(d);
       box.scrollTop = box.scrollHeight;
     },
-    ok(m)   { this._w('✓ ' + m, 'log-ok');   },
-    warn(m) { this._w('⚠ ' + m, 'log-warn'); },
-    err(m)  { this._w('✗ ' + m, 'log-err');  },
-    info(m) { this._w('  ' + m);              },
+    ok(m)   { this._w('✓ ' + m, 'log-ok');  },
+    warn(m) { this._w('⚠ ' + m, 'log-warn');},
+    err(m)  { this._w('✗ ' + m, 'log-err'); },
+    info(m) { this._w('  ' + m);             },
   };
 })();
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
+   SERVER STATUS
+════════════════════════════ */
+async function checkServer() {
+  const badge = document.getElementById('serverBadge');
+  try {
+    const res = await fetch('/ping', { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      badge.textContent = '● السيرفر متصل';
+      badge.className   = 'online';
+    }
+  } catch {
+    badge.textContent = '○ السيرفر غير متاح';
+    badge.className   = '';
+  }
+}
+
+/* ════════════════════════════
+   ANTI-SLEEP CLIENT-SIDE
+   يضرب /ping كل 13 دقيقة
+════════════════════════════ */
+setInterval(() => {
+  fetch('/ping').catch(() => {});
+}, 13 * 60 * 1000);
+
+/* ════════════════════════════
    TABS
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 function switchTab(tab) {
-  ['editor','result','live'].forEach(t => {
-    const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
-    const btn   = document.getElementById('tab'   + t.charAt(0).toUpperCase() + t.slice(1));
+  ['editor', 'result', 'live'].forEach(t => {
+    const key   = t.charAt(0).toUpperCase() + t.slice(1);
+    const panel = document.getElementById('panel' + key);
+    const btn   = document.getElementById('tab'   + key);
     if (!panel || !btn) return;
     const active = t === tab;
     panel.classList.toggle('tab-active', active);
     btn  .classList.toggle('active',     active);
-    // desktop: show/hide panes correctly
     if (window.innerWidth > 768) {
-      if (t === 'result') panel.style.display = (tab === 'result' || tab === 'editor') ? 'flex' : 'none';
-      if (t === 'live')   panel.style.display = (tab === 'live')   ? 'flex' : 'none';
+      if (t === 'result') panel.style.display = (tab === 'live') ? 'none' : 'flex';
+      if (t === 'live')   panel.style.display = (tab === 'live') ? 'flex' : 'none';
     }
   });
-  _activePane = tab;
 }
 
-function updateTabBadge(n) {
-  const b = document.getElementById('tabBadge');
-  b.textContent = n;
-  b.classList.toggle('visible', n > 0);
-}
-
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
    ORIENT
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 function setOrient(val) {
   currentOrient = val;
   document.getElementById('btnPortrait').classList.toggle('active', val === 'portrait');
   document.getElementById('btnSlides')  .classList.toggle('active', val === 'slides');
-  // تحديث اسم الملف تلقائياً
+  document.getElementById('optOrientation').value = val === 'slides' ? 'slides' : 'a4';
   autoSetFilename();
 }
 
-/* ═══════════════════════════════════════════════════════════
-   AUTO FILENAME — يقرأ عنوان البحث من الكود
-═══════════════════════════════════════════════════════════ */
+function syncOrientFromSelect() {
+  const val = document.getElementById('optOrientation').value;
+  setOrient(val === 'slides' ? 'slides' : 'portrait');
+}
+
+/* ════════════════════════════
+   AUTO FILENAME
+════════════════════════════ */
 function autoSetFilename() {
   const html  = document.getElementById('htmlInput').value;
   const field = document.getElementById('optFilename');
-
-  // حاول استخراج العنوان من <title> أو أول <h1>
-  let name = '';
-  const titleM = html.match(/<title[^>]*>([^<]+)<\/title>/i);
-  if (titleM) name = titleM[1].trim();
-
+  let name    = '';
+  const tm = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (tm) name = tm[1].trim();
   if (!name) {
-    const h1M = html.match(/<h1[^>]*>([^<]{2,60})<\/h1>/i);
-    if (h1M) name = h1M[1].replace(/<[^>]+>/g, '').trim();
+    const hm = html.match(/<h1[^>]*>([^<]{2,60})<\/h1>/i);
+    if (hm) name = hm[1].replace(/<[^>]+>/g, '').trim();
   }
-
-  // نظّف الاسم
   name = name.replace(/[^\wأ-ي\s\-]/g, '').trim().replace(/\s+/g, '_').slice(0, 40);
-
   const prefix = currentOrient === 'slides' ? 'عرض_' : 'بحث_';
   field.value  = name ? prefix + name : (currentOrient === 'slides' ? 'عرض_بوربوينت' : 'بحث_A4');
 }
 
-/* ═══════════════════════════════════════════════════════════
-   INPUT CHANGE — كشف الصفحات وتحديث اسم الملف
-═══════════════════════════════════════════════════════════ */
+/* ════════════════════════════
+   INPUT CHANGE
+════════════════════════════ */
 function onInputChange() {
-  const html    = document.getElementById('htmlInput').value;
-  const detect  = document.getElementById('pageDetect');
-
-  // كشف عدد الصفحات
-  const matches = html.match(/class="[^"]*page[^"]*"/gi) || [];
-  // استبعد الصفحات المتداخلة بطريقة تقريبية
-  const count   = [...html.matchAll(/<div[^>]+class="[^"]*\bpage[^"]*"/gi)].length;
-
+  const html   = document.getElementById('htmlInput').value;
+  const detect = document.getElementById('pageDetect');
+  const count  = [...html.matchAll(/<div[^>]+class="[^"]*\bpage[^"]*"/gi)].length;
   if (count > 0) {
     detect.textContent = '✓ تم اكتشاف ' + count + ' صفحة';
     detect.classList.add('visible');
   } else {
     detect.classList.remove('visible');
   }
-
   autoSetFilename();
-
-  // حفظ في localStorage
   try { localStorage.setItem('pdf_last_html', html); } catch(e) {}
 }
 
 function clearInput() {
   document.getElementById('htmlInput').value = '';
   document.getElementById('pageDetect').classList.remove('visible');
-  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
-  document.getElementById('emptyState').style.display = 'flex';
-  document.getElementById('resultInfo').textContent = '—';
-  document.getElementById('pageCountBadge').textContent = '—';
   document.getElementById('progressWrap').classList.remove('active');
   document.getElementById('logBox').classList.remove('active');
-  updateTabBadge(0);
+  document.getElementById('successCard').classList.remove('visible');
+  document.getElementById('resultInfo').textContent = '—';
+  document.getElementById('emptyState').style.display = 'flex';
+  lastPdfBlob = null;
   autoSetFilename();
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
    LIVE PREVIEW
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 function openLivePreview() {
   const html = document.getElementById('htmlInput').value.trim();
   if (!html) { toast('الصق كود HTML أولاً'); return; }
-
-  // desktop: أظهر لوحة المعاينة المباشرة
   document.getElementById('panelResult').style.display = 'none';
   document.getElementById('panelLive').style.display   = 'flex';
-  _activePane = 'live';
-
-  const frame = document.getElementById('liveFrame');
-  frame.srcdoc = html;
-
+  document.getElementById('liveFrame').srcdoc = html;
   if (window.innerWidth <= 768) switchTab('live');
   toast('👁 المعاينة المباشرة');
 }
@@ -477,15 +484,22 @@ function refreshLivePreview() {
   setTimeout(() => { frame.srcdoc = html; }, 50);
 }
 
-function closeLivePreview() {
-  document.getElementById('panelLive').style.display   = 'none';
-  document.getElementById('panelResult').style.display = 'flex';
-  _activePane = 'result';
+/* ════════════════════════════
+   DOWNLOAD AGAIN
+════════════════════════════ */
+function downloadAgain() {
+  if (!lastPdfBlob) return;
+  const url = URL.createObjectURL(lastPdfBlob);
+  const a   = document.createElement('a');
+  a.href     = url;
+  a.download = lastFilename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
    PROMPT COPY
-═══════════════════════════════════════════════════════════ */
+════════════════════════════ */
 const PROMPTS = {
   a4: `أنت مصمم وثائق HTML محترف. قم بإنشاء كود HTML كامل لبحث أكاديمي بالعربية وفق المواصفات التالية:
 
@@ -539,445 +553,128 @@ const PROMPTS = {
 function copyPrompt(type) {
   const btn  = document.getElementById(type === 'a4' ? 'btnPromptA4' : 'btnPromptSlides');
   const text = PROMPTS[type];
-
   navigator.clipboard.writeText(text).then(() => {
     const orig = btn.innerHTML;
     btn.innerHTML = '✓ تم النسخ';
     btn.classList.add('copied');
     toast('✓ تم نسخ البرومبت — الصقه في أي نموذج AI');
-    setTimeout(() => {
-      btn.innerHTML = orig;
-      btn.classList.remove('copied');
-    }, 2500);
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
   }).catch(() => {
-    // fallback
     const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
     toast('✓ تم النسخ');
   });
 }
 
-/* ═══════════════════════════════════════════════════════════
-   STEP 1 — PARSE DIMS FROM CSS TEXT
-   يقرأ الأبعاد من نص CSS الخام قبل الحقن
-   هذا الأسلوب هو الوحيد الموثوق — DOM لا يُعتمد عليه
-═══════════════════════════════════════════════════════════ */
-function parseDimsFromHTML(html) {
-  const idx = {};
-  const styleRe = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-  let sm;
-  while ((sm = styleRe.exec(html)) !== null) {
-    const css     = sm[1];
-    const ruleRe  = /\.([a-zA-Z][\w-]*)\s*\{([^}]*)\}/g;
-    let rm;
-    while ((rm = ruleRe.exec(css)) !== null) {
-      const cls  = rm[1];
-      const body = rm[2];
-      if (!/page/i.test(cls)) continue;
-      const wm = body.match(/\bwidth\s*:\s*([\d.]+)px/);
-      const hm = body.match(/\bheight\s*:\s*([\d.]+)px/);
-      if (wm && hm) {
-        idx[cls] = { w: parseFloat(wm[1]), h: parseFloat(hm[1]) };
-      }
-    }
-  }
-  return idx;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 2 — INJECT HTML INTO RENDER CONTAINER
-═══════════════════════════════════════════════════════════ */
-function injectHTML(html) {
-  _dimsIndex = parseDimsFromHTML(html);
-  LOG.info('أبعاد مكتشفة: ' + JSON.stringify(
-    Object.fromEntries(Object.entries(_dimsIndex).map(([k,v]) => [k, v.w+'×'+v.h]))
-  ));
-
-  const container = document.getElementById('renderContainer');
-  container.innerHTML = '';
-  document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
-
-  const parser = new DOMParser();
-  const doc    = parser.parseFromString(html, 'text/html');
-
-  // حقن الـ styles مع تفعيل font-display:block
-  doc.querySelectorAll('style').forEach(s => {
-    const c = document.createElement('style');
-    c.setAttribute('data-pdf-injected', '1');
-    c.textContent = s.textContent.replace(/@font-face\s*\{/gi, '@font-face { font-display:block;');
-    document.head.appendChild(c);
-  });
-
-  // حقن روابط الخطوط مع display=block
-  doc.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
-    let href = l.getAttribute('href') || '';
-    if (!href) return;
-    href = href.replace('display=swap', 'display=block');
-    if (!href.includes('display=') && href.includes('fonts.googleapis'))
-      href += (href.includes('?') ? '&' : '?') + 'display=block';
-    if (document.querySelector(`link[href="${href}"]`)) return;
-    const c = document.createElement('link');
-    c.rel = 'stylesheet'; c.href = href;
-    c.setAttribute('data-pdf-injected', '1');
-    document.head.appendChild(c);
-  });
-
-  // عرض الـ container يساوي أعرض صفحة
-  const maxW = Object.values(_dimsIndex).reduce((mx, d) => Math.max(mx, d.w), 1300);
-  container.style.cssText = `position:fixed;top:0;left:-9999px;width:${maxW + 4}px;background:#fff;visibility:visible;pointer-events:none;z-index:-1000;`;
-  container.innerHTML = doc.body.innerHTML;
-
-  // تطبيع الـ container فقط — لا نلمس أي شيء داخل الصفحات
-  const norm = document.createElement('style');
-  norm.setAttribute('data-pdf-injected', '1');
-  norm.textContent = '#renderContainer{display:block!important;padding:0!important}';
-  document.head.appendChild(norm);
-
-  return container;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 3 — WAIT FOR RESOURCES
-═══════════════════════════════════════════════════════════ */
-async function waitForResources(container, extraDelay) {
-  // انتظر تحميل الخطوط
-  try {
-    await document.fonts.ready;
-    LOG.ok('fonts.ready ✓');
-  } catch(e) { LOG.warn('fonts.ready: ' + e.message); }
-
-  // حمّل كل خط مستخدم فعلياً
-  try {
-    const nodes = [...container.querySelectorAll('*')].filter(el =>
-      [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())
-    );
-    await Promise.allSettled(
-      nodes.slice(0, 60).map(el => {
-        const cs = getComputedStyle(el);
-        return document.fonts.load(
-          `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`,
-          el.textContent.slice(0, 4) || 'ا'
-        );
-      })
-    );
-    LOG.ok('font.load() ✓');
-  } catch(e) { LOG.warn('font.load: ' + e.message); }
-
-  // انتظر الصور
-  const imgs = [...container.querySelectorAll('img')];
-  if (imgs.length) {
-    await Promise.all(imgs.map(img => new Promise(res => {
-      if (img.complete && img.naturalWidth > 0) { res(); return; }
-      const t = setTimeout(() => { LOG.warn('img timeout'); res(); }, 12000);
-      img.onload = img.onerror = () => { clearTimeout(t); res(); };
-    })));
-    LOG.ok(`images (${imgs.length}) ✓`);
-  }
-
-  // انتظار إضافي لضمان الرسم
-  const minDelay = Math.max(extraDelay, 300);
-  LOG.info(`انتظار ${minDelay}ms للرسم...`);
-  await sleep(minDelay);
-  LOG.ok('موارد جاهزة ✓');
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 4 — GET PAGE DIMENSIONS
-   يحوّل px إلى mm بنسبة 96dpi المعيارية
-═══════════════════════════════════════════════════════════ */
-function getPageDimsMM(pageEl) {
-  const PX_MM = 0.2646; // 96dpi: 1px = 0.2646mm
-
-  const classes = (pageEl.className || '').trim().split(/\s+/).filter(Boolean);
-  let pw = 0, ph = 0, matched = '';
-
-  for (const cls of classes) {
-    if (_dimsIndex[cls]) {
-      ({ w: pw, h: ph } = _dimsIndex[cls]);
-      matched = cls;
-      break;
-    }
-  }
-
-  if (!pw || !ph) { pw = 794; ph = 1123; } // A4 fallback
-
-  const wMM    = Math.round(pw * PX_MM);
-  const hMM    = Math.round(ph * PX_MM);
-  const orient = pw > ph ? 'landscape' : 'portrait';
-
-  LOG.info(`[.${matched || classes[0]}] ${pw}×${ph}px → ${wMM}×${hMM}mm (${orient})`);
-  return { wMM, hMM, orient, pw, ph };
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 5 — FIX ARABIC IN CLONED DOC
-   يُصلح letter-spacing وpage-break قبل التصوير
-═══════════════════════════════════════════════════════════ */
-function fixClonedDoc(clonedDoc, clonedEl, elW, elH) {
-  // ١. أجبر أبعاد الصفحة وأخفِ الفائض
-  clonedEl.style.cssText += `;width:${elW}px!important;height:${elH}px!important;overflow:hidden!important;visibility:visible!important;opacity:1!important;`;
-
-  // ٢. أزل flex centering من body فقط
-  const body = clonedDoc.body;
-  if (body) {
-    body.style.display   = 'block';
-    body.style.padding   = '0';
-    body.style.minHeight = 'unset';
-  }
-
-  // ٣. حقن CSS إصلاح شامل
-  const fix = clonedDoc.createElement('style');
-  fix.textContent = `
-    /* إصلاح letter-spacing — يكسر النص العربي في html2canvas */
-    * { letter-spacing: 0 !important; word-spacing: normal !important; text-justify: auto !important; }
-    /* إلغاء page-break — يسبب صفحات فارغة */
-    * { page-break-after:auto!important; page-break-before:auto!important; page-break-inside:auto!important; break-after:auto!important; break-before:auto!important; break-inside:auto!important; }
-  `;
-  clonedDoc.head.appendChild(fix);
-
-  // ٤. أزل inline styles المتعارضة
-  clonedDoc.querySelectorAll('*').forEach(el => {
-    if (el.style.letterSpacing)    el.style.removeProperty('letter-spacing');
-    if (el.style.wordSpacing)      el.style.removeProperty('word-spacing');
-    if (el.style.pageBreakAfter)   el.style.pageBreakAfter  = 'auto';
-    if (el.style.pageBreakBefore)  el.style.pageBreakBefore = 'auto';
-    if (el.style.pageBreakInside)  el.style.pageBreakInside = 'auto';
-    if (el.style.breakAfter)       el.style.breakAfter      = 'auto';
-    if (el.style.breakBefore)      el.style.breakBefore     = 'auto';
-    if (el.style.breakInside)      el.style.breakInside     = 'auto';
-  });
-
-  // ٥. أعِد حقن الخطوط في المستند المستنسخ
-  document.querySelectorAll('link[data-pdf-injected]').forEach(link => {
-    if (!clonedDoc.querySelector(`link[href="${link.href}"]`)) {
-      const cl = clonedDoc.createElement('link');
-      cl.rel = 'stylesheet'; cl.href = link.href;
-      clonedDoc.head.appendChild(cl);
-    }
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 6 — CAPTURE PAGE → BASE64
-═══════════════════════════════════════════════════════════ */
-async function capturePageToBase64(pageEl, dims, scale, quality) {
-  const { pw: elW, ph: elH } = dims;
-
-  const canvas = await html2canvas(pageEl, {
-    scale,
-    useCORS               : true,
-    allowTaint            : true,
-    backgroundColor       : '#ffffff',
-    logging               : false,
-    imageTimeout          : 20000,
-    removeContainer       : true,
-    foreignObjectRendering: false,
-    width      : elW,
-    height     : elH,
-    windowWidth: elW + 20,
-    windowHeight: elH + 20,
-    onclone(clonedDoc, clonedEl) {
-      fixClonedDoc(clonedDoc, clonedEl, elW, elH);
-    }
-  });
-
-  const imgData        = canvas.toDataURL('image/jpeg', quality / 10);
-  const previewDataUrl = canvas.toDataURL('image/jpeg', 0.45);
-
-  // تحرير الذاكرة فوراً
-  canvas.width = 0; canvas.height = 0;
-
-  return { imgData, previewDataUrl };
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ADD PREVIEW CARD
-═══════════════════════════════════════════════════════════ */
-function addPreviewCard(dataUrl, dims, index, total) {
-  const scroll = document.getElementById('previewScroll');
-  document.getElementById('emptyState').style.display = 'none';
-
-  const card  = document.createElement('div');
-  card.className = 'preview-page-card';
-
-  const img = document.createElement('img');
-  img.src   = dataUrl;
-  img.alt   = `صفحة ${index + 1}`;
-
-  const maxW  = Math.min(520, scroll.clientWidth - 40);
-  const ratio = dims.hMM / dims.wMM;
-  img.style.width  = maxW + 'px';
-  img.style.height = (maxW * ratio) + 'px';
-  card.appendChild(img);
-
-  const badge = document.createElement('div');
-  badge.className   = 'page-num-badge';
-  badge.textContent = `صفحة ${index + 1} من ${total}` +
-    (dims.orient === 'landscape' ? ' · أفقي' : ' · عمودي') +
-    ` · ${dims.wMM}×${dims.hMM}mm`;
-  card.appendChild(badge);
-
-  scroll.appendChild(card);
-  updateTabBadge(index + 1);
-}
-
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════
    MAIN CONVERSION
-═══════════════════════════════════════════════════════════ */
+   يرسل HTML للسيرفر ويستقبل PDF
+════════════════════════════ */
 async function startConversion() {
   const html     = document.getElementById('htmlInput').value.trim();
-  const scale    = Math.max(1, Math.min(6, +document.getElementById('optScale').value    || 5));
-  const delay    = Math.max(0,            +document.getElementById('optDelay').value     || 1000);
-  const quality  = Math.max(1, Math.min(10,+document.getElementById('optQuality').value  || 9));
   const filename = (document.getElementById('optFilename').value.trim() || 'document')
                    .replace(/[^\wأ-ي\-_]/g, '_').slice(0, 60);
+  const orientation = currentOrient === 'slides' ? 'slides' : 'a4';
 
   if (!html) { toast('الصق كود HTML أولاً'); return; }
 
-  // أغلق المعاينة المباشرة إن كانت مفتوحة
-  closeLivePreview();
+  // أغلق المعاينة المباشرة
+  document.getElementById('panelLive').style.display   = 'none';
+  document.getElementById('panelResult').style.display = 'flex';
 
   setButtons(true, '⏳ جاري التحويل...');
   document.getElementById('progressWrap').classList.add('active');
-  document.getElementById('previewScroll').querySelectorAll('.preview-page-card').forEach(c => c.remove());
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('pageCountBadge').textContent = '⏳';
-  document.getElementById('resultInfo').textContent = '⏳';
-  updateTabBadge(0);
+  document.getElementById('successCard').classList.remove('visible');
+  document.getElementById('serverBadge').textContent = '⏳ يعمل...';
+  document.getElementById('serverBadge').className   = 'busy';
 
   LOG.init();
-  LOG.info(`scale=${scale} | delay=${delay}ms | quality=${quality}/10 | نوع=${currentOrient}`);
+  LOG.info(`إرسال للسيرفر | النوع: ${orientation}`);
 
   try {
-    /* ── مرحلة 1: حقن HTML ── */
-    setProgress(5, 'تحليل الكود...');
-    const container = injectHTML(html);
-    LOG.ok('HTML مُحقن ✓');
+    setProgress(15, 'إرسال HTML للسيرفر...');
+    LOG.info(`حجم الكود: ${(html.length / 1024).toFixed(1)} KB`);
 
-    /* ── مرحلة 2: انتظار أوّلي (layout) ── */
-    setProgress(10, 'تهيئة Layout...');
-    await sleep(350);
+    setProgress(30, 'Puppeteer يُحمّل الصفحة...');
 
-    /* ── مرحلة 3: تحميل الموارد ── */
-    setProgress(15, 'تحميل الخطوط والصور...');
-    await waitForResources(container, delay);
+    const startTime = Date.now();
 
-    /* ── مرحلة 4: اكتشاف الصفحات ── */
-    setProgress(30, 'البحث عن الصفحات...');
-
-    const pages = [...container.querySelectorAll('[class*="page"]')].filter(el => {
-      const cls = el.className || '';
-      if (!/\bpage/.test(cls)) return false;
-      // استبعد الصفحات الداخلية (ابن صفحة أخرى)
-      let parent = el.parentElement;
-      while (parent && parent !== container) {
-        if (/\bpage/.test(parent.className || '')) return false;
-        parent = parent.parentElement;
-      }
-      return true;
+    const res = await fetch('/convert', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ html, filename, orientation }),
+      signal : AbortSignal.timeout(120_000), // دقيقتان كحد أقصى
     });
 
-    if (!pages.length) {
-      LOG.err('لا توجد صفحات بـ class يحتوي "page"');
-      alert('لم يُعثر على صفحات.\n\nتأكد أن كل صفحة تحتوي على:\nclass="page"\n\nأو استخدم برومبت AI أعلاه لتوليد كود صحيح.');
-      setButtons(false, '🖨 تحويل إلى PDF');
-      document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
-      container.innerHTML = '';
-      return;
+    setProgress(80, 'استقبال الـ PDF...');
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({ error: res.statusText }));
+      throw new Error(errData.error || 'فشل السيرفر');
     }
 
-    LOG.ok(`${pages.length} صفحة مكتشفة ✓`);
+    const blob  = await res.blob();
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
 
-    // تحقق من تجاوز المحتوى
-    let overflowCount = 0;
-    pages.forEach((p, i) => {
-      const ph = _dimsIndex[p.className.trim().split(/\s+/)[0]]?.h || 1123;
-      if (p.scrollHeight > ph + 15) {
-        overflowCount++;
-        LOG.warn(`صفحة ${i+1}: محتوى أطول (${p.scrollHeight}px > ${ph}px) — قد يُقطع`);
-      }
-    });
-    if (overflowCount > 0)
-      LOG.warn(`${overflowCount} صفحة محتواها أطول من ارتفاعها — قلّل حجم الخط أو وزّع المحتوى`);
+    lastPdfBlob  = blob;
+    lastFilename = filename + '.pdf';
 
-    /* ── مرحلة 5: التصوير ── */
-    setProgress(33, `تصوير ${pages.length} صفحة...`);
+    setProgress(95, 'جاري التحميل...');
 
-    const { jsPDF } = window.jspdf;
-    let pdf = null;
+    // تحميل تلقائي
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href     = url;
+    a.download = lastFilename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
 
-    for (let i = 0; i < pages.length; i++) {
-      const pct = 33 + Math.round((i / pages.length) * 55);
-      setProgress(pct, `تصوير ${i+1} / ${pages.length}...`);
-      LOG.info(`↓ صفحة ${i+1}...`);
+    setProgress(100, `✓ اكتمل في ${elapsed}ث`);
+    LOG.ok(`PDF جاهز | ${(blob.size / 1024).toFixed(0)} KB | ${elapsed}ث`);
 
-      const dims = getPageDimsMM(pages[i]);
-      const { imgData, previewDataUrl } = await capturePageToBase64(pages[i], dims, scale, quality);
+    // بطاقة النجاح
+    document.getElementById('successTitle').textContent = `✓ تم الحفظ: ${lastFilename}`;
+    document.getElementById('successSub').textContent   = `${(blob.size / 1024).toFixed(0)} KB · ${elapsed} ثانية`;
+    document.getElementById('successCard').classList.add('visible');
+    document.getElementById('resultInfo').textContent   = `✓ ${elapsed}ث`;
 
-      if (!pdf) {
-        pdf = new jsPDF({
-          orientation    : dims.orient,
-          unit           : 'mm',
-          format         : [dims.wMM, dims.hMM],
-          compress       : false,
-          putOnlyUsedFonts: true,
-        });
-      } else {
-        pdf.addPage([dims.wMM, dims.hMM], dims.orient);
-      }
+    document.getElementById('serverBadge').textContent = '● السيرفر متصل';
+    document.getElementById('serverBadge').className   = 'online';
 
-      pdf.addImage(imgData, 'JPEG', 0, 0, dims.wMM, dims.hMM, `p${i}`, 'NONE');
-      LOG.ok(`✓ صفحة ${i+1} [${dims.wMM}×${dims.hMM}mm]`);
+    toast(`✓ تم حفظ "${lastFilename}"`);
 
-      addPreviewCard(previewDataUrl, dims, i, pages.length);
-      if (i === 0 && window.innerWidth <= 768) switchTab('result');
+    if (window.innerWidth <= 768) switchTab('result');
 
-      await sleep(30); // تنفّس بين الصفحات
-    }
-
-    /* ── مرحلة 6: حفظ PDF ── */
-    setProgress(95, 'حفظ الملف...');
-    pdf.save(filename + '.pdf');
-
-    const finalMsg = `✓ ${pages.length} صفحة`;
-    LOG.ok(`تم حفظ "${filename}.pdf" — ${pages.length} صفحة`);
-    document.getElementById('pageCountBadge').textContent = finalMsg;
-    document.getElementById('resultInfo').textContent     = finalMsg;
-    setProgress(100, `✓ اكتمل — ${pages.length} صفحة`);
-    toast(`✓ تم حفظ "${filename}.pdf"`);
-
-  } catch(err) {
+  } catch (err) {
     LOG.err('خطأ: ' + err.message);
-    console.error(err);
     toast('✗ ' + err.message, 4000);
+    document.getElementById('serverBadge').textContent = '● السيرفر متصل';
+    document.getElementById('serverBadge').className   = 'online';
+    console.error(err);
   } finally {
-    document.querySelectorAll('[data-pdf-injected]').forEach(el => el.remove());
-    document.getElementById('renderContainer').innerHTML = '';
     setButtons(false, '🖨 تحويل إلى PDF');
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   INIT — تحميل آخر كود محفوظ
-═══════════════════════════════════════════════════════════ */
+/* ════════════════════════════
+   INIT
+════════════════════════════ */
 (function init() {
+  // استرجع آخر كود
   try {
     const saved = localStorage.getItem('pdf_last_html');
-    if (saved) {
-      document.getElementById('htmlInput').value = saved;
-      onInputChange();
-    }
+    if (saved) { document.getElementById('htmlInput').value = saved; onInputChange(); }
   } catch(e) {}
 
-  // desktop: أظهر لوحة النتيجة دائماً
+  // Desktop: أظهر النتيجة
   if (window.innerWidth > 768) {
     document.getElementById('panelLive').style.display   = 'none';
     document.getElementById('panelResult').style.display = 'flex';
   }
+
+  // تحقق من السيرفر
+  checkServer();
 })();
 </script>
 </body>
