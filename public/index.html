@@ -1,1 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>محوّل HTML إلى PDF</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:#0d0d0d; --paper:#f7f5f0; --accent:#c8440a; --accent2:#1a6b4a;
+      --muted:#6b6460; --border:#d4cfc9; --surface:#fff;
+      --header-h:60px; --tabs-h:44px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color:var(--ink);height:100%;overflow:hidden}
 
+    /* ── HEADER ── */
+    header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--ink);color:var(--paper);display:flex;align-items:center;gap:14px;padding:0 24px;border-bottom:3px solid var(--accent);z-index:100}
+    .logo-mark{width:36px;height:36px;flex-shrink:0;background:var(--accent);display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;clip-path:polygon(0 0,85% 0,100% 15%,100% 100%,15% 100%,0 85%)}
+    header h1{font-size:1.05rem;font-weight:600}
+    header p{font-size:0.68rem;color:#a09a94;margin-top:1px}
+    .header-right{margin-right:auto;display:flex;align-items:center;gap:8px}
+    #serverBadge{font-size:0.7rem;padding:3px 10px;border-radius:20px;background:#2a2724;color:#a09a94;transition:all .3s}
+    #serverBadge.online{background:#0f2e1a;color:#6ecf8c}
+    #serverBadge.busy{background:#2e1e0f;color:#f0b84a}
+
+    /* ── TABS (mobile) ── */
+    .tab-bar{display:none;position:fixed;top:var(--header-h);left:0;right:0;height:var(--tabs-h);background:var(--surface);border-bottom:1.5px solid var(--border);z-index:99}
+    .tab-bar-inner{display:flex;height:100%}
+    .tab-btn{flex:1;background:none;border:none;font-family:inherit;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+    /* ── LAYOUT ── */
+    .app-body{position:fixed;top:var(--header-h);left:0;right:0;bottom:0;display:flex;flex-direction:row}
+
+    /* ── SIDEBAR ── */
+    .sidebar{width:400px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+    .sidebar-inner{padding:18px 16px 28px;display:flex;flex-direction:column;gap:14px;flex:1}
+
+    /* ── PREVIEW PANE ── */
+    .preview-pane{flex:1;background:#e0dbd4;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+    .preview-toolbar{background:#2a2724;color:#c8c0b8;padding:8px 16px;font-size:0.7rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .preview-toolbar span{display:flex;align-items:center;gap:6px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+    #previewScroll{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:28px}
+
+    /* ── IFRAME PREVIEW ── */
+    #iframeWrap{flex:1;overflow:hidden;display:flex;flex-direction:column}
+    #iframeWrap iframe{flex:1;border:none;background:#fff}
+    .iframe-bar{background:#2a2724;color:#c8c0b8;padding:6px 14px;font-size:0.68rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .iframe-bar button{background:#3a3430;color:#c8c0b8;border:none;border-radius:4px;padding:3px 10px;font-size:0.68rem;cursor:pointer;font-family:inherit}
+    .iframe-bar button:hover{background:#4a4440}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:100%;color:#a09a94;text-align:center;padding:24px}
+    .empty-icon{width:60px;height:60px;border:2px dashed #c8c0b8;border-radius:8px;display:grid;place-items:center;font-size:24px}
+    .empty-state code{background:#e8e4de;padding:2px 5px;border-radius:3px;font-size:.82em}
+
+    /* ── FORM ── */
+    .section-label{font-size:0.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .textarea-wrap{position:relative}
+    textarea#htmlInput{width:100%;height:190px;border:1.5px solid var(--border);border-radius:6px;padding:10px;font-family:'Courier New',monospace;font-size:0.73rem;line-height:1.6;resize:vertical;background:#fafaf8;color:var(--ink)}
+    textarea#htmlInput:focus{outline:none;border-color:var(--accent)}
+    .btn-clear{position:absolute;top:6px;left:6px;background:#e8e4de;border:none;border-radius:4px;padding:2px 8px;font-size:0.65rem;color:var(--muted);cursor:pointer;font-family:inherit}
+    .btn-clear:hover{background:#d8d4ce;color:var(--ink)}
+    .page-detect{font-size:0.68rem;color:var(--accent2);background:#eef7f3;border:1px solid #c8e8da;border-radius:4px;padding:5px 10px;display:none}
+    .page-detect.visible{display:block}
+
+    /* ── OPTIONS ── */
+    .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .opt-field label{display:block;font-size:0.66rem;font-weight:600;color:var(--muted);margin-bottom:3px}
+    .opt-field input,.opt-field select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.84rem;font-family:inherit;background:#fafaf8;color:var(--ink);-webkit-appearance:none}
+    .opt-field input:focus,.opt-field select:focus{outline:none;border-color:var(--accent)}
+
+    /* ── ORIENT ── */
+    .orient-row{display:flex;gap:8px}
+    .orient-btn{flex:1;padding:8px 6px;border:1.5px solid var(--border);border-radius:6px;background:#fafaf8;color:var(--muted);font-family:inherit;font-size:0.76rem;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s}
+    .orient-btn .icon{font-size:1.1rem}
+    .orient-btn.active{border-color:var(--accent);background:#fff4f0;color:var(--accent)}
+    .orient-btn:hover:not(.active){border-color:#b0a8a0}
+
+    /* ── PROMPT BUTTONS ── */
+    .prompt-row{display:flex;gap:8px}
+    .btn-prompt{flex:1;padding:8px 6px;border:1.5px solid var(--accent2);border-radius:6px;background:transparent;color:var(--accent2);font-family:inherit;font-size:0.73rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;text-align:center}
+    .btn-prompt:hover{background:#eef7f3}
+    .btn-prompt.copied{border-color:#888;color:#888;background:#f0f0f0}
+
+    /* ── MAIN BUTTONS ── */
+    .action-row{display:flex;gap:8px}
+    .btn-convert{flex:1;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+    .btn-convert:hover:not(:disabled){background:#a33608}
+    .btn-convert:disabled{background:#c0b8b0;cursor:not-allowed}
+    .btn-preview-live{padding:12px 14px;background:transparent;color:var(--accent2);border:1.5px solid var(--accent2);border-radius:8px;font-size:0.9rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .btn-preview-live:hover{background:#eef7f3}
+
+    /* ── PROGRESS ── */
+    .progress-wrap{display:none;flex-direction:column;gap:5px}
+    .progress-wrap.active{display:flex}
+    .progress-bar-bg{height:5px;background:#e8e4de;border-radius:3px;overflow:hidden}
+    .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#e8620e);border-radius:3px;width:0%;transition:width .4s ease}
+    .progress-text{font-size:.7rem;color:var(--muted);text-align:center}
+
+    /* ── LOG ── */
+    .log-box{background:#1a1612;color:#c8c0b8;border-radius:6px;padding:8px 11px;font-family:'Courier New',monospace;font-size:0.65rem;line-height:1.9;max-height:90px;overflow-y:auto;display:none}
+    .log-box.active{display:block}
+    .log-ok{color:#6ecf8c}.log-warn{color:#f0b84a}.log-err{color:#f06a6a}
+
+    /* ── SUCCESS CARD ── */
+    .success-card{background:#0f2e1a;border:1px solid #1a5530;border-radius:8px;padding:14px 16px;display:none;align-items:center;gap:12px}
+    .success-card.visible{display:flex}
+    .success-icon{font-size:1.6rem;flex-shrink:0}
+    .success-info{flex:1}
+    .success-title{color:#6ecf8c;font-weight:700;font-size:0.85rem}
+    .success-sub{color:#4a9a6a;font-size:0.7rem;margin-top:2px}
+    .btn-download-again{background:#1a5530;color:#6ecf8c;border:1px solid #2a7040;border-radius:6px;padding:6px 14px;font-family:inherit;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap}
+    .btn-download-again:hover{background:#2a7040}
+
+    /* ── FAB ── */
+    .fab-convert{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--accent);color:#fff;border:none;border-radius:30px;padding:14px 30px;font-family:inherit;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(200,68,10,.45);display:none;align-items:center;gap:8px;white-space:nowrap;transition:transform .15s}
+    .fab-convert:active{transform:translateX(-50%) scale(0.96)}
+    .fab-convert:disabled{background:#c0b8b0;box-shadow:none}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1612;color:#6ecf8c;padding:8px 20px;border-radius:20px;font-size:0.8rem;font-weight:600;z-index:500;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+    .toast.show{opacity:1}
+
+    /* ── PREVIEW PAGE ── */
+    .preview-page-card{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.18);position:relative;margin-bottom:18px;max-width:100%}
+    .preview-page-card img{display:block;max-width:100%;height:auto}
+    .page-num-badge{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:0.62rem;color:#8a8480;white-space:nowrap}
+
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+    /* ── MOBILE ── */
+    @media(max-width:768px){
+      :root{--header-h:52px}
+      header p{display:none}header{padding:0 14px}
+      .tab-bar{display:block}
+      .app-body{top:calc(var(--header-h) + var(--tabs-h));flex-direction:column}
+      .sidebar{width:100%;flex:1;border-left:none;display:none}
+      .sidebar.tab-active{display:flex}
+      .sidebar-inner{padding:12px 12px 90px}
+      .preview-pane{width:100%;flex:1;display:none}
+      .preview-pane.tab-active{display:flex}
+      textarea#htmlInput{height:150px}
+      .btn-convert{display:none}
+      .btn-preview-live{display:none}
+      .fab-convert{display:flex}
+      #previewScroll{padding:14px 8px 85px;gap:18px}
+    }
+    @media(max-width:380px){.options-grid{grid-template-columns:1fr}.tab-btn{font-size:0.76rem}}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">PDF</div>
+  <div>
+    <h1>محوّل HTML إلى PDF</h1>
+    <p>يدعم بحوث A4 وعروض 16:9 — مدعوم بـ Puppeteer</p>
+  </div>
+  <div class="header-right">
+    <span id="serverBadge">⏳ جاري الاتصال...</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" id="tabEditor" onclick="switchTab('editor')">✏️ المحرر</button>
+    <button class="tab-btn"        id="tabResult" onclick="switchTab('result')">📄 النتيجة</button>
+    <button class="tab-btn"        id="tabLive"   onclick="switchTab('live')">👁 معاينة</button>
+  </div>
+</div>
+
+<div class="app-body">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar tab-active" id="panelEditor">
+    <div class="sidebar-inner">
+
+      <!-- كود HTML -->
+      <div>
+        <div class="section-label">كود HTML</div>
+        <div class="textarea-wrap">
+          <textarea id="htmlInput" dir="ltr"
+            placeholder='<html>&#10;  <body>&#10;    <div class="page">...</div>&#10;  </body>&#10;</html>'
+            oninput="onInputChange()"></textarea>
+          <button class="btn-clear" onclick="clearInput()">✕ مسح</button>
+        </div>
+        <div class="page-detect" id="pageDetect"></div>
+      </div>
+
+      <!-- نوع المستند -->
+      <div>
+        <div class="section-label">نوع المستند</div>
+        <div class="orient-row">
+          <button class="orient-btn active" id="btnPortrait" onclick="setOrient('portrait')">
+            <span class="icon">📄</span>بحث A4
+          </button>
+          <button class="orient-btn" id="btnSlides" onclick="setOrient('slides')">
+            <span class="icon">🖥</span>عروض 16:9
+          </button>
+        </div>
+      </div>
+
+      <!-- برومبتات AI -->
+      <div>
+        <div class="section-label">برومبت للذكاء الاصطناعي</div>
+        <div class="prompt-row">
+          <button class="btn-prompt" id="btnPromptA4"     onclick="copyPrompt('a4')">📋 برومبت بحث A4</button>
+          <button class="btn-prompt" id="btnPromptSlides" onclick="copyPrompt('slides')">📋 برومبت عروض 16:9</button>
+        </div>
+      </div>
+
+      <!-- إعدادات -->
+      <div>
+        <div class="section-label">إعدادات</div>
+        <div class="options-grid">
+          <div class="opt-field">
+            <label>اسم ملف PDF</label>
+            <input type="text" id="optFilename" value="document" />
+          </div>
+          <div class="opt-field">
+            <label>نوع الملف</label>
+            <select id="optOrientation" onchange="syncOrientFromSelect()">
+              <option value="a4">بحث A4</option>
+              <option value="slides">عروض 16:9</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- شريط التقدم -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="section-label">التقدم</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">جاري الإرسال للسيرفر...</div>
+      </div>
+
+      <!-- سجل العمليات -->
+      <pre class="log-box" id="logBox"></pre>
+
+      <!-- بطاقة النجاح + تحميل مجدد -->
+      <div class="success-card" id="successCard">
+        <div class="success-icon">✅</div>
+        <div class="success-info">
+          <div class="success-title" id="successTitle">تم التحويل بنجاح!</div>
+          <div class="success-sub"  id="successSub">—</div>
+        </div>
+        <button class="btn-download-again" id="btnDownloadAgain" onclick="downloadAgain()">↓ تحميل مجدد</button>
+      </div>
+
+      <!-- أزرار التحويل والمعاينة -->
+      <div class="action-row">
+        <button class="btn-convert" id="btnConvert" onclick="startConversion()">
+          🖨 تحويل إلى PDF
+        </button>
+        <button class="btn-preview-live" onclick="openLivePreview()" title="معاينة مباشرة">👁</button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ══ RESULT PANE ══ -->
+  <section class="preview-pane tab-active" id="panelResult">
+    <div class="preview-toolbar">
+      <span><span class="dot"></span> المعاينة المباشرة</span>
+      <span id="resultInfo">—</span>
+    </div>
+    <div id="previewScroll">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📄</div>
+        <div>
+          <strong>المعاينة المباشرة</strong><br/>
+          اضغط 👁 لمعاينة HTML<br/>
+          أو 🖨 للتحويل مباشرة
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LIVE PREVIEW PANE ══ -->
+  <section class="preview-pane" id="panelLive" style="display:none">
+    <div class="iframe-bar">
+      <span>👁 معاينة مباشرة</span>
+      <button onclick="refreshLivePreview()">↻ تحديث</button>
+    </div>
+    <div id="iframeWrap">
+      <iframe id="liveFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+  </section>
+
+</div>
+
+<button class="fab-convert" id="fabConvert" onclick="startConversion()">🖨 تحويل</button>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ════════════════════════════
+   STATE
+════════════════════════════ */
+let currentOrient   = 'portrait';
+let lastPdfBlob     = null;
+let lastFilename    = 'document.pdf';
+
+/* ════════════════════════════
+   UTILS
+════════════════════════════ */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function toast(msg, dur = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+function setProgress(pct, msg) {
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = msg;
+}
+
+function setButtons(disabled, label) {
+  ['btnConvert', 'fabConvert'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.disabled = disabled;
+    if (label) el.innerHTML = label;
+  });
+}
+
+/* ════════════════════════════
+   LOGGER
+════════════════════════════ */
+const LOG = (() => {
+  let box;
+  return {
+    init() {
+      box = document.getElementById('logBox');
+      box.classList.add('active');
+      box.innerHTML = '';
+    },
+    _w(msg, cls) {
+      if (!box) return;
+      const d = document.createElement('div');
+      d.className = cls || '';
+      d.textContent = '[' + new Date().toLocaleTimeString('ar') + '] ' + msg;
+      box.appendChild(d);
+      box.scrollTop = box.scrollHeight;
+    },
+    ok(m)   { this._w('✓ ' + m, 'log-ok');  },
+    warn(m) { this._w('⚠ ' + m, 'log-warn');},
+    err(m)  { this._w('✗ ' + m, 'log-err'); },
+    info(m) { this._w('  ' + m);             },
+  };
+})();
+
+/* ════════════════════════════
+   SERVER STATUS
+════════════════════════════ */
+async function checkServer() {
+  const badge = document.getElementById('serverBadge');
+  try {
+    const res = await fetch('/ping', { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      badge.textContent = '● السيرفر متصل';
+      badge.className   = 'online';
+    }
+  } catch {
+    badge.textContent = '○ السيرفر غير متاح';
+    badge.className   = '';
+  }
+}
+
+/* ════════════════════════════
+   ANTI-SLEEP CLIENT-SIDE
+   يضرب /ping كل 13 دقيقة
+════════════════════════════ */
+setInterval(() => {
+  fetch('/ping').catch(() => {});
+}, 13 * 60 * 1000);
+
+/* ════════════════════════════
+   TABS
+════════════════════════════ */
+function switchTab(tab) {
+  ['editor', 'result', 'live'].forEach(t => {
+    const key   = t.charAt(0).toUpperCase() + t.slice(1);
+    const panel = document.getElementById('panel' + key);
+    const btn   = document.getElementById('tab'   + key);
+    if (!panel || !btn) return;
+    const active = t === tab;
+    panel.classList.toggle('tab-active', active);
+    btn  .classList.toggle('active',     active);
+    if (window.innerWidth > 768) {
+      if (t === 'result') panel.style.display = (tab === 'live') ? 'none' : 'flex';
+      if (t === 'live')   panel.style.display = (tab === 'live') ? 'flex' : 'none';
+    }
+  });
+}
+
+/* ════════════════════════════
+   ORIENT
+════════════════════════════ */
+function setOrient(val) {
+  currentOrient = val;
+  document.getElementById('btnPortrait').classList.toggle('active', val === 'portrait');
+  document.getElementById('btnSlides')  .classList.toggle('active', val === 'slides');
+  document.getElementById('optOrientation').value = val === 'slides' ? 'slides' : 'a4';
+  autoSetFilename();
+}
+
+function syncOrientFromSelect() {
+  const val = document.getElementById('optOrientation').value;
+  setOrient(val === 'slides' ? 'slides' : 'portrait');
+}
+
+/* ════════════════════════════
+   AUTO FILENAME
+════════════════════════════ */
+function autoSetFilename() {
+  const html  = document.getElementById('htmlInput').value;
+  const field = document.getElementById('optFilename');
+  let name    = '';
+  const tm = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (tm) name = tm[1].trim();
+  if (!name) {
+    const hm = html.match(/<h1[^>]*>([^<]{2,60})<\/h1>/i);
+    if (hm) name = hm[1].replace(/<[^>]+>/g, '').trim();
+  }
+  name = name.replace(/[^\wأ-ي\s\-]/g, '').trim().replace(/\s+/g, '_').slice(0, 40);
+  const prefix = currentOrient === 'slides' ? 'عرض_' : 'بحث_';
+  field.value  = name ? prefix + name : (currentOrient === 'slides' ? 'عرض_بوربوينت' : 'بحث_A4');
+}
+
+/* ════════════════════════════
+   INPUT CHANGE
+════════════════════════════ */
+function onInputChange() {
+  const html   = document.getElementById('htmlInput').value;
+  const detect = document.getElementById('pageDetect');
+  const count  = [...html.matchAll(/<div[^>]+class="[^"]*\bpage[^"]*"/gi)].length;
+  if (count > 0) {
+    detect.textContent = '✓ تم اكتشاف ' + count + ' صفحة';
+    detect.classList.add('visible');
+  } else {
+    detect.classList.remove('visible');
+  }
+  autoSetFilename();
+  try { localStorage.setItem('pdf_last_html', html); } catch(e) {}
+}
+
+function clearInput() {
+  document.getElementById('htmlInput').value = '';
+  document.getElementById('pageDetect').classList.remove('visible');
+  document.getElementById('progressWrap').classList.remove('active');
+  document.getElementById('logBox').classList.remove('active');
+  document.getElementById('successCard').classList.remove('visible');
+  document.getElementById('resultInfo').textContent = '—';
+  document.getElementById('emptyState').style.display = 'flex';
+  lastPdfBlob = null;
+  autoSetFilename();
+}
+
+/* ════════════════════════════
+   LIVE PREVIEW
+════════════════════════════ */
+function openLivePreview() {
+  const html = document.getElementById('htmlInput').value.trim();
+  if (!html) { toast('الصق كود HTML أولاً'); return; }
+  document.getElementById('panelResult').style.display = 'none';
+  document.getElementById('panelLive').style.display   = 'flex';
+  document.getElementById('liveFrame').srcdoc = html;
+  if (window.innerWidth <= 768) switchTab('live');
+  toast('👁 المعاينة المباشرة');
+}
+
+function refreshLivePreview() {
+  const html  = document.getElementById('htmlInput').value.trim();
+  const frame = document.getElementById('liveFrame');
+  frame.srcdoc = '';
+  setTimeout(() => { frame.srcdoc = html; }, 50);
+}
+
+/* ════════════════════════════
+   DOWNLOAD AGAIN
+════════════════════════════ */
+function downloadAgain() {
+  if (!lastPdfBlob) return;
+  const url = URL.createObjectURL(lastPdfBlob);
+  const a   = document.createElement('a');
+  a.href     = url;
+  a.download = lastFilename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+/* ════════════════════════════
+   PROMPT COPY
+════════════════════════════ */
+const PROMPTS = {
+  a4: `أنت مصمم وثائق HTML محترف. قم بإنشاء كود HTML كامل لبحث أكاديمي بالعربية وفق المواصفات التالية:
+
+**عنوان البحث:** [اكتب العنوان هنا]
+**المادة:** [مثال: فيزياء / كيمياء / رياضيات]
+**الطالب:** [الاسم]
+**المعلم:** [الاسم]
+**الصف:** [مثال: أول ثانوي]
+**العام الدراسي:** [مثال: 1447هـ / 2026م]
+**عدد الصفحات المطلوبة:** [مثال: 5 صفحات]
+
+**متطلبات تقنية صارمة — لا تتجاوزها:**
+- كل صفحة تكون: <div class="page"> بالضبط
+- أبعاد كل صفحة في CSS: width: 794px; height: 1123px; overflow: hidden; position: relative;
+- الـ body يكون: display: block; (لا flex ولا grid ولا justify-content)
+- لا تضع letter-spacing على أي نص عربي
+- استخدم Google Fonts: Cairo أو Tajawal أو Amiri
+- كل صفحة مكتفية بذاتها — لا يتجاوز المحتوى الـ 1123px
+
+**هيكل كل صفحة:**
+صفحة 1: غلاف (اسم البحث، الطالب، المعلم، العام الدراسي)
+صفحة 2+: محتوى البحث (عناوين h2، فقرات، جداول، صناديق)
+صفحة أخيرة: المراجع والمصادر
+
+**نمط التصميم:** احترافي وأنيق باستخدام ألوان متناسقة وحدود ذهبية أو ملونة`,
+
+  slides: `أنت مصمم عروض HTML محترف. قم بإنشاء كود HTML كامل لعرض تقديمي بالعربية وفق المواصفات التالية:
+
+**عنوان العرض:** [اكتب العنوان هنا]
+**المادة / الموضوع:** [مثال: مشروع فيزياء / درس تاريخ]
+**المقدِّم:** [الاسم]
+**عدد الشرائح:** [مثال: 8 شرائح]
+
+**متطلبات تقنية صارمة — لا تتجاوزها:**
+- كل شريحة تكون: <div class="page"> بالضبط
+- أبعاد كل شريحة في CSS: width: 1280px; height: 720px; overflow: hidden; position: relative;
+- الـ body يكون: display: block; (لا flex ولا grid ولا justify-content)
+- لا تضع letter-spacing على أي نص عربي
+- استخدم Google Fonts: Cairo أو Tajawal
+- كل شريحة مكتفية بذاتها — لا يتجاوز المحتوى 720px
+
+**هيكل الشرائح:**
+شريحة 1: غلاف (عنوان كبير + اسم المقدِّم)
+شريحة 2: جدول المحتويات أو مقدمة
+شرائح 3+: محتوى (نقاط، جداول، مقارنات، معلومات)
+شريحة أخيرة: خلاصة أو شكر
+
+**نمط التصميم:** حديث وجريء، خلفيات ملونة، نصوص واسعة وواضحة، مناسب للعرض`
+};
+
+function copyPrompt(type) {
+  const btn  = document.getElementById(type === 'a4' ? 'btnPromptA4' : 'btnPromptSlides');
+  const text = PROMPTS[type];
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ تم النسخ';
+    btn.classList.add('copied');
+    toast('✓ تم نسخ البرومبت — الصقه في أي نموذج AI');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('✓ تم النسخ');
+  });
+}
+
+/* ════════════════════════════
+   MAIN CONVERSION
+   يرسل HTML للسيرفر ويستقبل PDF
+════════════════════════════ */
+async function startConversion() {
+  const html     = document.getElementById('htmlInput').value.trim();
+  const filename = (document.getElementById('optFilename').value.trim() || 'document')
+                   .replace(/[^\wأ-ي\-_]/g, '_').slice(0, 60);
+  const orientation = currentOrient === 'slides' ? 'slides' : 'a4';
+
+  if (!html) { toast('الصق كود HTML أولاً'); return; }
+
+  // أغلق المعاينة المباشرة
+  document.getElementById('panelLive').style.display   = 'none';
+  document.getElementById('panelResult').style.display = 'flex';
+
+  setButtons(true, '⏳ جاري التحويل...');
+  document.getElementById('progressWrap').classList.add('active');
+  document.getElementById('successCard').classList.remove('visible');
+  document.getElementById('serverBadge').textContent = '⏳ يعمل...';
+  document.getElementById('serverBadge').className   = 'busy';
+
+  LOG.init();
+  LOG.info(`إرسال للسيرفر | النوع: ${orientation}`);
+
+  try {
+    setProgress(15, 'إرسال HTML للسيرفر...');
+    LOG.info(`حجم الكود: ${(html.length / 1024).toFixed(1)} KB`);
+
+    setProgress(30, 'Puppeteer يُحمّل الصفحة...');
+
+    const startTime = Date.now();
+
+    const res = await fetch('/convert', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ html, filename, orientation }),
+      signal : AbortSignal.timeout(120_000), // دقيقتان كحد أقصى
+    });
+
+    setProgress(80, 'استقبال الـ PDF...');
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({ error: res.statusText }));
+      throw new Error(errData.error || 'فشل السيرفر');
+    }
+
+    const blob  = await res.blob();
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+
+    lastPdfBlob  = blob;
+    lastFilename = filename + '.pdf';
+
+    setProgress(95, 'جاري التحميل...');
+
+    // تحميل تلقائي
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href     = url;
+    a.download = lastFilename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+
+    setProgress(100, `✓ اكتمل في ${elapsed}ث`);
+    LOG.ok(`PDF جاهز | ${(blob.size / 1024).toFixed(0)} KB | ${elapsed}ث`);
+
+    // بطاقة النجاح
+    document.getElementById('successTitle').textContent = `✓ تم الحفظ: ${lastFilename}`;
+    document.getElementById('successSub').textContent   = `${(blob.size / 1024).toFixed(0)} KB · ${elapsed} ثانية`;
+    document.getElementById('successCard').classList.add('visible');
+    document.getElementById('resultInfo').textContent   = `✓ ${elapsed}ث`;
+
+    document.getElementById('serverBadge').textContent = '● السيرفر متصل';
+    document.getElementById('serverBadge').className   = 'online';
+
+    toast(`✓ تم حفظ "${lastFilename}"`);
+
+    if (window.innerWidth <= 768) switchTab('result');
+
+  } catch (err) {
+    LOG.err('خطأ: ' + err.message);
+    toast('✗ ' + err.message, 4000);
+    document.getElementById('serverBadge').textContent = '● السيرفر متصل';
+    document.getElementById('serverBadge').className   = 'online';
+    console.error(err);
+  } finally {
+    setButtons(false, '🖨 تحويل إلى PDF');
+  }
+}
+
+/* ════════════════════════════
+   INIT
+════════════════════════════ */
+(function init() {
+  // استرجع آخر كود
+  try {
+    const saved = localStorage.getItem('pdf_last_html');
+    if (saved) { document.getElementById('htmlInput').value = saved; onInputChange(); }
+  } catch(e) {}
+
+  // Desktop: أظهر النتيجة
+  if (window.innerWidth > 768) {
+    document.getElementById('panelLive').style.display   = 'none';
+    document.getElementById('panelResult').style.display = 'flex';
+  }
+
+  // تحقق من السيرفر
+  checkServer();
+})();
+</script>
+</body>
+</html>
