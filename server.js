@@ -3,181 +3,151 @@
 const express   = require('express');
 const puppeteer = require('puppeteer-core');
 const chromium  = require('@sparticuz/chromium');
+const { PDFDocument } = require('pdf-lib');
 const path      = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-/* ══════════════════════════════════════════════
-   MIDDLEWARE
-══════════════════════════════════════════════ */
-app.use(express.json({ limit: '15mb' }));
+app.use(express.json({ limit: '20mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* ══════════════════════════════════════════════
-   ANTI-SLEEP — يضرب نفسه كل 14 دقيقة
-   يمنع Render Free من النوم
-══════════════════════════════════════════════ */
+// ── ANTI-SLEEP ──
 const RENDER_URL = process.env.RENDER_EXTERNAL_URL || null;
-
 function startAntiSleep() {
-  if (!RENDER_URL) {
-    console.log('[anti-sleep] RENDER_EXTERNAL_URL غير موجود — تخطي');
-    return;
-  }
-  const INTERVAL = 14 * 60 * 1000; // كل 14 دقيقة
+  if (!RENDER_URL) return;
   setInterval(async () => {
-    try {
-      const res = await fetch(`${RENDER_URL}/ping`);
-      console.log(`[anti-sleep] ping → ${res.status}`);
-    } catch (e) {
-      console.warn('[anti-sleep] فشل الـ ping:', e.message);
-    }
-  }, INTERVAL);
-  console.log(`[anti-sleep] ✓ نشط — يضرب ${RENDER_URL}/ping كل 14 دقيقة`);
+    try { await fetch(`${RENDER_URL}/ping`); } catch(e) {}
+  }, 14 * 60 * 1000);
+  console.log(`[anti-sleep] ✓ نشط`);
 }
 
-/* ══════════════════════════════════════════════
-   PING ENDPOINT
-══════════════════════════════════════════════ */
-app.get('/ping', (req, res) => {
-  res.json({ ok: true, time: new Date().toISOString() });
-});
+app.get('/ping', (req, res) => res.json({ ok: true }));
 
-/* ══════════════════════════════════════════════
-   BROWSER POOL — مثيل واحد مشترك لأداء أفضل
-══════════════════════════════════════════════ */
-let browserInstance = null;
-let browserLaunching = false;
-
+// ── BROWSER POOL ──
+let browserInstance = null, browserLaunching = false;
 async function getBrowser() {
   if (browserInstance && browserInstance.isConnected()) return browserInstance;
-  if (browserLaunching) {
-    // انتظر حتى ينتهي الـ launch
-    await new Promise(r => setTimeout(r, 500));
-    return getBrowser();
-  }
-
+  if (browserLaunching) { await new Promise(r => setTimeout(r, 600)); return getBrowser(); }
   browserLaunching = true;
   try {
-    console.log('[browser] تشغيل Chromium...');
     browserInstance = await puppeteer.launch({
-      args: [
-        ...chromium.args,
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--font-render-hinting=none',   // أفضل للخطوط العربية
-        '--lang=ar',
-      ],
-      executablePath : await chromium.executablePath(),
-      headless       : chromium.headless ?? true,
+      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox',
+             '--disable-dev-shm-usage', '--disable-gpu',
+             '--font-render-hinting=none', '--lang=ar'],
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless ?? true,
       defaultViewport: null,
     });
+    browserInstance.on('disconnected', () => { browserInstance = null; });
+    console.log('[browser] ✓ جاهز');
+    return browserInstance;
+  } finally { browserLaunching = false; }
+}
 
-    browserInstance.on('disconnected', () => {
-      console.warn('[browser] انقطع — سيُعاد التشغيل عند الطلب القادم');
-      browserInstance = null;
+// ── CORE: صوّر كل صفحة منفردة ──
+async function convertHtmlToPdf(html, orientation) {
+  const browser  = await getBrowser();
+  const page     = await browser.newPage();
+
+  try {
+    const isSlides = orientation === 'slides';
+    const vpW = isSlides ? 1280 : 794;
+    const vpH = isSlides ? 720  : 1123;
+
+    await page.setViewport({ width: vpW, height: vpH, deviceScaleFactor: 2 });
+    await page.setContent(html, { waitUntil: 'networkidle0', timeout: 45000 });
+
+    // انتظر الخطوط + الصور
+    await page.evaluate(() => document.fonts.ready);
+    await new Promise(r => setTimeout(r, 1500));
+
+    // اكتشف الصفحات وأبعادها من CSS
+    const pages = await page.evaluate(() => {
+      const els = [...document.querySelectorAll('[class*="page"]')].filter(el => {
+        if (!/\bpage\b/.test(el.className || '')) return false;
+        let p = el.parentElement;
+        while (p && p !== document.body) {
+          if (/\bpage\b/.test(p.className || '')) return false;
+          p = p.parentElement;
+        }
+        return true;
+      });
+
+      return els.map(el => {
+        const cs = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + window.scrollX,
+          y: rect.top  + window.scrollY,
+          w: Math.round(parseFloat(cs.width)  || rect.width),
+          h: Math.round(parseFloat(cs.height) || rect.height),
+        };
+      });
     });
 
-    console.log('[browser] ✓ Chromium جاهز');
-    return browserInstance;
+    if (!pages.length) throw new Error('لم يُعثر على صفحات — تأكد من class="page"');
+    console.log(`[convert] ${pages.length} صفحة`);
+
+    // صوّر كل صفحة منفردة
+    const screenshots = [];
+    for (let i = 0; i < pages.length; i++) {
+      const p = pages[i];
+      await page.setViewport({ width: p.w, height: p.h, deviceScaleFactor: 2 });
+      const buf = await page.screenshot({
+        type: 'png',
+        clip: { x: p.x, y: p.y, width: p.w, height: p.h },
+        omitBackground: false,
+      });
+      screenshots.push({ buffer: buf, w: p.w, h: p.h });
+      console.log(`[convert] ✓ صفحة ${i+1}/${pages.length}`);
+    }
+
+    // ادمج في PDF
+    const pdfDoc = await PDFDocument.create();
+    const PX_TO_PT = 0.75; // 96dpi → 72pt: 1px = 0.75pt
+
+    for (const shot of screenshots) {
+      const img    = await pdfDoc.embedPng(shot.buffer);
+      const wPt    = shot.w * PX_TO_PT;
+      const hPt    = shot.h * PX_TO_PT;
+      const pdfPg  = pdfDoc.addPage([wPt, hPt]);
+      pdfPg.drawImage(img, { x: 0, y: 0, width: wPt, height: hPt });
+    }
+
+    const bytes = await pdfDoc.save();
+    console.log(`[convert] ✓ ${(bytes.length/1024).toFixed(0)} KB`);
+    return Buffer.from(bytes);
+
   } finally {
-    browserLaunching = false;
+    await page.close().catch(() => {});
   }
 }
 
-/* ══════════════════════════════════════════════
-   CONVERT ENDPOINT
-   POST /convert
-   Body: { html, filename, orientation }
-   orientation: 'a4' | 'slides'
-══════════════════════════════════════════════ */
+// ── ENDPOINT ──
 app.post('/convert', async (req, res) => {
   const { html, filename = 'document', orientation = 'a4' } = req.body;
-
-  if (!html || typeof html !== 'string' || html.trim().length < 10) {
+  if (!html || html.trim().length < 10)
     return res.status(400).json({ error: 'html مطلوب' });
-  }
 
-  console.log(`[convert] طلب جديد | orientation=${orientation} | حجم=${html.length} حرف`);
-
-  let page = null;
   try {
-    const browser = await getBrowser();
-    page = await browser.newPage();
-
-    /* ── تحميل المحتوى مع انتظار الخطوط والصور ── */
-    await page.setContent(html, {
-      waitUntil: 'networkidle0',
-      timeout  : 30000,
-    });
-
-    /* ── انتظار إضافي للخطوط العربية ── */
-    await page.evaluate(() =>
-      document.fonts.ready.catch(() => {})
-    );
-    await new Promise(r => setTimeout(r, 800));
-
-    /* ── إعدادات الـ PDF حسب النوع ── */
-    let pdfOptions;
-
-    if (orientation === 'slides') {
-      // عروض 16:9 — 1280×720 → 338×190mm تقريباً
-      pdfOptions = {
-        width          : '338mm',
-        height         : '190mm',
-        printBackground: true,
-        margin         : { top: '0', bottom: '0', left: '0', right: '0' },
-        displayHeaderFooter: false,
-      };
-    } else {
-      // بحث A4 عمودي
-      pdfOptions = {
-        format         : 'A4',
-        printBackground: true,
-        margin         : { top: '0', bottom: '0', left: '0', right: '0' },
-        displayHeaderFooter: false,
-      };
-    }
-
-    /* ── إنشاء الـ PDF ── */
-    const pdfBuffer = await page.pdf(pdfOptions);
-
-    /* ── اسم الملف — تنظيف لـ Content-Disposition ── */
-    const safeName = (filename || 'document')
-      .replace(/[^\wأ-ي\-_]/g, '_')
-      .slice(0, 60) + '.pdf';
-
-    console.log(`[convert] ✓ PDF جاهز | ${pdfBuffer.length} bytes | ${safeName}`);
-
+    const pdf      = await convertHtmlToPdf(html, orientation);
+    const safeName = (filename).replace(/[^\wأ-ي\-_]/g,'_').slice(0,60) + '.pdf';
     res.set({
       'Content-Type'       : 'application/pdf',
       'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(safeName)}`,
-      'Content-Length'     : pdfBuffer.length,
+      'Content-Length'     : pdf.length,
     });
-    res.send(pdfBuffer);
-
-  } catch (err) {
-    console.error('[convert] خطأ:', err.message);
-    // أعد تشغيل المتصفح إذا انهار
+    res.send(pdf);
+  } catch(err) {
+    console.error('[convert]', err.message);
     browserInstance = null;
     res.status(500).json({ error: err.message });
-  } finally {
-    if (page) {
-      await page.close().catch(() => {});
-    }
   }
 });
 
-/* ══════════════════════════════════════════════
-   START
-══════════════════════════════════════════════ */
 app.listen(PORT, async () => {
-  console.log(`\n🚀 السيرفر يعمل على http://localhost:${PORT}`);
-  // سخّن المتصفح مسبقاً
-  getBrowser().catch(e => console.warn('[warmup] فشل التسخين:', e.message));
-  // شغّل الـ anti-sleep
+  console.log(`🚀 http://localhost:${PORT}`);
+  getBrowser().catch(() => {});
   startAntiSleep();
 });
